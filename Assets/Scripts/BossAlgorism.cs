@@ -36,7 +36,6 @@ public class BossAlgorism : MonoBehaviour
     {
         attackTimer = 0f;
         if (player != null) playerCol = player.GetComponent<Collider2D>();
-        // 충돌 누락 방지
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
     }
 
@@ -114,16 +113,13 @@ public class BossAlgorism : MonoBehaviour
         if (player == null) yield break;
         isActing = true;
 
-        // 0) 예비동작
         rb.linearVelocity = Vector2.zero;
         if (preWindup > 0f) yield return new WaitForSeconds(preWindup);
 
-        // 1) 목표 지점 계산: 플레이어 콜라이더 앞 지점
         Vector2 start = rb.position;
         Vector2 dir = ((Vector2)player.position - start).normalized;
         Vector2 target = ComputeFrontTarget(start, dir);
 
-        // 2) 목표 지점까지 순간 대시 (MovePosition으로 과속 안정)
         float timer = 0f;
         while (timer < dashDuration)
         {
@@ -141,18 +137,15 @@ public class BossAlgorism : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        // 3) 정지
         rb.linearVelocity = Vector2.zero;
         isActing = false;
     }
 
-    // 플레이어 바로 앞 '정지 목표점' 계산
     Vector2 ComputeFrontTarget(Vector2 start, Vector2 dir)
     {
         float maxDist = 50f;
         Vector2 fallback = (Vector2)player.position - dir * stopOffset;
 
-        // 플레이어까지 Raycast
         RaycastHit2D hitPlayer = Physics2D.Raycast(start, dir, maxDist, playerLayer);
         if (hitPlayer.collider != null)
         {
@@ -190,7 +183,6 @@ public class BossAlgorism : MonoBehaviour
         isActing = false;
     }
 
-    // --- 안전장치: 실제로 부딪히면 즉시 '앞에서 스냅' ---
     void OnTriggerEnter2D(Collider2D other)
     {
         if (!isActing || player == null) return;
