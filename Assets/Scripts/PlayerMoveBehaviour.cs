@@ -6,15 +6,21 @@ using UnityEngine.InputSystem;
 public class PlayerMoveBehaviour: MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [SerializeField] private float moveSpeed = 1.0f;
+    [SerializeField] private float moveSpeed = 7.0f;
 
     private PlayerMove playermoves;
     private Vector2 movement;
     private Rigidbody2D rb;
+    //Player Animation 
+    private Animator Panimator;
+    private SpriteRenderer PspriteRenderer;
+
     private void Awake()
     {
         playermoves = new PlayerMove();
         rb = GetComponent<Rigidbody2D>();
+        Panimator = GetComponent<Animator>();
+        PspriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void OnEnable()
@@ -27,14 +33,21 @@ public class PlayerMoveBehaviour: MonoBehaviour
     }
     private void FixedUpdate()
     {
+        AdjustPlayerFacingDirection();
         Move();
     }
     private void PlayerInput()
     {
         movement = playermoves.Movement.Move.ReadValue<Vector2>();
+        Panimator.SetFloat("moveX", movement.x);
+        Panimator.SetFloat("moveY", movement.y);
     }
     private void Move()
     {
         rb.MovePosition(rb.position + movement *(moveSpeed * Time.fixedDeltaTime));
+    }
+    private void AdjustPlayerFacingDirection()
+    {
+        
     }
 }
