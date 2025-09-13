@@ -11,7 +11,7 @@ public class PlayerMoveBehaviour: MonoBehaviour
     private PlayerMove playermoves;
     private Vector2 movement;
     private Rigidbody2D rb;
-    //Player Animation 
+    //Player Animation
     private Animator Panimator;
     private SpriteRenderer PspriteRenderer;
 
@@ -39,8 +39,8 @@ public class PlayerMoveBehaviour: MonoBehaviour
     private void PlayerInput()
     {
         movement = playermoves.Movement.Move.ReadValue<Vector2>();
-        Panimator.SetFloat("moveX", movement.x);
-        Panimator.SetFloat("moveY", movement.y);
+        // Panimator.SetFloat("moveX", movement.x);
+        // Panimator.SetFloat("moveY", movement.y);
     }
     private void Move()
     {
