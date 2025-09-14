@@ -176,14 +176,12 @@ public class BossAlgorism : MonoBehaviour
         if (player == null) yield break;
         isActing = true;
 
-        // 1) 플레이어와의 거리 확인 후 필요하면 후퇴
         float timer = 0f;
         while (timer < retreatDuration)
         {
             Vector2 toPlayer = (Vector2)player.position - rb.position;
-            if (toPlayer.magnitude >= desiredDistance) break; // 원하는 거리 확보되면 중단
+            if (toPlayer.magnitude >= desiredDistance) break; // 원하는 거리 확보되면 중단하는 코드
 
-            // 매 프레임 반대 방향으로 물러나기 (항상 최신 방향으로 갱신)
             Vector2 dirAway = (-toPlayer).normalized;
             float step = retreatSpeed * Time.fixedDeltaTime;
             rb.MovePosition(rb.position + dirAway * step);
