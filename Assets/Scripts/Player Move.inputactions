@@ -73,34 +73,6 @@
                     "isPartOfComposite": true
                 }
             ]
-        },
-        {
-            "name": "Combat",
-            "id": "e6775596-a042-4266-80a3-870fe316cf12",
-            "actions": [
-                {
-                    "name": "Block",
-                    "type": "Button",
-                    "id": "b6a49b12-ddda-42d1-952a-5c13832edc8c",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "5c114c35-05df-456e-9610-733009ce8cb4",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Block",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
         }
     ],
     "controlSchemes": []
