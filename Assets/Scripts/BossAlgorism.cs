@@ -4,28 +4,29 @@ using UnityEngine;
 public class BossAlgorism : MonoBehaviour
 {
     [Header("Common")]
-    public float AttackCooldown = 2f;
+    public float AttackCooldown;
     public Transform player;
 
     [Header("Dash (Melee)")]
-    public float dashSpeed = 25f;
-    public float dashDuration = 0.15f;
-    public float preWindup = 0.08f;
+    public float dashSpeed;
+    public float dashDuration;
+    private float preWindup;
 
-    [Header("Stop In Front")]
-    public float stopOffset = 0.6f;
+    [Header("Stop In Front Of Player")]
+    public float stopoffset;
     public LayerMask playerLayer;
-    public LayerMask obstacleMask;
 
-    [Header("Range")]
-    public float retreatSpeed = 12f;
-    public float retreatDuration = 0.15f;
-    public float desiredDistance = 3.0f;
+    [Header("Dash (Range)")]
+    public float retreatSpeed;
+    public float retreatDuration;
+    public float desiredDistance;
+    public float rangePreWindup;
 
+    [Header("Remain")]
     public float attackTimer;
     private Rigidbody2D rb;
     private bool isActing;
-    private Collider2D playerCol;
+    private Collider2D PlayerCol;
 
     void Awake()
     {
@@ -35,19 +36,22 @@ public class BossAlgorism : MonoBehaviour
     void Start()
     {
         attackTimer = 0f;
-        if (player != null) playerCol = player.GetComponent<Collider2D>();
-        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        PlayerCol = player.GetComponent<Collider2D>();
     }
 
     void Update()
     {
         if (player == null) return;
 
-        attackTimer += Time.deltaTime;
-        if (attackTimer >= AttackCooldown && !isActing)
+        if (!isActing)
         {
-            Attack_Way_Choice();
-            attackTimer = 0f;
+            attackTimer += Time.deltaTime;
+
+            if (attackTimer >= AttackCooldown)
+            {
+                Attack_Way_Choice();
+                attackTimer = 0f;
+            }
         }
     }
 
@@ -73,15 +77,18 @@ public class BossAlgorism : MonoBehaviour
         switch (Melee_Attack_Type)
         {
             case 0:
-                Debug.Log("근거리 공격1: 플레이어에게 돌진");
+                Debug.Log("근거리 공격1: 플레이어에게 돌진 ( preWindup = 2 )");
+                preWindup = 2f;
                 StartCoroutine(DashBurstStopInFront());
                 break;
             case 1:
-                Debug.Log("근거리 공격2: 플레이어에게 돌진");
+                Debug.Log("근거리 공격2: 플레이어에게 돌진( preWindup = 3 )");
+                preWindup = 3f;
                 StartCoroutine(DashBurstStopInFront());
                 break;
             case 2:
-                Debug.Log("근거리 공격3: 플레이어에게 돌진");
+                Debug.Log("근거리 공격3: 플레이어에게 돌진( preWindup = 4 )");
+                preWindup = 4f;
                 StartCoroutine(DashBurstStopInFront());
                 break;
         }
@@ -94,42 +101,49 @@ public class BossAlgorism : MonoBehaviour
         switch (Range_Attack_Type)
         {
             case 0:
-                Debug.Log("원거리 공격1: 플레이어로부터 멀어짐");
-                StartCoroutine(RetreatBurst());
+                Debug.Log("원거리 공격1: 플레이어로부터 멀어짐 ( preWindup = 2 )");
+                rangePreWindup = 2f;
+                StartCoroutine(RangeBurst());
                 break;
             case 1:
-                Debug.Log("원거리 공격2: 플레이어로부터 멀어짐");
-                StartCoroutine(RetreatBurst());
+                Debug.Log("원거리 공격2: 플레이어로부터 멀어짐 ( preWindup = 3 )");
+                rangePreWindup = 3f;
+                StartCoroutine(RangeBurst());
                 break;
             case 2:
-                Debug.Log("원거리 공격3: 플레이어로부터 멀어짐");
-                StartCoroutine(RetreatBurst());
+                Debug.Log("원거리 공격3: 플레이어로부터 멀어짐 ( preWindup = 4 )");
+                rangePreWindup = 4f;
+                StartCoroutine(RangeBurst());
                 break;
         }
     }
 
     System.Collections.IEnumerator DashBurstStopInFront()
     {
-        if (player == null) yield break;
-        isActing = true;
-
+        isActing = true; 
         rb.linearVelocity = Vector2.zero;
+        //애니메이션 넣는 구간 ( 스킬 사용 전 준비 동작 )
         if (preWindup > 0f) yield return new WaitForSeconds(preWindup);
 
         Vector2 start = rb.position;
-        Vector2 dir = ((Vector2)player.position - start).normalized;
+        Vector2 dir = ((Vector2)player.position - start).normalized; // *(Vector2) 필요 + 정규화 필요
         Vector2 target = ComputeFrontTarget(start, dir);
 
         float timer = 0f;
         while (timer < dashDuration)
         {
-            Vector2 toTarget = target - rb.position;
-            float dist = toTarget.magnitude;
-            if (dist <= 0.02f) break;
+            Vector2 ToTarget = target - rb.position;
+            float dist = ToTarget.magnitude; // 벡터의 크기 = 거리
+            
+            if (dist <= 0.02f)
+            {
+                break;
+            }
 
-            Vector2 stepDir = toTarget / (dist + 1e-6f);
+            Vector2 ToTargetDir = ToTarget / (dist + 1e-6f); //보정값( 0으로 나뉘는 것을 방지 )
             float step = dashSpeed * Time.fixedDeltaTime;
-            Vector2 nextPos = (step >= dist) ? target : rb.position + stepDir * step;
+            // 감사합니다. 지피티님 ( 검나 어렵네 ㅆ... )
+            Vector2 nextPos = (step >= dist) ? target : rb.position + ToTargetDir * step;
 
             rb.MovePosition(nextPos);
 
@@ -141,71 +155,64 @@ public class BossAlgorism : MonoBehaviour
         isActing = false;
     }
 
+    // 우리는 AI 시대에 살고 있따;;
     Vector2 ComputeFrontTarget(Vector2 start, Vector2 dir)
     {
         float maxDist = 50f;
-        Vector2 fallback = (Vector2)player.position - dir * stopOffset;
+        Vector2 fallback = (Vector2)player.position - dir * stopoffset;
 
         RaycastHit2D hitPlayer = Physics2D.Raycast(start, dir, maxDist, playerLayer);
         if (hitPlayer.collider != null)
         {
-            return hitPlayer.point - dir * stopOffset;
+            return hitPlayer.point - dir * stopoffset;
         }
 
         return fallback;
     }
 
 
-    System.Collections.IEnumerator RetreatBurst()
+    System.Collections.IEnumerator RangeBurst()
     {
         if (player == null) yield break;
         isActing = true;
 
-        float dist = Vector2.Distance(transform.position, player.position);
-        if (dist < desiredDistance)
+        // 1) 플레이어와의 거리 확인 후 필요하면 후퇴
+        float timer = 0f;
+        while (timer < retreatDuration)
         {
-            Vector2 dir = ((Vector2)transform.position - (Vector2)player.position).normalized;
-            float timer = 0f;
-            while (timer < retreatDuration)
-            {
-                Vector2 toPlayer = (Vector2)player.position - rb.position;
-                if (toPlayer.magnitude >= desiredDistance) break;
+            Vector2 toPlayer = (Vector2)player.position - rb.position;
+            if (toPlayer.magnitude >= desiredDistance) break; // 원하는 거리 확보되면 중단
 
-                float step = retreatSpeed * Time.fixedDeltaTime;
-                rb.MovePosition(rb.position + dir * step);
+            // 매 프레임 반대 방향으로 물러나기 (항상 최신 방향으로 갱신)
+            Vector2 dirAway = (-toPlayer).normalized;
+            float step = retreatSpeed * Time.fixedDeltaTime;
+            rb.MovePosition(rb.position + dirAway * step);
 
-                timer += Time.fixedDeltaTime;
-                yield return new WaitForFixedUpdate();
-            }
+            timer += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
         }
 
         rb.linearVelocity = Vector2.zero;
+
+        if (rangePreWindup > 0f)
+            yield return new WaitForSeconds(rangePreWindup);
+
         isActing = false;
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (!isActing || player == null) return;
         if (other.transform == player)
         {
-            SnapInFrontOfPlayer();
+            StopInFrontOfPlayer();
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (!isActing || player == null) return;
-        if (collision.transform == player)
-        {
-            SnapInFrontOfPlayer();
-        }
-    }
-
-    void SnapInFrontOfPlayer()
+    void StopInFrontOfPlayer()
     {
         Vector2 dir = ((Vector2)player.position - rb.position).normalized;
-        Vector2 snapPos = (Vector2)player.position - dir * stopOffset;
-        rb.position = snapPos;
+        Vector2 StopPos = (Vector2)player.position - dir * stopoffset;
+        rb.position = StopPos;
         rb.linearVelocity = Vector2.zero;
         isActing = false;
     }

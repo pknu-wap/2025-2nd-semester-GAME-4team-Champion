@@ -151,21 +151,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0913d392170a6cc4e8ade296d73529bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackCooldown: 1
+  AttackCooldown: 3
   player: {fileID: 1289633921}
   dashSpeed: 10
   dashDuration: 0.25
-  preWindup: 0.1
-  stopOffset: 0.25
+  stopoffset: 0.6
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 0
-  retreatSpeed: 12
-  retreatDuration: 0.15
+  retreatSpeed: 7
+  retreatDuration: 2
   desiredDistance: 6
+  rangePreWindup: 0
   attackTimer: 0
 --- !u!212 &138672249
 SpriteRenderer:
