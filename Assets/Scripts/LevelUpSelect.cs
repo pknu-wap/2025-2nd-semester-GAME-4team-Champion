@@ -1,0 +1,69 @@
+using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
+using System.Collections.Generic;
+
+public class LevelUpSelect : MonoBehaviour
+{
+
+    public TextMeshProUGUI[] selectButtonsText;
+    
+    public List<string> allselectTitle = new List<string> {"a", "b", "c", "d", "e", "f", "g"};
+    public List<string> unselectedTitle;
+
+    public List<string> randomTitle = new List<string> {"a","a","a"};
+
+    public List<string> selectedList = new List<string>();
+    public List<int> selectedid;
+
+    public GameObject[] gameui;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        settingRandom();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            selectButtonsText[i].text = randomTitle[i];
+        }
+    }
+
+    public void RandomSelect()     //선택지 랜덤
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            int rand = UnityEngine.Random.Range(0, unselectedTitle.Count);
+            randomTitle[i] = unselectedTitle[rand];
+
+            unselectedTitle.Remove(randomTitle[i]);     //중복제거
+        } 
+    }
+
+    public void settingRandom()     //중복 없이 선택지 띄우기 위한 세팅
+    {
+        unselectedTitle = new List<string>(allselectTitle);
+        unselectedTitle.RemoveAll(x => selectedList.Contains(x));
+    }
+
+    public void selectrandomvalue(int index)
+    {
+        selectedList.Add(randomTitle[index]);
+    }
+
+    public void showLevelUp()
+    {
+        //levelupui.SetActive(true);
+        gameui[0].SetActive(true);
+    }
+
+    public void exitLevelUp()
+    {
+        //levelupui.SetActive(false);
+        gameui[0].SetActive(false);
+    }
+}
