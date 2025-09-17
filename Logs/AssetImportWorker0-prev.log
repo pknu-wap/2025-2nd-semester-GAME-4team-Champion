@@ -2,7 +2,7 @@ Using pre-set license
 Built from '6000.0/staging' branch; Version is '6000.0.57f1 (b7b9860b7bbd) revision 12040582'; Using compiler version '193933523'; Build Type 'Release'
 OS: 'Windows 10  (10.0.19045) 64bit Professional' Language: 'ko' Physical Memory: 32711 MB
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
-Date: 2025-09-13T08:07:10Z
+Date: 2025-09-16T10:31:02Z
 
 COMMAND LINE ARGUMENTS:
 D:\6000.0.57f1\Editor\Unity.exe
@@ -12,11 +12,11 @@ D:\6000.0.57f1\Editor\Unity.exe
 -name
 AssetImportWorker0
 -projectPath
-D:/Game project/Champion
+D:/Game project/2025-2nd-semester-GAME-4team-Champion
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-7279
+11418
 -job-worker-count
 5
 -background-job-worker-count
@@ -25,8 +25,8 @@ Logs/AssetImportWorker0.log
 1
 -name
 AssetImport
-Successfully changed project path to: D:/Game project/Champion
-D:/Game project/Champion
+Successfully changed project path to: D:/Game project/2025-2nd-semester-GAME-4team-Champion
+D:/Game project/2025-2nd-semester-GAME-4team-Champion
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
     "memorysetup-bucket-allocator-granularity=16"
     "memorysetup-bucket-allocator-bucket-count=8"
@@ -62,12 +62,12 @@ D:/Game project/Champion
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [6824]  Target information:
+Player connection [10272]  Target information:
 
-Player connection [6824]  * "[IP] 192.168.219.110 [Port] 0 [Flags] 2 [Guid] 4008831325 [EditorId] 4008831325 [Version] 1048832 [Id] WindowsEditor(7,PC01) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+Player connection [10272]  * "[IP] 192.168.219.110 [Port] 0 [Flags] 2 [Guid] 3322643069 [EditorId] 3322643069 [Version] 1048832 [Id] WindowsEditor(7,PC01) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
 
-Player connection [6824] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [6824] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [10272] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [10272] Host joined alternative multi-casting on [225.0.0.222:34997]...
 JobSystem: Creating JobQueue using job-worker-count value 5
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
@@ -79,11 +79,11 @@ Library Redirect Path: Library/
 [Physics::Module] SDK Version: 4.1.2
 [Physics::Module] Integration Version: 1.0.0
 [Physics::Module] Threading Mode: Multi-Threaded
-Refreshing native plugins compatible for Editor in 2.98 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 3.48 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 6000.0.57f1 (b7b9860b7bbd)
 [Subsystems] Discovering subsystems at path D:/6000.0.57f1/Editor/Data/Resources/UnitySubsystems
-[Subsystems] Discovering subsystems at path D:/Game project/Champion/Assets
+[Subsystems] Discovering subsystems at path D:/Game project/2025-2nd-semester-GAME-4team-Champion/Assets
 GfxDevice: creating device client; kGfxThreadingModeNonThreaded
 Direct3D:
     Version:  Direct3D 11.0 [level 11.1]
@@ -95,43 +95,43 @@ Initialize mono
 Mono path[0] = 'D:/6000.0.57f1/Editor/Data/Managed'
 Mono path[1] = 'D:/6000.0.57f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'D:/6000.0.57f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56196
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56688
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: D:/6000.0.57f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.003351 seconds.
-- Loaded All Assemblies, in  0.554 seconds
+Registered in 0.003192 seconds.
+- Loaded All Assemblies, in  0.390 seconds
 Native extension for WindowsStandalone target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.328 seconds
-Domain Reload Profiling: 882ms
-	BeginReloadAssembly (266ms)
+- Finished resetting the current domain, in  0.311 seconds
+Domain Reload Profiling: 701ms
+	BeginReloadAssembly (157ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
 		CreateAndSetChildDomain (1ms)
-	RebuildCommonClasses (42ms)
-	RebuildNativeTypeToScriptingClass (13ms)
-	initialDomainReloadingComplete (55ms)
-	LoadAllAssembliesAndSetupDomain (176ms)
-		LoadAssemblies (266ms)
+	RebuildCommonClasses (37ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (43ms)
+	LoadAllAssembliesAndSetupDomain (141ms)
+		LoadAssemblies (156ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (173ms)
-			TypeCache.Refresh (171ms)
-				TypeCache.ScanAssembly (153ms)
+		AnalyzeDomain (138ms)
+			TypeCache.Refresh (137ms)
+				TypeCache.ScanAssembly (125ms)
 			BuildScriptInfoCaches (0ms)
-			ResolveRequiredComponents (1ms)
-	FinalizeReload (329ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (312ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (265ms)
+		SetupLoadedEditorAssemblies (266ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (21ms)
+			InitializePlatformSupportModulesInManaged (17ms)
 			SetLoadedEditorAssemblies (4ms)
-			BeforeProcessingInitializeOnLoad (49ms)
-			ProcessInitializeOnLoadAttributes (130ms)
-			ProcessInitializeOnLoadMethodAttributes (62ms)
+			BeforeProcessingInitializeOnLoad (58ms)
+			ProcessInitializeOnLoadAttributes (133ms)
+			ProcessInitializeOnLoadMethodAttributes (54ms)
 			AfterProcessingInitializeOnLoad (0ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
@@ -140,681 +140,976 @@ Domain Reload Profiling: 882ms
 Worker process is ready to serve import requests
 Import Worker Mode flag is 0x00
 Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  0.841 seconds
-Refreshing native plugins compatible for Editor in 2.25 ms, found 4 plugins.
+- Loaded All Assemblies, in  0.854 seconds
+Refreshing native plugins compatible for Editor in 2.05 ms, found 4 plugins.
 Native extension for WindowsStandalone target not found
 Package Manager log level set to [2]
 [Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
 [Package Manager] Unable to send message (not connected to server process).
 [Package Manager] Cannot connect to Unity Package Manager local server
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.716 seconds
-Domain Reload Profiling: 1556ms
-	BeginReloadAssembly (211ms)
+- Finished resetting the current domain, in  0.877 seconds
+Domain Reload Profiling: 1730ms
+	BeginReloadAssembly (217ms)
 		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (5ms)
+		DisableScriptedObjects (6ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (29ms)
-	RebuildCommonClasses (33ms)
-	RebuildNativeTypeToScriptingClass (10ms)
-	initialDomainReloadingComplete (40ms)
-	LoadAllAssembliesAndSetupDomain (544ms)
-		LoadAssemblies (392ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (294ms)
-			TypeCache.Refresh (223ms)
-				TypeCache.ScanAssembly (206ms)
-			BuildScriptInfoCaches (58ms)
-			ResolveRequiredComponents (9ms)
-	FinalizeReload (716ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (579ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (2ms)
-			SetLoadedEditorAssemblies (3ms)
-			BeforeProcessingInitializeOnLoad (108ms)
-			ProcessInitializeOnLoadAttributes (346ms)
-			ProcessInitializeOnLoadMethodAttributes (118ms)
-			AfterProcessingInitializeOnLoad (2ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (11ms)
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
-Refreshing native plugins compatible for Editor in 5.53 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 35 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6702 unused Assets / (7.2 MB). Loaded Objects now: 7365.
-Memory consumption went from 146.4 MB to 139.1 MB.
-Total: 54.751400 ms (FindLiveObjects: 1.129100 ms CreateObjectMapping: 0.734200 ms MarkObjects: 43.472600 ms  DeleteObjects: 9.414000 ms)
-
-========================================================================
-Received Import Request.
-  Time since last request: 160309.397098 seconds.
-  path: Assets/Scripts/Player Move.cs
-  artifactKey: Guid(cf0f29a6bab5e964280091e13e26b88f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/Player Move.cs using Guid(cf0f29a6bab5e964280091e13e26b88f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '240811d9da8d0ca2ffca334a57a3ba21') in 0.0753197 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
-
-========================================================================
-Received Prepare
-Refreshing native plugins compatible for Editor in 3.38 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 34 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6689 unused Assets / (6.8 MB). Loaded Objects now: 7367.
-Memory consumption went from 144.5 MB to 137.7 MB.
-Total: 31.207800 ms (FindLiveObjects: 1.157800 ms CreateObjectMapping: 0.860200 ms MarkObjects: 24.399400 ms  DeleteObjects: 4.789000 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  0.678 seconds
-Refreshing native plugins compatible for Editor in 1.92 ms, found 4 plugins.
-Native extension for WindowsStandalone target not found
-[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
-[Package Manager] Unable to send message (not connected to server process).
-[Package Manager] Cannot connect to Unity Package Manager local server
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.638 seconds
-Domain Reload Profiling: 1319ms
-	BeginReloadAssembly (234ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (14ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (48ms)
-	RebuildCommonClasses (30ms)
-	RebuildNativeTypeToScriptingClass (11ms)
-	initialDomainReloadingComplete (23ms)
-	LoadAllAssembliesAndSetupDomain (382ms)
-		LoadAssemblies (346ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (163ms)
-			TypeCache.Refresh (8ms)
-				TypeCache.ScanAssembly (0ms)
-			BuildScriptInfoCaches (143ms)
-			ResolveRequiredComponents (8ms)
-	FinalizeReload (639ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (489ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (2ms)
-			SetLoadedEditorAssemblies (4ms)
-			BeforeProcessingInitializeOnLoad (108ms)
-			ProcessInitializeOnLoadAttributes (313ms)
-			ProcessInitializeOnLoadMethodAttributes (58ms)
-			AfterProcessingInitializeOnLoad (3ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (21ms)
-Refreshing native plugins compatible for Editor in 3.68 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 34 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6700 unused Assets / (3.4 MB). Loaded Objects now: 7370.
-Memory consumption went from 149.6 MB to 146.2 MB.
-Total: 111.197200 ms (FindLiveObjects: 1.239200 ms CreateObjectMapping: 2.474900 ms MarkObjects: 99.633000 ms  DeleteObjects: 7.848200 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-========================================================================
-Received Import Request.
-  Time since last request: 121.054880 seconds.
-  path: Assets/Scripts/Player Move.cs
-  artifactKey: Guid(cf0f29a6bab5e964280091e13e26b88f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/Player Move.cs using Guid(cf0f29a6bab5e964280091e13e26b88f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '47964918d11aba9886d8e322784ef898') in 0.0156492 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
-
-========================================================================
-Received Import Request.
-  Time since last request: 142.153329 seconds.
-  path: Assets/Scripts/New Actions.inputactions
-  artifactKey: Guid(e46f3a75f5ea61b45bf99326dd00da67) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/New Actions.inputactions using Guid(e46f3a75f5ea61b45bf99326dd00da67) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '140be6b01f5f17189dde962120b1ca44') in 0.0160155 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
-
-========================================================================
-Received Import Request.
-  Time since last request: 12.115849 seconds.
-  path: Assets/Scripts/Player Move.inputactions
-  artifactKey: Guid(e46f3a75f5ea61b45bf99326dd00da67) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/Player Move.inputactions using Guid(e46f3a75f5ea61b45bf99326dd00da67) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '9595d877553792cab954878e6882cc47') in 0.0011038 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
-
-========================================================================
-Received Import Request.
-  Time since last request: 30.558665 seconds.
-  path: Assets/Scripts/Player Move.inputactions
-  artifactKey: Guid(e46f3a75f5ea61b45bf99326dd00da67) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/Player Move.inputactions using Guid(e46f3a75f5ea61b45bf99326dd00da67) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a3ddb07a452ce63ff9eb91d0891c8840') in 0.0012739 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
-
-========================================================================
-Received Prepare
-Refreshing native plugins compatible for Editor in 3.75 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 34 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6689 unused Assets / (6.4 MB). Loaded Objects now: 7371.
-Memory consumption went from 149.8 MB to 143.4 MB.
-Total: 39.035700 ms (FindLiveObjects: 1.920500 ms CreateObjectMapping: 1.827500 ms MarkObjects: 14.959200 ms  DeleteObjects: 20.326900 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-========================================================================
-Received Import Request.
-  Time since last request: 163.188348 seconds.
-  path: Assets/Scripts/PlayerMoveBehaviour.cs
-  artifactKey: Guid(cf0f29a6bab5e964280091e13e26b88f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/PlayerMoveBehaviour.cs using Guid(cf0f29a6bab5e964280091e13e26b88f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'ed825a23b531ae257112fa72e448c738') in 0.0051448 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
-
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  0.756 seconds
-Refreshing native plugins compatible for Editor in 2.02 ms, found 4 plugins.
-Native extension for WindowsStandalone target not found
-[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
-[Package Manager] Unable to send message (not connected to server process).
-[Package Manager] Cannot connect to Unity Package Manager local server
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.687 seconds
-Domain Reload Profiling: 1446ms
-	BeginReloadAssembly (263ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (18ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (55ms)
+		CreateAndSetChildDomain (37ms)
 	RebuildCommonClasses (34ms)
-	RebuildNativeTypeToScriptingClass (12ms)
-	initialDomainReloadingComplete (24ms)
-	LoadAllAssembliesAndSetupDomain (426ms)
-		LoadAssemblies (373ms)
+	RebuildNativeTypeToScriptingClass (14ms)
+	initialDomainReloadingComplete (48ms)
+	LoadAllAssembliesAndSetupDomain (538ms)
+		LoadAssemblies (401ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (186ms)
-			TypeCache.Refresh (10ms)
-				TypeCache.ScanAssembly (0ms)
-			BuildScriptInfoCaches (162ms)
-			ResolveRequiredComponents (10ms)
-	FinalizeReload (688ms)
+		AnalyzeDomain (269ms)
+			TypeCache.Refresh (187ms)
+				TypeCache.ScanAssembly (173ms)
+			BuildScriptInfoCaches (65ms)
+			ResolveRequiredComponents (13ms)
+	FinalizeReload (878ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (533ms)
+		SetupLoadedEditorAssemblies (694ms)
 			LogAssemblyErrors (0ms)
 			InitializePlatformSupportModulesInManaged (2ms)
 			SetLoadedEditorAssemblies (5ms)
-			BeforeProcessingInitializeOnLoad (128ms)
-			ProcessInitializeOnLoadAttributes (337ms)
-			ProcessInitializeOnLoadMethodAttributes (57ms)
-			AfterProcessingInitializeOnLoad (3ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (20ms)
-Refreshing native plugins compatible for Editor in 4.78 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 34 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6700 unused Assets / (4.1 MB). Loaded Objects now: 7373.
-Memory consumption went from 149.7 MB to 145.6 MB.
-Total: 29.567600 ms (FindLiveObjects: 1.718100 ms CreateObjectMapping: 3.780200 ms MarkObjects: 18.440900 ms  DeleteObjects: 5.627200 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-========================================================================
-Received Prepare
-Refreshing native plugins compatible for Editor in 3.36 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 34 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6689 unused Assets / (6.1 MB). Loaded Objects now: 7373.
-Memory consumption went from 149.9 MB to 143.8 MB.
-Total: 13.727200 ms (FindLiveObjects: 1.302800 ms CreateObjectMapping: 0.920900 ms MarkObjects: 7.057100 ms  DeleteObjects: 4.444100 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  0.685 seconds
-Refreshing native plugins compatible for Editor in 1.92 ms, found 4 plugins.
-Native extension for WindowsStandalone target not found
-[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
-[Package Manager] Unable to send message (not connected to server process).
-[Package Manager] Cannot connect to Unity Package Manager local server
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.632 seconds
-Domain Reload Profiling: 1321ms
-	BeginReloadAssembly (223ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (12ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (45ms)
-	RebuildCommonClasses (36ms)
-	RebuildNativeTypeToScriptingClass (11ms)
-	initialDomainReloadingComplete (25ms)
-	LoadAllAssembliesAndSetupDomain (395ms)
-		LoadAssemblies (344ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (171ms)
-			TypeCache.Refresh (8ms)
-				TypeCache.ScanAssembly (0ms)
-			BuildScriptInfoCaches (150ms)
-			ResolveRequiredComponents (8ms)
-	FinalizeReload (632ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (471ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (2ms)
-			SetLoadedEditorAssemblies (5ms)
-			BeforeProcessingInitializeOnLoad (112ms)
-			ProcessInitializeOnLoadAttributes (300ms)
-			ProcessInitializeOnLoadMethodAttributes (51ms)
-			AfterProcessingInitializeOnLoad (2ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (17ms)
-Refreshing native plugins compatible for Editor in 3.63 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 34 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6700 unused Assets / (6.2 MB). Loaded Objects now: 7375.
-Memory consumption went from 149.8 MB to 143.5 MB.
-Total: 17.813500 ms (FindLiveObjects: 1.403300 ms CreateObjectMapping: 0.790600 ms MarkObjects: 8.371900 ms  DeleteObjects: 7.246300 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-========================================================================
-Received Prepare
-Refreshing native plugins compatible for Editor in 3.16 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 34 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6690 unused Assets / (7.0 MB). Loaded Objects now: 7376.
-Memory consumption went from 149.9 MB to 142.9 MB.
-Total: 28.773000 ms (FindLiveObjects: 1.203400 ms CreateObjectMapping: 5.696400 ms MarkObjects: 10.523500 ms  DeleteObjects: 11.348700 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-========================================================================
-Received Import Request.
-  Time since last request: 73.456297 seconds.
-  path: Assets/Scripts/Player Move.inputactions
-  artifactKey: Guid(e46f3a75f5ea61b45bf99326dd00da67) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/Player Move.inputactions using Guid(e46f3a75f5ea61b45bf99326dd00da67) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '6254e4cb7b9e14d661581b4f8e25deec') in 0.143523 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
-
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  0.847 seconds
-Refreshing native plugins compatible for Editor in 2.66 ms, found 4 plugins.
-Native extension for WindowsStandalone target not found
-[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
-[Package Manager] Unable to send message (not connected to server process).
-[Package Manager] Cannot connect to Unity Package Manager local server
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.680 seconds
-Domain Reload Profiling: 1532ms
-	BeginReloadAssembly (256ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (17ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (53ms)
-	RebuildCommonClasses (34ms)
-	RebuildNativeTypeToScriptingClass (12ms)
-	initialDomainReloadingComplete (26ms)
-	LoadAllAssembliesAndSetupDomain (523ms)
-		LoadAssemblies (466ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (192ms)
-			TypeCache.Refresh (7ms)
-				TypeCache.ScanAssembly (0ms)
-			BuildScriptInfoCaches (173ms)
-			ResolveRequiredComponents (8ms)
-	FinalizeReload (680ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (530ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (2ms)
-			SetLoadedEditorAssemblies (5ms)
-			BeforeProcessingInitializeOnLoad (127ms)
-			ProcessInitializeOnLoadAttributes (340ms)
-			ProcessInitializeOnLoadMethodAttributes (54ms)
-			AfterProcessingInitializeOnLoad (2ms)
-			EditorAssembliesLoaded (0ms)
+			BeforeProcessingInitializeOnLoad (131ms)
+			ProcessInitializeOnLoadAttributes (408ms)
+			ProcessInitializeOnLoadMethodAttributes (145ms)
+			AfterProcessingInitializeOnLoad (4ms)
+			EditorAssembliesLoaded (1ms)
 		ExecutionOrderSort2 (0ms)
 		AwakeInstancesAfterBackupRestoration (19ms)
-Refreshing native plugins compatible for Editor in 5.03 ms, found 4 plugins.
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+Refreshing native plugins compatible for Editor in 2.77 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 34 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6701 unused Assets / (3.9 MB). Loaded Objects now: 7379.
-Memory consumption went from 149.8 MB to 145.9 MB.
-Total: 15.942700 ms (FindLiveObjects: 1.501800 ms CreateObjectMapping: 0.756700 ms MarkObjects: 7.691000 ms  DeleteObjects: 5.992000 ms)
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6685 unused Assets / (2.1 MB). Loaded Objects now: 7390.
+Memory consumption went from 146.0 MB to 144.0 MB.
+Total: 110.731700 ms (FindLiveObjects: 2.292700 ms CreateObjectMapping: 1.463400 ms MarkObjects: 33.474500 ms  DeleteObjects: 73.499500 ms)
 
-Prepare: number of updated asset objects reloaded= 0
 ========================================================================
 Received Import Request.
-  Time since last request: 11.331242 seconds.
-  path: Assets/Scripts/Player Move.cs
-  artifactKey: Guid(356f73479e39af044a961e6f0fad2a87) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/Player Move.cs using Guid(356f73479e39af044a961e6f0fad2a87) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '9c9ba198e049e4c63a343386c7c49add') in 0.0055133 seconds
+  Time since last request: 157447.654019 seconds.
+  path: Assets/Hospital/Hospital
+  artifactKey: Guid(49990e09fecdff440aa56479ccf19f6c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital using Guid(49990e09fecdff440aa56479ccf19f6c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5c750edeb3a81d06f7c0d0e247d51d7d') in 0.0151941 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
 ========================================================================
-Received Prepare
-Refreshing native plugins compatible for Editor in 27.31 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 34 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6690 unused Assets / (5.3 MB). Loaded Objects now: 7379.
-Memory consumption went from 150.0 MB to 144.7 MB.
-Total: 32.476500 ms (FindLiveObjects: 2.481100 ms CreateObjectMapping: 1.183600 ms MarkObjects: 14.063100 ms  DeleteObjects: 14.747400 ms)
+Received Import Request.
+  Time since last request: 0.000038 seconds.
+  path: Assets/Hospital/Hospital/Hospital/TileA5_PHC_Interior-Hospital Ace.png
+  artifactKey: Guid(0d1d7e2343f769842a4649b25b76b25e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/TileA5_PHC_Interior-Hospital Ace.png using Guid(0d1d7e2343f769842a4649b25b76b25e) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'de809b0f49915178eae03671e9cfff84') in 0.2778788 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 70
 
-Prepare: number of updated asset objects reloaded= 1
 ========================================================================
 Received Import Request.
-  Time since last request: 149.540572 seconds.
-  path: Assets/Scripts/Player Move.inputactions
-  artifactKey: Guid(e46f3a75f5ea61b45bf99326dd00da67) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/Player Move.inputactions using Guid(e46f3a75f5ea61b45bf99326dd00da67) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'f5b265bae904fbfb7e42668577f6fb40') in 0.0389931 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
-
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  0.772 seconds
-Refreshing native plugins compatible for Editor in 2.40 ms, found 4 plugins.
-Native extension for WindowsStandalone target not found
-[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
-[Package Manager] Unable to send message (not connected to server process).
-[Package Manager] Cannot connect to Unity Package Manager local server
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.670 seconds
-Domain Reload Profiling: 1446ms
-	BeginReloadAssembly (253ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (18ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (55ms)
-	RebuildCommonClasses (41ms)
-	RebuildNativeTypeToScriptingClass (15ms)
-	initialDomainReloadingComplete (25ms)
-	LoadAllAssembliesAndSetupDomain (442ms)
-		LoadAssemblies (377ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (197ms)
-			TypeCache.Refresh (9ms)
-				TypeCache.ScanAssembly (0ms)
-			BuildScriptInfoCaches (171ms)
-			ResolveRequiredComponents (12ms)
-	FinalizeReload (670ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (512ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (2ms)
-			SetLoadedEditorAssemblies (6ms)
-			BeforeProcessingInitializeOnLoad (115ms)
-			ProcessInitializeOnLoadAttributes (328ms)
-			ProcessInitializeOnLoadMethodAttributes (58ms)
-			AfterProcessingInitializeOnLoad (2ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (17ms)
-Refreshing native plugins compatible for Editor in 3.26 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 34 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6701 unused Assets / (6.7 MB). Loaded Objects now: 7381.
-Memory consumption went from 149.8 MB to 143.1 MB.
-Total: 15.466700 ms (FindLiveObjects: 1.268700 ms CreateObjectMapping: 1.176500 ms MarkObjects: 8.149200 ms  DeleteObjects: 4.871200 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-========================================================================
-Received Prepare
-Refreshing native plugins compatible for Editor in 4.04 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 34 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6690 unused Assets / (3.4 MB). Loaded Objects now: 7381.
-Memory consumption went from 149.9 MB to 146.6 MB.
-Total: 19.057900 ms (FindLiveObjects: 1.553100 ms CreateObjectMapping: 1.084200 ms MarkObjects: 9.943100 ms  DeleteObjects: 6.475900 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-========================================================================
-Received Prepare
-Refreshing native plugins compatible for Editor in 8.70 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 34 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6690 unused Assets / (3.4 MB). Loaded Objects now: 7381.
-Memory consumption went from 149.9 MB to 146.6 MB.
-Total: 54.663400 ms (FindLiveObjects: 3.116300 ms CreateObjectMapping: 8.647600 ms MarkObjects: 37.874800 ms  DeleteObjects: 5.003500 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  0.722 seconds
-Refreshing native plugins compatible for Editor in 2.39 ms, found 4 plugins.
-Native extension for WindowsStandalone target not found
-[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
-[Package Manager] Unable to send message (not connected to server process).
-[Package Manager] Cannot connect to Unity Package Manager local server
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.612 seconds
-Domain Reload Profiling: 1337ms
-	BeginReloadAssembly (252ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (12ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (49ms)
-	RebuildCommonClasses (40ms)
-	RebuildNativeTypeToScriptingClass (13ms)
-	initialDomainReloadingComplete (24ms)
-	LoadAllAssembliesAndSetupDomain (395ms)
-		LoadAssemblies (370ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (164ms)
-			TypeCache.Refresh (8ms)
-				TypeCache.ScanAssembly (0ms)
-			BuildScriptInfoCaches (145ms)
-			ResolveRequiredComponents (8ms)
-	FinalizeReload (612ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (463ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (3ms)
-			SetLoadedEditorAssemblies (3ms)
-			BeforeProcessingInitializeOnLoad (120ms)
-			ProcessInitializeOnLoadAttributes (288ms)
-			ProcessInitializeOnLoadMethodAttributes (48ms)
-			AfterProcessingInitializeOnLoad (2ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (17ms)
-Refreshing native plugins compatible for Editor in 3.43 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 34 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6701 unused Assets / (6.0 MB). Loaded Objects now: 7383.
-Memory consumption went from 149.9 MB to 143.9 MB.
-Total: 23.708600 ms (FindLiveObjects: 3.205400 ms CreateObjectMapping: 2.301700 ms MarkObjects: 11.524600 ms  DeleteObjects: 6.675500 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-========================================================================
-Received Prepare
-Refreshing native plugins compatible for Editor in 2.94 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 34 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6690 unused Assets / (4.2 MB). Loaded Objects now: 7383.
-Memory consumption went from 150.0 MB to 145.8 MB.
-Total: 50.389900 ms (FindLiveObjects: 1.340100 ms CreateObjectMapping: 1.748800 ms MarkObjects: 35.522000 ms  DeleteObjects: 11.777800 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-========================================================================
-Received Import Request.
-  Time since last request: 668.983791 seconds.
-  path: Assets/Scripts/Player Move.cs
-  artifactKey: Guid(356f73479e39af044a961e6f0fad2a87) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/Player Move.cs using Guid(356f73479e39af044a961e6f0fad2a87) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e427408dfe0d6221e9ac70986e958b2e') in 0.0221041 seconds
+  Time since last request: 0.000019 seconds.
+  path: Assets/Hospital
+  artifactKey: Guid(4795b68b88bf96246b27d1ba5dd52d20) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital using Guid(4795b68b88bf96246b27d1ba5dd52d20) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '349e16cb167483c3f7391270ab8aa73c') in 0.0007528 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
 ========================================================================
-Received Prepare
-Refreshing native plugins compatible for Editor in 2.73 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 34 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6690 unused Assets / (3.6 MB). Loaded Objects now: 7383.
-Memory consumption went from 150.0 MB to 146.5 MB.
-Total: 21.024400 ms (FindLiveObjects: 1.155300 ms CreateObjectMapping: 0.602400 ms MarkObjects: 11.438400 ms  DeleteObjects: 7.826100 ms)
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/Hospital/Hospital/Hospital/TileA4_PHC_Interior-Hospital Ace.png
+  artifactKey: Guid(4285eacc91287404fb80593f31339fe6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/TileA4_PHC_Interior-Hospital Ace.png using Guid(4285eacc91287404fb80593f31339fe6) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'cbdc33f83ab7c8943fff804a6ad1ce67') in 0.3842416 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 322
 
-Prepare: number of updated asset objects reloaded= 0
 ========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  0.663 seconds
-Refreshing native plugins compatible for Editor in 2.37 ms, found 4 plugins.
-Native extension for WindowsStandalone target not found
-[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
-[Package Manager] Unable to send message (not connected to server process).
-[Package Manager] Cannot connect to Unity Package Manager local server
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.601 seconds
-Domain Reload Profiling: 1267ms
-	BeginReloadAssembly (220ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (13ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (45ms)
-	RebuildCommonClasses (30ms)
-	RebuildNativeTypeToScriptingClass (11ms)
-	initialDomainReloadingComplete (23ms)
-	LoadAllAssembliesAndSetupDomain (381ms)
-		LoadAssemblies (339ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (161ms)
-			TypeCache.Refresh (9ms)
-				TypeCache.ScanAssembly (0ms)
-			BuildScriptInfoCaches (140ms)
-			ResolveRequiredComponents (8ms)
-	FinalizeReload (602ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (466ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (3ms)
-			SetLoadedEditorAssemblies (5ms)
-			BeforeProcessingInitializeOnLoad (109ms)
-			ProcessInitializeOnLoadAttributes (297ms)
-			ProcessInitializeOnLoadMethodAttributes (50ms)
-			AfterProcessingInitializeOnLoad (2ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (17ms)
-Refreshing native plugins compatible for Editor in 2.47 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 34 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6701 unused Assets / (6.9 MB). Loaded Objects now: 7385.
-Memory consumption went from 149.9 MB to 143.0 MB.
-Total: 13.382400 ms (FindLiveObjects: 1.253900 ms CreateObjectMapping: 0.776600 ms MarkObjects: 6.980300 ms  DeleteObjects: 4.370800 ms)
+Received Import Request.
+  Time since last request: 3.957387 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_0.asset
+  artifactKey: Guid(e5d015f44a2dfbf478e0f0f0d01753ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_0.asset using Guid(e5d015f44a2dfbf478e0f0f0d01753ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a349b4d3fdf7f631f3011a2478888cbc') in 0.1794636 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
 
-Prepare: number of updated asset objects reloaded= 0
 ========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  0.659 seconds
-Refreshing native plugins compatible for Editor in 1.88 ms, found 4 plugins.
-Native extension for WindowsStandalone target not found
-[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
-[Package Manager] Unable to send message (not connected to server process).
-[Package Manager] Cannot connect to Unity Package Manager local server
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.648 seconds
-Domain Reload Profiling: 1310ms
-	BeginReloadAssembly (227ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (13ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (47ms)
-	RebuildCommonClasses (29ms)
-	RebuildNativeTypeToScriptingClass (11ms)
-	initialDomainReloadingComplete (21ms)
-	LoadAllAssembliesAndSetupDomain (374ms)
-		LoadAssemblies (327ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (163ms)
-			TypeCache.Refresh (6ms)
-				TypeCache.ScanAssembly (0ms)
-			BuildScriptInfoCaches (145ms)
-			ResolveRequiredComponents (8ms)
-	FinalizeReload (649ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (506ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (2ms)
-			SetLoadedEditorAssemblies (4ms)
-			BeforeProcessingInitializeOnLoad (110ms)
-			ProcessInitializeOnLoadAttributes (333ms)
-			ProcessInitializeOnLoadMethodAttributes (54ms)
-			AfterProcessingInitializeOnLoad (2ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (20ms)
-Refreshing native plugins compatible for Editor in 3.15 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 34 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6701 unused Assets / (5.7 MB). Loaded Objects now: 7387.
-Memory consumption went from 149.9 MB to 144.3 MB.
-Total: 13.696300 ms (FindLiveObjects: 1.198100 ms CreateObjectMapping: 0.798900 ms MarkObjects: 7.124800 ms  DeleteObjects: 4.573000 ms)
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_18.asset
+  artifactKey: Guid(c5f78e61de8e60745a7167fac7693b4f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_18.asset using Guid(c5f78e61de8e60745a7167fac7693b4f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e0e975b02bf34a1e4a9c46b30510445e') in 0.0117594 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
 
-Prepare: number of updated asset objects reloaded= 0
 ========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  0.673 seconds
-Refreshing native plugins compatible for Editor in 1.71 ms, found 4 plugins.
-Native extension for WindowsStandalone target not found
-[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
-[Package Manager] Unable to send message (not connected to server process).
-[Package Manager] Cannot connect to Unity Package Manager local server
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.615 seconds
-Domain Reload Profiling: 1291ms
-	BeginReloadAssembly (224ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (13ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (43ms)
-	RebuildCommonClasses (31ms)
-	RebuildNativeTypeToScriptingClass (11ms)
-	initialDomainReloadingComplete (21ms)
-	LoadAllAssembliesAndSetupDomain (389ms)
-		LoadAssemblies (338ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (174ms)
-			TypeCache.Refresh (7ms)
-				TypeCache.ScanAssembly (0ms)
-			BuildScriptInfoCaches (154ms)
-			ResolveRequiredComponents (9ms)
-	FinalizeReload (615ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (471ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (2ms)
-			SetLoadedEditorAssemblies (5ms)
-			BeforeProcessingInitializeOnLoad (105ms)
-			ProcessInitializeOnLoadAttributes (300ms)
-			ProcessInitializeOnLoadMethodAttributes (56ms)
-			AfterProcessingInitializeOnLoad (3ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (22ms)
-Refreshing native plugins compatible for Editor in 2.97 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 34 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6701 unused Assets / (6.8 MB). Loaded Objects now: 7389.
-Memory consumption went from 150.0 MB to 143.2 MB.
-Total: 13.644400 ms (FindLiveObjects: 1.141500 ms CreateObjectMapping: 0.701600 ms MarkObjects: 6.907000 ms  DeleteObjects: 4.893400 ms)
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_33.asset
+  artifactKey: Guid(816812b5ef6535044a448c0992d6887d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_33.asset using Guid(816812b5ef6535044a448c0992d6887d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'd1948717b85f968f58329ab410ce0771') in 0.0128043 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
 
-Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_28.asset
+  artifactKey: Guid(cbbc32630dc5e7e4486f5dce4734112f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_28.asset using Guid(cbbc32630dc5e7e4486f5dce4734112f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0dc8cd37a170565877a7541a7a44f61b') in 0.0263896 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000014 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_27.asset
+  artifactKey: Guid(90ca7261a8086ae4182093c34703209e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_27.asset using Guid(90ca7261a8086ae4182093c34703209e) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'cd879f1dc81cea38fe165b7a1a32bdd6') in 0.0136091 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000018 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_22.asset
+  artifactKey: Guid(a251850023cd70245b7d54363386915b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_22.asset using Guid(a251850023cd70245b7d54363386915b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5756c41c1453697a4e2135bc790c2413') in 0.0120583 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_9.asset
+  artifactKey: Guid(cab3a1b9844ecf84095deddbee7608cf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_9.asset using Guid(cab3a1b9844ecf84095deddbee7608cf) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e8d6a778a5bc52c71c194282b20cfadd') in 0.0128198 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_15.asset
+  artifactKey: Guid(a01f0dcd009bdf146a7d4e3cceca5f73) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_15.asset using Guid(a01f0dcd009bdf146a7d4e3cceca5f73) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5d4006c5f4d80ee35034098a0c46f8e2') in 0.0144679 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_17.asset
+  artifactKey: Guid(f050ec1380879de43bd81dfe150d1b47) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_17.asset using Guid(f050ec1380879de43bd81dfe150d1b47) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0c8e67d1308f9724bf43e714d1a020e9') in 0.0127714 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_39.asset
+  artifactKey: Guid(1e1bfcb5e512cd143ae0e0a28b4a46a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_39.asset using Guid(1e1bfcb5e512cd143ae0e0a28b4a46a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '55bf34093fbec32cd0531b64e5438859') in 0.0132992 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000013 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_2.asset
+  artifactKey: Guid(d736b5b4ed6b85540b1e0bc952ec797c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_2.asset using Guid(d736b5b4ed6b85540b1e0bc952ec797c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'f35b7f24fa3c60efc1cf015c50aa5911') in 0.0123785 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_10.asset
+  artifactKey: Guid(483223f889641924285da296a7e0998c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_10.asset using Guid(483223f889641924285da296a7e0998c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'b222d4f837ecd99991b1dc1b5dff5bff') in 0.0103586 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_21.asset
+  artifactKey: Guid(230d4b782818f824c9379bb0ad8173c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_21.asset using Guid(230d4b782818f824c9379bb0ad8173c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '29082657b39d0f65f3e458f81abb6548') in 0.0129266 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000015 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_6.asset
+  artifactKey: Guid(b75fa5683dc0bc143915f9fefc2963fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_6.asset using Guid(b75fa5683dc0bc143915f9fefc2963fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0fa4627a5e4d2f83d30bc50e7ca9ccb3') in 0.0124759 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_3.asset
+  artifactKey: Guid(62b5e938d2cc9d048848c571d4302c03) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_3.asset using Guid(62b5e938d2cc9d048848c571d4302c03) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'ad416f940a79074bed675d768934a942') in 0.0114322 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000014 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_34.asset
+  artifactKey: Guid(10d5e1e11465a7b4e89124b88e9d380b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_34.asset using Guid(10d5e1e11465a7b4e89124b88e9d380b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '9030665d1fecf52d57d28cbfef1a2618') in 0.0118152 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000018 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_37.asset
+  artifactKey: Guid(c88228a1651c5d2418f5a6dad1a4fe74) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_37.asset using Guid(c88228a1651c5d2418f5a6dad1a4fe74) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0ae4c3bdcfa527fa3882d20592d8912a') in 0.0124669 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.454302 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_41.asset
+  artifactKey: Guid(579d60730f7311f43aebba829257f47c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_41.asset using Guid(579d60730f7311f43aebba829257f47c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'b53be326be15d4860ee0f149baee42e0') in 0.0137808 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000014 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_49.asset
+  artifactKey: Guid(e77e3867ee8a6b94388348c98a0b3f65) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_49.asset using Guid(e77e3867ee8a6b94388348c98a0b3f65) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0b3af5429ed84e9816fcdc328f2ea1e0') in 0.0136876 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000015 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_57.asset
+  artifactKey: Guid(d196c5f4aafd67c44950cdeb359b1e7c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_57.asset using Guid(d196c5f4aafd67c44950cdeb359b1e7c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '75da04e802a91ab1650c781ce71477b3') in 0.0119505 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_56.asset
+  artifactKey: Guid(cad7aef620fb14e4bad396a2a03aa08c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_56.asset using Guid(cad7aef620fb14e4bad396a2a03aa08c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '8a97827ffb92d1118a124aedcce23eed') in 0.0139279 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_47.asset
+  artifactKey: Guid(da0e5ccdf555c93479df7c803b606721) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_47.asset using Guid(da0e5ccdf555c93479df7c803b606721) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'd550f2335245ded97416299c5f137742') in 0.0123113 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000013 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_53.asset
+  artifactKey: Guid(37e758f9946e19b469bd00cdfa36da39) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_53.asset using Guid(37e758f9946e19b469bd00cdfa36da39) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '4b2b58cb1714a0beb8b8286525338b40') in 0.0125082 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_55.asset
+  artifactKey: Guid(c93556cb08d4d6a479a20d794daac6a4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_55.asset using Guid(c93556cb08d4d6a479a20d794daac6a4) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '3e019a4efb42a7dd73ea685ebbf69c70') in 0.0115459 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.079010 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_61.asset
+  artifactKey: Guid(08b32888d0557aa4bb03f609e624d204) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_61.asset using Guid(08b32888d0557aa4bb03f609e624d204) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '8e92eca9fc796262c18683a330626089') in 0.0168082 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000015 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_64.asset
+  artifactKey: Guid(7715111e762d7ad439e4715b5e6aad6d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_64.asset using Guid(7715111e762d7ad439e4715b5e6aad6d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'be1c2ca23f35d0c6d002811630ad6e0f') in 0.0115247 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_67.asset
+  artifactKey: Guid(a8b49d6c9152e044a801e4458f407641) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_67.asset using Guid(a8b49d6c9152e044a801e4458f407641) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a39944a2140a85ea00045b58fad1483b') in 0.0132856 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 3.373645 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Piece/2.png
+  artifactKey: Guid(78f6067bfbca04a4a8d801a5dca51c73) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Piece/2.png using Guid(78f6067bfbca04a4a8d801a5dca51c73) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0b06c64bad225e6b30555df11945e333') in 0.084331 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Piece/6.png
+  artifactKey: Guid(02c775457cc186c44a16bd27f6393b98) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Piece/6.png using Guid(02c775457cc186c44a16bd27f6393b98) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '1e1beb4881e55bb367ea25ac1cf9ce5c') in 0.0136087 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Piece/8.png
+  artifactKey: Guid(8bc6546eaea90e843b401b3184799403) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Piece/8.png using Guid(8bc6546eaea90e843b401b3184799403) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e4f108b1943f538af1ce46157527f405') in 0.0129618 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 1.586864 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Prefab/Hospital_2.prefab
+  artifactKey: Guid(62a0d3f4edc7f5d42a7f0a1eedb3b6e5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Prefab/Hospital_2.prefab using Guid(62a0d3f4edc7f5d42a7f0a1eedb3b6e5) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '50fc97e05a4e14db86fa3015935f8888') in 0.4364728 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 62
+
+========================================================================
+Received Import Request.
+  Time since last request: 2.022337 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_1.asset
+  artifactKey: Guid(579cc36cb2aee5e45aa2e2e8cac674c6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_1.asset using Guid(579cc36cb2aee5e45aa2e2e8cac674c6) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5fc3d77f99b635f41802e5727c14785c') in 0.0127137 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_40.asset
+  artifactKey: Guid(da072f0a8fbf6644f96b03f4ff6f2b52) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_40.asset using Guid(da072f0a8fbf6644f96b03f4ff6f2b52) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '7e7cf7f4f10d558051ee6b60f83baca4') in 0.0114237 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_19.asset
+  artifactKey: Guid(c762d8fff6ab5ad4d96eeb6748ad2a10) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_19.asset using Guid(c762d8fff6ab5ad4d96eeb6748ad2a10) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e5fbf9b59fbd914dd8b00eac24e6e929') in 0.0122972 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_32.asset
+  artifactKey: Guid(69f6848bc07fd2741992504700f98e3a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_32.asset using Guid(69f6848bc07fd2741992504700f98e3a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '14bd66025b1a165dac5d3d3d6bb162f6') in 0.0153783 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_28.asset
+  artifactKey: Guid(5bfb600f736cc6942840b7615f04da0b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_28.asset using Guid(5bfb600f736cc6942840b7615f04da0b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'dcd85d7349cf0bca5f81d3ec985c4dd3') in 0.0125194 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_39.asset
+  artifactKey: Guid(e93d9eacb3d55354b9f41bde1d7b6c27) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_39.asset using Guid(e93d9eacb3d55354b9f41bde1d7b6c27) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a5801965a95a7bf8aa9209fd220ab555') in 0.0124036 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_30.asset
+  artifactKey: Guid(5ec4b45ef3c2d9549bae658dda1359f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_30.asset using Guid(5ec4b45ef3c2d9549bae658dda1359f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '03d4af7ec8c2cff7ccf452abedae1a7b') in 0.0119099 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_22.asset
+  artifactKey: Guid(5f405dae3c13ffe47922c6fdeeaf77f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_22.asset using Guid(5f405dae3c13ffe47922c6fdeeaf77f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5fc8e872146ac0a950207fd4e5ee9cf6') in 0.0114128 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000059 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_11.asset
+  artifactKey: Guid(83404b19b1984554a82ddf4fef8bdb16) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_11.asset using Guid(83404b19b1984554a82ddf4fef8bdb16) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '76a0696fe221c653aeadf1bc7aa89533') in 0.0171336 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_9.asset
+  artifactKey: Guid(bb2358d85b6d6b843892fb28db2e04f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_9.asset using Guid(bb2358d85b6d6b843892fb28db2e04f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '376611dae4828b9a558f10cca7925d09') in 0.0126114 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_34.asset
+  artifactKey: Guid(d39537559702e4b42a654c3b0c85b309) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_34.asset using Guid(d39537559702e4b42a654c3b0c85b309) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'ac427be60f059d2f52f17e0fb9a97e4a') in 0.0127681 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_15.asset
+  artifactKey: Guid(fa37a26144ab78f4ebc1ebc328642573) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_15.asset using Guid(fa37a26144ab78f4ebc1ebc328642573) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '510307c42901d603a05d55187a8d4dab') in 0.0126513 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000033 seconds.
+  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_17.asset
+  artifactKey: Guid(f1cc7fe285ad3d44f99c4b6d3c4dd75f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_17.asset using Guid(f1cc7fe285ad3d44f99c4b6d3c4dd75f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '1e8bb1690d1c380e8121127371443613') in 0.0128834 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 3.507797 seconds.
+  path: Assets/Hospital/Hospital/Laboratory/Characters/$Dr Frankenstien.png
+  artifactKey: Guid(4f3a63675a4fdb94e9458b6efcb240a8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Laboratory/Characters/$Dr Frankenstien.png using Guid(4f3a63675a4fdb94e9458b6efcb240a8) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '09473d17c02003d5b54de3d7969acd24') in 0.0158043 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000018 seconds.
+  path: Assets/Hospital/Hospital/Laboratory/Characters/Monster Face.png
+  artifactKey: Guid(f0e731cb8d3c4b742b4d9c956f4f1139) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Laboratory/Characters/Monster Face.png using Guid(f0e731cb8d3c4b742b4d9c956f4f1139) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'edda42a4f951bc9c32b5c3871d75ba94') in 0.0153893 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000018 seconds.
+  path: Assets/Hospital/Hospital/Laboratory/Characters/$MonsterA.png
+  artifactKey: Guid(27a0ba4a67a93de4ebb5a45f5fc3f4ea) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Laboratory/Characters/$MonsterA.png using Guid(27a0ba4a67a93de4ebb5a45f5fc3f4ea) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '534e492ef0dc266d09eec301e27b6934') in 0.0145846 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 12.990039 seconds.
+  path: Assets/Hospital/Hospital/Laboratory/Tilesets/TileA5_Laboratory.png
+  artifactKey: Guid(1696056bf2f57fc42952932844a7b233) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Laboratory/Tilesets/TileA5_Laboratory.png using Guid(1696056bf2f57fc42952932844a7b233) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '3fc647aebf30b6d7366b8556e7623aeb') in 0.030044 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 2.372355 seconds.
+  path: Assets/Hospital/Hospital/Mini Map/Hospital2.png
+  artifactKey: Guid(78a4d2df59cca664a993f240bfdec7dd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Mini Map/Hospital2.png using Guid(78a4d2df59cca664a993f240bfdec7dd) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '3fdcace2c5855e1391e0ed5e0a37b6cd') in 0.0179805 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Hospital/Hospital/Mini Map/Road_1.png
+  artifactKey: Guid(53300aabf08ef3446a9c70e273516e10) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hospital/Hospital/Mini Map/Road_1.png using Guid(53300aabf08ef3446a9c70e273516e10) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2518be88b318b2ed40398d6d314a9758') in 0.0206871 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 7.345849 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tilemap/Tilemap.png
+  artifactKey: Guid(e09a4527e4f1271488fac58fca49fd4b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tilemap/Tilemap.png using Guid(e09a4527e4f1271488fac58fca49fd4b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e46dc30ecba5e042c5c8fa36909f068f') in 0.476893 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 400
+
+========================================================================
+Received Import Request.
+  Time since last request: 4.419284 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_1.asset
+  artifactKey: Guid(2afdce90792f7c4409470533c5b16781) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_1.asset using Guid(2afdce90792f7c4409470533c5b16781) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '621705d5692cd02defcf21debee8d772') in 0.0150085 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_18.asset
+  artifactKey: Guid(3c2b358f0ffc11041998a4460f44f89a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_18.asset using Guid(3c2b358f0ffc11041998a4460f44f89a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0feea5058b979f074287386ed4982eaa') in 0.0151797 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000044 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_12.asset
+  artifactKey: Guid(db3b48ff6c970314cbafa54a9269985a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_12.asset using Guid(db3b48ff6c970314cbafa54a9269985a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '9b9cdee4a0afb7d217a538908102267a') in 0.0140359 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_33.asset
+  artifactKey: Guid(d25a9439f4c529244897fee841646768) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_33.asset using Guid(d25a9439f4c529244897fee841646768) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2de39e9c8c31b24e91d19a31f269b277') in 0.0151327 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_16.asset
+  artifactKey: Guid(9b5a873a9254172458e33c5c861243fa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_16.asset using Guid(9b5a873a9254172458e33c5c861243fa) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0cf39faabaffad211e18270a753046d6') in 0.015419 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_24.asset
+  artifactKey: Guid(74988e04d76d29b479af40d452f49b42) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_24.asset using Guid(74988e04d76d29b479af40d452f49b42) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e3e12de56f3efbf6ce3d6ded6871580c') in 0.0155389 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_21.asset
+  artifactKey: Guid(f6ce9965216c7c64682e64cd394005a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_21.asset using Guid(f6ce9965216c7c64682e64cd394005a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'aefbaf4978743f72d817994c216031f0') in 0.0144085 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000036 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_14.asset
+  artifactKey: Guid(114bc38f66f37104c911aebd3f7e9d94) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_14.asset using Guid(114bc38f66f37104c911aebd3f7e9d94) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'cd170dcf92a5557619cf91e213469cf7') in 0.0132197 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_29.asset
+  artifactKey: Guid(2d274eb2db9f3e64a930f728957a4007) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_29.asset using Guid(2d274eb2db9f3e64a930f728957a4007) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'c6e1a334dda2e9741ac3050c3e409e97') in 0.0162776 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_15.asset
+  artifactKey: Guid(424b3faa2a42bcd4291399dbe7cad0b8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_15.asset using Guid(424b3faa2a42bcd4291399dbe7cad0b8) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'bac258b9554338207033eea375406707') in 0.0153913 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_49.asset
+  artifactKey: Guid(eed6838fb2dc6b84fb408acd48f14082) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_49.asset using Guid(eed6838fb2dc6b84fb408acd48f14082) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'adadb455922d02ebae1e03c158cee75d') in 0.0143608 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_59.asset
+  artifactKey: Guid(d35c486355acd3c4d97a1dff64fb1e64) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_59.asset using Guid(d35c486355acd3c4d97a1dff64fb1e64) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '83228f2b21a331a6d11467af208b4b5f') in 0.0146144 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000035 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_70.asset
+  artifactKey: Guid(16f4e67f29fb09549ab4cf8fd1ebd5d6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_70.asset using Guid(16f4e67f29fb09549ab4cf8fd1ebd5d6) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '8dcd53b1762035c57f488163cbbbe70a') in 0.0125684 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000018 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_58.asset
+  artifactKey: Guid(d4cc1b15e561978428e5bfbbd892ea4e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_58.asset using Guid(d4cc1b15e561978428e5bfbbd892ea4e) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '7dbb1366fad3890d55a41792331e83ed') in 0.0143368 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_64.asset
+  artifactKey: Guid(ed0a216c48f543e4394723433c67f893) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_64.asset using Guid(ed0a216c48f543e4394723433c67f893) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'cc49ad44a08912f6270f188dc9cb8848') in 0.0140952 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_63.asset
+  artifactKey: Guid(a8f7eb44f47e50e4899fdd1b755dba7e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_63.asset using Guid(a8f7eb44f47e50e4899fdd1b755dba7e) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a81df510b428ca6f214a057e10e8ba13') in 0.0140856 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_89.asset
+  artifactKey: Guid(7c7f7c0816fa7f64ab86e61ad88aa19d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_89.asset using Guid(7c7f7c0816fa7f64ab86e61ad88aa19d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '6a0133cbad82f2a1a972de3c062c72c7') in 0.0144092 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000033 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_84.asset
+  artifactKey: Guid(8916f64fa2cb39847b7e7a3afaf91e48) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_84.asset using Guid(8916f64fa2cb39847b7e7a3afaf91e48) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'eb06676adac943bec4c5c6a76b1b22a8') in 0.0139563 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_88.asset
+  artifactKey: Guid(50502178f93ba8942b9fe0ba86761107) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_88.asset using Guid(50502178f93ba8942b9fe0ba86761107) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0d9d560083691ce4e6505bbfa885c617') in 0.0134208 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_91.asset
+  artifactKey: Guid(b2ff2a07041268e41b4036af25d20e85) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_91.asset using Guid(b2ff2a07041268e41b4036af25d20e85) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'fd456f0a3c2a555ea322ce3f02f2c0e7') in 0.0136135 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_87.asset
+  artifactKey: Guid(963a531eee353b847b7f56084062c767) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_87.asset using Guid(963a531eee353b847b7f56084062c767) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '3b271482efec83b8d35425219756b4f3') in 0.0134391 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_93.asset
+  artifactKey: Guid(f2c0b643591f98a4a9114e3fe375e255) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_93.asset using Guid(f2c0b643591f98a4a9114e3fe375e255) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'dbc7174b1c638a18a73e80bb51d10d55') in 0.0147409 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_129.asset
+  artifactKey: Guid(cf8eafe5eae37f84fad6ed5fce515bf1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_129.asset using Guid(cf8eafe5eae37f84fad6ed5fce515bf1) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a5416bd23c6c04e041bfbddf54cce2df') in 0.0150523 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_137.asset
+  artifactKey: Guid(6f70471b619a32e4e82b6f2f75e649b9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_137.asset using Guid(6f70471b619a32e4e82b6f2f75e649b9) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '57c824dc4636f6697e2b5fa95945ba0e') in 0.0119822 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_121.asset
+  artifactKey: Guid(dddf4fe87ac84684e9051feb484aebf3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_121.asset using Guid(dddf4fe87ac84684e9051feb484aebf3) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '317a58deca16f69f1a7880b61b3b5255') in 0.0144644 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_133.asset
+  artifactKey: Guid(cb389927f46d2564b8e90cb19fe6ff1a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_133.asset using Guid(cb389927f46d2564b8e90cb19fe6ff1a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '3510ab04beec3614ab4b6483e8684f27') in 0.013913 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_109.asset
+  artifactKey: Guid(745c7cd48c16cd6479e6e05c8456a79c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_109.asset using Guid(745c7cd48c16cd6479e6e05c8456a79c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'f3a4375b9af142f1fb43040989e3b353') in 0.0159131 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_10.asset
+  artifactKey: Guid(ef0a467d0dab4254b81506380ac20790) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_10.asset using Guid(ef0a467d0dab4254b81506380ac20790) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '56da7bd62406c079b887ac9491b2793b') in 0.0133395 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_122.asset
+  artifactKey: Guid(f744c9a04ed0bd44dbf1cf969d0efebe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_122.asset using Guid(f744c9a04ed0bd44dbf1cf969d0efebe) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '50e28df81cc49bba251ea44265a2f14e') in 0.012952 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_82.asset
+  artifactKey: Guid(fb320a5cbfb11534b9373848fb3c4076) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_82.asset using Guid(fb320a5cbfb11534b9373848fb3c4076) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '4f617df893b2092b77dd1967f5969763') in 0.0148951 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_31.asset
+  artifactKey: Guid(a715721a42fc48d4fb19effd73352326) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_31.asset using Guid(a715721a42fc48d4fb19effd73352326) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'dd0b12f4462c1dedf69bb4a2134c708a') in 0.0134788 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_147.asset
+  artifactKey: Guid(6d4db4d8cd9e2ea49a398e02015a5e6a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_147.asset using Guid(6d4db4d8cd9e2ea49a398e02015a5e6a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '15e16c3496f2b74db228c828bdf1dfd1') in 0.0141685 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_146.asset
+  artifactKey: Guid(b9721e876cb7cbd4fab6ebcb1d02578c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_146.asset using Guid(b9721e876cb7cbd4fab6ebcb1d02578c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '357c21f54f5e74d28d4e689fa19ec2a8') in 0.0143778 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_141.asset
+  artifactKey: Guid(e47fa887fe70444448744e9813f2aca9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_141.asset using Guid(e47fa887fe70444448744e9813f2aca9) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '6b31470f71b5a01c3a26547c95ef96cd') in 0.0123561 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_110.asset
+  artifactKey: Guid(0fc9d635f37c5514d8b8899e245c4d76) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_110.asset using Guid(0fc9d635f37c5514d8b8899e245c4d76) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a6624256aaa941516b13482cb2d9bb43') in 0.0157483 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_135.asset
+  artifactKey: Guid(3862e2be95bed4744ba19fbc74a2578d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_135.asset using Guid(3862e2be95bed4744ba19fbc74a2578d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e3d51ebb8dfed917e72b93d52ce5c250') in 0.0137089 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_153.asset
+  artifactKey: Guid(dda403ddaad358f41ba1cf028e31b210) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_153.asset using Guid(dda403ddaad358f41ba1cf028e31b210) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '350398a5aa78ed918cb88f7de9547a48') in 0.0146085 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_162.asset
+  artifactKey: Guid(1b345f6cf14a5604eac7bdb6f331d562) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_162.asset using Guid(1b345f6cf14a5604eac7bdb6f331d562) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '290ac81ed689a442b7704d537e7cc6ab') in 0.0132983 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_168.asset
+  artifactKey: Guid(c7da162a23241c044b1390214a4913e1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_168.asset using Guid(c7da162a23241c044b1390214a4913e1) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5bd24dfc1cc242e4b3330a02795cb939') in 0.0074633 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_176.asset
+  artifactKey: Guid(c705241367b234141ab345d8fe1b9505) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_176.asset using Guid(c705241367b234141ab345d8fe1b9505) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e1e2689dc33e9017af82e9770ef3978b') in 0.0160852 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_161.asset
+  artifactKey: Guid(4c94fbfde295876418d8f0b540784383) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_161.asset using Guid(4c94fbfde295876418d8f0b540784383) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2a5d06b8dd20b43bdc93e7e2d21cef7d') in 0.0082584 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_163.asset
+  artifactKey: Guid(7e301ec18e47c834eb3d7adb20537dff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_163.asset using Guid(7e301ec18e47c834eb3d7adb20537dff) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '16c9b216884886eb5306e9460678d47a') in 0.0154421 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000034 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_126.asset
+  artifactKey: Guid(292d8efb5f71b674bbdba71494dcfdf4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_126.asset using Guid(292d8efb5f71b674bbdba71494dcfdf4) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'fe871775b559a7cc4e60b7c293393cb7') in 0.012825 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_115.asset
+  artifactKey: Guid(b74f1247f2057c6478aef060b9822762) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_115.asset using Guid(b74f1247f2057c6478aef060b9822762) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '972eb4a86983a2b7564ef692ef4170f8') in 0.0145497 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_97.asset
+  artifactKey: Guid(0398f7b8831a25346ada7c7fe326c088) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_97.asset using Guid(0398f7b8831a25346ada7c7fe326c088) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '69a6b4568fc4d336fbd3b56ab98e0901') in 0.0130235 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_74.asset
+  artifactKey: Guid(e5959b4862be67149a77a28425be009c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_74.asset using Guid(e5959b4862be67149a77a28425be009c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a0a99421338572fd98e1b6364518d4d9') in 0.0153889 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_65.asset
+  artifactKey: Guid(090531a0736b6034aac9764addeca00d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_65.asset using Guid(090531a0736b6034aac9764addeca00d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '7c0c60c6ee7994ab0b88e9d73f7f0308') in 0.0148721 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_90.asset
+  artifactKey: Guid(0d23995686e549f4a85863bccf20da6c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_90.asset using Guid(0d23995686e549f4a85863bccf20da6c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2ac4fdad18269cb9e93a6cb57854595c') in 0.0132201 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_99.asset
+  artifactKey: Guid(3e1f5a910e1c19f4198fe2f6c963b457) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_99.asset using Guid(3e1f5a910e1c19f4198fe2f6c963b457) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'b3dced35c639317db6aa7c97f28d82d3') in 0.0128687 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_40.asset
+  artifactKey: Guid(7e50c4814afe43446b922a41fd23c84c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_40.asset using Guid(7e50c4814afe43446b922a41fd23c84c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'efe586a0e3b89eec389c70e92ad389b4') in 0.0146386 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_62.asset
+  artifactKey: Guid(414a549a86339a64e9e8a71e5ee495fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_62.asset using Guid(414a549a86339a64e9e8a71e5ee495fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '07ab0e1bf461579406f627e124d44b83') in 0.0149017 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_22.asset
+  artifactKey: Guid(9860173b9c74d5244b64e084a44397d0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_22.asset using Guid(9860173b9c74d5244b64e084a44397d0) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'b2d0a93ff4d2040f1cd161c4c931eba4') in 0.0154919 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_3.asset
+  artifactKey: Guid(3da3a21be2361fe4d87968d6af3688fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_3.asset using Guid(3da3a21be2361fe4d87968d6af3688fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2617147ae571d9b30eb440dc74978fe5') in 0.0165928 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_38.asset
+  artifactKey: Guid(cb1d6913176241c4ab9bdca01ab98160) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_38.asset using Guid(cb1d6913176241c4ab9bdca01ab98160) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'c742850c7b828bf3fb5414da660392f9') in 0.0148579 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_157.asset
+  artifactKey: Guid(3c03aca9a7705cf44b06c31a13236a3f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_157.asset using Guid(3c03aca9a7705cf44b06c31a13236a3f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'bfa8155af783106a86ebfa34fad54e9b') in 0.01385 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_125.asset
+  artifactKey: Guid(478d675e7ccb1834c8af8f0b4fab853a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_125.asset using Guid(478d675e7ccb1834c8af8f0b4fab853a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '8379c6cf96798e49f3c7891d7c06c16c') in 0.0152734 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_170.asset
+  artifactKey: Guid(a970677179d02ee4d9303a799a960e3b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_170.asset using Guid(a970677179d02ee4d9303a799a960e3b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '360a5088e73168de1d893a30afc6d0af') in 0.0349994 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_172.asset
+  artifactKey: Guid(373fd18081e131b4cbf00c8f229f7250) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_172.asset using Guid(373fd18081e131b4cbf00c8f229f7250) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '795b6411678c349874d2a46a7e679fcc') in 0.0150984 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_98.asset
+  artifactKey: Guid(e15b0bfdbb9844046909be8a4b89b40d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_98.asset using Guid(e15b0bfdbb9844046909be8a4b89b40d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2a6b1d5904a5affdbfc9650a0c6e44e8') in 0.0145657 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_155.asset
+  artifactKey: Guid(153784304f137c7429ef1f183afebf86) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_155.asset using Guid(153784304f137c7429ef1f183afebf86) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'b326004b3bf6cab53e60d4dd59250943') in 0.0133913 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+AssetImportWorker is now disconnected from the server
+Process exiting
+Exiting without the bug reporter. Application will terminate with return code 0
