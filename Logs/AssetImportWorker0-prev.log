@@ -2,7 +2,7 @@ Using pre-set license
 Built from '6000.0/staging' branch; Version is '6000.0.57f1 (b7b9860b7bbd) revision 12040582'; Using compiler version '193933523'; Build Type 'Release'
 OS: 'Windows 10  (10.0.19045) 64bit Professional' Language: 'ko' Physical Memory: 32711 MB
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
-Date: 2025-09-16T10:31:02Z
+Date: 2025-09-16T14:17:58Z
 
 COMMAND LINE ARGUMENTS:
 D:\6000.0.57f1\Editor\Unity.exe
@@ -16,7 +16,7 @@ D:/Game project/2025-2nd-semester-GAME-4team-Champion
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-11418
+12355
 -job-worker-count
 5
 -background-job-worker-count
@@ -62,12 +62,12 @@ D:/Game project/2025-2nd-semester-GAME-4team-Champion
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [10272]  Target information:
+Player connection [25284]  Target information:
 
-Player connection [10272]  * "[IP] 192.168.219.110 [Port] 0 [Flags] 2 [Guid] 3322643069 [EditorId] 3322643069 [Version] 1048832 [Id] WindowsEditor(7,PC01) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+Player connection [25284]  * "[IP] 192.168.219.110 [Port] 0 [Flags] 2 [Guid] 388724643 [EditorId] 388724643 [Version] 1048832 [Id] WindowsEditor(7,PC01) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
 
-Player connection [10272] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [10272] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [25284] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [25284] Host joined alternative multi-casting on [225.0.0.222:34997]...
 JobSystem: Creating JobQueue using job-worker-count value 5
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
@@ -79,7 +79,7 @@ Library Redirect Path: Library/
 [Physics::Module] SDK Version: 4.1.2
 [Physics::Module] Integration Version: 1.0.0
 [Physics::Module] Threading Mode: Multi-Threaded
-Refreshing native plugins compatible for Editor in 3.48 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 128.00 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 6000.0.57f1 (b7b9860b7bbd)
 [Subsystems] Discovering subsystems at path D:/6000.0.57f1/Editor/Data/Resources/UnitySubsystems
@@ -95,43 +95,43 @@ Initialize mono
 Mono path[0] = 'D:/6000.0.57f1/Editor/Data/Managed'
 Mono path[1] = 'D:/6000.0.57f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'D:/6000.0.57f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56688
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56696
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: D:/6000.0.57f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.003192 seconds.
-- Loaded All Assemblies, in  0.390 seconds
+Registered in 0.002259 seconds.
+- Loaded All Assemblies, in  0.385 seconds
 Native extension for WindowsStandalone target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.311 seconds
-Domain Reload Profiling: 701ms
-	BeginReloadAssembly (157ms)
+- Finished resetting the current domain, in  0.307 seconds
+Domain Reload Profiling: 691ms
+	BeginReloadAssembly (147ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
 		CreateAndSetChildDomain (1ms)
-	RebuildCommonClasses (37ms)
+	RebuildCommonClasses (33ms)
 	RebuildNativeTypeToScriptingClass (11ms)
-	initialDomainReloadingComplete (43ms)
-	LoadAllAssembliesAndSetupDomain (141ms)
-		LoadAssemblies (156ms)
+	initialDomainReloadingComplete (39ms)
+	LoadAllAssembliesAndSetupDomain (155ms)
+		LoadAssemblies (146ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (138ms)
-			TypeCache.Refresh (137ms)
-				TypeCache.ScanAssembly (125ms)
+		AnalyzeDomain (152ms)
+			TypeCache.Refresh (151ms)
+				TypeCache.ScanAssembly (139ms)
 			BuildScriptInfoCaches (0ms)
 			ResolveRequiredComponents (0ms)
-	FinalizeReload (312ms)
+	FinalizeReload (307ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (266ms)
+		SetupLoadedEditorAssemblies (263ms)
 			LogAssemblyErrors (0ms)
 			InitializePlatformSupportModulesInManaged (17ms)
 			SetLoadedEditorAssemblies (4ms)
-			BeforeProcessingInitializeOnLoad (58ms)
-			ProcessInitializeOnLoadAttributes (133ms)
-			ProcessInitializeOnLoadMethodAttributes (54ms)
+			BeforeProcessingInitializeOnLoad (60ms)
+			ProcessInitializeOnLoadAttributes (129ms)
+			ProcessInitializeOnLoadMethodAttributes (52ms)
 			AfterProcessingInitializeOnLoad (0ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
@@ -140,7 +140,7 @@ Domain Reload Profiling: 701ms
 Worker process is ready to serve import requests
 Import Worker Mode flag is 0x00
 Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  0.854 seconds
+- Loaded All Assemblies, in  0.779 seconds
 Refreshing native plugins compatible for Editor in 2.05 ms, found 4 plugins.
 Native extension for WindowsStandalone target not found
 Package Manager log level set to [2]
@@ -148,968 +148,1558 @@ Package Manager log level set to [2]
 [Package Manager] Unable to send message (not connected to server process).
 [Package Manager] Cannot connect to Unity Package Manager local server
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.877 seconds
-Domain Reload Profiling: 1730ms
-	BeginReloadAssembly (217ms)
+- Finished resetting the current domain, in  0.786 seconds
+Domain Reload Profiling: 1564ms
+	BeginReloadAssembly (206ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (6ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (37ms)
-	RebuildCommonClasses (34ms)
-	RebuildNativeTypeToScriptingClass (14ms)
-	initialDomainReloadingComplete (48ms)
-	LoadAllAssembliesAndSetupDomain (538ms)
-		LoadAssemblies (401ms)
+		CreateAndSetChildDomain (28ms)
+	RebuildCommonClasses (33ms)
+	RebuildNativeTypeToScriptingClass (10ms)
+	initialDomainReloadingComplete (37ms)
+	LoadAllAssembliesAndSetupDomain (491ms)
+		LoadAssemblies (393ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (269ms)
-			TypeCache.Refresh (187ms)
-				TypeCache.ScanAssembly (173ms)
-			BuildScriptInfoCaches (65ms)
-			ResolveRequiredComponents (13ms)
-	FinalizeReload (878ms)
+		AnalyzeDomain (236ms)
+			TypeCache.Refresh (170ms)
+				TypeCache.ScanAssembly (157ms)
+			BuildScriptInfoCaches (54ms)
+			ResolveRequiredComponents (9ms)
+	FinalizeReload (786ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (694ms)
+		SetupLoadedEditorAssemblies (640ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (3ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (125ms)
+			ProcessInitializeOnLoadAttributes (390ms)
+			ProcessInitializeOnLoadMethodAttributes (115ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (11ms)
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
+Refreshing native plugins compatible for Editor in 5.82 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6685 unused Assets / (3.9 MB). Loaded Objects now: 7391.
+Memory consumption went from 149.2 MB to 145.3 MB.
+Total: 27.070000 ms (FindLiveObjects: 1.792100 ms CreateObjectMapping: 1.774300 ms MarkObjects: 15.102600 ms  DeleteObjects: 8.381400 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 171065.250349 seconds.
+  path: Assets/Scripts/PlayerCombat.cs
+  artifactKey: Guid(935f3adf04d3ba04b914000e4a54e162) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/PlayerCombat.cs using Guid(935f3adf04d3ba04b914000e4a54e162) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '3ed0bd95dc59efd8975408239551d129') in 0.0520956 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 3.22 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (2.8 MB). Loaded Objects now: 7393.
+Memory consumption went from 146.3 MB to 143.6 MB.
+Total: 13.644400 ms (FindLiveObjects: 1.237500 ms CreateObjectMapping: 1.005200 ms MarkObjects: 7.562500 ms  DeleteObjects: 3.838200 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Import Request.
+  Time since last request: 209.671911 seconds.
+  path: Assets/Scripts/PlayerCombat.cs
+  artifactKey: Guid(935f3adf04d3ba04b914000e4a54e162) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/PlayerCombat.cs using Guid(935f3adf04d3ba04b914000e4a54e162) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '44150c9fd61b0c5593bc83a8bfbea43b') in 0.0073111 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 2.88 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (2.3 MB). Loaded Objects now: 7393.
+Memory consumption went from 146.3 MB to 144.0 MB.
+Total: 11.252100 ms (FindLiveObjects: 1.255800 ms CreateObjectMapping: 0.792100 ms MarkObjects: 6.436600 ms  DeleteObjects: 2.766500 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 3.12 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (3.0 MB). Loaded Objects now: 7393.
+Memory consumption went from 146.3 MB to 143.3 MB.
+Total: 12.418800 ms (FindLiveObjects: 1.192100 ms CreateObjectMapping: 0.719400 ms MarkObjects: 7.095300 ms  DeleteObjects: 3.410800 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Import Request.
+  Time since last request: 59.536763 seconds.
+  path: Assets/Scripts/PlayerCombat.cs
+  artifactKey: Guid(935f3adf04d3ba04b914000e4a54e162) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/PlayerCombat.cs using Guid(935f3adf04d3ba04b914000e4a54e162) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'ef994be3783072293c2e9a621279235c') in 0.0155154 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 3.24 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (3.9 MB). Loaded Objects now: 7393.
+Memory consumption went from 146.3 MB to 142.5 MB.
+Total: 12.060600 ms (FindLiveObjects: 1.265000 ms CreateObjectMapping: 0.797100 ms MarkObjects: 6.974900 ms  DeleteObjects: 3.022700 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Import Request.
+  Time since last request: 49.577832 seconds.
+  path: Assets/Scripts/PlayerCombat.cs
+  artifactKey: Guid(935f3adf04d3ba04b914000e4a54e162) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/PlayerCombat.cs using Guid(935f3adf04d3ba04b914000e4a54e162) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'aa87f03655d7e8b86deb68073c03f7e3') in 0.0082602 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 3.45 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (3.9 MB). Loaded Objects now: 7393.
+Memory consumption went from 146.3 MB to 142.5 MB.
+Total: 13.987800 ms (FindLiveObjects: 1.245200 ms CreateObjectMapping: 0.882200 ms MarkObjects: 8.472800 ms  DeleteObjects: 3.386000 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Import Request.
+  Time since last request: 141.376185 seconds.
+  path: Assets/Scripts/PlayerCombat.cs
+  artifactKey: Guid(935f3adf04d3ba04b914000e4a54e162) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/PlayerCombat.cs using Guid(935f3adf04d3ba04b914000e4a54e162) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '64dacd6c960136c938c4d9573c189275') in 0.0059789 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 3.39 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (3.3 MB). Loaded Objects now: 7393.
+Memory consumption went from 146.3 MB to 143.0 MB.
+Total: 12.721200 ms (FindLiveObjects: 1.864100 ms CreateObjectMapping: 1.111700 ms MarkObjects: 6.524700 ms  DeleteObjects: 3.219600 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 2.98 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (3.3 MB). Loaded Objects now: 7393.
+Memory consumption went from 146.3 MB to 143.0 MB.
+Total: 12.496900 ms (FindLiveObjects: 1.198100 ms CreateObjectMapping: 0.772800 ms MarkObjects: 7.519200 ms  DeleteObjects: 3.005300 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Import Request.
+  Time since last request: 80.888774 seconds.
+  path: Assets/Scripts/PlayerCombat.cs
+  artifactKey: Guid(935f3adf04d3ba04b914000e4a54e162) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/PlayerCombat.cs using Guid(935f3adf04d3ba04b914000e4a54e162) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e4f0f417c1a276be7d09dd318f10021e') in 0.0154622 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.689 seconds
+Refreshing native plugins compatible for Editor in 1.96 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.588 seconds
+Domain Reload Profiling: 1280ms
+	BeginReloadAssembly (235ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (13ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (49ms)
+	RebuildCommonClasses (31ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (23ms)
+	LoadAllAssembliesAndSetupDomain (393ms)
+		LoadAssemblies (353ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (164ms)
+			TypeCache.Refresh (9ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (143ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (588ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (448ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (102ms)
+			ProcessInitializeOnLoadAttributes (289ms)
+			ProcessInitializeOnLoadMethodAttributes (49ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (16ms)
+Refreshing native plugins compatible for Editor in 2.49 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (3.5 MB). Loaded Objects now: 7396.
+Memory consumption went from 149.6 MB to 146.1 MB.
+Total: 11.557300 ms (FindLiveObjects: 1.171400 ms CreateObjectMapping: 0.715300 ms MarkObjects: 6.644500 ms  DeleteObjects: 3.025500 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 3.44 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (3.5 MB). Loaded Objects now: 7396.
+Memory consumption went from 149.7 MB to 146.2 MB.
+Total: 15.057100 ms (FindLiveObjects: 1.497700 ms CreateObjectMapping: 1.009800 ms MarkObjects: 7.255000 ms  DeleteObjects: 5.293300 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.679 seconds
+Refreshing native plugins compatible for Editor in 2.02 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.604 seconds
+Domain Reload Profiling: 1286ms
+	BeginReloadAssembly (227ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (14ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (43ms)
+	RebuildCommonClasses (31ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (24ms)
+	LoadAllAssembliesAndSetupDomain (389ms)
+		LoadAssemblies (346ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (168ms)
+			TypeCache.Refresh (9ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (146ms)
+			ResolveRequiredComponents (10ms)
+	FinalizeReload (605ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (468ms)
 			LogAssemblyErrors (0ms)
 			InitializePlatformSupportModulesInManaged (2ms)
 			SetLoadedEditorAssemblies (5ms)
-			BeforeProcessingInitializeOnLoad (131ms)
-			ProcessInitializeOnLoadAttributes (408ms)
-			ProcessInitializeOnLoadMethodAttributes (145ms)
-			AfterProcessingInitializeOnLoad (4ms)
-			EditorAssembliesLoaded (1ms)
+			BeforeProcessingInitializeOnLoad (105ms)
+			ProcessInitializeOnLoadAttributes (302ms)
+			ProcessInitializeOnLoadMethodAttributes (52ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (19ms)
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
-Refreshing native plugins compatible for Editor in 2.77 ms, found 4 plugins.
+		AwakeInstancesAfterBackupRestoration (18ms)
+Refreshing native plugins compatible for Editor in 2.65 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6685 unused Assets / (2.1 MB). Loaded Objects now: 7390.
-Memory consumption went from 146.0 MB to 144.0 MB.
-Total: 110.731700 ms (FindLiveObjects: 2.292700 ms CreateObjectMapping: 1.463400 ms MarkObjects: 33.474500 ms  DeleteObjects: 73.499500 ms)
+Unloading 6683 unused Assets / (4.1 MB). Loaded Objects now: 7398.
+Memory consumption went from 151.6 MB to 147.5 MB.
+Total: 13.205000 ms (FindLiveObjects: 1.345300 ms CreateObjectMapping: 1.250400 ms MarkObjects: 7.127500 ms  DeleteObjects: 3.481000 ms)
 
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 5.62 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (2.1 MB). Loaded Objects now: 7398.
+Memory consumption went from 151.7 MB to 149.6 MB.
+Total: 21.686300 ms (FindLiveObjects: 6.257500 ms CreateObjectMapping: 0.862300 ms MarkObjects: 12.024200 ms  DeleteObjects: 2.541300 ms)
+
+Prepare: number of updated asset objects reloaded= 0
 ========================================================================
 Received Import Request.
-  Time since last request: 157447.654019 seconds.
-  path: Assets/Hospital/Hospital
-  artifactKey: Guid(49990e09fecdff440aa56479ccf19f6c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital using Guid(49990e09fecdff440aa56479ccf19f6c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5c750edeb3a81d06f7c0d0e247d51d7d') in 0.0151941 seconds
+  Time since last request: 466.854448 seconds.
+  path: Assets/Scripts/PlayerCombat.cs
+  artifactKey: Guid(935f3adf04d3ba04b914000e4a54e162) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/PlayerCombat.cs using Guid(935f3adf04d3ba04b914000e4a54e162) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'f66ca6050f277cf2dc246c0210540738') in 0.0366213 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
 ========================================================================
-Received Import Request.
-  Time since last request: 0.000038 seconds.
-  path: Assets/Hospital/Hospital/Hospital/TileA5_PHC_Interior-Hospital Ace.png
-  artifactKey: Guid(0d1d7e2343f769842a4649b25b76b25e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/TileA5_PHC_Interior-Hospital Ace.png using Guid(0d1d7e2343f769842a4649b25b76b25e) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'de809b0f49915178eae03671e9cfff84') in 0.2778788 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 70
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.684 seconds
+Refreshing native plugins compatible for Editor in 2.10 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.610 seconds
+Domain Reload Profiling: 1297ms
+	BeginReloadAssembly (227ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (13ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (47ms)
+	RebuildCommonClasses (32ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (24ms)
+	LoadAllAssembliesAndSetupDomain (392ms)
+		LoadAssemblies (348ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (167ms)
+			TypeCache.Refresh (9ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (147ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (611ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (470ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (3ms)
+			SetLoadedEditorAssemblies (7ms)
+			BeforeProcessingInitializeOnLoad (104ms)
+			ProcessInitializeOnLoadAttributes (304ms)
+			ProcessInitializeOnLoadMethodAttributes (52ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (17ms)
+Refreshing native plugins compatible for Editor in 3.28 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (4.3 MB). Loaded Objects now: 7400.
+Memory consumption went from 151.6 MB to 147.2 MB.
+Total: 11.399600 ms (FindLiveObjects: 1.390700 ms CreateObjectMapping: 0.680700 ms MarkObjects: 6.674200 ms  DeleteObjects: 2.653000 ms)
 
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.711 seconds
+Refreshing native plugins compatible for Editor in 2.04 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.626 seconds
+Domain Reload Profiling: 1340ms
+	BeginReloadAssembly (238ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (14ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (45ms)
+	RebuildCommonClasses (35ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (26ms)
+	LoadAllAssembliesAndSetupDomain (404ms)
+		LoadAssemblies (333ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (183ms)
+			TypeCache.Refresh (5ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (167ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (627ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (472ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (105ms)
+			ProcessInitializeOnLoadAttributes (307ms)
+			ProcessInitializeOnLoadMethodAttributes (52ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (21ms)
+Refreshing native plugins compatible for Editor in 2.87 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (4.4 MB). Loaded Objects now: 7402.
+Memory consumption went from 151.6 MB to 147.2 MB.
+Total: 12.155000 ms (FindLiveObjects: 1.287200 ms CreateObjectMapping: 0.945700 ms MarkObjects: 6.616200 ms  DeleteObjects: 3.304600 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.683 seconds
+Refreshing native plugins compatible for Editor in 1.68 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.598 seconds
+Domain Reload Profiling: 1285ms
+	BeginReloadAssembly (225ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (13ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (43ms)
+	RebuildCommonClasses (31ms)
+	RebuildNativeTypeToScriptingClass (10ms)
+	initialDomainReloadingComplete (23ms)
+	LoadAllAssembliesAndSetupDomain (397ms)
+		LoadAssemblies (339ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (178ms)
+			TypeCache.Refresh (6ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (157ms)
+			ResolveRequiredComponents (10ms)
+	FinalizeReload (599ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (467ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (103ms)
+			ProcessInitializeOnLoadAttributes (302ms)
+			ProcessInitializeOnLoadMethodAttributes (54ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (17ms)
+Refreshing native plugins compatible for Editor in 3.05 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (4.0 MB). Loaded Objects now: 7404.
+Memory consumption went from 151.6 MB to 147.6 MB.
+Total: 13.158700 ms (FindLiveObjects: 1.239200 ms CreateObjectMapping: 1.402800 ms MarkObjects: 7.382300 ms  DeleteObjects: 3.133700 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 3.71 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (2.1 MB). Loaded Objects now: 7404.
+Memory consumption went from 151.7 MB to 149.7 MB.
+Total: 12.397100 ms (FindLiveObjects: 1.262600 ms CreateObjectMapping: 0.812500 ms MarkObjects: 6.934200 ms  DeleteObjects: 3.386800 ms)
+
+Prepare: number of updated asset objects reloaded= 0
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000019 seconds.
-  path: Assets/Hospital
-  artifactKey: Guid(4795b68b88bf96246b27d1ba5dd52d20) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital using Guid(4795b68b88bf96246b27d1ba5dd52d20) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '349e16cb167483c3f7391270ab8aa73c') in 0.0007528 seconds
+  Time since last request: 182.977124 seconds.
+  path: Assets/Scripts/PlayerMoveBehaviour.cs
+  artifactKey: Guid(cf0f29a6bab5e964280091e13e26b88f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/PlayerMoveBehaviour.cs using Guid(cf0f29a6bab5e964280091e13e26b88f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '28ef05e7dfb95e7252a6e94164a599fe') in 0.0487867 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
 ========================================================================
-Received Import Request.
-  Time since last request: 0.000026 seconds.
-  path: Assets/Hospital/Hospital/Hospital/TileA4_PHC_Interior-Hospital Ace.png
-  artifactKey: Guid(4285eacc91287404fb80593f31339fe6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/TileA4_PHC_Interior-Hospital Ace.png using Guid(4285eacc91287404fb80593f31339fe6) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'cbdc33f83ab7c8943fff804a6ad1ce67') in 0.3842416 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 322
-
-========================================================================
-Received Import Request.
-  Time since last request: 3.957387 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_0.asset
-  artifactKey: Guid(e5d015f44a2dfbf478e0f0f0d01753ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_0.asset using Guid(e5d015f44a2dfbf478e0f0f0d01753ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a349b4d3fdf7f631f3011a2478888cbc') in 0.1794636 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000016 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_18.asset
-  artifactKey: Guid(c5f78e61de8e60745a7167fac7693b4f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_18.asset using Guid(c5f78e61de8e60745a7167fac7693b4f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e0e975b02bf34a1e4a9c46b30510445e') in 0.0117594 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000030 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_33.asset
-  artifactKey: Guid(816812b5ef6535044a448c0992d6887d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_33.asset using Guid(816812b5ef6535044a448c0992d6887d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'd1948717b85f968f58329ab410ce0771') in 0.0128043 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000016 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_28.asset
-  artifactKey: Guid(cbbc32630dc5e7e4486f5dce4734112f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_28.asset using Guid(cbbc32630dc5e7e4486f5dce4734112f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0dc8cd37a170565877a7541a7a44f61b') in 0.0263896 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000014 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_27.asset
-  artifactKey: Guid(90ca7261a8086ae4182093c34703209e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_27.asset using Guid(90ca7261a8086ae4182093c34703209e) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'cd879f1dc81cea38fe165b7a1a32bdd6') in 0.0136091 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000018 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_22.asset
-  artifactKey: Guid(a251850023cd70245b7d54363386915b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_22.asset using Guid(a251850023cd70245b7d54363386915b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5756c41c1453697a4e2135bc790c2413') in 0.0120583 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000020 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_9.asset
-  artifactKey: Guid(cab3a1b9844ecf84095deddbee7608cf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_9.asset using Guid(cab3a1b9844ecf84095deddbee7608cf) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e8d6a778a5bc52c71c194282b20cfadd') in 0.0128198 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_15.asset
-  artifactKey: Guid(a01f0dcd009bdf146a7d4e3cceca5f73) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_15.asset using Guid(a01f0dcd009bdf146a7d4e3cceca5f73) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5d4006c5f4d80ee35034098a0c46f8e2') in 0.0144679 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000016 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_17.asset
-  artifactKey: Guid(f050ec1380879de43bd81dfe150d1b47) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_17.asset using Guid(f050ec1380879de43bd81dfe150d1b47) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0c8e67d1308f9724bf43e714d1a020e9') in 0.0127714 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000016 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_39.asset
-  artifactKey: Guid(1e1bfcb5e512cd143ae0e0a28b4a46a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_39.asset using Guid(1e1bfcb5e512cd143ae0e0a28b4a46a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '55bf34093fbec32cd0531b64e5438859') in 0.0132992 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000013 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_2.asset
-  artifactKey: Guid(d736b5b4ed6b85540b1e0bc952ec797c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_2.asset using Guid(d736b5b4ed6b85540b1e0bc952ec797c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'f35b7f24fa3c60efc1cf015c50aa5911') in 0.0123785 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000017 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_10.asset
-  artifactKey: Guid(483223f889641924285da296a7e0998c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_10.asset using Guid(483223f889641924285da296a7e0998c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'b222d4f837ecd99991b1dc1b5dff5bff') in 0.0103586 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000027 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_21.asset
-  artifactKey: Guid(230d4b782818f824c9379bb0ad8173c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_21.asset using Guid(230d4b782818f824c9379bb0ad8173c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '29082657b39d0f65f3e458f81abb6548') in 0.0129266 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000015 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_6.asset
-  artifactKey: Guid(b75fa5683dc0bc143915f9fefc2963fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_6.asset using Guid(b75fa5683dc0bc143915f9fefc2963fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0fa4627a5e4d2f83d30bc50e7ca9ccb3') in 0.0124759 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000016 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_3.asset
-  artifactKey: Guid(62b5e938d2cc9d048848c571d4302c03) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_3.asset using Guid(62b5e938d2cc9d048848c571d4302c03) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'ad416f940a79074bed675d768934a942') in 0.0114322 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000014 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_34.asset
-  artifactKey: Guid(10d5e1e11465a7b4e89124b88e9d380b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_34.asset using Guid(10d5e1e11465a7b4e89124b88e9d380b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '9030665d1fecf52d57d28cbfef1a2618') in 0.0118152 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000018 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_37.asset
-  artifactKey: Guid(c88228a1651c5d2418f5a6dad1a4fe74) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_37.asset using Guid(c88228a1651c5d2418f5a6dad1a4fe74) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0ae4c3bdcfa527fa3882d20592d8912a') in 0.0124669 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.454302 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_41.asset
-  artifactKey: Guid(579d60730f7311f43aebba829257f47c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_41.asset using Guid(579d60730f7311f43aebba829257f47c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'b53be326be15d4860ee0f149baee42e0') in 0.0137808 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000014 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_49.asset
-  artifactKey: Guid(e77e3867ee8a6b94388348c98a0b3f65) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_49.asset using Guid(e77e3867ee8a6b94388348c98a0b3f65) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0b3af5429ed84e9816fcdc328f2ea1e0') in 0.0136876 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000015 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_57.asset
-  artifactKey: Guid(d196c5f4aafd67c44950cdeb359b1e7c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_57.asset using Guid(d196c5f4aafd67c44950cdeb359b1e7c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '75da04e802a91ab1650c781ce71477b3') in 0.0119505 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000020 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_56.asset
-  artifactKey: Guid(cad7aef620fb14e4bad396a2a03aa08c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_56.asset using Guid(cad7aef620fb14e4bad396a2a03aa08c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '8a97827ffb92d1118a124aedcce23eed') in 0.0139279 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000027 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_47.asset
-  artifactKey: Guid(da0e5ccdf555c93479df7c803b606721) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_47.asset using Guid(da0e5ccdf555c93479df7c803b606721) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'd550f2335245ded97416299c5f137742') in 0.0123113 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000013 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_53.asset
-  artifactKey: Guid(37e758f9946e19b469bd00cdfa36da39) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_53.asset using Guid(37e758f9946e19b469bd00cdfa36da39) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '4b2b58cb1714a0beb8b8286525338b40') in 0.0125082 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000016 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_55.asset
-  artifactKey: Guid(c93556cb08d4d6a479a20d794daac6a4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_55.asset using Guid(c93556cb08d4d6a479a20d794daac6a4) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '3e019a4efb42a7dd73ea685ebbf69c70') in 0.0115459 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.079010 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_61.asset
-  artifactKey: Guid(08b32888d0557aa4bb03f609e624d204) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_61.asset using Guid(08b32888d0557aa4bb03f609e624d204) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '8e92eca9fc796262c18683a330626089') in 0.0168082 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000015 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_64.asset
-  artifactKey: Guid(7715111e762d7ad439e4715b5e6aad6d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_64.asset using Guid(7715111e762d7ad439e4715b5e6aad6d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'be1c2ca23f35d0c6d002811630ad6e0f') in 0.0115247 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000019 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_67.asset
-  artifactKey: Guid(a8b49d6c9152e044a801e4458f407641) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Ground/TileA5_PHC_Interior-Hospital Ace_67.asset using Guid(a8b49d6c9152e044a801e4458f407641) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a39944a2140a85ea00045b58fad1483b') in 0.0132856 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 3.373645 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Piece/2.png
-  artifactKey: Guid(78f6067bfbca04a4a8d801a5dca51c73) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Piece/2.png using Guid(78f6067bfbca04a4a8d801a5dca51c73) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0b06c64bad225e6b30555df11945e333') in 0.084331 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000016 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Piece/6.png
-  artifactKey: Guid(02c775457cc186c44a16bd27f6393b98) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Piece/6.png using Guid(02c775457cc186c44a16bd27f6393b98) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '1e1beb4881e55bb367ea25ac1cf9ce5c') in 0.0136087 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Piece/8.png
-  artifactKey: Guid(8bc6546eaea90e843b401b3184799403) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Piece/8.png using Guid(8bc6546eaea90e843b401b3184799403) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e4f108b1943f538af1ce46157527f405') in 0.0129618 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 1.586864 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Prefab/Hospital_2.prefab
-  artifactKey: Guid(62a0d3f4edc7f5d42a7f0a1eedb3b6e5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Prefab/Hospital_2.prefab using Guid(62a0d3f4edc7f5d42a7f0a1eedb3b6e5) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '50fc97e05a4e14db86fa3015935f8888') in 0.4364728 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 62
-
-========================================================================
-Received Import Request.
-  Time since last request: 2.022337 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_1.asset
-  artifactKey: Guid(579cc36cb2aee5e45aa2e2e8cac674c6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_1.asset using Guid(579cc36cb2aee5e45aa2e2e8cac674c6) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5fc3d77f99b635f41802e5727c14785c') in 0.0127137 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000022 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_40.asset
-  artifactKey: Guid(da072f0a8fbf6644f96b03f4ff6f2b52) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_40.asset using Guid(da072f0a8fbf6644f96b03f4ff6f2b52) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '7e7cf7f4f10d558051ee6b60f83baca4') in 0.0114237 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_19.asset
-  artifactKey: Guid(c762d8fff6ab5ad4d96eeb6748ad2a10) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_19.asset using Guid(c762d8fff6ab5ad4d96eeb6748ad2a10) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e5fbf9b59fbd914dd8b00eac24e6e929') in 0.0122972 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000021 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_32.asset
-  artifactKey: Guid(69f6848bc07fd2741992504700f98e3a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_32.asset using Guid(69f6848bc07fd2741992504700f98e3a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '14bd66025b1a165dac5d3d3d6bb162f6') in 0.0153783 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000026 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_28.asset
-  artifactKey: Guid(5bfb600f736cc6942840b7615f04da0b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_28.asset using Guid(5bfb600f736cc6942840b7615f04da0b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'dcd85d7349cf0bca5f81d3ec985c4dd3') in 0.0125194 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000020 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_39.asset
-  artifactKey: Guid(e93d9eacb3d55354b9f41bde1d7b6c27) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_39.asset using Guid(e93d9eacb3d55354b9f41bde1d7b6c27) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a5801965a95a7bf8aa9209fd220ab555') in 0.0124036 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000022 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_30.asset
-  artifactKey: Guid(5ec4b45ef3c2d9549bae658dda1359f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_30.asset using Guid(5ec4b45ef3c2d9549bae658dda1359f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '03d4af7ec8c2cff7ccf452abedae1a7b') in 0.0119099 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000024 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_22.asset
-  artifactKey: Guid(5f405dae3c13ffe47922c6fdeeaf77f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_22.asset using Guid(5f405dae3c13ffe47922c6fdeeaf77f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5fc8e872146ac0a950207fd4e5ee9cf6') in 0.0114128 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000059 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_11.asset
-  artifactKey: Guid(83404b19b1984554a82ddf4fef8bdb16) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_11.asset using Guid(83404b19b1984554a82ddf4fef8bdb16) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '76a0696fe221c653aeadf1bc7aa89533') in 0.0171336 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_9.asset
-  artifactKey: Guid(bb2358d85b6d6b843892fb28db2e04f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_9.asset using Guid(bb2358d85b6d6b843892fb28db2e04f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '376611dae4828b9a558f10cca7925d09') in 0.0126114 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000024 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_34.asset
-  artifactKey: Guid(d39537559702e4b42a654c3b0c85b309) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_34.asset using Guid(d39537559702e4b42a654c3b0c85b309) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'ac427be60f059d2f52f17e0fb9a97e4a') in 0.0127681 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000022 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_15.asset
-  artifactKey: Guid(fa37a26144ab78f4ebc1ebc328642573) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_15.asset using Guid(fa37a26144ab78f4ebc1ebc328642573) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '510307c42901d603a05d55187a8d4dab') in 0.0126513 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000033 seconds.
-  path: Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_17.asset
-  artifactKey: Guid(f1cc7fe285ad3d44f99c4b6d3c4dd75f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Hospital/Wall/TileA4_PHC_Interior-Hospital Ace_17.asset using Guid(f1cc7fe285ad3d44f99c4b6d3c4dd75f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '1e8bb1690d1c380e8121127371443613') in 0.0128834 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 3.507797 seconds.
-  path: Assets/Hospital/Hospital/Laboratory/Characters/$Dr Frankenstien.png
-  artifactKey: Guid(4f3a63675a4fdb94e9458b6efcb240a8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Laboratory/Characters/$Dr Frankenstien.png using Guid(4f3a63675a4fdb94e9458b6efcb240a8) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '09473d17c02003d5b54de3d7969acd24') in 0.0158043 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000018 seconds.
-  path: Assets/Hospital/Hospital/Laboratory/Characters/Monster Face.png
-  artifactKey: Guid(f0e731cb8d3c4b742b4d9c956f4f1139) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Laboratory/Characters/Monster Face.png using Guid(f0e731cb8d3c4b742b4d9c956f4f1139) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'edda42a4f951bc9c32b5c3871d75ba94') in 0.0153893 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000018 seconds.
-  path: Assets/Hospital/Hospital/Laboratory/Characters/$MonsterA.png
-  artifactKey: Guid(27a0ba4a67a93de4ebb5a45f5fc3f4ea) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Laboratory/Characters/$MonsterA.png using Guid(27a0ba4a67a93de4ebb5a45f5fc3f4ea) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '534e492ef0dc266d09eec301e27b6934') in 0.0145846 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 12.990039 seconds.
-  path: Assets/Hospital/Hospital/Laboratory/Tilesets/TileA5_Laboratory.png
-  artifactKey: Guid(1696056bf2f57fc42952932844a7b233) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Laboratory/Tilesets/TileA5_Laboratory.png using Guid(1696056bf2f57fc42952932844a7b233) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '3fc647aebf30b6d7366b8556e7623aeb') in 0.030044 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 2.372355 seconds.
-  path: Assets/Hospital/Hospital/Mini Map/Hospital2.png
-  artifactKey: Guid(78a4d2df59cca664a993f240bfdec7dd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Mini Map/Hospital2.png using Guid(78a4d2df59cca664a993f240bfdec7dd) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '3fdcace2c5855e1391e0ed5e0a37b6cd') in 0.0179805 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000019 seconds.
-  path: Assets/Hospital/Hospital/Mini Map/Road_1.png
-  artifactKey: Guid(53300aabf08ef3446a9c70e273516e10) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hospital/Hospital/Mini Map/Road_1.png using Guid(53300aabf08ef3446a9c70e273516e10) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2518be88b318b2ed40398d6d314a9758') in 0.0206871 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 7.345849 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tilemap/Tilemap.png
-  artifactKey: Guid(e09a4527e4f1271488fac58fca49fd4b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tilemap/Tilemap.png using Guid(e09a4527e4f1271488fac58fca49fd4b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e46dc30ecba5e042c5c8fa36909f068f') in 0.476893 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 400
-
-========================================================================
-Received Import Request.
-  Time since last request: 4.419284 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_1.asset
-  artifactKey: Guid(2afdce90792f7c4409470533c5b16781) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_1.asset using Guid(2afdce90792f7c4409470533c5b16781) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '621705d5692cd02defcf21debee8d772') in 0.0150085 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_18.asset
-  artifactKey: Guid(3c2b358f0ffc11041998a4460f44f89a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_18.asset using Guid(3c2b358f0ffc11041998a4460f44f89a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0feea5058b979f074287386ed4982eaa') in 0.0151797 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000044 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_12.asset
-  artifactKey: Guid(db3b48ff6c970314cbafa54a9269985a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_12.asset using Guid(db3b48ff6c970314cbafa54a9269985a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '9b9cdee4a0afb7d217a538908102267a') in 0.0140359 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000019 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_33.asset
-  artifactKey: Guid(d25a9439f4c529244897fee841646768) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_33.asset using Guid(d25a9439f4c529244897fee841646768) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2de39e9c8c31b24e91d19a31f269b277') in 0.0151327 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+Received Prepare
+Refreshing native plugins compatible for Editor in 2.63 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (4.3 MB). Loaded Objects now: 7404.
+Memory consumption went from 151.7 MB to 147.4 MB.
+Total: 12.129400 ms (FindLiveObjects: 1.215500 ms CreateObjectMapping: 0.720900 ms MarkObjects: 7.199000 ms  DeleteObjects: 2.993300 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 2.85 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (4.3 MB). Loaded Objects now: 7404.
+Memory consumption went from 151.7 MB to 147.4 MB.
+Total: 11.564800 ms (FindLiveObjects: 1.118200 ms CreateObjectMapping: 0.743700 ms MarkObjects: 6.857000 ms  DeleteObjects: 2.844900 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 2.80 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (3.7 MB). Loaded Objects now: 7404.
+Memory consumption went from 151.7 MB to 148.0 MB.
+Total: 12.083100 ms (FindLiveObjects: 1.268300 ms CreateObjectMapping: 1.077200 ms MarkObjects: 6.694800 ms  DeleteObjects: 3.041500 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.700 seconds
+Refreshing native plugins compatible for Editor in 2.52 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.595 seconds
+Domain Reload Profiling: 1298ms
+	BeginReloadAssembly (226ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (12ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (47ms)
+	RebuildCommonClasses (31ms)
+	RebuildNativeTypeToScriptingClass (10ms)
+	initialDomainReloadingComplete (23ms)
+	LoadAllAssembliesAndSetupDomain (412ms)
+		LoadAssemblies (340ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (193ms)
+			TypeCache.Refresh (9ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (173ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (596ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (456ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (104ms)
+			ProcessInitializeOnLoadAttributes (288ms)
+			ProcessInitializeOnLoadMethodAttributes (56ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (17ms)
+Refreshing native plugins compatible for Editor in 2.62 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (2.7 MB). Loaded Objects now: 7406.
+Memory consumption went from 151.7 MB to 149.0 MB.
+Total: 11.528900 ms (FindLiveObjects: 1.338800 ms CreateObjectMapping: 0.669300 ms MarkObjects: 6.880600 ms  DeleteObjects: 2.639300 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 8.09 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (2.1 MB). Loaded Objects now: 7406.
+Memory consumption went from 151.8 MB to 149.8 MB.
+Total: 33.290700 ms (FindLiveObjects: 2.289800 ms CreateObjectMapping: 1.059400 ms MarkObjects: 25.913900 ms  DeleteObjects: 4.026200 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Import Request.
+  Time since last request: 133.598705 seconds.
+  path: Assets/Scripts/PlayerMoveBehaviour.cs
+  artifactKey: Guid(cf0f29a6bab5e964280091e13e26b88f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/PlayerMoveBehaviour.cs using Guid(cf0f29a6bab5e964280091e13e26b88f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '9fb4b7110153a14df8d8d349313bcb11') in 0.0362892 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.744 seconds
+Refreshing native plugins compatible for Editor in 2.08 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.644 seconds
+Domain Reload Profiling: 1392ms
+	BeginReloadAssembly (238ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (13ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (49ms)
+	RebuildCommonClasses (52ms)
+	RebuildNativeTypeToScriptingClass (17ms)
+	initialDomainReloadingComplete (24ms)
+	LoadAllAssembliesAndSetupDomain (416ms)
+		LoadAssemblies (352ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (191ms)
+			TypeCache.Refresh (8ms)
+				TypeCache.ScanAssembly (1ms)
+			BuildScriptInfoCaches (165ms)
+			ResolveRequiredComponents (13ms)
+	FinalizeReload (644ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (490ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (122ms)
+			ProcessInitializeOnLoadAttributes (309ms)
+			ProcessInitializeOnLoadMethodAttributes (50ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (19ms)
+Refreshing native plugins compatible for Editor in 2.75 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (4.3 MB). Loaded Objects now: 7408.
+Memory consumption went from 151.7 MB to 147.5 MB.
+Total: 11.055300 ms (FindLiveObjects: 1.195600 ms CreateObjectMapping: 0.633100 ms MarkObjects: 6.378500 ms  DeleteObjects: 2.846700 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.664 seconds
+Refreshing native plugins compatible for Editor in 1.90 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.611 seconds
+Domain Reload Profiling: 1278ms
+	BeginReloadAssembly (220ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (13ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (46ms)
+	RebuildCommonClasses (31ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (22ms)
+	LoadAllAssembliesAndSetupDomain (383ms)
+		LoadAssemblies (337ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (163ms)
+			TypeCache.Refresh (6ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (145ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (612ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (479ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (102ms)
+			ProcessInitializeOnLoadAttributes (305ms)
+			ProcessInitializeOnLoadMethodAttributes (60ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (19ms)
+Refreshing native plugins compatible for Editor in 2.56 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (4.2 MB). Loaded Objects now: 7410.
+Memory consumption went from 151.8 MB to 147.6 MB.
+Total: 11.469100 ms (FindLiveObjects: 1.143100 ms CreateObjectMapping: 0.529600 ms MarkObjects: 6.595900 ms  DeleteObjects: 3.199500 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.664 seconds
+Refreshing native plugins compatible for Editor in 2.13 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.609 seconds
+Domain Reload Profiling: 1277ms
+	BeginReloadAssembly (224ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (12ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (44ms)
+	RebuildCommonClasses (33ms)
+	RebuildNativeTypeToScriptingClass (14ms)
+	initialDomainReloadingComplete (21ms)
+	LoadAllAssembliesAndSetupDomain (374ms)
+		LoadAssemblies (330ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (164ms)
+			TypeCache.Refresh (5ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (147ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (610ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (472ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (105ms)
+			ProcessInitializeOnLoadAttributes (301ms)
+			ProcessInitializeOnLoadMethodAttributes (57ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (19ms)
+Refreshing native plugins compatible for Editor in 2.83 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (3.5 MB). Loaded Objects now: 7412.
+Memory consumption went from 151.8 MB to 148.3 MB.
+Total: 13.344100 ms (FindLiveObjects: 1.306000 ms CreateObjectMapping: 0.899900 ms MarkObjects: 8.004000 ms  DeleteObjects: 3.133100 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.667 seconds
+Refreshing native plugins compatible for Editor in 1.88 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.592 seconds
+Domain Reload Profiling: 1262ms
+	BeginReloadAssembly (224ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (12ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (40ms)
+	RebuildCommonClasses (29ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (25ms)
+	LoadAllAssembliesAndSetupDomain (379ms)
+		LoadAssemblies (333ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (169ms)
+			TypeCache.Refresh (8ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (149ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (592ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (463ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (101ms)
+			ProcessInitializeOnLoadAttributes (299ms)
+			ProcessInitializeOnLoadMethodAttributes (55ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (16ms)
+Refreshing native plugins compatible for Editor in 2.69 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (4.2 MB). Loaded Objects now: 7414.
+Memory consumption went from 151.8 MB to 147.6 MB.
+Total: 11.831900 ms (FindLiveObjects: 1.338000 ms CreateObjectMapping: 0.868200 ms MarkObjects: 6.799900 ms  DeleteObjects: 2.824600 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.652 seconds
+Refreshing native plugins compatible for Editor in 1.96 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.610 seconds
+Domain Reload Profiling: 1266ms
+	BeginReloadAssembly (213ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (14ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (42ms)
+	RebuildCommonClasses (30ms)
+	RebuildNativeTypeToScriptingClass (13ms)
+	initialDomainReloadingComplete (26ms)
+	LoadAllAssembliesAndSetupDomain (374ms)
+		LoadAssemblies (320ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (166ms)
+			TypeCache.Refresh (6ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (148ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (611ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (478ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (105ms)
+			ProcessInitializeOnLoadAttributes (304ms)
+			ProcessInitializeOnLoadMethodAttributes (60ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (19ms)
+Refreshing native plugins compatible for Editor in 3.55 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (2.5 MB). Loaded Objects now: 7416.
+Memory consumption went from 151.9 MB to 149.3 MB.
+Total: 14.223600 ms (FindLiveObjects: 1.363600 ms CreateObjectMapping: 1.524700 ms MarkObjects: 8.113400 ms  DeleteObjects: 3.220900 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.654 seconds
+Refreshing native plugins compatible for Editor in 1.95 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.616 seconds
+Domain Reload Profiling: 1273ms
+	BeginReloadAssembly (216ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (13ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (41ms)
+	RebuildCommonClasses (30ms)
+	RebuildNativeTypeToScriptingClass (10ms)
+	initialDomainReloadingComplete (21ms)
+	LoadAllAssembliesAndSetupDomain (379ms)
+		LoadAssemblies (328ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (166ms)
+			TypeCache.Refresh (7ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (147ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (617ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (480ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (104ms)
+			ProcessInitializeOnLoadAttributes (308ms)
+			ProcessInitializeOnLoadMethodAttributes (59ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (20ms)
+Refreshing native plugins compatible for Editor in 3.34 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (3.4 MB). Loaded Objects now: 7418.
+Memory consumption went from 151.9 MB to 148.5 MB.
+Total: 12.611500 ms (FindLiveObjects: 1.238100 ms CreateObjectMapping: 0.940800 ms MarkObjects: 7.234900 ms  DeleteObjects: 3.196700 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 3.08 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (4.1 MB). Loaded Objects now: 7418.
+Memory consumption went from 152.1 MB to 148.0 MB.
+Total: 11.467000 ms (FindLiveObjects: 1.219200 ms CreateObjectMapping: 0.670700 ms MarkObjects: 6.998700 ms  DeleteObjects: 2.577400 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.659 seconds
+Refreshing native plugins compatible for Editor in 1.62 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.572 seconds
+Domain Reload Profiling: 1234ms
+	BeginReloadAssembly (219ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (12ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (46ms)
+	RebuildCommonClasses (29ms)
+	RebuildNativeTypeToScriptingClass (10ms)
+	initialDomainReloadingComplete (27ms)
+	LoadAllAssembliesAndSetupDomain (377ms)
+		LoadAssemblies (329ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (163ms)
+			TypeCache.Refresh (9ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (143ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (572ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (438ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (101ms)
+			ProcessInitializeOnLoadAttributes (279ms)
+			ProcessInitializeOnLoadMethodAttributes (48ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (16ms)
+Refreshing native plugins compatible for Editor in 3.02 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (4.2 MB). Loaded Objects now: 7420.
+Memory consumption went from 151.9 MB to 147.8 MB.
+Total: 11.036800 ms (FindLiveObjects: 1.170200 ms CreateObjectMapping: 0.577400 ms MarkObjects: 6.667900 ms  DeleteObjects: 2.620500 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 2.64 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (4.2 MB). Loaded Objects now: 7420.
+Memory consumption went from 152.1 MB to 147.9 MB.
+Total: 11.114900 ms (FindLiveObjects: 1.211200 ms CreateObjectMapping: 0.868100 ms MarkObjects: 6.480900 ms  DeleteObjects: 2.553900 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.646 seconds
+Refreshing native plugins compatible for Editor in 1.79 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.597 seconds
+Domain Reload Profiling: 1246ms
+	BeginReloadAssembly (214ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (13ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (43ms)
+	RebuildCommonClasses (30ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (22ms)
+	LoadAllAssembliesAndSetupDomain (373ms)
+		LoadAssemblies (320ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (164ms)
+			TypeCache.Refresh (8ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (145ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (597ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (465ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (6ms)
+			BeforeProcessingInitializeOnLoad (111ms)
+			ProcessInitializeOnLoadAttributes (290ms)
+			ProcessInitializeOnLoadMethodAttributes (54ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (17ms)
+Refreshing native plugins compatible for Editor in 2.46 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (4.3 MB). Loaded Objects now: 7422.
+Memory consumption went from 152.0 MB to 147.6 MB.
+Total: 12.256400 ms (FindLiveObjects: 1.514400 ms CreateObjectMapping: 1.282900 ms MarkObjects: 6.544200 ms  DeleteObjects: 2.914100 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 2.72 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (4.1 MB). Loaded Objects now: 7422.
+Memory consumption went from 152.1 MB to 148.1 MB.
+Total: 12.807000 ms (FindLiveObjects: 1.474700 ms CreateObjectMapping: 0.921600 ms MarkObjects: 7.031600 ms  DeleteObjects: 3.377700 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.652 seconds
+Refreshing native plugins compatible for Editor in 1.67 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.584 seconds
+Domain Reload Profiling: 1239ms
+	BeginReloadAssembly (220ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (14ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (41ms)
+	RebuildCommonClasses (30ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (22ms)
+	LoadAllAssembliesAndSetupDomain (372ms)
+		LoadAssemblies (329ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (164ms)
+			TypeCache.Refresh (9ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (143ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (585ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (451ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (6ms)
+			BeforeProcessingInitializeOnLoad (98ms)
+			ProcessInitializeOnLoadAttributes (295ms)
+			ProcessInitializeOnLoadMethodAttributes (47ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (16ms)
+Refreshing native plugins compatible for Editor in 2.80 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (4.2 MB). Loaded Objects now: 7424.
+Memory consumption went from 151.9 MB to 147.8 MB.
+Total: 10.672700 ms (FindLiveObjects: 1.187200 ms CreateObjectMapping: 0.575200 ms MarkObjects: 6.316200 ms  DeleteObjects: 2.592700 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 2.75 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (2.1 MB). Loaded Objects now: 7424.
+Memory consumption went from 152.1 MB to 150.0 MB.
+Total: 12.009400 ms (FindLiveObjects: 1.323300 ms CreateObjectMapping: 0.761000 ms MarkObjects: 6.997500 ms  DeleteObjects: 2.926400 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.672 seconds
+Refreshing native plugins compatible for Editor in 2.09 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.594 seconds
+Domain Reload Profiling: 1270ms
+	BeginReloadAssembly (227ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (15ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (41ms)
+	RebuildCommonClasses (30ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (22ms)
+	LoadAllAssembliesAndSetupDomain (385ms)
+		LoadAssemblies (333ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (171ms)
+			TypeCache.Refresh (9ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (152ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (595ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (458ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (103ms)
+			ProcessInitializeOnLoadAttributes (298ms)
+			ProcessInitializeOnLoadMethodAttributes (49ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (16ms)
+Refreshing native plugins compatible for Editor in 2.88 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (4.3 MB). Loaded Objects now: 7426.
+Memory consumption went from 152.0 MB to 147.8 MB.
+Total: 10.849600 ms (FindLiveObjects: 1.267200 ms CreateObjectMapping: 0.798300 ms MarkObjects: 5.946000 ms  DeleteObjects: 2.837600 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.705 seconds
+Refreshing native plugins compatible for Editor in 2.61 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.657 seconds
+Domain Reload Profiling: 1367ms
+	BeginReloadAssembly (238ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (14ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (46ms)
+	RebuildCommonClasses (34ms)
+	RebuildNativeTypeToScriptingClass (13ms)
+	initialDomainReloadingComplete (25ms)
+	LoadAllAssembliesAndSetupDomain (400ms)
+		LoadAssemblies (340ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (183ms)
+			TypeCache.Refresh (9ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (159ms)
+			ResolveRequiredComponents (12ms)
+	FinalizeReload (658ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (507ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (121ms)
+			ProcessInitializeOnLoadAttributes (325ms)
+			ProcessInitializeOnLoadMethodAttributes (52ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (19ms)
+Refreshing native plugins compatible for Editor in 2.50 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (4.1 MB). Loaded Objects now: 7428.
+Memory consumption went from 152.1 MB to 148.0 MB.
+Total: 11.509300 ms (FindLiveObjects: 1.303900 ms CreateObjectMapping: 0.717900 ms MarkObjects: 6.637600 ms  DeleteObjects: 2.849200 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  2.389 seconds
+Refreshing native plugins compatible for Editor in 1.84 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.675 seconds
+Domain Reload Profiling: 3068ms
+	BeginReloadAssembly (448ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (15ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (45ms)
+	RebuildCommonClasses (119ms)
+	RebuildNativeTypeToScriptingClass (13ms)
+	initialDomainReloadingComplete (21ms)
+	LoadAllAssembliesAndSetupDomain (1792ms)
+		LoadAssemblies (1937ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (196ms)
+			TypeCache.Refresh (7ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (176ms)
+			ResolveRequiredComponents (9ms)
+	FinalizeReload (675ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (518ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (117ms)
+			ProcessInitializeOnLoadAttributes (330ms)
+			ProcessInitializeOnLoadMethodAttributes (61ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (18ms)
+Refreshing native plugins compatible for Editor in 2.75 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (4.5 MB). Loaded Objects now: 7430.
+Memory consumption went from 152.1 MB to 147.6 MB.
+Total: 10.498200 ms (FindLiveObjects: 1.417500 ms CreateObjectMapping: 1.273600 ms MarkObjects: 5.220700 ms  DeleteObjects: 2.585800 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 3.21 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (3.4 MB). Loaded Objects now: 7430.
+Memory consumption went from 152.3 MB to 148.9 MB.
+Total: 14.142800 ms (FindLiveObjects: 1.409500 ms CreateObjectMapping: 1.602400 ms MarkObjects: 8.272000 ms  DeleteObjects: 2.857200 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.698 seconds
+Refreshing native plugins compatible for Editor in 1.86 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.601 seconds
+Domain Reload Profiling: 1303ms
+	BeginReloadAssembly (231ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (13ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (45ms)
+	RebuildCommonClasses (36ms)
+	RebuildNativeTypeToScriptingClass (14ms)
+	initialDomainReloadingComplete (23ms)
+	LoadAllAssembliesAndSetupDomain (398ms)
+		LoadAssemblies (346ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (176ms)
+			TypeCache.Refresh (10ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (154ms)
+			ResolveRequiredComponents (9ms)
+	FinalizeReload (601ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (463ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (106ms)
+			ProcessInitializeOnLoadAttributes (295ms)
+			ProcessInitializeOnLoadMethodAttributes (53ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (18ms)
+Refreshing native plugins compatible for Editor in 3.09 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (2.7 MB). Loaded Objects now: 7432.
+Memory consumption went from 152.1 MB to 149.4 MB.
+Total: 12.378100 ms (FindLiveObjects: 1.654100 ms CreateObjectMapping: 1.109400 ms MarkObjects: 6.621600 ms  DeleteObjects: 2.992300 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 6.65 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (2.6 MB). Loaded Objects now: 7432.
+Memory consumption went from 152.3 MB to 149.7 MB.
+Total: 15.462800 ms (FindLiveObjects: 1.585600 ms CreateObjectMapping: 1.464500 ms MarkObjects: 7.493700 ms  DeleteObjects: 4.917800 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.717 seconds
+Refreshing native plugins compatible for Editor in 1.89 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.598 seconds
+Domain Reload Profiling: 1319ms
+	BeginReloadAssembly (231ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (15ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (48ms)
+	RebuildCommonClasses (34ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (23ms)
+	LoadAllAssembliesAndSetupDomain (421ms)
+		LoadAssemblies (342ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (197ms)
+			TypeCache.Refresh (9ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (172ms)
+			ResolveRequiredComponents (11ms)
+	FinalizeReload (598ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (460ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (105ms)
+			ProcessInitializeOnLoadAttributes (293ms)
+			ProcessInitializeOnLoadMethodAttributes (53ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (18ms)
+Refreshing native plugins compatible for Editor in 3.09 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (2.3 MB). Loaded Objects now: 7434.
+Memory consumption went from 152.1 MB to 149.8 MB.
+Total: 13.323900 ms (FindLiveObjects: 1.286200 ms CreateObjectMapping: 0.844600 ms MarkObjects: 6.934200 ms  DeleteObjects: 4.257600 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 2.65 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6672 unused Assets / (2.8 MB). Loaded Objects now: 7434.
+Memory consumption went from 152.3 MB to 149.5 MB.
+Total: 13.262400 ms (FindLiveObjects: 1.702300 ms CreateObjectMapping: 1.508600 ms MarkObjects: 6.771000 ms  DeleteObjects: 3.279500 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.700 seconds
+Refreshing native plugins compatible for Editor in 1.89 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.664 seconds
+Domain Reload Profiling: 1368ms
+	BeginReloadAssembly (237ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (13ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (44ms)
+	RebuildCommonClasses (33ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (24ms)
+	LoadAllAssembliesAndSetupDomain (398ms)
+		LoadAssemblies (355ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (173ms)
+			TypeCache.Refresh (9ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (152ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (664ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (514ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (125ms)
+			ProcessInitializeOnLoadAttributes (324ms)
+			ProcessInitializeOnLoadMethodAttributes (55ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (18ms)
+Refreshing native plugins compatible for Editor in 2.85 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (4.3 MB). Loaded Objects now: 7436.
+Memory consumption went from 152.2 MB to 147.9 MB.
+Total: 11.659500 ms (FindLiveObjects: 1.222700 ms CreateObjectMapping: 0.982900 ms MarkObjects: 6.664000 ms  DeleteObjects: 2.789000 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.676 seconds
+Refreshing native plugins compatible for Editor in 2.14 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.621 seconds
+Domain Reload Profiling: 1300ms
+	BeginReloadAssembly (220ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (13ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (46ms)
+	RebuildCommonClasses (35ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (22ms)
+	LoadAllAssembliesAndSetupDomain (390ms)
+		LoadAssemblies (330ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (175ms)
+			TypeCache.Refresh (9ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (154ms)
+			ResolveRequiredComponents (9ms)
+	FinalizeReload (621ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (484ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (106ms)
+			ProcessInitializeOnLoadAttributes (315ms)
+			ProcessInitializeOnLoadMethodAttributes (55ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (17ms)
+Refreshing native plugins compatible for Editor in 2.67 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (4.6 MB). Loaded Objects now: 7438.
+Memory consumption went from 152.2 MB to 147.7 MB.
+Total: 13.268600 ms (FindLiveObjects: 1.536100 ms CreateObjectMapping: 1.016500 ms MarkObjects: 7.166300 ms  DeleteObjects: 3.548200 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.695 seconds
+Refreshing native plugins compatible for Editor in 2.72 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.670 seconds
+Domain Reload Profiling: 1369ms
+	BeginReloadAssembly (229ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (13ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (45ms)
+	RebuildCommonClasses (30ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (23ms)
+	LoadAllAssembliesAndSetupDomain (406ms)
+		LoadAssemblies (342ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (186ms)
+			TypeCache.Refresh (6ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (169ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (670ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (522ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (108ms)
+			ProcessInitializeOnLoadAttributes (341ms)
+			ProcessInitializeOnLoadMethodAttributes (64ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (18ms)
+Refreshing native plugins compatible for Editor in 2.93 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (4.2 MB). Loaded Objects now: 7440.
+Memory consumption went from 152.3 MB to 148.1 MB.
+Total: 13.808500 ms (FindLiveObjects: 1.261300 ms CreateObjectMapping: 0.966100 ms MarkObjects: 8.144700 ms  DeleteObjects: 3.434800 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.682 seconds
+Refreshing native plugins compatible for Editor in 1.75 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.614 seconds
+Domain Reload Profiling: 1299ms
+	BeginReloadAssembly (223ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (13ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (46ms)
+	RebuildCommonClasses (33ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (23ms)
+	LoadAllAssembliesAndSetupDomain (395ms)
+		LoadAssemblies (328ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (185ms)
+			TypeCache.Refresh (7ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (165ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (614ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (476ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (103ms)
+			ProcessInitializeOnLoadAttributes (302ms)
+			ProcessInitializeOnLoadMethodAttributes (62ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (20ms)
+Refreshing native plugins compatible for Editor in 3.15 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6683 unused Assets / (4.1 MB). Loaded Objects now: 7442.
+Memory consumption went from 152.3 MB to 148.2 MB.
+Total: 13.234900 ms (FindLiveObjects: 1.239800 ms CreateObjectMapping: 0.840400 ms MarkObjects: 7.700600 ms  DeleteObjects: 3.452900 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Import Request.
+  Time since last request: 2567.885537 seconds.
+  path: Assets/Scripts/PlayerCombat.cs
+  artifactKey: Guid(935f3adf04d3ba04b914000e4a54e162) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/PlayerCombat.cs using Guid(935f3adf04d3ba04b914000e4a54e162) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'bf2adce8e997f62d6edc6f49f46d6c2d') in 0.1520631 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000021 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_16.asset
-  artifactKey: Guid(9b5a873a9254172458e33c5c861243fa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_16.asset using Guid(9b5a873a9254172458e33c5c861243fa) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0cf39faabaffad211e18270a753046d6') in 0.015419 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_24.asset
-  artifactKey: Guid(74988e04d76d29b479af40d452f49b42) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_24.asset using Guid(74988e04d76d29b479af40d452f49b42) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e3e12de56f3efbf6ce3d6ded6871580c') in 0.0155389 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000022 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_21.asset
-  artifactKey: Guid(f6ce9965216c7c64682e64cd394005a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_21.asset using Guid(f6ce9965216c7c64682e64cd394005a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'aefbaf4978743f72d817994c216031f0') in 0.0144085 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000036 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_14.asset
-  artifactKey: Guid(114bc38f66f37104c911aebd3f7e9d94) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_14.asset using Guid(114bc38f66f37104c911aebd3f7e9d94) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'cd170dcf92a5557619cf91e213469cf7') in 0.0132197 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000028 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_29.asset
-  artifactKey: Guid(2d274eb2db9f3e64a930f728957a4007) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_29.asset using Guid(2d274eb2db9f3e64a930f728957a4007) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'c6e1a334dda2e9741ac3050c3e409e97') in 0.0162776 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000019 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_15.asset
-  artifactKey: Guid(424b3faa2a42bcd4291399dbe7cad0b8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_15.asset using Guid(424b3faa2a42bcd4291399dbe7cad0b8) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'bac258b9554338207033eea375406707') in 0.0153913 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000020 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_49.asset
-  artifactKey: Guid(eed6838fb2dc6b84fb408acd48f14082) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_49.asset using Guid(eed6838fb2dc6b84fb408acd48f14082) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'adadb455922d02ebae1e03c158cee75d') in 0.0143608 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000023 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_59.asset
-  artifactKey: Guid(d35c486355acd3c4d97a1dff64fb1e64) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_59.asset using Guid(d35c486355acd3c4d97a1dff64fb1e64) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '83228f2b21a331a6d11467af208b4b5f') in 0.0146144 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000035 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_70.asset
-  artifactKey: Guid(16f4e67f29fb09549ab4cf8fd1ebd5d6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_70.asset using Guid(16f4e67f29fb09549ab4cf8fd1ebd5d6) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '8dcd53b1762035c57f488163cbbbe70a') in 0.0125684 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000018 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_58.asset
-  artifactKey: Guid(d4cc1b15e561978428e5bfbbd892ea4e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_58.asset using Guid(d4cc1b15e561978428e5bfbbd892ea4e) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '7dbb1366fad3890d55a41792331e83ed') in 0.0143368 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000024 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_64.asset
-  artifactKey: Guid(ed0a216c48f543e4394723433c67f893) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_64.asset using Guid(ed0a216c48f543e4394723433c67f893) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'cc49ad44a08912f6270f188dc9cb8848') in 0.0140952 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000020 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_63.asset
-  artifactKey: Guid(a8f7eb44f47e50e4899fdd1b755dba7e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_63.asset using Guid(a8f7eb44f47e50e4899fdd1b755dba7e) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a81df510b428ca6f214a057e10e8ba13') in 0.0140856 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000022 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_89.asset
-  artifactKey: Guid(7c7f7c0816fa7f64ab86e61ad88aa19d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_89.asset using Guid(7c7f7c0816fa7f64ab86e61ad88aa19d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '6a0133cbad82f2a1a972de3c062c72c7') in 0.0144092 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000033 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_84.asset
-  artifactKey: Guid(8916f64fa2cb39847b7e7a3afaf91e48) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_84.asset using Guid(8916f64fa2cb39847b7e7a3afaf91e48) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'eb06676adac943bec4c5c6a76b1b22a8') in 0.0139563 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000020 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_88.asset
-  artifactKey: Guid(50502178f93ba8942b9fe0ba86761107) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_88.asset using Guid(50502178f93ba8942b9fe0ba86761107) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0d9d560083691ce4e6505bbfa885c617') in 0.0134208 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000022 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_91.asset
-  artifactKey: Guid(b2ff2a07041268e41b4036af25d20e85) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_91.asset using Guid(b2ff2a07041268e41b4036af25d20e85) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'fd456f0a3c2a555ea322ce3f02f2c0e7') in 0.0136135 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000023 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_87.asset
-  artifactKey: Guid(963a531eee353b847b7f56084062c767) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_87.asset using Guid(963a531eee353b847b7f56084062c767) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '3b271482efec83b8d35425219756b4f3') in 0.0134391 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_93.asset
-  artifactKey: Guid(f2c0b643591f98a4a9114e3fe375e255) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_93.asset using Guid(f2c0b643591f98a4a9114e3fe375e255) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'dbc7174b1c638a18a73e80bb51d10d55') in 0.0147409 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000029 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_129.asset
-  artifactKey: Guid(cf8eafe5eae37f84fad6ed5fce515bf1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_129.asset using Guid(cf8eafe5eae37f84fad6ed5fce515bf1) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a5416bd23c6c04e041bfbddf54cce2df') in 0.0150523 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000023 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_137.asset
-  artifactKey: Guid(6f70471b619a32e4e82b6f2f75e649b9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_137.asset using Guid(6f70471b619a32e4e82b6f2f75e649b9) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '57c824dc4636f6697e2b5fa95945ba0e') in 0.0119822 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000019 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_121.asset
-  artifactKey: Guid(dddf4fe87ac84684e9051feb484aebf3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_121.asset using Guid(dddf4fe87ac84684e9051feb484aebf3) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '317a58deca16f69f1a7880b61b3b5255') in 0.0144644 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000021 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_133.asset
-  artifactKey: Guid(cb389927f46d2564b8e90cb19fe6ff1a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_133.asset using Guid(cb389927f46d2564b8e90cb19fe6ff1a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '3510ab04beec3614ab4b6483e8684f27') in 0.013913 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000023 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_109.asset
-  artifactKey: Guid(745c7cd48c16cd6479e6e05c8456a79c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_109.asset using Guid(745c7cd48c16cd6479e6e05c8456a79c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'f3a4375b9af142f1fb43040989e3b353') in 0.0159131 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000031 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_10.asset
-  artifactKey: Guid(ef0a467d0dab4254b81506380ac20790) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_10.asset using Guid(ef0a467d0dab4254b81506380ac20790) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '56da7bd62406c079b887ac9491b2793b') in 0.0133395 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000019 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_122.asset
-  artifactKey: Guid(f744c9a04ed0bd44dbf1cf969d0efebe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_122.asset using Guid(f744c9a04ed0bd44dbf1cf969d0efebe) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '50e28df81cc49bba251ea44265a2f14e') in 0.012952 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000024 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_82.asset
-  artifactKey: Guid(fb320a5cbfb11534b9373848fb3c4076) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_82.asset using Guid(fb320a5cbfb11534b9373848fb3c4076) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '4f617df893b2092b77dd1967f5969763') in 0.0148951 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000021 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_31.asset
-  artifactKey: Guid(a715721a42fc48d4fb19effd73352326) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_31.asset using Guid(a715721a42fc48d4fb19effd73352326) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'dd0b12f4462c1dedf69bb4a2134c708a') in 0.0134788 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000020 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_147.asset
-  artifactKey: Guid(6d4db4d8cd9e2ea49a398e02015a5e6a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_147.asset using Guid(6d4db4d8cd9e2ea49a398e02015a5e6a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '15e16c3496f2b74db228c828bdf1dfd1') in 0.0141685 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000032 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_146.asset
-  artifactKey: Guid(b9721e876cb7cbd4fab6ebcb1d02578c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_146.asset using Guid(b9721e876cb7cbd4fab6ebcb1d02578c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '357c21f54f5e74d28d4e689fa19ec2a8') in 0.0143778 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000022 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_141.asset
-  artifactKey: Guid(e47fa887fe70444448744e9813f2aca9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_141.asset using Guid(e47fa887fe70444448744e9813f2aca9) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '6b31470f71b5a01c3a26547c95ef96cd') in 0.0123561 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000021 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_110.asset
-  artifactKey: Guid(0fc9d635f37c5514d8b8899e245c4d76) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_110.asset using Guid(0fc9d635f37c5514d8b8899e245c4d76) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a6624256aaa941516b13482cb2d9bb43') in 0.0157483 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000024 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_135.asset
-  artifactKey: Guid(3862e2be95bed4744ba19fbc74a2578d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_135.asset using Guid(3862e2be95bed4744ba19fbc74a2578d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e3d51ebb8dfed917e72b93d52ce5c250') in 0.0137089 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000024 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_153.asset
-  artifactKey: Guid(dda403ddaad358f41ba1cf028e31b210) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_153.asset using Guid(dda403ddaad358f41ba1cf028e31b210) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '350398a5aa78ed918cb88f7de9547a48') in 0.0146085 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000032 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_162.asset
-  artifactKey: Guid(1b345f6cf14a5604eac7bdb6f331d562) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_162.asset using Guid(1b345f6cf14a5604eac7bdb6f331d562) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '290ac81ed689a442b7704d537e7cc6ab') in 0.0132983 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000020 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_168.asset
-  artifactKey: Guid(c7da162a23241c044b1390214a4913e1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_168.asset using Guid(c7da162a23241c044b1390214a4913e1) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5bd24dfc1cc242e4b3330a02795cb939') in 0.0074633 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000019 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_176.asset
-  artifactKey: Guid(c705241367b234141ab345d8fe1b9505) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_176.asset using Guid(c705241367b234141ab345d8fe1b9505) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e1e2689dc33e9017af82e9770ef3978b') in 0.0160852 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000019 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_161.asset
-  artifactKey: Guid(4c94fbfde295876418d8f0b540784383) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_161.asset using Guid(4c94fbfde295876418d8f0b540784383) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2a5d06b8dd20b43bdc93e7e2d21cef7d') in 0.0082584 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000027 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_163.asset
-  artifactKey: Guid(7e301ec18e47c834eb3d7adb20537dff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_163.asset using Guid(7e301ec18e47c834eb3d7adb20537dff) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '16c9b216884886eb5306e9460678d47a') in 0.0154421 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000034 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_126.asset
-  artifactKey: Guid(292d8efb5f71b674bbdba71494dcfdf4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_126.asset using Guid(292d8efb5f71b674bbdba71494dcfdf4) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'fe871775b559a7cc4e60b7c293393cb7') in 0.012825 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000022 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_115.asset
-  artifactKey: Guid(b74f1247f2057c6478aef060b9822762) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_115.asset using Guid(b74f1247f2057c6478aef060b9822762) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '972eb4a86983a2b7564ef692ef4170f8') in 0.0145497 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000019 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_97.asset
-  artifactKey: Guid(0398f7b8831a25346ada7c7fe326c088) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_97.asset using Guid(0398f7b8831a25346ada7c7fe326c088) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '69a6b4568fc4d336fbd3b56ab98e0901') in 0.0130235 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000021 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_74.asset
-  artifactKey: Guid(e5959b4862be67149a77a28425be009c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_74.asset using Guid(e5959b4862be67149a77a28425be009c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a0a99421338572fd98e1b6364518d4d9') in 0.0153889 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000026 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_65.asset
-  artifactKey: Guid(090531a0736b6034aac9764addeca00d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_65.asset using Guid(090531a0736b6034aac9764addeca00d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '7c0c60c6ee7994ab0b88e9d73f7f0308') in 0.0148721 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000032 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_90.asset
-  artifactKey: Guid(0d23995686e549f4a85863bccf20da6c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_90.asset using Guid(0d23995686e549f4a85863bccf20da6c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2ac4fdad18269cb9e93a6cb57854595c') in 0.0132201 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000019 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_99.asset
-  artifactKey: Guid(3e1f5a910e1c19f4198fe2f6c963b457) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_99.asset using Guid(3e1f5a910e1c19f4198fe2f6c963b457) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'b3dced35c639317db6aa7c97f28d82d3') in 0.0128687 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_40.asset
-  artifactKey: Guid(7e50c4814afe43446b922a41fd23c84c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_40.asset using Guid(7e50c4814afe43446b922a41fd23c84c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'efe586a0e3b89eec389c70e92ad389b4') in 0.0146386 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000020 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_62.asset
-  artifactKey: Guid(414a549a86339a64e9e8a71e5ee495fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_62.asset using Guid(414a549a86339a64e9e8a71e5ee495fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '07ab0e1bf461579406f627e124d44b83') in 0.0149017 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000021 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_22.asset
-  artifactKey: Guid(9860173b9c74d5244b64e084a44397d0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_22.asset using Guid(9860173b9c74d5244b64e084a44397d0) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'b2d0a93ff4d2040f1cd161c4c931eba4') in 0.0154919 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000032 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_3.asset
-  artifactKey: Guid(3da3a21be2361fe4d87968d6af3688fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_3.asset using Guid(3da3a21be2361fe4d87968d6af3688fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2617147ae571d9b30eb440dc74978fe5') in 0.0165928 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000024 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_38.asset
-  artifactKey: Guid(cb1d6913176241c4ab9bdca01ab98160) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_38.asset using Guid(cb1d6913176241c4ab9bdca01ab98160) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'c742850c7b828bf3fb5414da660392f9') in 0.0148579 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000024 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_157.asset
-  artifactKey: Guid(3c03aca9a7705cf44b06c31a13236a3f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_157.asset using Guid(3c03aca9a7705cf44b06c31a13236a3f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'bfa8155af783106a86ebfa34fad54e9b') in 0.01385 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_125.asset
-  artifactKey: Guid(478d675e7ccb1834c8af8f0b4fab853a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_125.asset using Guid(478d675e7ccb1834c8af8f0b4fab853a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '8379c6cf96798e49f3c7891d7c06c16c') in 0.0152734 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000024 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_170.asset
-  artifactKey: Guid(a970677179d02ee4d9303a799a960e3b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_170.asset using Guid(a970677179d02ee4d9303a799a960e3b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '360a5088e73168de1d893a30afc6d0af') in 0.0349994 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000031 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_172.asset
-  artifactKey: Guid(373fd18081e131b4cbf00c8f229f7250) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_172.asset using Guid(373fd18081e131b4cbf00c8f229f7250) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '795b6411678c349874d2a46a7e679fcc') in 0.0150984 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000020 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_98.asset
-  artifactKey: Guid(e15b0bfdbb9844046909be8a4b89b40d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_98.asset using Guid(e15b0bfdbb9844046909be8a4b89b40d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2a6b1d5904a5affdbfc9650a0c6e44e8') in 0.0145657 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000019 seconds.
-  path: Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_155.asset
-  artifactKey: Guid(153784304f137c7429ef1f183afebf86) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Japan/Japan/Osaka/City/Tiles/Tilemap_155.asset using Guid(153784304f137c7429ef1f183afebf86) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'b326004b3bf6cab53e60d4dd59250943') in 0.0133913 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
-AssetImportWorker is now disconnected from the server
-Process exiting
-Exiting without the bug reporter. Application will terminate with return code 0
