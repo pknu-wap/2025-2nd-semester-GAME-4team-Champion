@@ -9,7 +9,7 @@ public class LevelUpSelect : MonoBehaviour
 
     public TextMeshProUGUI[] selectButtonsText;
     
-    public List<string> allselectTitle = new List<string> {"hp", "fast_stamina", "guard_more_enemy_stamina", "guard", "e", "f", "g"};
+    public List<string> allselectTitle = new List<string> {"hp", "fast_stamina", "guard_more_enemy_stamina", "guard", "stamina", "f", "g"};
     public List<string> unselectedTitle;
 
     public List<string> randomTitle = new List<string> {"a","a","a"};
@@ -57,7 +57,24 @@ public class LevelUpSelect : MonoBehaviour
         
         if (randomTitle[index] == allselectTitle[0])
         {
-            gamemanager.hp += 20;
+            gamemanager.maxhp += 20;
+            gamemanager.currenthp += 20;
+        }
+        if (randomTitle[index] == allselectTitle[1])
+        {
+            gamemanager.playerstaminaregen += 8;
+        }
+        if (randomTitle[index] == allselectTitle[2])
+        {
+            gamemanager.playerpower[0] += 10;
+        }
+        if (randomTitle[index] == allselectTitle[3])
+        {
+            gamemanager.playerpower[1] -= 10;
+        }
+        if (randomTitle[index] == allselectTitle[4])
+        {
+            gamemanager.maxstamina += 20;
         }
         
     }
