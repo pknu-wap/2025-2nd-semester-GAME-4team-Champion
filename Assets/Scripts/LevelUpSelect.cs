@@ -5,10 +5,11 @@ using System.Collections.Generic;
 
 public class LevelUpSelect : MonoBehaviour
 {
+    public GameManager gamemanager;
 
     public TextMeshProUGUI[] selectButtonsText;
     
-    public List<string> allselectTitle = new List<string> {"a", "b", "c", "d", "e", "f", "g"};
+    public List<string> allselectTitle = new List<string> {"hp", "fast_stamina", "guard_more_enemy_stamina", "guard", "e", "f", "g"};
     public List<string> unselectedTitle;
 
     public List<string> randomTitle = new List<string> {"a","a","a"};
@@ -50,9 +51,15 @@ public class LevelUpSelect : MonoBehaviour
         unselectedTitle.RemoveAll(x => selectedList.Contains(x));
     }
 
-    public void selectrandomvalue(int index)
+    public void selectrandomvalue(int index)    //선택지 중 하나 선택
     {
         selectedList.Add(randomTitle[index]);
+        
+        if (randomTitle[index] == allselectTitle[0])
+        {
+            gamemanager.hp += 20;
+        }
+        
     }
 
     public void showLevelUp()
