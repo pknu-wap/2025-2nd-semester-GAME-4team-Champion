@@ -1,14 +1,10 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 
-public class BossAlgorism : MonoBehaviour
+public class NormalAlgorism : MonoBehaviour
 {
     [Header("Common")]
     [SerializeField] private float AttackCooldown;
-    public float SummonTimer;
-    [SerializeField] private bool Summoned = false;
-    public Slider BossTimerSlider;
     [SerializeField] private Transform player;
 
     [Header("Dash (Melee)")]
@@ -33,10 +29,7 @@ public class BossAlgorism : MonoBehaviour
     [SerializeField] private float volleyInterval;
 
     [Header("Remain")]
-    public Text Timer;
-    public GameObject HP;
-    public GameObject Stamina;
-    [SerializeField] private float attackTimer;
+    private float attackTimer;
     private Rigidbody2D rb;
     private bool isActing;
     private Collider2D PlayerCol;
@@ -50,45 +43,11 @@ public class BossAlgorism : MonoBehaviour
         attackTimer = 0f;
         rb = GetComponent<Rigidbody2D>();
         if (player) PlayerCol = player.GetComponent<Collider2D>();
-
-        if (!Summoned)
-        {
-            rb.linearVelocity = Vector2.zero;
-            if (spriteRenderer) spriteRenderer.enabled = false;
-            if (TryGetComponent<Collider2D>(out var selfCol)) selfCol.enabled = false;
-        }
-
-        if (BossTimerSlider)
-        {
-            BossTimerSlider.maxValue = Mathf.Max(SummonTimer, 0f);
-            BossTimerSlider.value = SummonTimer;
-        }
-
         rb.position = ClampInside(rb.position);
     }
 
     void Update()
     {
-        if (!Summoned)
-        {
-            if (SummonTimer > 0f)
-            {
-                SummonTimer -= Time.deltaTime;
-
-                if (Timer)
-                    Timer.text = Mathf.CeilToInt(SummonTimer).ToString();
-
-                if (BossTimerSlider) 
-                    BossTimerSlider.value = SummonTimer;
-            }
-
-            if (SummonTimer <= 0f)
-            {
-                ActivateBoss();
-            }
-            return;
-        }
-
         if (!isActing)
         {
             attackTimer += Time.deltaTime;
@@ -102,28 +61,8 @@ public class BossAlgorism : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!Summoned)
-        {
-            rb.linearVelocity = Vector2.zero;
-            return;
-        }
-
         if (!isActing)
             AIMoveMent();
-    }
-
-    void ActivateBoss()
-    {
-        Summoned = true;
-
-        if (spriteRenderer) spriteRenderer.enabled = true;
-        if (TryGetComponent<Collider2D>(out var selfCol)) selfCol.enabled = true;
-
-        rb.linearVelocity = Vector2.zero;
-
-        if (BossTimerSlider) BossTimerSlider.gameObject.SetActive(false);
-        HP.SetActive(true);
-        Stamina.SetActive(true);    
     }
 
     void Attack_Way_Choice()
@@ -316,7 +255,6 @@ public class BossAlgorism : MonoBehaviour
         Vector2 center = (Vector2)movementArea.bounds.center;
         Vector2 inward = (center - closest).sqrMagnitude > 1e-8f ? (center - closest).normalized : Vector2.zero;
 
-        // 가장자리 살짝 안쪽으로
         return closest + inward * 0.14f;
     }
 
