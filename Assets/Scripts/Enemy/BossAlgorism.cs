@@ -316,7 +316,6 @@ public class BossAlgorism : MonoBehaviour
         Vector2 center = (Vector2)movementArea.bounds.center;
         Vector2 inward = (center - closest).sqrMagnitude > 1e-8f ? (center - closest).normalized : Vector2.zero;
 
-        // 가장자리 살짝 안쪽으로
         return closest + inward * 0.14f;
     }
 
