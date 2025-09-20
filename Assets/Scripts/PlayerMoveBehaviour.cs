@@ -8,6 +8,7 @@ public class PlayerMoveBehaviour : MonoBehaviour
     [Header("Move")]
     [SerializeField] private float moveSpeed = 7.0f;
     [SerializeField] private float flipDeadzone = 0.05f;
+    [SerializeField] private PlayerCombat combat;
 
     private PlayerMove playermoves;     // .inputactions가 생성한 래퍼
     private Vector2 movement;
@@ -31,7 +32,9 @@ public class PlayerMoveBehaviour : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         Panimator = GetComponent<Animator>();
         PspriteRenderer = GetComponent<SpriteRenderer>();
+        if (!combat) combat = GetComponent<PlayerCombat>(); // ★ 추가
     }
+
 
     private void OnEnable() => playermoves.Enable();
     private void OnDisable() => playermoves.Disable();
@@ -63,12 +66,14 @@ public class PlayerMoveBehaviour : MonoBehaviour
         }
     }
 
-    // PlayerMoveBehaviour.cs
     private void Move()
     {
         if (movementLocked) return;
-        rb.linearVelocity = movement * moveSpeed; // ★ MovePosition 대신 velocity 사용
+
+        float yMul = (combat != null && combat.IsInCombat) ? combat.CombatYSpeedMul : 1f;
+        rb.linearVelocity = new Vector2(movement.x * moveSpeed, movement.y * moveSpeed * yMul);
     }
+
 
 
     private void AdjustPlayerFacingDirection()
