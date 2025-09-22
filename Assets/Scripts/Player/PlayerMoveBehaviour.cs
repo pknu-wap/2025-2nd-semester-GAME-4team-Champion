@@ -1,87 +1,125 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMoveBehaviour : MonoBehaviour
 {
-    [Header("UI")]
-    [SerializeField] private Slider Hp;
-    [SerializeField] private Slider Stamina;
-    [Header("Speed")]
-    [SerializeField] private float moveSpeed = 7f;     // 최대 이동 속도 (u/s)
-    [SerializeField] private bool normalizeDiagonal = true; // 대각선 보정
+    [Header("Move")]
+    [SerializeField] private float moveSpeed = 7.0f;
+    [SerializeField] private float flipDeadzone = 0.05f;
+    [SerializeField] private PlayerCombat combat;
 
-    [Header("Smoothing")]
-    [SerializeField] private float accelTime = 0.06f;  // 가속 스무딩
-    [SerializeField] private float decelTime = 0.08f;  // 감속 스무딩
-
-    [Header("Input")]
-    [SerializeField, Range(0f, 0.3f)] private float inputDeadzone = 0.05f; // 아주 미세한 입력 무시
-
-    // ── 내부 상태 ───────────────────────────────────────────────────────────────
-    private PlayerMove actions;          // 자동생성 InputActions
-    private InputAction moveAction;      // Movement/Move (Vector2)
+    private PlayerMove playermoves;     // .inputactions�� ������ ����
+    private Vector2 movement;
     private Rigidbody2D rb;
 
-    private Vector2 desiredDir;          // 입력으로 원하는 방향(정규화/비정규화 이전)
-    private Vector2 currentVel;          // 현재 속도 (월드 u/s)
-    private Vector2 smoothVelRef;        // SmoothDamp용 참조 (ref 변수)
+    // Anim / Visual
+    private Animator Panimator;
+    private SpriteRenderer PspriteRenderer;
 
-    // 성능: 미리 캐싱해두는 정적 상수
-    private static readonly Vector2 V2_ZERO = Vector2.zero;
+    // �ܺο��� ���� �� �ֵ��� ���� (Combat�� ����)
+    public Vector2 LastFacing { get; private set; } = Vector2.right;
+    private int lastFacingX = 1;
 
-    // Move 방식을 고르고 싶다면 여기서 전환 (true=velocity, false=MovePosition)
-    private const bool USE_RB_VELOCITY = true;
+    // �̵� ���(GuardBreak ���� ���)
+    private bool movementLocked = false;
+    private RigidbodyConstraints2D constraintsBeforeLock;
 
     private void Awake()
     {
-        actions = new PlayerMove();
-        moveAction = actions.Movement.Move;
-
+        playermoves = new PlayerMove();
         rb = GetComponent<Rigidbody2D>();
-        // 물리적 보간 추천(카메라 떨림 방지). 프로젝트 상황에 맞춰 선택.
-        rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+        Panimator = GetComponent<Animator>();
+        PspriteRenderer = GetComponent<SpriteRenderer>();
+        if (!combat) combat = GetComponent<PlayerCombat>(); // �� �߰�
     }
 
-    private void OnEnable() => actions.Movement.Enable();
-    private void OnDisable() => actions.Movement.Disable();
 
-    private void OnDestroy() => actions.Dispose();
+    private void OnEnable() => playermoves.Enable();
+    private void OnDisable() => playermoves.Disable();
 
     private void Update()
     {
-        // 입력 읽기 (할당 없음)
-        Vector2 raw = moveAction.ReadValue<Vector2>();
-
-        // 데드존
-        if (raw.sqrMagnitude < inputDeadzone * inputDeadzone) raw = V2_ZERO;
-
-        // 대각선 보정 (정규화)
-        if (normalizeDiagonal && raw != V2_ZERO)
-            raw = raw.normalized;
-
-        desiredDir = raw;
+        PlayerInput();
     }
 
     private void FixedUpdate()
     {
-        // 목표 속도: 방향 * 최대속도
-        Vector2 targetVel = desiredDir * moveSpeed;
+        AdjustPlayerFacingDirection();
+        Move();
+    }
 
-        // 가속/감속 시간 분리 스무딩 (SmoothDamp: 프레임 독립적)
-        float smooth = targetVel == V2_ZERO ? decelTime : accelTime;
-        currentVel = Vector2.SmoothDamp(currentVel, targetVel, ref smoothVelRef, smooth, Mathf.Infinity, Time.fixedDeltaTime);
+    private void PlayerInput()
+    {
+        movement = playermoves.Movement.Move.ReadValue<Vector2>();
 
-        if (USE_RB_VELOCITY)
+        // ������ ���� �ٶ󺸴� ���� ����
+        if (movement.sqrMagnitude > 0.0001f)
+            LastFacing = movement.normalized;
+
+        if (Panimator != null)
         {
-            // 물리엔진과 잘 어울림: 연속 충돌 모드일 때 특히 유리
-            rb.linearVelocity = currentVel;
+            Panimator.SetFloat("moveX", movement.x);
+            Panimator.SetFloat("moveY", movement.y);
+            Panimator.SetBool("isMoving", movement.sqrMagnitude > 0.0001f);
+        }
+    }
+
+    private void Move()
+    {
+        if (movementLocked) return;
+
+        float yMul = (combat != null && combat.IsInCombat) ? combat.CombatYSpeedMul : 1f;
+        rb.linearVelocity = new Vector2(movement.x * moveSpeed, movement.y * moveSpeed * yMul);
+    }
+
+
+
+    private void AdjustPlayerFacingDirection()
+    {
+        if (PspriteRenderer == null) return;
+        float x = movement.x;
+        if (Mathf.Abs(x) < flipDeadzone) return;
+
+        int dir = x > 0f ? 1 : -1;
+        if (dir != lastFacingX)
+        {
+            // ���� ��������Ʈ�� �������� ���ٰ� ����
+            PspriteRenderer.flipX = (dir == -1);
+            lastFacingX = dir;
+
+            if (Panimator) Panimator.SetFloat("lastMoveX", lastFacingX);
+        }
+    }
+
+    // === �ܺο��� �̵� ��� ��� (GuardBreak���� ���) ===
+
+    public void SetMovementLocked(bool locked, bool hardFreezePhysics = true, bool zeroVelocity = true)
+    {
+        movementLocked = locked;
+
+        if (locked)
+        {
+            if (zeroVelocity)
+            {
+                rb.linearVelocity = Vector2.zero;
+                rb.angularVelocity = 0f;
+            }
+
+            if (hardFreezePhysics)
+            {
+                constraintsBeforeLock = rb.constraints;
+                var keepRot = constraintsBeforeLock & RigidbodyConstraints2D.FreezeRotation;
+                rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY | keepRot;
+            }
+
+            if (Panimator) Panimator.SetBool("isMoving", false);
         }
         else
         {
-            // MovePosition 사용 시에도 물리 일관성 유지
-            rb.MovePosition(rb.position + currentVel * Time.fixedDeltaTime);
+            if (hardFreezePhysics) rb.constraints = constraintsBeforeLock;
         }
     }
+
 }
