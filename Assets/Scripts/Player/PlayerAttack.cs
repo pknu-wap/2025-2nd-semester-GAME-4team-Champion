@@ -17,14 +17,17 @@ public class PlayerAttack : MonoBehaviour
     private bool isAttacking = false;
     private bool nextBuffered = false;
     private float lastAttackEndTime = -999f;
+    private bool chargeLocked = false;
 
     private bool attackHeld = false;
     private float attackPressedTime = -999f;
     private Coroutine chargeCo;
     private Coroutine attackCo;
-
+    private Coroutine attackMoveLockCo;
     // 충돌 무시용
     private Collider2D[] myColliders;
+
+    public bool IsAttacking => isAttacking;
 
     public void Bind(PlayerCombat c, PlayerMoveBehaviour m, Animator a)
     {
@@ -78,12 +81,26 @@ public class PlayerAttack : MonoBehaviour
     private void OnAttackStarted(InputAction.CallbackContext _)
     {
         if (combat.IsStaminaBroken || combat.InHitstun || combat.IsParryLocked) return;
-        attackHeld = true;
+
+        // ★ 항상 버퍼 판정을 위한 클릭시각 갱신
         attackPressedTime = Time.time;
 
+        // ★ Atk1 이후(콤보 진행 중)엔 차지만 금지: Charging/코루틴 시작만 막는다
+        if (chargeLocked)
+        {
+            // 콤보 중에는 여기서 끝. (버퍼는 OnAttackCanceled에서 nextBuffered로 처리)
+            return;
+        }
+
+        // 차지 허용 구간에서만 홀드/차지 시작
+        attackHeld = true;
+        animator?.SetBool("Charging", true);
+        // (Charging 표시를 쓰고 있다면) animator?.SetBool("Charging", true);
         if (chargeCo != null) StopCoroutine(chargeCo);
         chargeCo = StartCoroutine(CheckChargeReady());
     }
+
+
 
     private void OnAttackCanceled(InputAction.CallbackContext _)
     {
@@ -114,7 +131,6 @@ public class PlayerAttack : MonoBehaviour
             float held = Time.time - t0;
             if (held >= combat.ChargeTime)
             {
-                animator?.SetBool("Charging", true);
                 if (!isAttacking) attackCo = StartCoroutine(DoChargeAttack());
                 yield break;
             }
@@ -127,16 +143,20 @@ public class PlayerAttack : MonoBehaviour
         isAttacking = true;
         nextBuffered = false;
 
-        if (combat.LockMoveDuringAttack && moveRef) moveRef.SetMovementLocked(true, false);
+
         animator?.SetTrigger($"Atk{Mathf.Clamp(step + 1, 1, combat.MaxCombo)}");
+        if (combat.LockMoveDuringAttack)
+        {
+            float lockTime = combat.Windup + combat.Active + combat.Recovery; // ← 인스펙터로 조절
+            if (attackMoveLockCo != null) StopCoroutine(attackMoveLockCo);
+            attackMoveLockCo = StartCoroutine(LockMoveFor(lockTime));
+        }
 
         yield return new WaitForSeconds(combat.Windup);
-
         DoHitbox(combat.BaseDamage * DamageMulByStep(step),
                  combat.BaseKnockback * KnockbackMulByStep(step),
                  combat.BaseRange * RangeMulByStep(step),
                  combat.BaseRadius * RadiusMulByStep(step));
-
         yield return new WaitForSeconds(combat.Active);
         yield return new WaitForSeconds(combat.Recovery);
 
@@ -154,38 +174,52 @@ public class PlayerAttack : MonoBehaviour
         {
             comboIndex = 0;
             nextBuffered = false;
+            chargeLocked = false;
         }
         attackCo = null;
+
     }
 
     private IEnumerator DoChargeAttack()
     {
         isAttacking = true;
 
-        if (combat.LockMoveDuringAttack && moveRef) moveRef.SetMovementLocked(true, false);
         if (animator)
         {
             animator.ResetTrigger("Atk1"); animator.ResetTrigger("Atk2");
             animator.ResetTrigger("Atk3"); animator.ResetTrigger("Atk4");
-            animator.SetBool("Charging", false);
             animator.SetTrigger("AtkCharge");
         }
 
-        yield return new WaitForSeconds(combat.Windup + 0.07f);
+        if (combat.LockMoveDuringAttack)
+        {
+            float lockTime = (combat.Windup + 0.07f) + combat.Active + combat.Recovery;
+            if (attackMoveLockCo != null) StopCoroutine(attackMoveLockCo);
+            attackMoveLockCo = StartCoroutine(LockMoveFor(lockTime));
+        }
 
+        yield return new WaitForSeconds(combat.Windup + 0.07f);
         DoHitbox(combat.BaseDamage * combat.ChargeDamageMul,
                  combat.BaseKnockback * combat.ChargeKnockMul,
                  combat.BaseRange * combat.ChargeRangeMul,
                  combat.BaseRadius * combat.ChargeRadiusMul);
-
+        if (animator) animator.SetBool("Charging", false);
         yield return new WaitForSeconds(combat.Active + combat.Recovery);
-
+        
         if (combat.LockMoveDuringAttack && moveRef) moveRef.SetMovementLocked(false, false);
 
         isAttacking = false;
         lastAttackEndTime = Time.time;
         comboIndex = 0;
         attackCo = null;
+    }
+
+    private IEnumerator LockMoveFor(float seconds)
+    {
+        if (moveRef) moveRef.SetMovementLocked(true, hardFreezePhysics: false, zeroVelocity: false);
+        yield return new WaitForSeconds(seconds);
+        if (moveRef) moveRef.SetMovementLocked(false, hardFreezePhysics: false);
+        attackMoveLockCo = null;
     }
 
     private void DoHitbox(float dmg, float knock, float range, float radius)

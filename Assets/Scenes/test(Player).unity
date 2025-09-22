@@ -188,7 +188,7 @@ SpriteRenderer:
   m_Size: {x: 0.19, y: 0.39}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &211200421
@@ -274,12 +274,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2874903474077935592, guid: eb56d055b9e70e64d8bc3e90dd83b754, type: 3}
+  m_Sprite: {fileID: -4805033873276769599, guid: 38492ed79e53c8f4f86121ab9c19511a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -321,17 +321,23 @@ MonoBehaviour:
   staminaMax: 100
   staminaRegenPerSec: 25
   staminaBreakTime: 1
+  autoFaceOnCombatEnter: 1
+  autoFaceSearchRadius: 15
   disengageDistance: 150
   enemyScanInterval: 0.25
-  combatYSpeedMultiplier: 0.7
+  combatYSpeedMultiplier: 0.3
+  autoFaceDuringCombat: 1
+  autoFaceEvenWhileAttacking: 0
+  autoFaceInputDeadzoneX: 0.2
+  weavingPostHold: 0.2
   guardAngle: 120
   parryWindow: 0.3
   blockDamageMul: 0
   blockKnockMul: 0.3
-  baseHitstun: 0.2
+  baseHitstun: 0.6
   blockHitstunMul: 0.5
   debugLogs: 1
-  maxCombo: 5
+  maxCombo: 4
   comboGapMax: 0.6
   bufferWindow: 0.35
   lockMoveDuringAttack: 1
@@ -345,13 +351,15 @@ MonoBehaviour:
   windup: 0.08
   active: 0.06
   recovery: 0.12
-  chargeTime: 0.5
+  chargeTime: 0.3
   chargeDamageMul: 3
   chargeKnockMul: 2
   chargeRangeMul: 1.2
   chargeRadiusMul: 1.2
   ignoreEnemyCollisionDuringActive: 1
   extraIgnoreTime: 0.02
+  hitVariants: 3
+  weavingVariants: 3
 --- !u!50 &480569105
 Rigidbody2D:
   serializedVersion: 5
@@ -413,7 +421,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.09, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
 --- !u!114 &480569107
@@ -431,6 +439,7 @@ MonoBehaviour:
   moveSpeed: 7
   flipDeadzone: 0.05
   combat: {fileID: 480569104}
+  blockFlipFromMovement: 0
 --- !u!114 &480569108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,7 +454,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   combat: {fileID: 480569104}
   moveRef: {fileID: 480569107}
-  animator: {fileID: 0}
+  animator: {fileID: 480569110}
 --- !u!114 &480569109
 MonoBehaviour:
   m_ObjectHideFlags: 0

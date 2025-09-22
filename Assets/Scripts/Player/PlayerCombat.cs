@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerCombat : MonoBehaviour
@@ -31,10 +32,15 @@ public class PlayerCombat : MonoBehaviour
 
     // === Combat State ===
     [Header("Combat State")]
+    [Header("Facing (Auto)")]
+    [SerializeField] private bool autoFaceOnCombatEnter = true;   // 전투 진입 시 자동 바라보기
+    [SerializeField] private float autoFaceSearchRadius = 15f;    // 탐색 반경
     [SerializeField] private float disengageDistance = 150f;     // 비전투 해제 거리
     [SerializeField] private float enemyScanInterval = 0.25f;    // 거리 체크 간격
-    [SerializeField, Range(0f, 1f)] private float combatYSpeedMultiplier = 0.7f; // 전투 중 Y축 속도 배수
-
+    [SerializeField, Range(0f, 1f)] private float combatYSpeedMultiplier = 0.3f; // 전투 중 Y축 속도 배수
+    [SerializeField] private bool autoFaceDuringCombat = true;   //  전투 중 지속 추적
+    [SerializeField] private bool autoFaceEvenWhileAttacking = false; // 공격 중에도 돌릴지
+    [SerializeField] private float autoFaceInputDeadzoneX = 0.2f; // 플레이어가 이 이상 좌/우로 입력 주면 자동 전환 잠시 무시
     private bool inCombat = false;
     private Coroutine combatMonitorCo;
 
@@ -42,8 +48,10 @@ public class PlayerCombat : MonoBehaviour
     public float CombatYSpeedMul => combatYSpeedMultiplier;
 
 
-    // --------- Guard / Parry (수치조정 가능) ---------
+    // --------- Guard / Weaving (수치조정 가능) ---------
     [Header("Guard / Parry (Config)")]
+    [Header("Weaving (Parry) Lock")]
+    [SerializeField] private float weavingPostHold = 0.10f;
     [SerializeField] private float guardAngle = 120f;
     [SerializeField] private float parryWindow = 0.3f;
     [SerializeField] private float blockDamageMul = 0f;
@@ -81,7 +89,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float baseRadius = 0.6f;
 
     [Header("Attack - Timings (sec)")]
-    [SerializeField] private float windup = 0.08f;
+    [SerializeField] private float windup = 0.20f;  
     [SerializeField] private float active = 0.06f;
     [SerializeField] private float recovery = 0.12f;
 
@@ -96,6 +104,13 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private bool ignoreEnemyCollisionDuringActive = true;
     [SerializeField] private float extraIgnoreTime = 0.02f;
 
+
+    // === 에니메이션 가짓수 ===
+    [Header("Animation Variants")]
+    [SerializeField] private int hitVariants = 3;      // Hit1..HitN
+    [SerializeField] private int weavingVariants = 3;  // Weaving1..WeavingN
+
+
     // === 공개 Getter (서브 컴포넌트가 읽음) ===
     public bool DebugLogs => debugLogs;
     public bool IsStaminaBroken => staminaBroken;
@@ -103,7 +118,6 @@ public class PlayerCombat : MonoBehaviour
     public PlayerMoveBehaviour MoveRef => moveRef;
     public Animator Anim => animator;
     public Rigidbody2D RB => rb;
-
     // Guard/Parry
     public float GuardAngle => guardAngle;
     public float ParryWindow => parryWindow;
@@ -174,23 +188,58 @@ public class PlayerCombat : MonoBehaviour
     {
         if (inCombat) return;
         inCombat = true;
-        if (animator) animator.SetBool("InCombat", true);
+        animator?.SetBool("InCombat", true);
 
-        // 모니터 시작
+        moveRef?.SetFlipFromMovementBlocked(true);
+
+        if (autoFaceOnCombatEnter) TryAutoFaceNearestEnemyX();
         if (combatMonitorCo != null) StopCoroutine(combatMonitorCo);
         combatMonitorCo = StartCoroutine(CombatMonitor());
     }
-
-    public void EnterCombatByInteraction() => EnterCombat("Interaction");
 
     public void ExitCombat()
     {
         if (!inCombat) return;
         inCombat = false;
-        if (animator) animator.SetBool("InCombat", false);
+        animator?.SetBool("InCombat", false);
+
+        // ★ 비전투로 돌아오면 다시 이동으로 X플립 허용
+        moveRef?.SetFlipFromMovementBlocked(false);
 
         if (combatMonitorCo != null) { StopCoroutine(combatMonitorCo); combatMonitorCo = null; }
     }
+
+
+    private void TryAutoFaceNearestEnemyX()
+    {
+        float radius = (autoFaceSearchRadius > 0f) ? autoFaceSearchRadius : disengageDistance;
+
+        var hits = Physics2D.OverlapCircleAll(transform.position, radius, enemyMask);
+        if (hits == null || hits.Length == 0) return;
+
+        Transform nearest = null;
+        float bestSqr = float.PositiveInfinity;
+        Vector2 myPos = transform.position;
+
+        foreach (var h in hits)
+        {
+            if (!h) continue;
+            float d2 = ((Vector2)h.transform.position - myPos).sqrMagnitude;
+            if (d2 < bestSqr)
+            {
+                bestSqr = d2;
+                nearest = h.transform;
+            }
+        }
+
+        if (nearest && moveRef)
+            moveRef.FaceTargetX(nearest.position.x);
+    }
+
+
+    public void EnterCombatByInteraction() => EnterCombat("Interaction");
+
+    
 
     // 적 사망 알림(선택적으로 적에서 호출 가능)
     public void NotifyEnemyKilled(Transform enemy = null)
@@ -207,10 +256,13 @@ public class PlayerCombat : MonoBehaviour
 
     private IEnumerator CombatMonitor()
     {
-        // 전투 중 주기적으로 거리 체크 → 적이 멀어지면 비전투
         var wait = new WaitForSeconds(enemyScanInterval);
         while (inCombat)
         {
+            // ★ 전투 중 자동 바라보기
+            if (autoFaceDuringCombat)
+                AutoFaceTick();
+
             if (!HasEnemyWithin(disengageDistance))
             {
                 ExitCombat();
@@ -219,6 +271,26 @@ public class PlayerCombat : MonoBehaviour
             yield return wait;
         }
     }
+
+    private void AutoFaceTick()
+    {
+        if (!moveRef) return;
+
+        // 플레이어가 수평 입력을 크게 주고 있으면, 의도 우선 → 자동 전환 잠시 보류
+        if (Mathf.Abs(moveRef.CurrentInput.x) >= autoFaceInputDeadzoneX)
+            return;
+
+        // 공격 중 자동 전환 끄기 옵션
+        if (!autoFaceEvenWhileAttacking && attack != null && attack.IsAttacking)
+            return;
+
+        // 필요 시: 가드브레이크/사망 등 예외 추가 가능
+        // if (IsStaminaBroken) return;
+
+        // 가장 가까운 적을 향해 X-플립 (이 함수는 이전에 추가한 그대로 사용)
+        TryAutoFaceNearestEnemyX();
+    }
+
 
 
     private IEnumerator VitalsTick()
@@ -262,41 +334,41 @@ public class PlayerCombat : MonoBehaviour
     // hitDir: "적 → 플레이어" 방향, hitstun: 적이 주는 경직(초). <0이면 기본값 사용
     public void OnHit(float damage, float knockback, Vector2 hitDir, bool parryable, GameObject attacker = null, float hitstun = -1f)
     {
-
         // i-프레임 중이면 무시
         if (Time.time < iFrameEndTime) return;
+
+        // 전투 상태 진입
         EnterCombat("GotHit");
 
+        // 정면 콘 판정
         Vector2 facing = (moveRef && moveRef.LastFacing.sqrMagnitude > 0f) ? moveRef.LastFacing : Vector2.right;
         Vector2 inFrontDir = -hitDir.normalized;  // 플레이어→적
         bool inFront = Vector2.Dot(facing, inFrontDir) >= Mathf.Cos(guardAngle * 0.5f * Mathf.Deg2Rad);
 
-        // 방어 시스템에 판정 위임
+        // 방어 시스템 판정
         var outcome = defense ? defense.Evaluate(inFront, parryable) : DefenseOutcome.None;
 
+        // --- 패링 성공 ---
         if (outcome == DefenseOutcome.Parry)
         {
-            if (debugLogs) Debug.Log($"[PARRY OK] t={Time.time:F2}s, attacker={(attacker ? attacker.name : "null")}");
-            animator?.SetTrigger("Parry");
+            if (debugLogs) Debug.Log($"[WEAVING OK] t={Time.time:F2}s, attacker={(attacker ? attacker.name : "null")}");
+            PlayRandomWeaving();
 
             var parryableTarget = attacker ? attacker.GetComponent<IParryable>() : null;
             parryableTarget?.OnParried(transform.position);
 
-            // === 패링 후 딜레이 계산: (패링 윈도우 종료 시각 + 0.1) - 지금
+            // 패링 윈도우 잔여시간 + 0.1초 동안 조작잠금 & 가드 유지
             float windowEnd = (defense ? defense.LastBlockPressedTime : Time.time) + ParryWindow;
-            float lockDuration = Mathf.Max(0f, (windowEnd + 0.1f) - Time.time);
+            float lockDuration = Mathf.Max(0f, (windowEnd + weavingPostHold) - Time.time);
 
-            // 1) 이동/공격 입력 봉인(조작 잠금)
-            StartParryLock(lockDuration);
+            StartParryLock(lockDuration);         // 이동/공격 입력 잠금, 물리속도 유지
+            defense?.ForceBlockFor(lockDuration); // 가드 유지
 
-            // 2) 가드 유지: 패링 윈도우 끝 ~ +0.1초까지 포함해서 전체 lockDuration 동안 유지
-            defense?.ForceBlockFor(lockDuration);
-
-            // (선택) 아주 짧은 i-frame
+            // 짧은 i-frame (선택)
             iFrameEndTime = Time.time + 0.05f;
             return;
         }
-
+        // --- 가드 성공(패링 아님) ---
         else if (outcome == DefenseOutcome.Block)
         {
             float finalDamage = damage * blockDamageMul;
@@ -305,7 +377,7 @@ public class PlayerCombat : MonoBehaviour
             ApplyDamage(finalDamage);
             ApplyKnockbackXOnly(inFrontDir, finalKnock);
 
-            stamina -= damage; // 필요하면 계수로 바꿔도 됨
+            stamina -= damage; // 필요시 계수 조정
             OnStaminaChanged?.Invoke(stamina, staminaMax);
 
             if (stamina <= 0f)
@@ -315,20 +387,21 @@ public class PlayerCombat : MonoBehaviour
             else
             {
                 float stun = (hitstun >= 0f ? hitstun : baseHitstun) * blockHitstunMul;
-                StartHitstun(stun);
+                StartHitstun(stun, playHitAnim: false); // ★ 가드시 Hit 애니 금지
             }
 
             animator?.SetTrigger("BlockHit");
             return;
         }
 
-        // 가드 실패(측/후방 포함)
+        // --- 가드 실패 / 측·후방 / 비방어 ---
         ApplyDamage(damage);
         ApplyKnockbackXOnly(inFrontDir, knockback);
 
         float stunRaw = (hitstun >= 0f ? hitstun : baseHitstun);
-        StartHitstun(stunRaw);
+        StartHitstun(stunRaw); // 기본값: Hit 애니 재생
     }
+
 
     public void StartParryLock(float duration)
     {
@@ -380,19 +453,22 @@ public class PlayerCombat : MonoBehaviour
         rb.linearVelocity = new Vector2(x * force, 0f);
     }
 
-    public void StartHitstun(float duration)
+    // 변경
+    public void StartHitstun(float duration, bool playHitAnim = true)
     {
         if (duration <= 0f) return;
 
-        // 공격은 각자 스크립트에서 취소하지만, 조작 잠금은 여기서 통일
         float end = Time.time + duration;
         hitstunEndTime = Mathf.Max(hitstunEndTime, end);
         if (hitstunCo == null) hitstunCo = StartCoroutine(HitstunRoutine());
 
         // 물리는 살리고 조작만 잠금
         moveRef?.SetMovementLocked(true, hardFreezePhysics: false, zeroVelocity: false);
-        animator?.SetTrigger("Hit");
+
+        // ★ 여기서 조건부로만 Hit 트리거
+        if (playHitAnim) PlayRandomHit();
     }
+
 
     private IEnumerator HitstunRoutine()
     {
@@ -402,7 +478,24 @@ public class PlayerCombat : MonoBehaviour
         moveRef?.SetMovementLocked(false, hardFreezePhysics: false);
         hitstunCo = null;
     }
+
+    private void PlayRandomHit()
+    {
+        if (!animator) return;
+        int idx = Mathf.Clamp(Random.Range(1, hitVariants + 1), 1, hitVariants);
+        animator.SetTrigger($"Hit{idx}");
+    }
+
+    private void PlayRandomWeaving()
+    {
+        if (!animator) return;
+        int idx = Mathf.Clamp(Random.Range(1, weavingVariants + 1), 1, weavingVariants);
+        animator.SetTrigger($"Weaving{idx}");
+    }
+
+
 }
+
 
 // 선택: 적이 패링되었을 때 반응
 public interface IParryable { void OnParried(Vector3 parrySourcePosition); }

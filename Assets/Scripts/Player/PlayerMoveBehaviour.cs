@@ -10,9 +10,16 @@ public class PlayerMoveBehaviour : MonoBehaviour
     [SerializeField] private float flipDeadzone = 0.05f;
     [SerializeField] private PlayerCombat combat;
 
-    private PlayerMove playermoves;     // .inputactions가 생성한 래퍼
+    public Vector2 CurrentInput => movement;
+    private PlayerMove playermoves;
     private Vector2 movement;
     private Rigidbody2D rb;
+
+    [Header("Facing Control")]
+    [SerializeField] private bool blockFlipFromMovement = false; // 이동 입력으로 인한 X플립 차단
+
+    public bool IsFlipFromMovementBlocked => blockFlipFromMovement;
+    public void SetFlipFromMovementBlocked(bool blocked) => blockFlipFromMovement = blocked;
 
     // Anim / Visual
     private Animator Panimator;
@@ -25,6 +32,7 @@ public class PlayerMoveBehaviour : MonoBehaviour
     // 이동 잠금(GuardBreak 동안 사용)
     private bool movementLocked = false;
     private RigidbodyConstraints2D constraintsBeforeLock;
+
 
     private void Awake()
     {
@@ -54,8 +62,7 @@ public class PlayerMoveBehaviour : MonoBehaviour
     {
         movement = playermoves.Movement.Move.ReadValue<Vector2>();
 
-        // 움직일 때만 바라보는 방향 갱신
-        if (movement.sqrMagnitude > 0.0001f)
+        if (!blockFlipFromMovement && movement.sqrMagnitude > 0.0001f)
             LastFacing = movement.normalized;
 
         if (Panimator != null)
@@ -78,6 +85,8 @@ public class PlayerMoveBehaviour : MonoBehaviour
 
     private void AdjustPlayerFacingDirection()
     {
+        if (blockFlipFromMovement) return;
+
         if (PspriteRenderer == null) return;
         float x = movement.x;
         if (Mathf.Abs(x) < flipDeadzone) return;
@@ -85,10 +94,8 @@ public class PlayerMoveBehaviour : MonoBehaviour
         int dir = x > 0f ? 1 : -1;
         if (dir != lastFacingX)
         {
-            // 원본 스프라이트가 오른쪽을 본다고 가정
             PspriteRenderer.flipX = (dir == -1);
             lastFacingX = dir;
-
             if (Panimator) Panimator.SetFloat("lastMoveX", lastFacingX);
         }
     }
@@ -114,7 +121,7 @@ public class PlayerMoveBehaviour : MonoBehaviour
                 rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY | keepRot;
             }
 
-            if (Panimator) Panimator.SetBool("isMoving", false);
+            if (Panimator) Panimator.SetBool("isM oving", false);
         }
         else
         {
@@ -122,4 +129,23 @@ public class PlayerMoveBehaviour : MonoBehaviour
         }
     }
 
+    public void FaceTargetX(float targetWorldX)
+    {
+        int dir = (targetWorldX >= transform.position.x) ? 1 : -1;
+
+        // 스프라이트 플립
+        if (PspriteRenderer) PspriteRenderer.flipX = (dir == -1);
+
+        // 바라보는 정보 업데이트
+        lastFacingX = dir;
+        LastFacing = new Vector2(dir, 0f);
+
+        // 애니 파라미터도 정리(선택)
+        if (Panimator)
+        {
+            Panimator.SetFloat("moveX", 0f);
+            Panimator.SetFloat("moveY", 0f);
+            Panimator.SetFloat("lastMoveX", lastFacingX);
+        }
+    }
 }
