@@ -8,23 +8,22 @@ public class EnemyHitbox : MonoBehaviour, IParryable
     [SerializeField] private float damage = 10f;
     [SerializeField] private float knockback = 5f;
     [SerializeField] private bool parryable = true;
-    [SerializeField] private float attackInterval = 1f; // ★ 1초 간격
+    [SerializeField] private float attackInterval = 1f; // 1초 간격
 
     [Header("Optional (for parry reaction)")]
-    [SerializeField] private Rigidbody2D enemyRb; // 패링 당했을 때 넉백용(선택)
+    [SerializeField] private Rigidbody2D enemyRb; // 패링 시 넉백용(선택)
 
-    // 트리거 안의 대상들을 추적
-    private readonly HashSet<PlayerCombat> targets = new HashSet<PlayerCombat>();
+    // 트리거 안의 플레이어(PlayerHit)들을 추적
+    private readonly HashSet<PlayerHit> targets = new HashSet<PlayerHit>();
     private Coroutine attackLoop;
 
     private void Reset()
     {
-        // 권장 셋업: 히트박스에 Trigger Collider가 붙어 있어야 함
         var col = GetComponent<Collider2D>();
         if (col) col.isTrigger = true;
 
         if (!enemyRb)
-            enemyRb = GetComponentInParent<Rigidbody2D>(); // 부모(적 본체)의 RB를 참조
+            enemyRb = GetComponentInParent<Rigidbody2D>();
     }
 
     private void OnEnable()
@@ -42,12 +41,18 @@ public class EnemyHitbox : MonoBehaviour, IParryable
         var wait = new WaitForSeconds(attackInterval);
         while (true)
         {
-            // 트리거 안의 모든 플레이어에게 타격
-            foreach (var pc in targets)
+            // 스냅샷을 돌면서 null 정리
+            foreach (var ph in new List<PlayerHit>(targets))
             {
-                if (pc == null) continue;
-                Vector2 hitDir = ((Vector2)pc.transform.position - (Vector2)transform.position).normalized; // 적→플레이어
-                pc.OnHit(damage, knockback, hitDir, parryable, gameObject);
+                if (ph == null)
+                {
+                    targets.Remove(ph);
+                    continue;
+                }
+
+                // 적 → 플레이어 방향
+                Vector2 hitDir = ((Vector2)ph.transform.position - (Vector2)transform.position).normalized;
+                ph.OnHit(damage, knockback, hitDir, parryable, gameObject);
             }
             yield return wait;
         }
@@ -55,22 +60,23 @@ public class EnemyHitbox : MonoBehaviour, IParryable
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        var pc = other.GetComponent<PlayerCombat>();
-        if (pc != null) targets.Add(pc);
+        // 플레이어 루트/자식 어디에 붙어 있어도 찾도록 InParent 우선
+        var ph = other.GetComponentInParent<PlayerHit>() ?? other.GetComponent<PlayerHit>();
+        if (ph != null) targets.Add(ph);
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        var pc = other.GetComponent<PlayerCombat>();
-        if (pc != null) targets.Remove(pc);
+        var ph = other.GetComponentInParent<PlayerHit>() ?? other.GetComponent<PlayerHit>();
+        if (ph != null) targets.Remove(ph);
     }
 
-    // 패링당했을 때(선택): 살짝 뒤로 밀리게
+    // 패링(Weaving) 당했을 때(선택): 살짝 뒤로 밀리게
     public void OnParried(Vector3 parrySourcePosition)
     {
         if (enemyRb == null) return;
         Vector2 dir = ((Vector2)transform.position - (Vector2)parrySourcePosition).normalized; // 플레이어 반대방향
         enemyRb.AddForce(dir * 6f, ForceMode2D.Impulse);
-        // 여기서 스턴/애니 취소 등 추가 연출 가능
+        // TODO: 스턴/애니 취소 등 추가 연출
     }
 }

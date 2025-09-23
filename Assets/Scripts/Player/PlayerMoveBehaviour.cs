@@ -21,15 +21,13 @@ public class PlayerMoveBehaviour : MonoBehaviour
     public bool IsFlipFromMovementBlocked => blockFlipFromMovement;
     public void SetFlipFromMovementBlocked(bool blocked) => blockFlipFromMovement = blocked;
 
-    // Anim / Visual
     private Animator Panimator;
     private SpriteRenderer PspriteRenderer;
 
-    // 외부에서 읽을 수 있도록 공개 (Combat이 참조)
     public Vector2 LastFacing { get; private set; } = Vector2.right;
     private int lastFacingX = 1;
 
-    // 이동 잠금(GuardBreak 동안 사용)
+    // 이동 잠금
     private bool movementLocked = false;
     private RigidbodyConstraints2D constraintsBeforeLock;
 
@@ -81,8 +79,6 @@ public class PlayerMoveBehaviour : MonoBehaviour
         rb.linearVelocity = new Vector2(movement.x * moveSpeed, movement.y * moveSpeed * yMul);
     }
 
-
-
     private void AdjustPlayerFacingDirection()
     {
         if (blockFlipFromMovement) return;
@@ -96,12 +92,10 @@ public class PlayerMoveBehaviour : MonoBehaviour
         {
             PspriteRenderer.flipX = (dir == -1);
             lastFacingX = dir;
-            if (Panimator) Panimator.SetFloat("lastMoveX", lastFacingX);
         }
     }
 
-    // === 외부에서 이동 잠금 토글 (GuardBreak에서 사용) ===
-
+    // === 외부에서 이동 잠금 토글 ===
     public void SetMovementLocked(bool locked, bool hardFreezePhysics = true, bool zeroVelocity = true)
     {
         movementLocked = locked;
@@ -121,7 +115,6 @@ public class PlayerMoveBehaviour : MonoBehaviour
                 rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY | keepRot;
             }
 
-            if (Panimator) Panimator.SetBool("isM oving", false);
         }
         else
         {
@@ -133,19 +126,15 @@ public class PlayerMoveBehaviour : MonoBehaviour
     {
         int dir = (targetWorldX >= transform.position.x) ? 1 : -1;
 
-        // 스프라이트 플립
         if (PspriteRenderer) PspriteRenderer.flipX = (dir == -1);
 
-        // 바라보는 정보 업데이트
         lastFacingX = dir;
         LastFacing = new Vector2(dir, 0f);
 
-        // 애니 파라미터도 정리(선택)
         if (Panimator)
         {
             Panimator.SetFloat("moveX", 0f);
             Panimator.SetFloat("moveY", 0f);
-            Panimator.SetFloat("lastMoveX", lastFacingX);
         }
     }
 }

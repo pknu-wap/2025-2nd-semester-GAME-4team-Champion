@@ -26,10 +26,10 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float extraIgnoreTime = 0.02f;
 
     [Header("Timings (sec)")]
-    [SerializeField] private float windup = 0.20f;   // 선딜
+    [SerializeField] private float windup = 0.15f;   // 선딜
     [SerializeField] private float active = 0.06f;   // 공격 활성
     [SerializeField] private float recovery = 0.12f; // 후딜
-    [SerializeField] private float minRecovery = 0.15f;  // 최소 후딜 유지
+    [SerializeField] private float minRecovery = 0.05f;  // 최소 후딜 유지
 
     [Header("Charge Attack")]
     [SerializeField] private float chargeTime = 0.5f;

@@ -146,20 +146,19 @@ public class PlayerDefense : MonoBehaviour
         forcedBlockCo = null;
     }
 
-    /// <summary>
-    /// 정면 콘/패링 윈도우까지 포함한 방어 판정
-    /// </summary>
-    public DefenseOutcome Evaluate(Vector2 facing, Vector2 inFrontDir, bool parryable)
+    public DefenseOutcome Evaluate(Vector2 facing, Vector2 dirToEnemy/*=플레이어→적*/, bool parryable)
     {
-        if (!isBlocking || staminaBroken) return DefenseOutcome.None;
+        if (!isBlocking || IsStaminaBroken) return DefenseOutcome.None;
 
         float cosHalf = Mathf.Cos(guardAngle * 0.5f * Mathf.Deg2Rad);
-        bool inFront = Vector2.Dot(facing, inFrontDir) >= cosHalf;
+        bool inFront = Vector2.Dot(facing, dirToEnemy.normalized) >= cosHalf;
         if (!inFront) return DefenseOutcome.None;
 
         bool canParry = parryable && (Time.time - blockPressedTime) <= parryWindow;
         return canParry ? DefenseOutcome.Parry : DefenseOutcome.Block;
     }
+
+
 
     // === 패링 성공 후 조작 잠금(속도 0 옵션) ===
     public void StartParryLock(float duration, bool zeroVelocityOnStart = true)

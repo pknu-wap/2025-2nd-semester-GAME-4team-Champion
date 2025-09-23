@@ -220,6 +220,7 @@ GameObject:
   - component: {fileID: 480569105}
   - component: {fileID: 480569107}
   - component: {fileID: 480569104}
+  - component: {fileID: 480569111}
   - component: {fileID: 480569109}
   - component: {fileID: 480569108}
   - component: {fileID: 480569110}
@@ -317,6 +318,7 @@ MonoBehaviour:
   rb: {fileID: 480569105}
   defense: {fileID: 480569109}
   attack: {fileID: 480569108}
+  hit: {fileID: 480569111}
   hpMax: 100
   staminaMax: 100
   staminaRegenPerSec: 25
@@ -331,13 +333,7 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 64
-  baseHitstun: 0.6
-  blockHitstunMul: 0.5
   debugLogs: 1
-  ignoreEnemyCollisionDuringActive: 1
-  extraIgnoreTime: 0.02
-  hitVariants: 3
-  weavingVariants: 3
 --- !u!50 &480569105
 Rigidbody2D:
   serializedVersion: 5
@@ -497,6 +493,28 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &480569111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 480569101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0ae825e912e4a74383e5dcbc71e3a9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  combat: {fileID: 480569104}
+  defense: {fileID: 480569109}
+  moveRef: {fileID: 480569107}
+  animator: {fileID: 480569110}
+  rb: {fileID: 480569105}
+  baseHitstun: 0.2
+  blockHitstunMul: 0.5
+  weavingVariants: 3
+  hitVariants: 3
+  debugLogs: 1
 --- !u!1 &641005877
 GameObject:
   m_ObjectHideFlags: 0
