@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public GameObject EnemyObject;
 
     // private PlayerCombat Player;
-    private BossAlgorism Enemy;
+    private BossCore Enemy;
 
     [Header("Stamina Settings")]
     public float EnemyStaminaRegen = 2f;
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         // Player = PlayerObject.GetComponent<PlayerCombat>();
-        Enemy = EnemyObject.GetComponent<BossAlgorism>();
+        Enemy = EnemyObject.GetComponent<BossCore>();
 
         // PlayerHp01 = Player.Hp01;
         // PlayerStamina01 = Player.Stamina01;
@@ -56,22 +56,22 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time - EnemyLastActionTime >= EnemyRegenTime && Enemy.currentStamina > 0f)
+        if (Time.time - EnemyLastActionTime >= EnemyRegenTime && Enemy.CurrentStamina > 0f)
         {
-            Enemy.currentStamina -= EnemyRegenTime * Time.deltaTime * EnemyStaminaRegen;
-            if (Enemy.currentStamina < 0f)
+            Enemy.CurrentStamina -= EnemyRegenTime * Time.deltaTime * EnemyStaminaRegen;
+            if (Enemy.CurrentStamina < 0f)
             {
-                Enemy.currentStamina = 0f;
+                Enemy.CurrentStamina = 0f;
             }
             ResetEnemyStamina();
         }
 
-        float eNorm = (Enemy.MaxStamina > 0f) ? (Enemy.currentStamina / Enemy.MaxStamina) : 0f;
+        float eNorm = (Enemy.MaxStamina > 0f) ? (Enemy.CurrentStamina / Enemy.MaxStamina) : 0f;
         // float pNorm = PlayerStamina01;
 
         for (int i = 0; i < 2; i++)
         {
-            FillImages[i].color     = new Color(217 / 255f, (207 - Enemy.currentStamina) / 255f, 28 / 255f, 10f * eNorm);
+            FillImages[i].color     = new Color(217 / 255f, (207 - Enemy.CurrentStamina) / 255f, 28 / 255f, 10f * eNorm);
             FillImages[i + 2].color = new Color(105 / 255f, 107 / 255f, 30 / 255f, 10f * eNorm);
             // FillImages[4].color   = new Color(1f, (245 - pNorm * 255f) / 255f, 57 / 255f, 10f * pNorm);
             // FillImages[5].color   = new Color(167 / 255f, 171 / 255f, 0f, 10f * pNorm);
@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour
     {
         if (EnemyStaminaBars != null && EnemyStaminaBars.Length >= 2)
         {
-            float v = (Enemy.MaxStamina > 0f) ? Enemy.currentStamina / Enemy.MaxStamina : 0f;
+            float v = (Enemy.MaxStamina > 0f) ? Enemy.CurrentStamina / Enemy.MaxStamina : 0f;
             EnemyStaminaBars[0].value = v;
             EnemyStaminaBars[1].value = v;
         }
