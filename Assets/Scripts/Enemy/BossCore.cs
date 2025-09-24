@@ -51,18 +51,39 @@ public class BossCore : MonoBehaviour
 
     private BossFight _combat;
 
+    // ==================== 공격 타입/선택 모드 ====================
+    public enum MeleeAttackType { One, OneOne, OneTwo }   // 근 3종
+    public enum RangeAttackType { Short, Mid, Long }      // 원 3종
+    public enum AttackSelectMode
+    {
+        Random,
+        Melee_One,
+        Melee_OneOne,
+        Melee_OneTwo,
+        Range_Short,
+        Range_Mid,
+        Range_Long
+    }
 
-    [Header("Contact Damage")]
-    [SerializeField] private float damageInterval = 0.7f;
-    private int _playerContactCount = 0;
-    private bool _playerInRange = false;
-    private Coroutine _damageCoroutine;
+    [Header("Attack Select (Debug)")]
+    public AttackSelectMode SelectMode = AttackSelectMode.Random;
+    public bool UseDebugHotkeys = true;
+
+    public MeleeAttackType LastMeleeType { get; set; }
+
+    [Header("Hit Window")]
+    [SerializeField] private float hitActiveDuration = 0.08f; // 각 타의 판정 지속 시간
+    private bool _hitWindowOpen = false;
+    private bool _hitAppliedThisWindow = false;
+
+    // GameManager로 실제 플레이어 데미지 반영
+    [SerializeField] private GameManager _gm;
 
     private void Awake()
     {
         Rb = GetComponent<Rigidbody2D>();
-        if (!_combat) _combat = GetComponent<BossFight>();
-        if (!_combat) _combat = gameObject.AddComponent<BossFight>();
+        _combat = GetComponent<BossFight>();
+        if (_combat == null) _combat = gameObject.AddComponent<BossFight>();
         _combat.BindCore(this);
     }
 
@@ -76,6 +97,15 @@ public class BossCore : MonoBehaviour
             if (mainCam != null) CamShake = mainCam.GetComponent<CameraShaking>();
         }
         if (Player != null) PlayerCol = Player.GetComponent<Collider2D>();
+
+        if (_gm == null)
+        {
+#if UNITY_2022_3_OR_NEWER
+            _gm = FindFirstObjectByType<GameManager>();
+#else
+            _gm = FindObjectOfType<GameManager>();
+#endif
+        }
 
         if (!Summoned)
         {
@@ -97,6 +127,7 @@ public class BossCore : MonoBehaviour
     {
         if (Player == null || Rb == null) return;
 
+        // 소환 전 카운트다운
         if (!Summoned)
         {
             if (SummonTimer > 0f)
@@ -110,6 +141,7 @@ public class BossCore : MonoBehaviour
             return;
         }
 
+        // 자동 공격 쿨다운
         if (!IsActing)
         {
             AttackTimer += Time.deltaTime;
@@ -118,6 +150,18 @@ public class BossCore : MonoBehaviour
                 AttackWayChoice();
                 AttackTimer = 0f;
             }
+        }
+
+        // 디버그 핫키 (선택 확인용)
+        if (UseDebugHotkeys && !IsActing && Summoned)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1)) { _combat.Melee_Attack(MeleeAttackType.One);     AttackTimer = 0f; }
+            if (Input.GetKeyDown(KeyCode.Alpha2)) { _combat.Melee_Attack(MeleeAttackType.OneOne);  AttackTimer = 0f; }
+            if (Input.GetKeyDown(KeyCode.Alpha3)) { _combat.Melee_Attack(MeleeAttackType.OneTwo);  AttackTimer = 0f; }
+
+            if (Input.GetKeyDown(KeyCode.Alpha4)) { _combat.Range_Attack(RangeAttackType.Short);   AttackTimer = 0f; }
+            if (Input.GetKeyDown(KeyCode.Alpha5)) { _combat.Range_Attack(RangeAttackType.Mid);     AttackTimer = 0f; }
+            if (Input.GetKeyDown(KeyCode.Alpha6)) { _combat.Range_Attack(RangeAttackType.Long);    AttackTimer = 0f; }
         }
     }
 
@@ -135,17 +179,8 @@ public class BossCore : MonoBehaviour
         }
     }
 
-    private void OnDisable()
-    {
-        ResumeFromCinematic();
-        StopDamageLoop();
-    }
-
-    private void OnDestroy()
-    {
-        ResumeFromCinematic();
-        StopDamageLoop();
-    }
+    private void OnDisable()  => ResumeFromCinematic();
+    private void OnDestroy()  => ResumeFromCinematic();
 
     private void ActivateBoss()
     {
@@ -218,13 +253,10 @@ public class BossCore : MonoBehaviour
         if (BeltAnim != null) BeltAnim.SetTrigger("BeltStart");
 
         yield return new WaitForSecondsRealtime(7f);
-        
-        CamShake.power = 4f;
-        if (CamShake != null) StartCoroutine(CamShake.ImpulseMoveMent());
 
+        if (CamShake != null) StartCoroutine(CamShake.ImpulseMoveMent());
         yield return new WaitForSecondsRealtime(0.1f);
 
-        CamShake.power = 0.4f;
         if (BlackHoleAnim != null) BlackHoleAnim.SetBool("BlackHoleStart", true);
         if (UiBroke != null) UiBroke.SetActive(true);
 
@@ -254,67 +286,88 @@ public class BossCore : MonoBehaviour
 
     private void AttackWayChoice()
     {
-        int type = Random.Range(0, 2);
-        switch (type)
+        if (_combat == null) return;
+
+        switch (SelectMode)
         {
-            case 0: _combat.Melee_Attack(); break;
-            case 1: _combat.Range_Attack(); break;
+            case AttackSelectMode.Random:
+            {
+                int type = Random.Range(0, 2);
+                if (type == 0)
+                {
+                    // ✅ 근거리: 거리 기반 규칙으로 실행
+                    _combat.Melee_Attack_DistanceBased();
+                }
+                else
+                {
+                    // 원거리: 기존 랜덤
+                    _combat.Range_Attack();
+                }
+                break;
+            }
+            case AttackSelectMode.Melee_One:    _combat.Melee_Attack(MeleeAttackType.One);     break;
+            case AttackSelectMode.Melee_OneOne: _combat.Melee_Attack(MeleeAttackType.OneOne);  break;
+            case AttackSelectMode.Melee_OneTwo: _combat.Melee_Attack(MeleeAttackType.OneTwo);  break;
+            case AttackSelectMode.Range_Short:  _combat.Range_Attack(RangeAttackType.Short);   break;
+            case AttackSelectMode.Range_Mid:    _combat.Range_Attack(RangeAttackType.Mid);     break;
+            case AttackSelectMode.Range_Long:   _combat.Range_Attack(RangeAttackType.Long);    break;
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    // ===== BossFight에서 호출: 각 타격 시점에 히트 윈도우를 열기 =====
+    public void TriggerMeleeDamage()
     {
-        if (!Summoned) return;
+        StartCoroutine(DoMeleeDamage());
+    }
 
+    private IEnumerator OpenHitWindow()
+    {
+        _hitAppliedThisWindow = false;
+        _hitWindowOpen = true;
+        yield return new WaitForSeconds(hitActiveDuration);
+        _hitWindowOpen = false;
+    }
+
+    // 각 패턴은 "히트 윈도우"를 열고, 그 시간 동안 트리거 겹치면 1회만 데미지 적용
+    private IEnumerator DoMeleeDamage()
+    {
+        if (_gm == null) yield break;
+
+        switch (LastMeleeType)
+        {
+            case MeleeAttackType.One:
+                yield return OpenHitWindow();          // 1타
+                break;
+
+            case MeleeAttackType.OneOne:
+                yield return OpenHitWindow();          // 1타
+                yield return new WaitForSeconds(0.1f);
+                yield return OpenHitWindow();          // 2타
+                break;
+
+            case MeleeAttackType.OneTwo:
+                yield return OpenHitWindow();          // 1타
+                yield return new WaitForSeconds(0.05f);
+                yield return OpenHitWindow();          // 2타
+                break;
+        }
+    }
+
+    // 트리거에서만 실제 데미지 적용 (히트 윈도우 내 1회)
+    private void TryApplyHit(Collider2D other)
+    {
         bool isPlayerHit = (PlayerCol != null) ? (other == PlayerCol) : other.CompareTag("Player");
         if (!isPlayerHit) return;
 
-        _playerContactCount++;
-        if (_playerContactCount == 1)
+        if (_hitWindowOpen && !_hitAppliedThisWindow)
         {
-            Debug.Log("Damage = 10");
-            _combat.StopInFrontOfPlayer();
-
-            _playerInRange = true;
-            if (_damageCoroutine == null)
-                _damageCoroutine = StartCoroutine(DoDamageOverTime());
+            _gm.TakePlayerDamage(10f);
+            _hitAppliedThisWindow = true;
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        bool isPlayerHit = (PlayerCol != null) ? (other == PlayerCol) : other.CompareTag("Player");
-        if (!isPlayerHit) return;
-
-        _playerContactCount = Mathf.Max(0, _playerContactCount - 1);
-        if (_playerContactCount == 0)
-        {
-            StopDamageLoop();
-        }
-    }
-
-    private IEnumerator DoDamageOverTime()
-    {
-        while (_playerInRange)
-        {
-            yield return new WaitForSeconds(damageInterval);
-            if (!_playerInRange) break;
-
-            Debug.Log("Damage = 10");
-            _combat.StopInFrontOfPlayer();
-        }
-        _damageCoroutine = null;
-    }
-
-    private void StopDamageLoop()
-    {
-        _playerInRange = false;
-        if (_damageCoroutine != null)
-        {
-            StopCoroutine(_damageCoroutine);
-            _damageCoroutine = null;
-        }
-    }
+    private void OnTriggerEnter2D(Collider2D other) { TryApplyHit(other); }
+    private void OnTriggerStay2D(Collider2D other)  { TryApplyHit(other); }
 
     public Vector2 ClampInside(Vector2 p)
     {

@@ -5,6 +5,7 @@ public class Projectile : MonoBehaviour
     public float lifeTime = 5f;
     public float speed = 10f;
     public float damage = 10f;
+    public float slow = 3f;
 
     private Rigidbody2D rb;
 
@@ -27,6 +28,13 @@ public class Projectile : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("플레이어가 피해를 입음 (데미지: " + damage + ")");
+
+            PlayerMoveBehaviour move = other.GetComponent<PlayerMoveBehaviour>();
+            if (move != null)
+            {
+                move.moveSpeed -= slow;
+            }
+
             Destroy(gameObject);
         }
     }

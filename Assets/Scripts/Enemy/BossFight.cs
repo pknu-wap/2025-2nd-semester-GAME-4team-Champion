@@ -11,9 +11,9 @@ public class BossFight : MonoBehaviour
     [SerializeField] private float PreWindupMid = 3f;
     [SerializeField] private float PreWindupLong = 4f;
 
-    [Header("Melee Stop")]
+    [Header("Melee Logic")]
+    [SerializeField] private float NoDashCloseRange = 2.5f;   // 이 이내면 OneTwo, 밖이면 One/OneOne
     [SerializeField] private float StopOffset = 1.0f;
-    [SerializeField] private LayerMask PlayerLayer;
 
     [Header("Dash (Range)")]
     [SerializeField] private float RetreatSpeed = 6f;
@@ -39,34 +39,90 @@ public class BossFight : MonoBehaviour
 
     public void BindCore(BossCore core) => _core = core;
 
+    // ===========================
+    // 근거리: 거리 기반 자동 분기
+    // dist > NoDashCloseRange → One/OneOne 랜덤(돌진)
+    // dist <= NoDashCloseRange → OneTwo(완전 무이동)
+    // ===========================
+    public void Melee_Attack_DistanceBased()
+    {
+        if (_core.IsActing) return;
+
+        float dist = (_core.Player != null)
+            ? Vector2.Distance(_core.Rb.position, (Vector2)_core.Player.position)
+            : Mathf.Infinity;
+
+        if (dist > NoDashCloseRange)
+        {
+            int pick = Random.Range(0, 2);
+            Melee_Attack(pick == 0 ? BossCore.MeleeAttackType.One
+                                   : BossCore.MeleeAttackType.OneOne);
+        }
+        else
+        {
+            Melee_Attack(BossCore.MeleeAttackType.OneTwo);
+        }
+    }
+
+    // 호환용(기존 호출 지점이 있을 수 있음)
     public void Melee_Attack()
     {
         if (_core.IsActing) return;
-
-        int meleeType = Random.Range(0, 3);
-        switch (meleeType)
-        {
-            case 0: _curPreWindup = PreWindupShort; break;
-            case 1: _curPreWindup = PreWindupMid;   break;
-            case 2: _curPreWindup = PreWindupLong;  break;
-        }
-
-        _core.IsActing = true;
-        StartCoroutine(MeleeDash());
+        Melee_Attack_DistanceBased();
     }
 
-    public void Range_Attack()
+    // 선택형: 타입에 맞는 연출 실행
+    public void Melee_Attack(BossCore.MeleeAttackType type)
     {
         if (_core.IsActing) return;
 
-        int rangeType = Random.Range(0, 3);
-        switch (rangeType)
+        switch (type)
         {
-            case 0:
+            case BossCore.MeleeAttackType.One:
+                _curPreWindup = PreWindupShort;
+                _core.LastMeleeType = BossCore.MeleeAttackType.One;
+                _core.IsActing = true;
+                StartCoroutine(MeleeDash()); // 돌진
+                break;
+
+            case BossCore.MeleeAttackType.OneOne:
+                _curPreWindup = PreWindupMid;
+                _core.LastMeleeType = BossCore.MeleeAttackType.OneOne;
+                _core.IsActing = true;
+                StartCoroutine(MeleeDash()); // 돌진
+                break;
+
+            case BossCore.MeleeAttackType.OneTwo:
+                _curPreWindup = PreWindupLong;
+                _core.LastMeleeType = BossCore.MeleeAttackType.OneTwo;
+                _core.IsActing = true;
+                // 접근/스냅 없이 정지 상태에서 타격
+                StartCoroutine(MeleeStrikeNoDash(closeUpIfFar:false, snapInFront:false));
+                break;
+        }
+    }
+
+    // ===========================
+    // 원거리 공격(랜덤/선택)
+    // ===========================
+    public void Range_Attack()
+    {
+        if (_core.IsActing) return;
+        var type = (BossCore.RangeAttackType)Random.Range(0, 3);
+        Range_Attack(type);
+    }
+
+    public void Range_Attack(BossCore.RangeAttackType type)
+    {
+        if (_core.IsActing) return;
+
+        switch (type)
+        {
+            case BossCore.RangeAttackType.Short:
                 _desiredDistance = 5f;  _rangePreWindup = RangePreWindupShort; _volleyCount = VolleyCountShort; break;
-            case 1:
+            case BossCore.RangeAttackType.Mid:
                 _desiredDistance = 7f;  _rangePreWindup = RangePreWindupMid;   _volleyCount = VolleyCountMid;   break;
-            default:
+            case BossCore.RangeAttackType.Long:
                 _desiredDistance = 9f;  _rangePreWindup = RangePreWindupLong;  _volleyCount = VolleyCountLong;  break;
         }
 
@@ -74,12 +130,16 @@ public class BossFight : MonoBehaviour
         StartCoroutine(RetreatThenFire());
     }
 
+    // ===========================
+    // 근거리: 돌진 패턴 (One/OneOne)
+    // ===========================
     private IEnumerator MeleeDash()
     {
         _core.Rb.linearVelocity = Vector2.zero;
         if (_core.SpriteRenderer) _core.SpriteRenderer.color = Color.yellow;
         if (_curPreWindup > 0f) yield return new WaitForSeconds(_curPreWindup);
 
+        // 슬로우 접근
         float t = 0f;
         while (t < PreDashSlowDuration)
         {
@@ -93,10 +153,11 @@ public class BossFight : MonoBehaviour
 
         _core.Rb.linearVelocity = Vector2.zero;
 
+        // 본 돌진
         if (_core.SpriteRenderer) _core.SpriteRenderer.color = Color.red;
         Vector2 startPos = _core.Rb.position;
-        Vector2 lockedDir = ((Vector2)_core.Player.position - startPos).normalized;
-        if (lockedDir.sqrMagnitude < 1e-8f) lockedDir = Vector2.right;
+        Vector2 toP = (_core.Player != null) ? ((Vector2)_core.Player.position - startPos) : Vector2.right;
+        Vector2 lockedDir = toP.sqrMagnitude > 1e-8f ? toP.normalized : Vector2.right;
 
         float dashTime = 0.3f;
         float elapsed = 0f;
@@ -109,11 +170,42 @@ public class BossFight : MonoBehaviour
 
         _core.Rb.linearVelocity = Vector2.zero;
         if (_core.SpriteRenderer) _core.SpriteRenderer.color = Color.white;
+
+        // 타이밍에 히트 윈도우 열기
+        _core.TriggerMeleeDamage();
+
+        // 약간의 후딜
         yield return new WaitForSeconds(0.5f);
 
         _core.IsActing = false;
     }
 
+    // ===========================
+    // 근거리: 무돌진 근접 타격 (OneTwo)
+    // ===========================
+    private IEnumerator MeleeStrikeNoDash(bool closeUpIfFar, bool snapInFront)
+    {
+        _core.Rb.linearVelocity = Vector2.zero;
+        if (_core.SpriteRenderer) _core.SpriteRenderer.color = Color.yellow; // 안전하게 yellow 대체
+        if (_curPreWindup > 0f) yield return new WaitForSeconds(_curPreWindup);
+
+        // closeUpIfFar=false, snapInFront=false → 완전 무이동
+        _core.Rb.linearVelocity = Vector2.zero;
+
+        if (_core.SpriteRenderer) _core.SpriteRenderer.color = Color.red;
+
+        // 히트 윈도우 열기
+        _core.TriggerMeleeDamage();
+
+        yield return new WaitForSeconds(0.35f);
+
+        if (_core.SpriteRenderer) _core.SpriteRenderer.color = Color.white;
+        _core.IsActing = false;
+    }
+
+    // ===========================
+    // 원거리: 후퇴 후 발사
+    // ===========================
     private IEnumerator RetreatThenFire()
     {
         if (_core.SpriteRenderer) _core.SpriteRenderer.color = Color.green;
@@ -126,7 +218,7 @@ public class BossFight : MonoBehaviour
             Vector2 toPlayer = (Vector2)_core.Player.position - _core.Rb.position;
             float dist = toPlayer.magnitude;
 
-            Vector2 dirAway = (-toPlayer).normalized;
+            Vector2 dirAway = (-toPlayer).sqrMagnitude > 1e-8f ? (-toPlayer).normalized : Vector2.zero;
             float step = RetreatSpeed * Time.fixedDeltaTime;
 
             Vector2 nextPos = _core.Rb.position + dirAway * step;
@@ -158,7 +250,9 @@ public class BossFight : MonoBehaviour
     {
         if (_core.Player == null || _core.Rb == null) return;
 
-        Vector2 dir = ((Vector2)_core.Player.position - _core.Rb.position).normalized;
+        Vector2 dir = ((Vector2)_core.Player.position - _core.Rb.position);
+        dir = (dir.sqrMagnitude > 1e-8f) ? dir.normalized : Vector2.right;
+
         Vector2 stopPos = (Vector2)_core.Player.position - dir * StopOffset;
         _core.Rb.position = _core.ClampInside(stopPos);
         _core.Rb.linearVelocity = Vector2.zero;
@@ -168,6 +262,18 @@ public class BossFight : MonoBehaviour
     private void FireOneProjectile()
     {
         if (ProjectilePrefab && FirePoint)
-            Instantiate(ProjectilePrefab, FirePoint.position, Quaternion.identity);
+            Object.Instantiate(ProjectilePrefab, FirePoint.position, Quaternion.identity);
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        if (_core == null) _core = GetComponent<BossCore>();
+        if (_core == null) return;
+
+        Gizmos.color = new Color(255f, 0f, 0f, 255f);
+        Vector3 pos = _core.Rb != null ? (Vector3)_core.Rb.position : transform.position;
+        Gizmos.DrawWireSphere(pos, NoDashCloseRange);
+    }
+#endif
 }
