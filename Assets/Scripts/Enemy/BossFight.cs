@@ -32,7 +32,6 @@ public class BossFight : MonoBehaviour
 
     private BossCore _core;
 
-    // 내부 상태
     private float _curPreWindup = 2f;
     private float _desiredDistance = 7f;
     private int _volleyCount = 1;
@@ -40,7 +39,6 @@ public class BossFight : MonoBehaviour
 
     public void BindCore(BossCore core) => _core = core;
 
-    // === 외부에서 호출 ===
     public void Melee_Attack()
     {
         if (_core.IsActing) return;
@@ -76,7 +74,6 @@ public class BossFight : MonoBehaviour
         StartCoroutine(RetreatThenFire());
     }
 
-    // === 코루틴 ===
     private IEnumerator MeleeDash()
     {
         _core.Rb.linearVelocity = Vector2.zero;
@@ -157,7 +154,6 @@ public class BossFight : MonoBehaviour
         _core.IsActing = false;
     }
 
-    // === 유틸 ===
     public void StopInFrontOfPlayer()
     {
         if (_core.Player == null || _core.Rb == null) return;

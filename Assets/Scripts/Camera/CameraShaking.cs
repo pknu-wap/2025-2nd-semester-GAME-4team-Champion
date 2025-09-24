@@ -4,7 +4,7 @@ using System.Collections;
 
 public class CameraShaking : MonoBehaviour
 {
-    [SerializeField] private float power;
+    public float power;
     private CinemachineImpulseSource Impulse;
     int dir = 1;
 

@@ -1550,13 +1550,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1902309503}
   - component: {fileID: 1902309502}
-  - component: {fileID: 1902309504}
   - component: {fileID: 1902309512}
   - component: {fileID: 1902309511}
   - component: {fileID: 1902309508}
   - component: {fileID: 1902309505}
-  - component: {fileID: 1902309510}
-  - component: {fileID: 1902309509}
   m_Layer: 6
   m_Name: Boss
   m_TagString: Enemy
@@ -1634,56 +1631,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1902309504
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902309501}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0913d392170a6cc4e8ade296d73529bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AttackCooldown: 3
-  SummonTimer: 3
-  Summoned: 0
-  BossTimerSlider: {fileID: 2142923369}
-  Player: {fileID: 5646522600924012114}
-  MaxHp: 100
-  CurrentHp: 100
-  MaxStamina: 100
-  CurrentStamina: 100
-  TimeColTime: 0.5
-  RecognizedArea: 20
-  Speed: 1.5
-  DashSpeed: 25
-  SlowApproachSpeed: 2
-  PreDashSlowDuration: 0.7
-  StopOffset: 0.8
-  PlayerLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  RetreatSpeed: 8
-  RetreatDuration: 1.25
-  ProjectilePrefab: {fileID: 3640307438517810669, guid: e5d336147e44fb94abbd9db65f460b3f, type: 3}
-  FirePoint: {fileID: 1902309503}
-  VolleyInterval: 0.2
-  Timer: {fileID: 383708781}
-  Hp: {fileID: 6514177432227569727}
-  Stamina: {fileID: 4205027981534238402}
-  Ui: {fileID: 1112390390}
-  UiBroke: {fileID: 2111983010}
-  CamShake: {fileID: 8562855478970666846}
-  BlackHoleAnim: {fileID: 2041184592}
-  HandAnim: {fileID: 575820395}
-  BeltAnim: {fileID: 416930030}
-  TextUi: {fileID: 121835418}
-  FullText: NEW CHALLENGER
-  SpriteRenderer: {fileID: 1902309502}
-  MovementArea: {fileID: 718650075}
-  AttackTimer: 0
 --- !u!50 &1902309505
 Rigidbody2D:
   serializedVersion: 5
@@ -1757,106 +1704,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
---- !u!114 &1902309509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902309501}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0913d392170a6cc4e8ade296d73529bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AttackCooldown: 3
-  SummonTimer: 3
-  Summoned: 0
-  BossTimerSlider: {fileID: 2142923369}
-  Player: {fileID: 5646522600924012114}
-  MaxHp: 100
-  CurrentHp: 100
-  MaxStamina: 100
-  CurrentStamina: 100
-  TimeColTime: 0.5
-  RecognizedArea: 20
-  Speed: 1.5
-  DashSpeed: 25
-  SlowApproachSpeed: 2
-  PreDashSlowDuration: 0.7
-  StopOffset: 0.8
-  PlayerLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  RetreatSpeed: 8
-  RetreatDuration: 1.25
-  ProjectilePrefab: {fileID: 3640307438517810669, guid: e5d336147e44fb94abbd9db65f460b3f, type: 3}
-  FirePoint: {fileID: 1902309503}
-  VolleyInterval: 0.2
-  Timer: {fileID: 383708781}
-  Hp: {fileID: 6514177432227569727}
-  Stamina: {fileID: 4205027981534238402}
-  Ui: {fileID: 1112390390}
-  UiBroke: {fileID: 2111983010}
-  CamShake: {fileID: 8562855478970666846}
-  BlackHoleAnim: {fileID: 2041184592}
-  HandAnim: {fileID: 575820395}
-  BeltAnim: {fileID: 416930030}
-  TextUi: {fileID: 121835418}
-  FullText: NEW CHALLENGER
-  SpriteRenderer: {fileID: 1902309502}
-  MovementArea: {fileID: 718650075}
-  AttackTimer: 0
---- !u!114 &1902309510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902309501}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0913d392170a6cc4e8ade296d73529bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AttackCooldown: 3
-  SummonTimer: 3
-  Summoned: 0
-  BossTimerSlider: {fileID: 2142923369}
-  Player: {fileID: 5646522600924012114}
-  MaxHp: 100
-  CurrentHp: 100
-  MaxStamina: 100
-  CurrentStamina: 100
-  TimeColTime: 0.5
-  RecognizedArea: 20
-  Speed: 1.5
-  DashSpeed: 25
-  SlowApproachSpeed: 2
-  PreDashSlowDuration: 0.7
-  StopOffset: 0.8
-  PlayerLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  RetreatSpeed: 8
-  RetreatDuration: 1.25
-  ProjectilePrefab: {fileID: 3640307438517810669, guid: e5d336147e44fb94abbd9db65f460b3f, type: 3}
-  FirePoint: {fileID: 1902309503}
-  VolleyInterval: 0.2
-  Timer: {fileID: 383708781}
-  Hp: {fileID: 6514177432227569727}
-  Stamina: {fileID: 4205027981534238402}
-  Ui: {fileID: 1112390390}
-  UiBroke: {fileID: 2111983010}
-  CamShake: {fileID: 8562855478970666846}
-  BlackHoleAnim: {fileID: 2041184592}
-  HandAnim: {fileID: 575820395}
-  BeltAnim: {fileID: 416930030}
-  TextUi: {fileID: 121835418}
-  FullText: NEW CHALLENGER
-  SpriteRenderer: {fileID: 1902309502}
-  MovementArea: {fileID: 718650075}
-  AttackTimer: 0
 --- !u!114 &1902309511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1870,7 +1717,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AttackCooldown: 3
-  SummonTimer: 1600
+  SummonTimer: 1
   Summoned: 0
   BossTimerSlider: {fileID: 2142923369}
   Player: {fileID: 5646522600924012114}
@@ -1895,6 +1742,7 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 1902309502}
   MovementArea: {fileID: 718650075}
   AttackTimer: 0
+  damageInterval: 0.7
 --- !u!114 &1902309512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1916,7 +1764,7 @@ MonoBehaviour:
   StopOffset: 0.8
   PlayerLayer:
     serializedVersion: 2
-    m_Bits: 72
+    m_Bits: 8
   RetreatSpeed: 8
   RetreatDuration: 1.25
   RangePreWindupShort: 1
@@ -1963,8 +1811,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -90}
-  m_SizeDelta: {x: 179.1246, y: 179.12}
+  m_AnchoredPosition: {x: 0, y: -95}
+  m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2041184590
 MonoBehaviour:
@@ -1986,7 +1834,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1659985312132837270, guid: 570f897df5ca8354f88ab9eec39ea16b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f64b50330be5bfd4b8396f5751573985, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

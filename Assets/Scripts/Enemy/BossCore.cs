@@ -51,11 +51,18 @@ public class BossCore : MonoBehaviour
 
     private BossFight _combat;
 
+
+    [Header("Contact Damage")]
+    [SerializeField] private float damageInterval = 0.7f;
+    private int _playerContactCount = 0;
+    private bool _playerInRange = false;
+    private Coroutine _damageCoroutine;
+
     private void Awake()
     {
         Rb = GetComponent<Rigidbody2D>();
         if (!_combat) _combat = GetComponent<BossFight>();
-        if (!_combat) _combat = gameObject.AddComponent<BossFight>(); // 안전장치
+        if (!_combat) _combat = gameObject.AddComponent<BossFight>();
         _combat.BindCore(this);
     }
 
@@ -128,8 +135,17 @@ public class BossCore : MonoBehaviour
         }
     }
 
-    private void OnDisable() => ResumeFromCinematic();
-    private void OnDestroy() => ResumeFromCinematic();
+    private void OnDisable()
+    {
+        ResumeFromCinematic();
+        StopDamageLoop();
+    }
+
+    private void OnDestroy()
+    {
+        ResumeFromCinematic();
+        StopDamageLoop();
+    }
 
     private void ActivateBoss()
     {
@@ -200,11 +216,17 @@ public class BossCore : MonoBehaviour
         while (t < 1f) { t += Time.unscaledDeltaTime; yield return null; }
 
         if (BeltAnim != null) BeltAnim.SetTrigger("BeltStart");
-        yield return new WaitForSecondsRealtime(7f);
 
+        yield return new WaitForSecondsRealtime(7f);
+        
+        CamShake.power = 4f;
+        if (CamShake != null) StartCoroutine(CamShake.ImpulseMoveMent());
+
+        yield return new WaitForSecondsRealtime(0.1f);
+
+        CamShake.power = 0.4f;
         if (BlackHoleAnim != null) BlackHoleAnim.SetBool("BlackHoleStart", true);
         if (UiBroke != null) UiBroke.SetActive(true);
-        if (CamShake != null) StartCoroutine(CamShake.ImpulseMoveMent());
 
         yield return new WaitForSecondsRealtime(2f);
         if (HandAnim != null) HandAnim.SetTrigger("HandStart");
@@ -242,13 +264,55 @@ public class BossCore : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!enabled) return;
-        if (other.CompareTag("Player"))
+        if (!Summoned) return;
+
+        bool isPlayerHit = (PlayerCol != null) ? (other == PlayerCol) : other.CompareTag("Player");
+        if (!isPlayerHit) return;
+
+        _playerContactCount++;
+        if (_playerContactCount == 1)
         {
-            float original = TimeColTime;
             Debug.Log("Damage = 10");
-            TimeColTime = original;
             _combat.StopInFrontOfPlayer();
+
+            _playerInRange = true;
+            if (_damageCoroutine == null)
+                _damageCoroutine = StartCoroutine(DoDamageOverTime());
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        bool isPlayerHit = (PlayerCol != null) ? (other == PlayerCol) : other.CompareTag("Player");
+        if (!isPlayerHit) return;
+
+        _playerContactCount = Mathf.Max(0, _playerContactCount - 1);
+        if (_playerContactCount == 0)
+        {
+            StopDamageLoop();
+        }
+    }
+
+    private IEnumerator DoDamageOverTime()
+    {
+        while (_playerInRange)
+        {
+            yield return new WaitForSeconds(damageInterval);
+            if (!_playerInRange) break;
+
+            Debug.Log("Damage = 10");
+            _combat.StopInFrontOfPlayer();
+        }
+        _damageCoroutine = null;
+    }
+
+    private void StopDamageLoop()
+    {
+        _playerInRange = false;
+        if (_damageCoroutine != null)
+        {
+            StopCoroutine(_damageCoroutine);
+            _damageCoroutine = null;
         }
     }
 
