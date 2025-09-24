@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    public Slider hpbar;    //플레이어 슬라이드바
-    public Slider staminabar;
+    public Slider[] hpbar;    //플레이어 슬라이드바
+    public Slider[] staminabar;
     public float maxhp = 100;   //플레이어 체력
     public float currenthp = 100;
     public float maxstamina = 100f;  //플레이어 스테미나
@@ -64,12 +64,15 @@ public class GameManager : MonoBehaviour
             resetenemystamina();
         }
 
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 6; i++)
         {
-            fillimage[i].color = new Color(217/255f, (207-enemycurrentstamina)/255f, 28/255f, 10*enemycurrentstamina);
-            fillimage[i+2].color = new Color(105/255f, 107/255f, 30/255f, 10*enemycurrentstamina);
-            fillimage[4].color = new Color(255/255f, (245-currentstamina)/255f, 57/255f, 10*currentstamina);
-            fillimage[5].color = new Color(167/255f, 171/255f, 0/255f, 10*currentstamina);
+            fillimage[i].color = new Color(255/255f, (245-currentstamina)/255f, 57/255f, 1000*(staminabar[i].value - staminabar[i].minValue));
+            
+
+            //fillimage[i].color = new Color(217/255f, (207-enemycurrentstamina)/255f, 28/255f, 10*enemycurrentstamina);
+            //fillimage[i+2].color = new Color(105/255f, 107/255f, 30/255f, 10*enemycurrentstamina);
+            
+            //fillimage[5].color = new Color(167/255f, 171/255f, 0/255f, 10*currentstamina);
         }
     }
 
@@ -116,12 +119,25 @@ public class GameManager : MonoBehaviour
 
     private void resetcurrenthp() //체력 갱신
     {
-        hpbar.value = currenthp/maxhp;
+        for(int i = 0; i < 3; i++)
+        {
+            hpbar[i].value = currenthp/maxhp;
+            float alpha = Mathf.Clamp01(1000*(hpbar[i].value-hpbar[i].minValue));
+
+            Color c = fillimage[i+6].color;
+            c.a = alpha;
+            fillimage[i+6].color = c;
+        }
+        
     }
     
     private void resetcurrentstamina() //스테미나 갱신
     {
-        staminabar.value = currentstamina/maxstamina;
+        for(int i = 0; i < 6; i++)
+        {
+            staminabar[i].value = currentstamina/maxstamina;
+        }
+        
     }
 
     private void resetenemystamina() //적 스테미나 갱신
