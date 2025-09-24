@@ -8,124 +8,86 @@ public class LevelUpSelect : MonoBehaviour
     public GameManager gamemanager;
 
     public TextMeshProUGUI[] selectButtonsText;
-
-    public List<string> allselectTitle = new List<string>
-    {
-        "hp", "fast_stamina", "guard_more_enemy_stamina", "guard", "stamina", "f", "g"
-    };
-
+    
+    public List<string> allselectTitle = new List<string> {"hp", "fast_stamina", "guard_more_enemy_stamina", "guard", "stamina", "f", "g"};
     public List<string> unselectedTitle;
-    public List<string> randomTitle = new List<string> { "", "", "" };
+
+    public List<string> randomTitle = new List<string> {"a","a","a"};
+
     public List<string> selectedList = new List<string>();
+    public List<int> selectedid;
+
     public GameObject[] gameui;
 
-    [SerializeField] private PlayerCombat player;
-
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (player == null)
-        {
-            player = FindObjectOfType<PlayerCombat>();
-        }
-
         settingRandom();
-        RandomSelect();
-        RefreshOptionTexts();
     }
 
-    void RefreshOptionTexts()
+    // Update is called once per frame
+    void Update()
     {
-        if (selectButtonsText == null) { return; }
-        for (int i = 0; i < selectButtonsText.Length && i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
-            if (selectButtonsText[i] != null)
-            {
-                selectButtonsText[i].text = randomTitle[i];
-            }
+            selectButtonsText[i].text = randomTitle[i];
         }
     }
 
-    public void RandomSelect()
+    public void RandomSelect()     //선택지 랜덤
     {
-        if (unselectedTitle == null || unselectedTitle.Count < 3)
-        {
-            settingRandom();
-        }
-
-        if (unselectedTitle.Count < 3)
-        {
-            unselectedTitle = new List<string>(allselectTitle);
-        }
-
         for (int i = 0; i < 3; i++)
         {
             int rand = UnityEngine.Random.Range(0, unselectedTitle.Count);
             randomTitle[i] = unselectedTitle[rand];
-            unselectedTitle.RemoveAt(rand);
-        }
 
-        RefreshOptionTexts();
+            unselectedTitle.Remove(randomTitle[i]);     //중복제거
+        } 
     }
 
-    public void settingRandom()
+    public void settingRandom()     //중복 없이 선택지 띄우기 위한 세팅
     {
         unselectedTitle = new List<string>(allselectTitle);
-        if (selectedList != null && selectedList.Count > 0)
-        {
-            unselectedTitle.RemoveAll(x => selectedList.Contains(x));
-        }
+        unselectedTitle.RemoveAll(x => selectedList.Contains(x));
     }
 
-    public void selectrandomvalue(int index)
+    public void selectrandomvalue(int index)    //선택지 중 하나 선택
     {
-        if (index < 0 || index >= 3) { return; }
-        string pick = randomTitle[index];
-        if (string.IsNullOrEmpty(pick)) { return; }
-
-        selectedList.Add(pick);
-
-        // if (player != null)
-        // {
-        //     if (pick == "hp")
-        //     {
-        //         player.AddMaxHp(20f, true);
-        //     }
-        //     if (pick == "fast_stamina")
-        //     {
-        //         player.AddStaminaRegen(8f);
-        //     }
-        //     if (pick == "guard_more_enemy_stamina")
-        //     {
-        //         player.AddJustGuardEnemyStaminaBonus(10f);
-        //     }
-        //     if (pick == "guard")
-        //     {
-        //         player.AddGuardStaminaGainBonus(-10f);
-        //     }
-        //     if (pick == "stamina")
-        //     {
-        //         player.AddMaxStamina(20f);
-        //     }
-        // }
-
-        settingRandom();
-        RandomSelect();
-        RefreshOptionTexts();
+        selectedList.Add(randomTitle[index]);
+        
+        if (randomTitle[index] == allselectTitle[0])
+        {
+            gamemanager.maxhp += 20;
+            gamemanager.currenthp += 20;
+        }
+        if (randomTitle[index] == allselectTitle[1])
+        {
+            gamemanager.playerstaminaregen += 8;
+        }
+        if (randomTitle[index] == allselectTitle[2])
+        {
+            gamemanager.playerpower[0] += 10;
+        }
+        if (randomTitle[index] == allselectTitle[3])
+        {
+            gamemanager.playerpower[1] -= 10;
+        }
+        if (randomTitle[index] == allselectTitle[4])
+        {
+            gamemanager.maxstamina += 20;
+        }
+        
     }
 
     public void showLevelUp()
     {
-        if (gameui != null && gameui.Length > 0 && gameui[0] != null)
-        {
-            gameui[0].SetActive(true);
-        }
+        //levelupui.SetActive(true);
+        gameui[0].SetActive(true);
     }
 
     public void exitLevelUp()
     {
-        if (gameui != null && gameui.Length > 0 && gameui[0] != null)
-        {
-            gameui[0].SetActive(false);
-        }
+        //levelupui.SetActive(false);
+        gameui[0].SetActive(false);
     }
 }

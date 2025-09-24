@@ -5,26 +5,58 @@ using UnityEngine.InputSystem;
 
 public class PlayerAttack : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private PlayerCombat combat;
     [SerializeField] private PlayerMoveBehaviour moveRef;
     [SerializeField] private Animator animator;
 
+    // ==== ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡/ï¿½ï¿½ï¿½ï¿½ ====
+    [Header("Combo (Config)")]
+    [SerializeField] private int maxCombo = 4;
+    [SerializeField] private float comboGapMax = 1f;   // ï¿½Þºï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    [SerializeField] private bool lockMoveDuringAttack = true;
+    
+    [Header("Hitbox (Config)")]
+    [SerializeField] private LayerMask enemyMask;        // ï¿½ï¿½Æ®ï¿½Ú½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å©
+    [SerializeField] private float baseDamage = 10f;
+    [SerializeField] private float baseKnockback = 6f;
+    [SerializeField] private float baseRange = 0.9f;
+    [SerializeField] private float baseRadius = 0.6f;
+    [SerializeField] private bool ignoreEnemyCollisionDuringActive = true;
+    [SerializeField] private float extraIgnoreTime = 0.02f;
+
+    [Header("Timings (sec)")]
+    [SerializeField] private float windup = 0.15f;   // ï¿½ï¿½ï¿½ï¿½
+    [SerializeField] private float active = 0.06f;   // ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½
+    [SerializeField] private float recovery = 0.12f; // ï¿½Äµï¿½
+    [SerializeField] private float minRecovery = 0.05f;  // ï¿½Ö¼ï¿½ ï¿½Äµï¿½ ï¿½ï¿½ï¿½ï¿½
+
+    [Header("Charge Attack")]
+    [SerializeField] private float chargeTime = 0.5f;
+    [SerializeField] private float chargeDamageMul = 3.0f;
+    [SerializeField] private float chargeKnockMul = 2.0f;
+    [SerializeField] private float chargeRangeMul = 1.2f;
+    [SerializeField] private float chargeRadiusMul = 1.2f;
+
+    // ==== ï¿½ï¿½ï¿½ï¿½ ====
     private PlayerMove inputWrapper;
     private InputAction attackAction;
 
-    // »óÅÂ
     private int comboIndex = 0;
     private bool isAttacking = false;
     private bool nextBuffered = false;
     private float lastAttackEndTime = -999f;
+    private bool chargeLocked = false;
 
     private bool attackHeld = false;
     private float attackPressedTime = -999f;
     private Coroutine chargeCo;
     private Coroutine attackCo;
+    private Coroutine attackMoveLockCo;
 
-    // Ãæµ¹ ¹«½Ã¿ë
     private Collider2D[] myColliders;
+
+    public bool IsAttacking => isAttacking;
 
     public void Bind(PlayerCombat c, PlayerMoveBehaviour m, Animator a)
     {
@@ -59,7 +91,7 @@ public class PlayerAttack : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[PlayerAttack] 'Attack' ¾×¼ÇÀÌ ¾ø½À´Ï´Ù.");
+            Debug.LogWarning("[PlayerAttack] 'Attack' ï¿½×¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
         }
     }
 
@@ -78,9 +110,14 @@ public class PlayerAttack : MonoBehaviour
     private void OnAttackStarted(InputAction.CallbackContext _)
     {
         if (combat.IsStaminaBroken || combat.InHitstun || combat.IsParryLocked) return;
-        attackHeld = true;
+
         attackPressedTime = Time.time;
 
+        // Atk1 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Charging ï¿½ï¿½ï¿½
+        if (chargeLocked || isAttacking) return;
+
+        attackHeld = true;
+        animator?.SetBool("Charging", true);
         if (chargeCo != null) StopCoroutine(chargeCo);
         chargeCo = StartCoroutine(CheckChargeReady());
     }
@@ -99,7 +136,7 @@ public class PlayerAttack : MonoBehaviour
         }
         else
         {
-            if (Time.time - lastAttackEndTime > combat.ComboGapMax)
+            if (Time.time - lastAttackEndTime > comboGapMax)
                 comboIndex = 0;
 
             attackCo = StartCoroutine(DoAttackStep(comboIndex));
@@ -112,9 +149,8 @@ public class PlayerAttack : MonoBehaviour
         while (attackHeld && !isAttacking)
         {
             float held = Time.time - t0;
-            if (held >= combat.ChargeTime)
+            if (held >= chargeTime)
             {
-                animator?.SetBool("Charging", true);
                 if (!isAttacking) attackCo = StartCoroutine(DoChargeAttack());
                 yield break;
             }
@@ -127,25 +163,45 @@ public class PlayerAttack : MonoBehaviour
         isAttacking = true;
         nextBuffered = false;
 
-        if (combat.LockMoveDuringAttack && moveRef) moveRef.SetMovementLocked(true, false);
-        animator?.SetTrigger($"Atk{Mathf.Clamp(step + 1, 1, combat.MaxCombo)}");
+        if (step == 0) chargeLocked = true;
 
-        yield return new WaitForSeconds(combat.Windup);
+        animator?.SetTrigger($"Atk{Mathf.Clamp(step + 1, 1, maxCombo)}");
 
-        DoHitbox(combat.BaseDamage * DamageMulByStep(step),
-                 combat.BaseKnockback * KnockbackMulByStep(step),
-                 combat.BaseRange * RangeMulByStep(step),
-                 combat.BaseRadius * RadiusMulByStep(step));
+        // ï¿½Ìµï¿½ï¿½ï¿½ + ï¿½Ì²ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Óµï¿½ 0)
+        if (lockMoveDuringAttack)
+        {
+            float lockTime = windup + active + recovery;
+            if (attackMoveLockCo != null) StopCoroutine(attackMoveLockCo);
+            attackMoveLockCo = StartCoroutine(LockMoveFor(lockTime, zeroVelocity: true));
+        }
 
-        yield return new WaitForSeconds(combat.Active);
-        yield return new WaitForSeconds(combat.Recovery);
+        // ï¿½ï¿½ï¿½ï¿½
+        yield return new WaitForSeconds(windup);
 
-        if (combat.LockMoveDuringAttack && moveRef) moveRef.SetMovementLocked(false, false);
+        // ï¿½ï¿½Æ®ï¿½Ú½ï¿½
+        DoHitbox(baseDamage * DamageMulByStep(step),
+                 baseKnockback * KnockbackMulByStep(step),
+                 baseRange * RangeMulByStep(step),
+                 baseRadius * RadiusMulByStep(step));
 
+        // È°ï¿½ï¿½
+        yield return new WaitForSeconds(active);
+
+        // ï¿½Äµï¿½(ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½ï¿½ + Äµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
+        float t = 0f;
+        while (t < minRecovery) { t += Time.deltaTime; yield return null; }
+        while (t < recovery)
+        {
+            if (nextBuffered && step < maxCombo - 1) break;
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        // ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½
         isAttacking = false;
         lastAttackEndTime = Time.time;
 
-        if (nextBuffered && step < combat.MaxCombo - 1 && (Time.time - attackPressedTime) <= (combat.Active + combat.Recovery + combat.BufferWindow + 0.2f))
+        if (nextBuffered && step < maxCombo - 1)
         {
             comboIndex = step + 1;
             attackCo = StartCoroutine(DoAttackStep(comboIndex));
@@ -154,7 +210,9 @@ public class PlayerAttack : MonoBehaviour
         {
             comboIndex = 0;
             nextBuffered = false;
+            chargeLocked = false;
         }
+
         attackCo = null;
     }
 
@@ -162,30 +220,46 @@ public class PlayerAttack : MonoBehaviour
     {
         isAttacking = true;
 
-        if (combat.LockMoveDuringAttack && moveRef) moveRef.SetMovementLocked(true, false);
         if (animator)
         {
             animator.ResetTrigger("Atk1"); animator.ResetTrigger("Atk2");
             animator.ResetTrigger("Atk3"); animator.ResetTrigger("Atk4");
-            animator.SetBool("Charging", false);
             animator.SetTrigger("AtkCharge");
         }
 
-        yield return new WaitForSeconds(combat.Windup + 0.07f);
+        if (lockMoveDuringAttack)
+        {
+            float lockTime = (windup + 0.07f) + active + recovery;
+            if (attackMoveLockCo != null) StopCoroutine(attackMoveLockCo);
+            attackMoveLockCo = StartCoroutine(LockMoveFor(lockTime, zeroVelocity: true));
+        }
 
-        DoHitbox(combat.BaseDamage * combat.ChargeDamageMul,
-                 combat.BaseKnockback * combat.ChargeKnockMul,
-                 combat.BaseRange * combat.ChargeRangeMul,
-                 combat.BaseRadius * combat.ChargeRadiusMul);
+        // ï¿½ï¿½ï¿½ï¿½ + ï¿½à°£ï¿½ï¿½ ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½
+        yield return new WaitForSeconds(windup + 0.07f);
 
-        yield return new WaitForSeconds(combat.Active + combat.Recovery);
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½Ú½ï¿½
+        DoHitbox(baseDamage * chargeDamageMul,
+                 baseKnockback * chargeKnockMul,
+                 baseRange * chargeRangeMul,
+                 baseRadius * chargeRadiusMul);
 
-        if (combat.LockMoveDuringAttack && moveRef) moveRef.SetMovementLocked(false, false);
+        if (animator) animator.SetBool("Charging", false);
+
+        // È°ï¿½ï¿½ + ï¿½Äµï¿½
+        yield return new WaitForSeconds(active + recovery);
 
         isAttacking = false;
         lastAttackEndTime = Time.time;
         comboIndex = 0;
         attackCo = null;
+    }
+
+    private IEnumerator LockMoveFor(float seconds, bool zeroVelocity = true)
+    {
+        if (moveRef) moveRef.SetMovementLocked(true, hardFreezePhysics: false, zeroVelocity: zeroVelocity);
+        yield return new WaitForSeconds(seconds);
+        if (moveRef) moveRef.SetMovementLocked(false, hardFreezePhysics: false);
+        attackMoveLockCo = null;
     }
 
     private void DoHitbox(float dmg, float knock, float range, float radius)
@@ -196,35 +270,34 @@ public class PlayerAttack : MonoBehaviour
         if (combat.DebugLogs)
             Debug.Log($"[HITBOX] dmg={dmg}, knock={knock}, center={center}, r={radius}");
 
-        var hits = Physics2D.OverlapCircleAll(center, radius, combat.EnemyMask);
+        var hits = Physics2D.OverlapCircleAll(center, radius, enemyMask);
         var seen = new HashSet<Collider2D>();
-        bool anyHit = false; 
+        bool anyHit = false;
 
         foreach (var h in hits)
         {
             if (!h || seen.Contains(h)) continue;
             seen.Add(h);
 
-            if (combat.IgnoreEnemyCollisionDuringActive)
-                IgnoreCollisionsWith(h.transform.root, combat.Active + combat.ExtraIgnoreTime);
+            if (ignoreEnemyCollisionDuringActive)
+                IgnoreCollisionsWith(h.transform.root, active + extraIgnoreTime);
 
             Vector2 toEnemy = ((Vector2)h.transform.position - (Vector2)transform.position).normalized;
             var dmgTarget = h.GetComponentInParent<IDamageable>();
             if (dmgTarget != null)
             {
                 dmgTarget.ApplyHit(dmg, knock, toEnemy, gameObject);
-                anyHit = true; // ¡Ú ÀûÁß ÇÃ·¡±×
+                anyHit = true;
             }
             else if (combat.DebugLogs)
             {
                 Debug.Log($"[HIT] {h.name} take {dmg}, knock={knock}");
-                anyHit = true; // ¡Ú È÷Æ®·Î °£ÁÖ(Å×½ºÆ®¿ë)
+                anyHit = true;
             }
         }
 
-        if (anyHit) combat.EnterCombat("HitEnemy"); // ¡Ú Ã¹ È÷Æ® ½Ã ÀüÅõ ÁøÀÔ
+        if (anyHit) combat.EnterCombat("HitEnemy");
     }
-
 
     private void IgnoreCollisionsWith(Transform enemyRoot, float seconds)
     {
@@ -248,11 +321,9 @@ public class PlayerAttack : MonoBehaviour
         if (a && b) Physics2D.IgnoreCollision(a, b, false);
     }
 
-    // ½ºÅÜº° °¡ÁßÄ¡(ÇÊ¿ä½Ã Ä¿½ºÅÍ¸¶ÀÌÁî)
+    // ï¿½ï¿½ï¿½Üºï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡(ï¿½Ê¿ï¿½ï¿½ Ä¿ï¿½ï¿½ï¿½Í¸ï¿½ï¿½ï¿½ï¿½ï¿½)
     private float DamageMulByStep(int step) => 1f + 0.1f * step;
     private float KnockbackMulByStep(int step) => 1f + 0.1f * step;
     private float RangeMulByStep(int step) => 1f;
     private float RadiusMulByStep(int step) => 1f;
-
-
 }
