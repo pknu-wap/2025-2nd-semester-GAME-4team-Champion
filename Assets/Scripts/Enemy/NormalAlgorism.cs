@@ -1,258 +1,304 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class NormalAlgorism : MonoBehaviour
 {
     [Header("Common")]
-    [SerializeField] private float AttackCooldown;
-    [SerializeField] private Transform player;
+    [SerializeField] private float AttackCooldown = 2f;
+    public float SummonTimer = 5f;
+    [SerializeField] private bool Summoned = false;
+    public Slider BossTimerSlider;
+    [SerializeField] private Transform Player;
+
+    [Header("Health / Stamina")]
+    public float MaxHp = 100f;
+    public float CurrentHp = 100f;
+    public float MaxStamina = 100f;
+    public float CurrentStamina = 100f;
+    [SerializeField] private float TimeColTime;
+
+    [Header("General")]
+    [SerializeField] private float RecognizedArea = 10f;
+    [SerializeField] private float Speed = 3.0f;
 
     [Header("Dash (Melee)")]
-    [SerializeField] private float dashSpeed;
-    private float dashDuration;
-    private float preWindup;
+    [SerializeField] private float DashSpeed = 12f;
+    [SerializeField] private float SlowApproachSpeed = 1.5f;
+    [SerializeField] private float PreDashSlowDuration = 0.5f;
+    private float PreWindup;
 
     [Header("Stop In Front Of Player")]
-    [SerializeField] private float stopoffset;
-    [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private float StopOffset = 1.0f;
+    [SerializeField] private LayerMask PlayerLayer;
 
     [Header("Dash (Range)")]
-    [SerializeField] private float retreatSpeed;
-    [SerializeField] private float retreatDuration;
-    private float desiredDistance;
-    private float rangePreWindup;
+    [SerializeField] private float RetreatSpeed = 6f;
+    [SerializeField] private float RetreatDuration = 1.25f;
+    private float DesiredDistance;
+    private float RangePreWindup;
 
-    [Header("Range Projectile")]
-    [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private Transform firePoint;
-    private int volleyCount;
-    [SerializeField] private float volleyInterval;
+    [Header("Projectile (Ranged Attack)")]
+    [SerializeField] private GameObject ProjectilePrefab;
+    [SerializeField] private Transform FirePoint;
+    private int VolleyCount;
+    [SerializeField] private float VolleyInterval = 0.2f;
 
-    [Header("Remain")]
-    private float attackTimer;
-    private Rigidbody2D rb;
-    private bool isActing;
+    [Header("UI & Cinematic")]
+    public Text Timer;
+    public GameObject Hp;
+    public GameObject Stamina;
+
+    [Header("Rendering")]
+    [SerializeField] private SpriteRenderer SpriteRenderer;
+    [SerializeField] private Collider2D MovementArea;
+
+    [Header("Runtime")]
+    [SerializeField] private float AttackTimer = 0f;
+    private Rigidbody2D Rb;
+    private bool IsActing;
     private Collider2D PlayerCol;
-    [SerializeField] private float RecognizedArea;
+    private Coroutine TypingCo;
 
-    [SerializeField] private SpriteRenderer spriteRenderer; // 테스트
-    [SerializeField] private Collider2D movementArea;
-
-    void Start()
+    private void Start()
     {
-        attackTimer = 0f;
-        rb = GetComponent<Rigidbody2D>();
-        if (player) PlayerCol = player.GetComponent<Collider2D>();
-        rb.position = ClampInside(rb.position);
+        AttackTimer = 0f;
+        Rb = GetComponent<Rigidbody2D>();
+
+        if (Player != null)
+        {
+            PlayerCol = Player.GetComponent<Collider2D>();
+        }
+
+        Rb.position = ClampInside(Rb.position);
     }
 
-    void Update()
+    private void Update()
     {
-        if (!isActing)
+        if (!IsActing)
         {
-            attackTimer += Time.deltaTime;
-            if (attackTimer >= AttackCooldown)
+            AttackTimer += Time.deltaTime;
+            if (AttackTimer >= AttackCooldown)
             {
-                Attack_Way_Choice();
-                attackTimer = 0f;
+                AttackWayChoice();
+                AttackTimer = 0f;
             }
         }
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        if (!isActing)
+        if (!Summoned)
+        {
+            if (Rb != null) Rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        if (!IsActing)
+        {
             AIMoveMent();
-    }
-
-    void Attack_Way_Choice()
-    {
-        int Attack_Way_Type = Random.Range(0, 2);
-        switch (Attack_Way_Type)
-        {
-            case 0:
-                Melee_Attack();
-                break;
-            case 1:
-                Range_Attack();
-                break;
         }
     }
 
-    void Melee_Attack()
+    private void AttackWayChoice()
     {
-        int Melee_Attack_Type = Random.Range(0, 3);
-        switch (Melee_Attack_Type)
+        int type = Random.Range(0, 2);
+        switch (type)
+        {
+            case 0: Melee_Attack(); break;
+            case 1: Range_Attack(); break;
+        }
+    }
+
+    private void Melee_Attack()
+    {
+        if (IsActing) return;
+
+        int meleeType = Random.Range(0, 3);
+        switch (meleeType)
         {
             case 0:
-                Debug.Log("근거리 공격1: 짧게 돌진");
-                preWindup = 2f;
-                dashDuration = 0.5f;
-                StartCoroutine(DashBurstStopInFront());
+                Debug.Log("근거리: 짧은 준비 후 돌진");
+                PreWindup = 2f;
                 break;
             case 1:
-                Debug.Log("근거리 공격2: 약간 돌진");
-                preWindup = 3f;
-                dashDuration = 1.0f;
-                StartCoroutine(DashBurstStopInFront());
+                Debug.Log("근거리: 보통 준비 후 돌진");
+                PreWindup = 3f;
                 break;
             case 2:
-                Debug.Log("근거리 공격3: 길게 돌진");
-                preWindup = 4f;
-                dashDuration = 1.5f;
-                StartCoroutine(DashBurstStopInFront());
+                Debug.Log("근거리: 긴 준비 후 돌진");
+                PreWindup = 4f;
                 break;
         }
+
+        IsActing = true;
+        StartCoroutine(MeleeDash());
     }
 
-    void Range_Attack()
+    private IEnumerator MeleeDash()
     {
-        int Range_Attack_Type = Random.Range(0, 3);
-        switch (Range_Attack_Type)
+        // 준비
+        Rb.linearVelocity = Vector2.zero;
+        if (SpriteRenderer) SpriteRenderer.color = Color.yellow;
+        if (PreWindup > 0f) yield return new WaitForSeconds(PreWindup);
+
+        // 느린 접근 (0.5초)
+        float t = 0f;
+        while (t < PreDashSlowDuration)
         {
-            case 0:
-                Debug.Log("원거리 공격: 후퇴 후 단발 ( 공격 차징 시간 1.0 )");
-                desiredDistance = Mathf.Max(desiredDistance, 5f);
-                rangePreWindup = 1.0f;
-                volleyCount = 1;
-                StartCoroutine(RetreatThenFire());
-                break;
-            case 1:
-                Debug.Log("원거리 공격: 후퇴 후 2연발 ( 공격 차징 시간 1.3 )");
-                desiredDistance = Mathf.Max(desiredDistance, 7f);
-                rangePreWindup = 1.3f;
-                volleyCount = 2;
-                StartCoroutine(RetreatThenFire());
-                break;
-            case 2:
-                Debug.Log("원거리 공격: 후퇴 후 3연발 ( 공격 차징 시간 1.5 )");
-                desiredDistance = Mathf.Max(desiredDistance, 9f);
-                rangePreWindup = 1.5f;
-                volleyCount = 3;
-                StartCoroutine(RetreatThenFire());
-                break;
-        }
-    }
-
-    IEnumerator DashBurstStopInFront()
-    {
-        isActing = true;
-        rb.linearVelocity = Vector2.zero;
-        if (spriteRenderer) spriteRenderer.color = Color.green; // 테스트
-
-        yield return new WaitForSeconds(preWindup);
-
-        Vector2 startPosition = rb.position;
-        Vector2 dir = ((Vector2)player.position - startPosition).normalized;
-        Vector2 target = ComputeFrontTarget(startPosition, dir);
-        target = ClampInside(target);
-
-        float timer = 0f;
-        while (timer < dashDuration)
-        {
-            if (spriteRenderer) spriteRenderer.color = Color.blue; // 테스트
-
-            Vector2 toTarget = target - rb.position;
-            float dist = toTarget.magnitude;
-            if (dist <= 0.02f) break;
-
-            Vector2 toTargetDir = (dist > 1e-6f) ? toTarget / dist : Vector2.zero;
-            float step = dashSpeed * Time.fixedDeltaTime;
-            Vector2 nextPos = (step >= dist) ? target : rb.position + toTargetDir * step;
-            nextPos = ClampInside(nextPos);
-
-            rb.MovePosition(nextPos);
-            timer += Time.fixedDeltaTime;
+            if (Player == null) break;
+            Vector2 toPlayer = (Vector2)Player.position - Rb.position;
+            Vector2 dirSlow = toPlayer.sqrMagnitude > 1e-8f ? toPlayer.normalized : Vector2.zero;
+            Rb.linearVelocity = dirSlow * SlowApproachSpeed;
+            t += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
 
-        rb.linearVelocity = Vector2.zero;
-        if (spriteRenderer) spriteRenderer.color = Color.red; // 테스트
-        isActing = false;
-    }
+        Rb.linearVelocity = Vector2.zero;
 
-    Vector2 ComputeFrontTarget(Vector2 start, Vector2 dir)
-    {
-        float maxDist = 50f;
-        Vector2 fallback = (Vector2)player.position - dir * stopoffset;
+        // 빠른 돌진 (방향 고정, 직선)
+        if (SpriteRenderer) SpriteRenderer.color = Color.red;
+        Vector2 startPos = Rb.position;
+        Vector2 lockedDir = ((Vector2)Player.position - startPos).normalized;
+        if (lockedDir.sqrMagnitude < 1e-8f) lockedDir = Vector2.right;
 
-        RaycastHit2D hitPlayer = Physics2D.Raycast(start, dir, maxDist, playerLayer);
-        if (hitPlayer.collider != null)
+        float dashTime = 0.3f;
+        float elapsed = 0f;
+        while (elapsed < dashTime)
         {
-            return hitPlayer.point - dir * stopoffset;
+            Rb.linearVelocity = lockedDir * DashSpeed;
+            elapsed += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
         }
-        return fallback;
+
+        // 종료
+        Rb.linearVelocity = Vector2.zero;
+        if (SpriteRenderer) SpriteRenderer.color = Color.white;
+        yield return new WaitForSeconds(0.5f);
+
+        IsActing = false;
     }
 
-    void FireOneProjectile()
+    private void Range_Attack()
     {
-        if (projectilePrefab && firePoint)
-            Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+        if (IsActing) return;
+
+        int rangeType = Random.Range(0, 3);
+        switch (rangeType)
+        {
+            case 0:
+                Debug.Log("원거리 공격: 후퇴 후 단발 (차징 1.0)");
+                DesiredDistance = 5f;
+                RangePreWindup = 1.0f;
+                VolleyCount = 1;
+                break;
+            case 1:
+                Debug.Log("원거리 공격: 후퇴 후 2연발 (차징 1.3)");
+                DesiredDistance = 7f;
+                RangePreWindup = 1.3f;
+                VolleyCount = 2;
+                break;
+            case 2:
+                Debug.Log("원거리 공격: 후퇴 후 3연발 (차징 1.5)");
+                DesiredDistance = 9f;   
+                RangePreWindup = 1.5f;
+                VolleyCount = 3;
+                break;
+        }
+
+        IsActing = true;
+        StartCoroutine(RetreatThenFire());
     }
 
-    IEnumerator RetreatThenFire()
+    private void FireOneProjectile()
     {
-        isActing = true;
-        if (spriteRenderer) spriteRenderer.color = Color.green; // 테스트
+        if (ProjectilePrefab && FirePoint)
+            Instantiate(ProjectilePrefab, FirePoint.position, Quaternion.identity);
+    }
+
+    private IEnumerator RetreatThenFire()
+    {
+        IsActing = true;
+        if (SpriteRenderer) SpriteRenderer.color = Color.green;
 
         float t = 0f;
-        while (t < retreatDuration)
+        while (t < RetreatDuration)
         {
-            Vector2 toPlayer = (Vector2)player.position - rb.position;
+            if (Player == null || Rb == null) break;
+
+            Vector2 toPlayer = (Vector2)Player.position - Rb.position;
             float dist = toPlayer.magnitude;
 
             Vector2 dirAway = (-toPlayer).normalized;
-            float step = retreatSpeed * Time.fixedDeltaTime;
+            float step = RetreatSpeed * Time.fixedDeltaTime;
 
-            Vector2 nextPos = rb.position + dirAway * step;
+            Vector2 nextPos = Rb.position + dirAway * step;
             nextPos = ClampInside(nextPos);
-            rb.MovePosition(nextPos);
+            Rb.MovePosition(nextPos);
 
-            if (desiredDistance > 0f && dist >= desiredDistance)
+            if (DesiredDistance > 0f && dist >= DesiredDistance)
                 break;
 
             t += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
 
-        rb.linearVelocity = Vector2.zero;
-        if (rangePreWindup > 0f) yield return new WaitForSeconds(rangePreWindup);
+        if (Rb) Rb.linearVelocity = Vector2.zero;
+        if (RangePreWindup > 0f) yield return new WaitForSeconds(RangePreWindup);
 
-        if (spriteRenderer) spriteRenderer.color = Color.blue; // 테스트
-        for (int i = 0; i < volleyCount; i++)
+        if (SpriteRenderer) SpriteRenderer.color = Color.blue;
+        for (int i = 0; i < VolleyCount; i++)
         {
             FireOneProjectile();
-            if (i < volleyCount - 1 && volleyInterval > 0f)
-                yield return new WaitForSeconds(volleyInterval);
+            if (i < VolleyCount - 1 && VolleyInterval > 0f)
+                yield return new WaitForSeconds(VolleyInterval);
         }
 
-        if (spriteRenderer) spriteRenderer.color = Color.red; // 테스트
-        isActing = false;
+        if (SpriteRenderer) SpriteRenderer.color = Color.red;
+        IsActing = false;
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.transform == player)
+        if (!enabled) return;
+        if (other.CompareTag("Player"))
         {
+            float original = TimeColTime;
+            Debug.Log("Damage = 10");
+            TimeColTime = original;
             StopInFrontOfPlayer();
         }
     }
 
-    void StopInFrontOfPlayer()
+    private void StopInFrontOfPlayer()
     {
-        Vector2 dir = ((Vector2)player.position - rb.position).normalized;
-        Vector2 stopPos = (Vector2)player.position - dir * stopoffset;
-        rb.position = ClampInside(stopPos);
-        rb.linearVelocity = Vector2.zero;
-        isActing = false;
+        if (Player == null || Rb == null) return;
+
+        Vector2 dir = ((Vector2)Player.position - Rb.position).normalized;
+        Vector2 stopPos = (Vector2)Player.position - dir * StopOffset;
+        Rb.position = ClampInside(stopPos);
+        Rb.linearVelocity = Vector2.zero;
+        IsActing = false;
     }
 
-    Vector2 ClampInside(Vector2 p)
+    private Vector2 ComputeFrontTarget(Vector2 start, Vector2 dir)
     {
-        if (!movementArea) return p;
+        float maxDist = 50f;
+        Vector2 fallback = (Vector2)Player.position - dir * StopOffset;
 
-        Vector2 closest = movementArea.ClosestPoint(p);
-        Vector2 center = (Vector2)movementArea.bounds.center;
+        RaycastHit2D hitPlayer = Physics2D.Raycast(start, dir, maxDist, PlayerLayer);
+        if (hitPlayer.collider != null)
+            return hitPlayer.point - dir * StopOffset;
+
+        return fallback;
+    }
+
+    private Vector2 ClampInside(Vector2 p)
+    {
+        if (MovementArea == null) return p;
+
+        Vector2 closest = MovementArea.ClosestPoint(p);
+        Vector2 center = (Vector2)MovementArea.bounds.center;
         Vector2 inward = (center - closest).sqrMagnitude > 1e-8f ? (center - closest).normalized : Vector2.zero;
 
         return closest + inward * 0.14f;
@@ -260,18 +306,17 @@ public class NormalAlgorism : MonoBehaviour
 
     public void AIMoveMent()
     {
-        Vector2 toPlayer = (Vector2)player.position - rb.position;
-        float dist = toPlayer.magnitude;
+        Vector2 ToPlayer = (Vector2)Player.position - Rb.position;
+        float Dist = ToPlayer.magnitude;
 
-        if (dist <= RecognizedArea)
+        if (Dist <= RecognizedArea)
         {
-            Vector2 dir = toPlayer.sqrMagnitude > 1e-8f ? toPlayer.normalized : Vector2.zero;
-            float speed = 3.0f;
-            rb.linearVelocity = dir * speed;
+            Vector2 Dir = ToPlayer.sqrMagnitude > 1e-8f ? ToPlayer.normalized : Vector2.zero;
+            Rb.linearVelocity = Dir * Speed;
         }
         else
         {
-            rb.linearVelocity = Vector2.zero;
+            Rb.linearVelocity = Vector2.zero;
         }
     }
 }

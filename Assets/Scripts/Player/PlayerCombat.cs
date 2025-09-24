@@ -12,7 +12,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private PlayerDefense defense;
     [SerializeField] private PlayerAttack attack;
 
-    // --------- Vitals (Ã¼·Â/½ºÅÂ¹Ì³ª) ---------
+    // --------- Vitals (Ã¼ï¿½ï¿½/ï¿½ï¿½ï¿½Â¹Ì³ï¿½) ---------
     [Header("Vitals")]
     [SerializeField] private float hpMax = 100f;
     [SerializeField] private float staminaMax = 100f;
@@ -31,9 +31,9 @@ public class PlayerCombat : MonoBehaviour
 
     // === Combat State ===
     [Header("Combat State")]
-    [SerializeField] private float disengageDistance = 150f;     // ºñÀüÅõ ÇØÁ¦ °Å¸®
-    [SerializeField] private float enemyScanInterval = 0.25f;    // °Å¸® Ã¼Å© °£°Ý
-    [SerializeField, Range(0f, 1f)] private float combatYSpeedMultiplier = 0.7f; // ÀüÅõ Áß YÃà ¼Óµµ ¹è¼ö
+    [SerializeField] private float disengageDistance = 150f;     // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½
+    [SerializeField] private float enemyScanInterval = 0.25f;    // ï¿½Å¸ï¿½ Ã¼Å© ï¿½ï¿½ï¿½ï¿½
+    [SerializeField, Range(0f, 1f)] private float combatYSpeedMultiplier = 0.7f; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Yï¿½ï¿½ ï¿½Óµï¿½ ï¿½ï¿½ï¿½
 
     private bool inCombat = false;
     private Coroutine combatMonitorCo;
@@ -42,7 +42,7 @@ public class PlayerCombat : MonoBehaviour
     public float CombatYSpeedMul => combatYSpeedMultiplier;
 
 
-    // --------- Guard / Parry (¼öÄ¡Á¶Á¤ °¡´É) ---------
+    // --------- Guard / Parry (ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½) ---------
     [Header("Guard / Parry (Config)")]
     [SerializeField] private float guardAngle = 120f;
     [SerializeField] private float parryWindow = 0.3f;
@@ -66,7 +66,7 @@ public class PlayerCombat : MonoBehaviour
     private Coroutine parryLockCo;
     public bool IsParryLocked => Time.time < parryLockEndTime;
 
-    // --------- Attack (¸ðµç ¼öÄ¡/¼³Á¤Àº ¿©±â, ·ÎÁ÷Àº PlayerAttack) ---------
+    // --------- Attack (ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ PlayerAttack) ---------
     [Header("Attack - Combo (Config)")]
     [SerializeField] private int maxCombo = 5;
     [SerializeField] private float comboGapMax = 0.6f;
@@ -96,7 +96,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private bool ignoreEnemyCollisionDuringActive = true;
     [SerializeField] private float extraIgnoreTime = 0.02f;
 
-    // === °ø°³ Getter (¼­ºê ÄÄÆ÷³ÍÆ®°¡ ÀÐÀ½) ===
+    // === ï¿½ï¿½ï¿½ï¿½ Getter (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½) ===
     public bool DebugLogs => debugLogs;
     public bool IsStaminaBroken => staminaBroken;
     public bool InHitstun => inHitstun;
@@ -155,7 +155,7 @@ public class PlayerCombat : MonoBehaviour
         OnHealthChanged?.Invoke(hp, hpMax);
         OnStaminaChanged?.Invoke(stamina, staminaMax);
 
-        // ¾ç¹æÇâ ÂüÁ¶ ¼³Á¤(¼±ÅÃ)
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)
         if (defense) defense.Bind(this, moveRef, animator);
         if (attack) attack.Bind(this, moveRef, animator);
     }
@@ -176,7 +176,7 @@ public class PlayerCombat : MonoBehaviour
         inCombat = true;
         if (animator) animator.SetBool("InCombat", true);
 
-        // ¸ð´ÏÅÍ ½ÃÀÛ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (combatMonitorCo != null) StopCoroutine(combatMonitorCo);
         combatMonitorCo = StartCoroutine(CombatMonitor());
     }
@@ -192,7 +192,7 @@ public class PlayerCombat : MonoBehaviour
         if (combatMonitorCo != null) { StopCoroutine(combatMonitorCo); combatMonitorCo = null; }
     }
 
-    // Àû »ç¸Á ¾Ë¸²(¼±ÅÃÀûÀ¸·Î Àû¿¡¼­ È£Ãâ °¡´É)
+    // ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ë¸ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
     public void NotifyEnemyKilled(Transform enemy = null)
     {
         if (!inCombat) return;
@@ -207,7 +207,7 @@ public class PlayerCombat : MonoBehaviour
 
     private IEnumerator CombatMonitor()
     {
-        // ÀüÅõ Áß ÁÖ±âÀûÀ¸·Î °Å¸® Ã¼Å© ¡æ ÀûÀÌ ¸Ö¾îÁö¸é ºñÀüÅõ
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ Ã¼Å© ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         var wait = new WaitForSeconds(enemyScanInterval);
         while (inCombat)
         {
@@ -247,7 +247,7 @@ public class PlayerCombat : MonoBehaviour
     {
         staminaBroken = true;
         staminaBreakEndTime = Time.time + staminaBreakTime;
-        // °¡µå »óÅÂ Á¾·á ÅëÁö
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         defense?.ForceUnblock();
 
         moveRef?.SetMovementLocked(true, true);
@@ -258,20 +258,20 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    // === ¿ÜºÎ(Àû È÷Æ®¹Ú½º)¿¡¼­ È£Ãâ ===
-    // hitDir: "Àû ¡æ ÇÃ·¹ÀÌ¾î" ¹æÇâ, hitstun: ÀûÀÌ ÁÖ´Â °æÁ÷(ÃÊ). <0ÀÌ¸é ±âº»°ª »ç¿ë
+    // === ï¿½Üºï¿½(ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½Ú½ï¿½)ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½ ===
+    // hitDir: "ï¿½ï¿½ ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½" ï¿½ï¿½ï¿½ï¿½, hitstun: ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½). <0ï¿½Ì¸ï¿½ ï¿½âº»ï¿½ï¿½ ï¿½ï¿½ï¿½
     public void OnHit(float damage, float knockback, Vector2 hitDir, bool parryable, GameObject attacker = null, float hitstun = -1f)
     {
 
-        // i-ÇÁ·¹ÀÓ ÁßÀÌ¸é ¹«½Ã
+        // i-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (Time.time < iFrameEndTime) return;
         EnterCombat("GotHit");
 
         Vector2 facing = (moveRef && moveRef.LastFacing.sqrMagnitude > 0f) ? moveRef.LastFacing : Vector2.right;
-        Vector2 inFrontDir = -hitDir.normalized;  // ÇÃ·¹ÀÌ¾î¡æÀû
+        Vector2 inFrontDir = -hitDir.normalized;  // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½
         bool inFront = Vector2.Dot(facing, inFrontDir) >= Mathf.Cos(guardAngle * 0.5f * Mathf.Deg2Rad);
 
-        // ¹æ¾î ½Ã½ºÅÛ¿¡ ÆÇÁ¤ À§ÀÓ
+        // ï¿½ï¿½ï¿½ ï¿½Ã½ï¿½ï¿½Û¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         var outcome = defense ? defense.Evaluate(inFront, parryable) : DefenseOutcome.None;
 
         if (outcome == DefenseOutcome.Parry)
@@ -282,17 +282,17 @@ public class PlayerCombat : MonoBehaviour
             var parryableTarget = attacker ? attacker.GetComponent<IParryable>() : null;
             parryableTarget?.OnParried(transform.position);
 
-            // === ÆÐ¸µ ÈÄ µô·¹ÀÌ °è»ê: (ÆÐ¸µ À©µµ¿ì Á¾·á ½Ã°¢ + 0.1) - Áö±Ý
+            // === ï¿½Ð¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½: (ï¿½Ð¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ + 0.1) - ï¿½ï¿½ï¿½ï¿½
             float windowEnd = (defense ? defense.LastBlockPressedTime : Time.time) + ParryWindow;
             float lockDuration = Mathf.Max(0f, (windowEnd + 0.1f) - Time.time);
 
-            // 1) ÀÌµ¿/°ø°Ý ÀÔ·Â ºÀÀÎ(Á¶ÀÛ Àá±Ý)
+            // 1) ï¿½Ìµï¿½/ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½)
             StartParryLock(lockDuration);
 
-            // 2) °¡µå À¯Áö: ÆÐ¸µ À©µµ¿ì ³¡ ~ +0.1ÃÊ±îÁö Æ÷ÇÔÇØ¼­ ÀüÃ¼ lockDuration µ¿¾È À¯Áö
+            // 2) ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½Ð¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ~ +0.1ï¿½Ê±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½Ã¼ lockDuration ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             defense?.ForceBlockFor(lockDuration);
 
-            // (¼±ÅÃ) ¾ÆÁÖ ÂªÀº i-frame
+            // (ï¿½ï¿½ï¿½ï¿½) ï¿½ï¿½ï¿½ï¿½ Âªï¿½ï¿½ i-frame
             iFrameEndTime = Time.time + 0.05f;
             return;
         }
@@ -305,7 +305,7 @@ public class PlayerCombat : MonoBehaviour
             ApplyDamage(finalDamage);
             ApplyKnockbackXOnly(inFrontDir, finalKnock);
 
-            stamina -= damage; // ÇÊ¿äÇÏ¸é °è¼ö·Î ¹Ù²ãµµ µÊ
+            stamina -= damage; // ï¿½Ê¿ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ãµµ ï¿½ï¿½
             OnStaminaChanged?.Invoke(stamina, staminaMax);
 
             if (stamina <= 0f)
@@ -322,7 +322,7 @@ public class PlayerCombat : MonoBehaviour
             return;
         }
 
-        // °¡µå ½ÇÆÐ(Ãø/ÈÄ¹æ Æ÷ÇÔ)
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½/ï¿½Ä¹ï¿½ ï¿½ï¿½ï¿½ï¿½)
         ApplyDamage(damage);
         ApplyKnockbackXOnly(inFrontDir, knockback);
 
@@ -336,7 +336,7 @@ public class PlayerCombat : MonoBehaviour
         parryLockEndTime = Mathf.Max(parryLockEndTime, Time.time + duration);
         if (parryLockCo == null) parryLockCo = StartCoroutine(ParryLockRoutine());
 
-        // ÀÌµ¿Àº Àá±×µÇ, ÇöÀç ³Ë¹é ¼Óµµ´Â »ì¸²
+        // ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½×µï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½Ë¹ï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½ì¸²
         moveRef?.SetMovementLocked(true, hardFreezePhysics: false, zeroVelocity: false);
     }
 
@@ -345,13 +345,13 @@ public class PlayerCombat : MonoBehaviour
         while (Time.time < parryLockEndTime)
             yield return null;
 
-        // Àá±Ý ÇØÁ¦(´Ù¸¥ »óÅÂ°¡ Àá±×°í ÀÖÁö ¾Ê´Ù´Â °¡Á¤)
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½Â°ï¿½ ï¿½ï¿½×°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´Ù´ï¿½ ï¿½ï¿½ï¿½ï¿½)
         moveRef?.SetMovementLocked(false, hardFreezePhysics: false);
         parryLockCo = null;
     }
 
 
-    // === °øÀ¯ À¯Æ¿ ===
+    // === ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¿ ===
     public void ApplyDamage(float amount)
     {
         if (amount <= 0f) return;
@@ -366,10 +366,10 @@ public class PlayerCombat : MonoBehaviour
         if (debugLogs) Debug.Log("[Player] DEAD");
         moveRef?.SetMovementLocked(true, true);
         animator?.SetTrigger("Die");
-        // TODO: ¸®½ºÆù / °ÔÀÓ¿À¹ö
+        // TODO: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ / ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½
     }
 
-    // XÃàÀ¸·Î¸¸ ³Ë¹é
+    // Xï¿½ï¿½ï¿½ï¿½ï¿½Î¸ï¿½ ï¿½Ë¹ï¿½
     public void ApplyKnockbackXOnly(Vector2 dirToEnemy, float force)
     {
         if (!rb || force <= 0f) return;
@@ -384,12 +384,12 @@ public class PlayerCombat : MonoBehaviour
     {
         if (duration <= 0f) return;
 
-        // °ø°ÝÀº °¢ÀÚ ½ºÅ©¸³Æ®¿¡¼­ Ãë¼ÒÇÏÁö¸¸, Á¶ÀÛ Àá±ÝÀº ¿©±â¼­ ÅëÀÏ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½â¼­ ï¿½ï¿½ï¿½ï¿½
         float end = Time.time + duration;
         hitstunEndTime = Mathf.Max(hitstunEndTime, end);
         if (hitstunCo == null) hitstunCo = StartCoroutine(HitstunRoutine());
 
-        // ¹°¸®´Â »ì¸®°í Á¶ÀÛ¸¸ Àá±Ý
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ì¸®ï¿½ï¿½ ï¿½ï¿½ï¿½Û¸ï¿½ ï¿½ï¿½ï¿½
         moveRef?.SetMovementLocked(true, hardFreezePhysics: false, zeroVelocity: false);
         animator?.SetTrigger("Hit");
     }
@@ -404,9 +404,9 @@ public class PlayerCombat : MonoBehaviour
     }
 }
 
-// ¼±ÅÃ: ÀûÀÌ ÆÐ¸µµÇ¾úÀ» ¶§ ¹ÝÀÀ
+// ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¸ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 public interface IParryable { void OnParried(Vector3 parrySourcePosition); }
-// ÇÃ·¹ÀÌ¾î °ø°ÝÀÌ Àû¿¡°Ô Àü´ÞÇÏ´Â ÀÎÅÍÆäÀÌ½º
+// ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½
 public interface IDamageable
 {
     void ApplyHit(float damage, float knockback, Vector2 hitDirFromPlayer, GameObject attacker);
