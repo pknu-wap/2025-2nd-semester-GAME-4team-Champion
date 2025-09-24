@@ -1,127 +1,148 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("Health")]
-    // public Slider HpBar;
-    // public Slider StaminaBar;
-    public Slider EnemyHpBar;
-    public Slider[] EnemyStaminaBars;
-    public Image[] FillImages;
+    public Slider[] hpbar;    //플레이어 슬라이드바
+    public Slider[] staminabar;
+    public float maxhp = 100;   //플레이어 체력
+    public float currenthp = 100;
+    public float maxstamina = 100f;  //플레이어 스테미나
+    public float currentstamina = 0f;
+    public float playerstaminaregen = 2;
 
-    [Header("Object")]
-    // public GameObject PlayerObject;
-    public GameObject EnemyObject;
+    public List<int> playerpower = new List<int> {0,0};    //플레이어 레벨업 선택시 능력치(저스트 가드시 적 스테미나, 가드시 스테미나 감소)
 
-    // private PlayerCombat Player;
-    private BossCore Enemy;
+    public float regentime = 2f;    // 스테미나 회복 대기 시간
+    private float lastactiontime;   //마지막으로 영향을 받은 시간
 
-    [Header("Stamina Settings")]
-    public float EnemyStaminaRegen = 2f;
-    public float EnemyRegenTime = 2f;
 
-    private float EnemyLastActionTime;
+    public Slider enemyhpbar;   //적 슬라이드바
+    public Slider[] enemystaminabar;    
+    public Image[] fillimage;   //적 슬라이드바*2, 적 슬라이드바 배경*2, 플레이어 슬라이드바, 플레이어 슬라이드바 배경 순
+    public float enemymaxhp = 100; //적 체력
+    public float enemycurrenthp = 100;
+    public float enemymaxstamina = 100f; //적 스테미나
+    public float enemycurrentstamina = 0f;
+    public float enemystaminaregen =2;
 
-    // private float PlayerHp01;
-    // private float PlayerStamina01;
+    public float enemyregentime = 2f;    // 스테미나 회복 대기 시간
+    private float enemylastactiontime;   //마지막으로 영향을 받은 시간
 
-    private void Start()
+    void Start()    
     {
-        // Player = PlayerObject.GetComponent<PlayerCombat>();
-        Enemy = EnemyObject.GetComponent<BossCore>();
+        resetcurrenthp();
+        resetcurrentstamina();
 
-        // PlayerHp01 = Player.Hp01;
-        // PlayerStamina01 = Player.Stamina01;
+        resetenemystamina();
 
-        // Player.OnHealthChanged += HandlePlayerHealthChanged;
-        // Player.OnStaminaChanged += HandlePlayerStaminaChanged;
-
-        // ResetPlayerHp();
-        // ResetPlayerStamina();
-        ResetEnemyHp();
-        ResetEnemyStamina();
-
-        EnemyLastActionTime = Time.time;
+        lastactiontime = Time.time;
     }
 
-    private void OnDestroy()
+    void Update()
     {
-        // if (Player != null)
-        // {
-        //     Player.OnHealthChanged -= HandlePlayerHealthChanged;
-        //     Player.OnStaminaChanged -= HandlePlayerStaminaChanged;
-        // }
-    }
-
-    private void Update()
-    {
-        if (Time.time - EnemyLastActionTime >= EnemyRegenTime && Enemy.CurrentStamina > 0f)
+        if (Time.time - lastactiontime >= regentime && currentstamina > 0) //나의 스테미나 줄어드는 속도
         {
-            Enemy.CurrentStamina -= EnemyRegenTime * Time.deltaTime * EnemyStaminaRegen;
-            if (Enemy.CurrentStamina < 0f)
-            {
-                Enemy.CurrentStamina = 0f;
-            }
-            ResetEnemyStamina();
+            currentstamina -= regentime * Time.deltaTime * playerstaminaregen;
+            if (currentstamina < 0) 
+                {
+                    currentstamina = 0;
+                }
+
+            resetcurrentstamina();
         }
 
-        float eNorm = (Enemy.MaxStamina > 0f) ? (Enemy.CurrentStamina / Enemy.MaxStamina) : 0f;
-        // float pNorm = PlayerStamina01;
-
-        for (int i = 0; i < 2; i++)
+        if (Time.time - enemylastactiontime >= enemyregentime && enemycurrentstamina > 0) //적 스테미나 감소
         {
-            FillImages[i].color     = new Color(217 / 255f, (207 - Enemy.CurrentStamina) / 255f, 28 / 255f, 10f * eNorm);
-            FillImages[i + 2].color = new Color(105 / 255f, 107 / 255f, 30 / 255f, 10f * eNorm);
-            // FillImages[4].color   = new Color(1f, (245 - pNorm * 255f) / 255f, 57 / 255f, 10f * pNorm);
-            // FillImages[5].color   = new Color(167 / 255f, 171 / 255f, 0f, 10f * pNorm);
+            enemycurrentstamina -= enemyregentime * Time.deltaTime * enemystaminaregen;
+            if (enemycurrentstamina < 0) 
+                {
+                    enemycurrentstamina = 0;
+                }
+
+            resetenemystamina();
+        }
+
+        for (int i = 0; i < 6; i++)
+        {
+            fillimage[i].color = new Color(255/255f, (245-currentstamina)/255f, 57/255f, 1000*(staminabar[i].value - staminabar[i].minValue));
+            
+
+            //fillimage[i].color = new Color(217/255f, (207-enemycurrentstamina)/255f, 28/255f, 10*enemycurrentstamina);
+            //fillimage[i+2].color = new Color(105/255f, 107/255f, 30/255f, 10*enemycurrentstamina);
+            
+            //fillimage[5].color = new Color(167/255f, 171/255f, 0/255f, 10*currentstamina);
         }
     }
 
-    // private void HandlePlayerHealthChanged(float current, float max)
-    // {
-    //     PlayerHp01 = (max > 0f) ? current / max : 0f;
-    //     ResetPlayerHp();
-    // }
-
-    // private void HandlePlayerStaminaChanged(float current, float max)
-    // {
-    //     PlayerStamina01 = (max > 0f) ? current / max : 0f;
-    //     ResetPlayerStamina();
-    // }
-
-    // private void ResetPlayerHp()
-    // {
-    //     if (HpBar != null)
-    //     {
-    //         HpBar.value = PlayerHp01;
-    //     }
-    // }
-
-    // private void ResetPlayerStamina()
-    // {
-    //     if (StaminaBar != null)
-    //     {
-    //         StaminaBar.value = PlayerStamina01;
-    //     }
-    // }
-
-    private void ResetEnemyHp()
+    public void getdamaged() //데미지 받음
     {
-        if (EnemyHpBar != null)
-        {
-            float v = (Enemy.MaxHp > 0f) ? Enemy.CurrentHp / Enemy.MaxHp : 0f;
-            EnemyHpBar.value = v;
-        }
+        currenthp -= 20;
+        resetcurrenthp();
+
+        lastactiontime = Time.time;
     }
 
-    private void ResetEnemyStamina()
+    public void guard() //가드 성공
     {
-        if (EnemyStaminaBars != null && EnemyStaminaBars.Length >= 2)
+        currentstamina += (20 + playerpower[1]);
+        if (currentstamina > maxstamina)
         {
-            float v = (Enemy.MaxStamina > 0f) ? Enemy.CurrentStamina / Enemy.MaxStamina : 0f;
-            EnemyStaminaBars[0].value = v;
-            EnemyStaminaBars[1].value = v;
+            currentstamina = maxstamina;
         }
+        resetcurrentstamina();
+
+        lastactiontime = Time.time;
+    }
+
+    public void justguard() //저스트 가드 성공
+    {
+        currentstamina += 1;
+        enemycurrentstamina += (30 + playerpower[0]);
+        if (currentstamina > maxstamina)
+        {
+            currentstamina = maxstamina;
+        }
+        if (enemycurrentstamina > enemymaxstamina)
+        {
+            enemycurrentstamina = enemymaxstamina;
+        }
+
+        resetcurrentstamina();
+        resetenemystamina();
+
+        lastactiontime = Time.time;
+    }
+
+    
+
+    private void resetcurrenthp() //체력 갱신
+    {
+        for(int i = 0; i < 3; i++)
+        {
+            hpbar[i].value = currenthp/maxhp;
+            float alpha = Mathf.Clamp01(1000*(hpbar[i].value-hpbar[i].minValue));
+
+            Color c = fillimage[i+6].color;
+            c.a = alpha;
+            fillimage[i+6].color = c;
+        }
+        
+    }
+    
+    private void resetcurrentstamina() //스테미나 갱신
+    {
+        for(int i = 0; i < 6; i++)
+        {
+            staminabar[i].value = currentstamina/maxstamina;
+        }
+        
+    }
+
+    private void resetenemystamina() //적 스테미나 갱신
+    {
+        enemystaminabar[0].value = enemycurrentstamina/enemymaxstamina;
+        enemystaminabar[1].value = enemycurrentstamina/enemymaxstamina;
     }
 }
