@@ -1,14 +1,14 @@
 using UnityEngine;
 
-/// <summary>ÆÐ¸µ(À§ºù) ¼º°ø ½Ã Àû ¿ÀºêÁ§Æ®°¡ ¹Þ´Â ÄÝ¹é</summary>
+/// <summary>ï¿½Ð¸ï¿½(ï¿½ï¿½ï¿½ï¿½) ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Þ´ï¿½ ï¿½Ý¹ï¿½</summary>
 public interface IParryable
 {
     void OnParried(Vector3 parrySourcePosition);
 }
 
-/// <summary>ÇÃ·¹ÀÌ¾î/ÀûÀÌ °ø°ÝÀ» ¸ÂÀ» ¶§ È£ÃâµÇ´Â ÃÖ¼Ò ÀÎÅÍÆäÀÌ½º</summary>
+/// <summary>ï¿½Ã·ï¿½ï¿½Ì¾ï¿½/ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½Ç´ï¿½ ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½</summary>
 public interface IDamageable
 {
-    /// <param name="hitDirFromPlayer">ÇÃ·¹ÀÌ¾î ¡æ Àû ¹æÇâ(Á¤±ÔÈ­ ±ÇÀå)</param>
+    /// <param name="hitDirFromPlayer">ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½)</param>
     void ApplyHit(float damage, float knockback, Vector2 hitDirFromPlayer, GameObject attacker);
 }

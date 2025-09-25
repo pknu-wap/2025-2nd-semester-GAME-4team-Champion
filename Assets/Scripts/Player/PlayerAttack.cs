@@ -267,8 +267,8 @@ public class PlayerAttack : MonoBehaviour
         Vector2 facing = (moveRef && moveRef.LastFacing.sqrMagnitude > 0f) ? moveRef.LastFacing : Vector2.right;
         Vector2 center = (Vector2)transform.position + facing.normalized * range;
 
-        if (combat.DebugLogs)
-            Debug.Log($"[HITBOX] dmg={dmg}, knock={knock}, center={center}, r={radius}");
+        // if (combat.DebugLogs)
+            // Debug.Log($"[HITBOX] dmg={dmg}, knock={knock}, center={center}, r={radius}");
 
         var hits = Physics2D.OverlapCircleAll(center, radius, enemyMask);
         var seen = new HashSet<Collider2D>();

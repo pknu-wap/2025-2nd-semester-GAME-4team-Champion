@@ -7719,10 +7719,10 @@ MonoBehaviour:
   MaxHp: 100
   CurrentHp: 100
   MaxStamina: 100
-  CurrentStamina: 100
-  TimeColTime: 0.5
+  CurrentStamina: 0
   RecognizedArea: 20
-  Speed: 1.5
+  Speed: 0
+  MinChaseDistance: 1.6
   Timer: {fileID: 383708781}
   Hp: {fileID: 1789454827}
   Stamina: {fileID: 1228641117}
@@ -7737,9 +7737,10 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 1902309502}
   MovementArea: {fileID: 718650075}
   AttackTimer: 0
-  SelectMode: 0
+  SelectMode: 2
   UseDebugHotkeys: 1
   hitActiveDuration: 0.08
+  AllowParry: 1
   _gm: {fileID: 5974424421713530460}
 --- !u!114 &1902309512
 MonoBehaviour:
@@ -7758,9 +7759,12 @@ MonoBehaviour:
   PreDashSlowDuration: 0.7
   PreWindupShort: 2
   PreWindupMid: 3
-  PreWindupLong: 4
-  NoDashCloseRange: 2.2
-  StopOffset: 0.8
+  PreWindupLong: 0.5
+  NoDashCloseRange: 3
+  StopOffset: 0.1
+  DashStopDistance: 1.15
+  MaxDashTime: 0.15
+  LockDashDirection: 0
   RetreatSpeed: 8
   RetreatDuration: 1.25
   RangePreWindupShort: 1
@@ -7772,6 +7776,7 @@ MonoBehaviour:
   VolleyCountMid: 2
   VolleyCountLong: 3
   VolleyInterval: 0.2
+  SnapNoMoveDuration: 0.8
 --- !u!70 &1902309513
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -8968,7 +8973,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.5, y: 1}
+  m_Size: {x: 0.7, y: 1.2}
   m_Direction: 0
 --- !u!95 &4960012825547455817
 Animator:
@@ -9374,7 +9379,7 @@ MonoBehaviour:
   blockHitstunMul: 0.5
   weavingVariants: 3
   hitVariants: 3
-  debugLogs: 1
+  debugLogs: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class BossCore : MonoBehaviour
+public class BossCore : MonoBehaviour, IParryable, IDamageable
 {
     [Header("Common")]
     [SerializeField] private float AttackCooldown = 2f;
@@ -17,11 +17,11 @@ public class BossCore : MonoBehaviour
     public float CurrentHp = 100f;
     public float MaxStamina = 100f;
     public float CurrentStamina = 100f;
-    [SerializeField] private float TimeColTime;
 
     [Header("General")]
     [SerializeField] public float RecognizedArea = 10f;
     [SerializeField] public float Speed = 3.0f;
+    [SerializeField] public float MinChaseDistance = 1.3f;
 
     [Header("UI & Cinematic")]
     public Text Timer;
@@ -41,7 +41,7 @@ public class BossCore : MonoBehaviour
     [SerializeField] public Collider2D MovementArea;
 
     [Header("Runtime")]
-    [SerializeField] private float AttackTimer = 0f;
+    [SerializeField] public float AttackTimer = 0f;
     public Rigidbody2D Rb { get; private set; }
     public bool IsActing { get; set; }
     private Collider2D PlayerCol;
@@ -51,9 +51,8 @@ public class BossCore : MonoBehaviour
 
     private BossFight _combat;
 
-    // ==================== 공격 타입/선택 모드 ====================
-    public enum MeleeAttackType { One, OneOne, OneTwo }   // 근 3종
-    public enum RangeAttackType { Short, Mid, Long }      // 원 3종
+    public enum MeleeAttackType { One, OneOne, OneTwo }
+    public enum RangeAttackType { Short, Mid, Long }
     public enum AttackSelectMode
     {
         Random,
@@ -72,12 +71,21 @@ public class BossCore : MonoBehaviour
     public MeleeAttackType LastMeleeType { get; set; }
 
     [Header("Hit Window")]
-    [SerializeField] private float hitActiveDuration = 0.08f; // 각 타의 판정 지속 시간
+    [SerializeField] private float hitActiveDuration = 0.08f;
     private bool _hitWindowOpen = false;
     private bool _hitAppliedThisWindow = false;
 
-    // GameManager로 실제 플레이어 데미지 반영
+    [Header("Parry Settings")]
+    public bool AllowParry = true;
+    private bool _currentParryable = true;
+
+    // 🔒 Snap 이후 잠깐 이동 금지(붙음 방지)
+    private float _noMoveRemain = 0f;
+
     [SerializeField] private GameManager _gm;
+
+    [Header("Parry Counter")]
+    private int hitCount = 0;
 
     private void Awake()
     {
@@ -98,14 +106,11 @@ public class BossCore : MonoBehaviour
         }
         if (Player != null) PlayerCol = Player.GetComponent<Collider2D>();
 
-        if (_gm == null)
-        {
 #if UNITY_2022_3_OR_NEWER
-            _gm = FindFirstObjectByType<GameManager>();
+        if (_gm == null) _gm = FindFirstObjectByType<GameManager>();
 #else
-            _gm = FindObjectOfType<GameManager>();
+        if (_gm == null) _gm = FindObjectOfType<GameManager>();
 #endif
-        }
 
         if (!Summoned)
         {
@@ -127,7 +132,6 @@ public class BossCore : MonoBehaviour
     {
         if (Player == null || Rb == null) return;
 
-        // 소환 전 카운트다운
         if (!Summoned)
         {
             if (SummonTimer > 0f)
@@ -141,7 +145,8 @@ public class BossCore : MonoBehaviour
             return;
         }
 
-        // 자동 공격 쿨다운
+        if (_noMoveRemain > 0f) _noMoveRemain -= Time.deltaTime;
+
         if (!IsActing)
         {
             AttackTimer += Time.deltaTime;
@@ -152,7 +157,6 @@ public class BossCore : MonoBehaviour
             }
         }
 
-        // 디버그 핫키 (선택 확인용)
         if (UseDebugHotkeys && !IsActing && Summoned)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1)) { _combat.Melee_Attack(MeleeAttackType.One);     AttackTimer = 0f; }
@@ -173,14 +177,52 @@ public class BossCore : MonoBehaviour
             return;
         }
 
+        // ⛔ Snap 후 일정 시간 이동 금지
+        if (_noMoveRemain > 0f)
+        {
+            Rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         if (!IsActing)
         {
             AIMoveMent();
         }
     }
 
+    public void ApplyHit(float damage, float knockback, Vector2 direction, GameObject source)
+    {
+        Debug.Log($"[BossCore] ApplyHit called by {source.name}");
+
+        CurrentHp -= damage;
+
+        hitCount++;
+
+        if (hitCount >= 3 && Random.value <= 0.7f)
+        {
+            Debug.Log("[BossCore] Parry triggered by accumulated hits!");
+            OnParried(source.transform.position);
+            hitCount = 0;
+        }
+
+        if (_combat != null && _combat.IsDashing)
+        {
+            _combat.InterruptDash();
+        }
+
+        if (CurrentHp <= 0f)
+        {
+            Debug.Log("[BossCore] Boss defeated!");
+        }
+    }
+
     private void OnDisable()  => ResumeFromCinematic();
     private void OnDestroy()  => ResumeFromCinematic();
+
+    public void StartNoMoveCooldown(float seconds)
+    {
+        _noMoveRemain = Mathf.Max(_noMoveRemain, Mathf.Max(0f, seconds));
+    }
 
     private void ActivateBoss()
     {
@@ -219,30 +261,6 @@ public class BossCore : MonoBehaviour
         }
 
         StartCoroutine(MoveUi());
-    }
-
-    public void PlayText(string message)
-    {
-        if (TextUi == null) return;
-        if (TypingCo != null) StopCoroutine(TypingCo);
-        TypingCo = StartCoroutine(TypeTextRoutine(message));
-    }
-
-    private IEnumerator TypeTextRoutine(string message)
-    {
-        if (TextUi == null) yield break;
-        TextUi.text = "";
-        int count = 0;
-        foreach (char c in message)
-        {
-            TextUi.text += c;
-            count++;
-            if (CamShake != null && (count % 4 == 0))
-            {
-                StartCoroutine(CamShake.ImpulseMoveMent());
-            }
-            yield return new WaitForSecondsRealtime(0.05f);
-        }
     }
 
     private IEnumerator MoveUi()
@@ -293,16 +311,8 @@ public class BossCore : MonoBehaviour
             case AttackSelectMode.Random:
             {
                 int type = Random.Range(0, 2);
-                if (type == 0)
-                {
-                    // ✅ 근거리: 거리 기반 규칙으로 실행
-                    _combat.Melee_Attack_DistanceBased();
-                }
-                else
-                {
-                    // 원거리: 기존 랜덤
-                    _combat.Range_Attack();
-                }
+                if (type == 0) _combat.Melee_Attack_DistanceBased();
+                else           _combat.Range_Attack();
                 break;
             }
             case AttackSelectMode.Melee_One:    _combat.Melee_Attack(MeleeAttackType.One);     break;
@@ -314,7 +324,6 @@ public class BossCore : MonoBehaviour
         }
     }
 
-    // ===== BossFight에서 호출: 각 타격 시점에 히트 윈도우를 열기 =====
     public void TriggerMeleeDamage()
     {
         StartCoroutine(DoMeleeDamage());
@@ -322,13 +331,38 @@ public class BossCore : MonoBehaviour
 
     private IEnumerator OpenHitWindow()
     {
+        _currentParryable = AllowParry;
         _hitAppliedThisWindow = false;
         _hitWindowOpen = true;
+
+        TryApplyHit_OnlyIfInRange();
+
         yield return new WaitForSeconds(hitActiveDuration);
         _hitWindowOpen = false;
     }
 
-    // 각 패턴은 "히트 윈도우"를 열고, 그 시간 동안 트리거 겹치면 1회만 데미지 적용
+    private void TryApplyHit_OnlyIfInRange()
+    {
+        if (Player == null) return;
+
+        Vector2 center = transform.position;
+        float radius = 1.2f;
+        LayerMask playerMask = LayerMask.GetMask("Player");
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(center, radius, playerMask);
+
+        foreach (var hit in hits)
+        {
+            var ph = hit.GetComponent<PlayerHit>();
+            if (ph != null)
+            {
+                Vector2 hitDir = (hit.transform.position - transform.position).normalized;
+                ph.OnHit(10f, 6f, hitDir, _currentParryable, gameObject);
+                _hitAppliedThisWindow = true;
+            }
+        }
+    }
+
     private IEnumerator DoMeleeDamage()
     {
         if (_gm == null) yield break;
@@ -336,38 +370,68 @@ public class BossCore : MonoBehaviour
         switch (LastMeleeType)
         {
             case MeleeAttackType.One:
-                yield return OpenHitWindow();          // 1타
+                yield return OpenHitWindow();
                 break;
 
             case MeleeAttackType.OneOne:
-                yield return OpenHitWindow();          // 1타
+                yield return OpenHitWindow();
                 yield return new WaitForSeconds(0.1f);
-                yield return OpenHitWindow();          // 2타
+                yield return OpenHitWindow();
                 break;
-
+                
             case MeleeAttackType.OneTwo:
-                yield return OpenHitWindow();          // 1타
+                yield return OpenHitWindow();
                 yield return new WaitForSeconds(0.05f);
-                yield return OpenHitWindow();          // 2타
+                yield return OpenHitWindow();
                 break;
         }
     }
 
-    // 트리거에서만 실제 데미지 적용 (히트 윈도우 내 1회)
     private void TryApplyHit(Collider2D other)
     {
         bool isPlayerHit = (PlayerCol != null) ? (other == PlayerCol) : other.CompareTag("Player");
         if (!isPlayerHit) return;
 
+        if (!_hitWindowOpen)
+        {
+            TriggerMeleeDamage();
+        }
+
         if (_hitWindowOpen && !_hitAppliedThisWindow)
         {
-            _gm.TakePlayerDamage(10f);
+            var ph = Player != null ? Player.GetComponent<PlayerHit>() : null;
+            if (ph != null)
+            {
+                Vector2 hitDir = (Player.position - transform.position).normalized;
+                ph.OnHit(10f, 6f, hitDir, _currentParryable, gameObject);
+                Debug.Log($"[BossCore] Hit applied -> parryable={_currentParryable}");
+
+                hitCount++;
+
+                if (hitCount >= 3 && Random.value <= 0.6f)
+                {
+                    Debug.Log("[BossCore] Parry triggered automatically after 3 hits.");
+                    OnParried(Player.position);
+                    hitCount = 0;
+                    return;
+                }
+            }
+
             _hitAppliedThisWindow = true;
+
+            if ((_combat != null && _combat.IsDashing) &&
+                (LastMeleeType == MeleeAttackType.One || LastMeleeType == MeleeAttackType.OneOne))
+            {
+                _combat.InterruptDash();
+            }
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other) { TryApplyHit(other); }
-    private void OnTriggerStay2D(Collider2D other)  { TryApplyHit(other); }
+    public void ForceNextAction()
+    {
+        IsActing = false;
+        AttackTimer = AttackCooldown;
+    }
 
     public Vector2 ClampInside(Vector2 p)
     {
@@ -380,8 +444,16 @@ public class BossCore : MonoBehaviour
 
     public void AIMoveMent()
     {
+        if (Player == null) { Rb.linearVelocity = Vector2.zero; return; }
+
         Vector2 toPlayer = (Vector2)Player.position - Rb.position;
         float dist = toPlayer.magnitude;
+
+        if (dist < MinChaseDistance)
+        {
+            Rb.linearVelocity = Vector2.zero;
+            return;
+        }
 
         if (dist <= RecognizedArea)
         {
@@ -392,5 +464,55 @@ public class BossCore : MonoBehaviour
         {
             Rb.linearVelocity = Vector2.zero;
         }
+    }
+
+    public void PlayText(string message)
+    {
+        if (TextUi == null) return;
+        if (TypingCo != null) StopCoroutine(TypingCo);
+        TypingCo = StartCoroutine(TypeTextRoutine(message));
+    }
+
+    private IEnumerator TypeTextRoutine(string message)
+    {
+        if (TextUi == null) yield break;
+        TextUi.text = "";
+        int count = 0;
+        foreach (char c in message)
+        {
+            TextUi.text += c;
+            count++;
+            if (CamShake != null && (count % 4 == 0))
+            {
+                StartCoroutine(CamShake.ImpulseMoveMent());
+            }
+            yield return new WaitForSecondsRealtime(0.05f);
+        }
+    }
+
+    public void OnParried(Vector3 parrySourcePosition)
+    {
+        Debug.Log("[BossCore] Parried by player -> stamina +10 then -5 (success only)");
+
+        // 패링 '성공 시에만' 스태미나 처리(+10 후 -5)
+        if (Player != null && Player.TryGetComponent<PlayerCombat>(out var pc))
+        {
+            pc.AddStamina(10f);
+            pc.AddStamina(-5f);
+        }
+
+        // 넉백
+        if (Rb != null)
+        {
+            Vector2 dir = ((Vector2)transform.position - (Vector2)parrySourcePosition).normalized;
+            Rb.AddForce(dir * 2f, ForceMode2D.Impulse);
+        }
+
+        _combat?.InterruptDash();
+
+        StartNoMoveCooldown(0.6f);
+
+        IsActing = false;
+        AttackTimer = 0f;
     }
 }

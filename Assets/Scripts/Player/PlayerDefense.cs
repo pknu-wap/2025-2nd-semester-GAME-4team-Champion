@@ -146,7 +146,7 @@ public class PlayerDefense : MonoBehaviour
         forcedBlockCo = null;
     }
 
-    public DefenseOutcome Evaluate(Vector2 facing, Vector2 dirToEnemy/*=�÷��̾����*/, bool parryable)
+    public DefenseOutcome Evaluate(Vector2 facing, Vector2 dirToEnemy, bool parryable)
     {
         if (!isBlocking || IsStaminaBroken) return DefenseOutcome.None;
 
@@ -155,7 +155,17 @@ public class PlayerDefense : MonoBehaviour
         if (!inFront) return DefenseOutcome.None;
 
         bool canParry = parryable && (Time.time - blockPressedTime) <= parryWindow;
-        return canParry ? DefenseOutcome.Parry : DefenseOutcome.Block;
+
+        if (canParry)
+        {
+            Debug.Log("[Defense] 패링 성공!");
+            return DefenseOutcome.Parry;
+        }
+        else
+        {
+            Debug.Log("[Defense] 가드 성공!");
+            return DefenseOutcome.Block;
+        }
     }
 
 
