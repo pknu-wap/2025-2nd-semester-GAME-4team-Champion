@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class LevelUpSelect : MonoBehaviour
 {
     public GameManager gamemanager;
+    public LevelManage levelmanage;
 
     public TextMeshProUGUI[] selectButtonsText;
     
@@ -15,7 +16,6 @@ public class LevelUpSelect : MonoBehaviour
     public List<string> randomTitle = new List<string> {"a","a","a"};
 
     public List<string> selectedList = new List<string>();
-    public List<int> selectedid;
 
     public GameObject[] gameui;
 
@@ -54,6 +54,7 @@ public class LevelUpSelect : MonoBehaviour
     public void selectrandomvalue(int index)    //선택지 중 하나 선택
     {
         selectedList.Add(randomTitle[index]);
+        levelmanage.levelselectcount -= 1;
         
         if (randomTitle[index] == allselectTitle[0])
         {
@@ -77,6 +78,13 @@ public class LevelUpSelect : MonoBehaviour
             gamemanager.maxstamina += 20;
         }
         
+
+        if (levelmanage.levelselectcount >= 1)
+        {
+            settingRandom();
+            RandomSelect();
+            showLevelUp();
+        }
     }
 
     public void showLevelUp()
