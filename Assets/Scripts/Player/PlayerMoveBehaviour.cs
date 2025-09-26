@@ -1,101 +1,89 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMoveBehaviour : MonoBehaviour
 {
     [Header("Move")]
-    [SerializeField] private float moveSpeed = 7.0f;
+    [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float flipDeadzone = 0.05f;
     [SerializeField] private PlayerCombat combat;
 
-    public Vector2 CurrentInput => movement;
-    private PlayerMove playermoves;
+    private PlayerMove inputWrapper;   // .inputactions 자동 생성 래퍼
     private Vector2 movement;
     private Rigidbody2D rb;
+    private Animator animator;
+    private SpriteRenderer sprite;
 
-    [Header("Facing Control")]
-    [SerializeField] private bool blockFlipFromMovement = false; // 이동 입력으로 인한 X플립 차단
-
-    public bool IsFlipFromMovementBlocked => blockFlipFromMovement;
-    public void SetFlipFromMovementBlocked(bool blocked) => blockFlipFromMovement = blocked;
-
-    private Animator Panimator;
-    private SpriteRenderer PspriteRenderer;
-
+    // 외부에서 읽기/사용
     public Vector2 LastFacing { get; private set; } = Vector2.right;
-    private int lastFacingX = 1;
+    public Vector2 CurrentInput => movement;
 
-    // 이동 잠금
+    // 이동 잠금 & 가드시 감속
     private bool movementLocked = false;
     private RigidbodyConstraints2D constraintsBeforeLock;
+    private float guardSpeedScale = 1f;
 
+    // (선택) 이동으로 X-플립 막기용
+    private bool flipFromMovementBlocked = false;
 
     private void Awake()
     {
-        playermoves = new PlayerMove();
+        inputWrapper = new PlayerMove();
         rb = GetComponent<Rigidbody2D>();
-        Panimator = GetComponent<Animator>();
-        PspriteRenderer = GetComponent<SpriteRenderer>();
-        if (!combat) combat = GetComponent<PlayerCombat>(); // ★ 추가
+        animator = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
+        if (!combat) combat = GetComponent<PlayerCombat>();
     }
 
-
-    private void OnEnable() => playermoves.Enable();
-    private void OnDisable() => playermoves.Disable();
+    private void OnEnable() => inputWrapper.Enable();
+    private void OnDisable() => inputWrapper.Disable();
 
     private void Update()
     {
-        PlayerInput();
+        movement = inputWrapper.Movement.Move.ReadValue<Vector2>();
+
+        if (!movementLocked && movement.sqrMagnitude > 0.0001f)
+            LastFacing = movement.normalized;
+
+        if (animator)
+        {
+            animator.SetFloat("moveX", movement.x);
+            animator.SetFloat("moveY", movement.y);
+            animator.SetBool("isMoving", movement.sqrMagnitude > 0.0001f);
+        }
     }
 
     private void FixedUpdate()
     {
-        AdjustPlayerFacingDirection();
+        AdjustFlipByX();
         Move();
     }
-
-    private void PlayerInput()
-    {
-        movement = playermoves.Movement.Move.ReadValue<Vector2>();
-
-        if (!blockFlipFromMovement && movement.sqrMagnitude > 0.0001f)
-            LastFacing = movement.normalized;
-
-        if (Panimator != null)
-        {
-            Panimator.SetFloat("moveX", movement.x);
-            Panimator.SetFloat("moveY", movement.y);
-            Panimator.SetBool("isMoving", movement.sqrMagnitude > 0.0001f);
-        }
-    }
-
     private void Move()
     {
         if (movementLocked) return;
 
+        // 전투 중이면 Y축 속도에만 Combat 배수 적용
         float yMul = (combat != null && combat.IsInCombat) ? combat.CombatYSpeedMul : 1f;
-        rb.linearVelocity = new Vector2(movement.x * moveSpeed, movement.y * moveSpeed * yMul);
+
+        float vx = movement.x * moveSpeed * guardSpeedScale;
+        float vy = movement.y * moveSpeed * guardSpeedScale * yMul;
+
+        rb.linearVelocity = new Vector2(vx, vy);
     }
 
-    private void AdjustPlayerFacingDirection()
+    private void AdjustFlipByX()
     {
-        if (blockFlipFromMovement) return;
+        if (!sprite || flipFromMovementBlocked) return;
 
-        if (PspriteRenderer == null) return;
         float x = movement.x;
         if (Mathf.Abs(x) < flipDeadzone) return;
 
-        int dir = x > 0f ? 1 : -1;
-        if (dir != lastFacingX)
-        {
-            PspriteRenderer.flipX = (dir == -1);
-            lastFacingX = dir;
-        }
+        // 원본이 오른쪽을 보는 스프라이트라고 가정
+        sprite.flipX = (x < 0f);
     }
 
-    // === 외부에서 이동 잠금 토글 ===
+    // ===== 외부 제어 API =====
     public void SetMovementLocked(bool locked, bool hardFreezePhysics = true, bool zeroVelocity = true)
     {
         movementLocked = locked;
@@ -115,6 +103,7 @@ public class PlayerMoveBehaviour : MonoBehaviour
                 rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY | keepRot;
             }
 
+            if (animator) animator.SetBool("isMoving", false);
         }
         else
         {
@@ -122,19 +111,15 @@ public class PlayerMoveBehaviour : MonoBehaviour
         }
     }
 
-    public void FaceTargetX(float targetWorldX)
+    public void SetGuardSpeedScale(float scale) => guardSpeedScale = Mathf.Max(0f, scale);
+
+    // (선택) 다른 데서 호출하려면
+    public void SetFlipFromMovementBlocked(bool blocked) => flipFromMovementBlocked = blocked;
+    public void FaceTargetX(float targetX)
     {
-        int dir = (targetWorldX >= transform.position.x) ? 1 : -1;
-
-        if (PspriteRenderer) PspriteRenderer.flipX = (dir == -1);
-
-        lastFacingX = dir;
-        LastFacing = new Vector2(dir, 0f);
-
-        if (Panimator)
-        {
-            Panimator.SetFloat("moveX", 0f);
-            Panimator.SetFloat("moveY", 0f);
-        }
+        if (!sprite) return;
+        bool left = targetX < transform.position.x;
+        sprite.flipX = left;
+        LastFacing = new Vector2(left ? -1f : 1f, 0f);
     }
 }

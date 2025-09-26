@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,6 +9,7 @@ public class PlayerHit : MonoBehaviour
     [Header("References")]
     [SerializeField] private PlayerCombat combat;          // 체력/스태미너, 전투상태, 애니 등
     [SerializeField] private PlayerDefense defense;        // 가드/위빙(패링) 판단 & 락
+    [SerializeField] private PlayerAttack attack;
     [SerializeField] private PlayerMoveBehaviour moveRef;  // 이동락/바라보는 방향 참조
     [SerializeField] private Animator animator;
     [SerializeField] private Rigidbody2D rb;
@@ -31,6 +33,16 @@ public class PlayerHit : MonoBehaviour
 
     public bool InHitstun => inHitstun;
 
+    private void Awake()
+    {
+        if (!combat) combat = GetComponent<PlayerCombat>();
+        if (!defense) defense = GetComponent<PlayerDefense>();
+        if (!moveRef) moveRef = GetComponent<PlayerMoveBehaviour>();
+        if (!animator) animator = GetComponent<Animator>();
+        if (!rb) rb = GetComponent<Rigidbody2D>();
+        if (!attack) attack = GetComponent<PlayerAttack>(); // ★ 핵심
+    }
+
     private void Reset()
     {
         if (!combat) combat = GetComponent<PlayerCombat>();
@@ -38,6 +50,7 @@ public class PlayerHit : MonoBehaviour
         if (!moveRef) moveRef = GetComponent<PlayerMoveBehaviour>();
         if (!animator) animator = GetComponent<Animator>();
         if (!rb) rb = GetComponent<Rigidbody2D>();
+        if (!attack) attack = GetComponent<PlayerAttack>();
     }
 
     private Vector2 FacingOrRight()
@@ -53,6 +66,11 @@ public class PlayerHit : MonoBehaviour
 
         Vector2 facing = FacingOrRight();
         Vector2 inFrontToEnemy = -hitDir.normalized; // 플레이어→적
+        if (defense && defense.IsBlocking)
+        {
+            if (moveRef == null || moveRef.LastFacing.sqrMagnitude < 0.0001f || Vector2.Dot(facing, inFrontToEnemy) < 0f)
+                facing = inFrontToEnemy;
+        }
 
         // 방어/위빙 판단(정면 콘/패링 윈도우는 PlayerDefense가 처리)
         var outcome = defense ? defense.Evaluate(facing, inFrontToEnemy, parryable) : DefenseOutcome.None;
@@ -63,14 +81,16 @@ public class PlayerHit : MonoBehaviour
             if (debugLogs) Debug.Log($"[WEAVING OK] t={Time.time:F2}s, attacker={(attacker ? attacker.name : "null")}");
             PlayRandomWeaving();
 
+
             var parryableTarget = attacker ? attacker.GetComponent<IParryable>() : null;
             parryableTarget?.OnParried(transform.position);
 
             float windowEnd = defense.LastBlockPressedTime + defense.ParryWindow;
             float lockDur = Mathf.Max(0f, (windowEnd + defense.WeavingPostHold) - Time.time);
+            Debug.Log($"[HIT] Arming RIPOSTE window={lockDur:F2}s  (now={Time.time:F2})");
             defense.StartParryLock(lockDur, true);   // 이동락(속도 0 권장)
             defense.ForceBlockFor(lockDur);          // 가드 유지
-
+            attack?.ArmCounter(lockDur * 1.5f);
             // 짧은 i-frame (원하면 수치 조절)
             iFrameEndTime = Time.time + 0.05f;
             return;

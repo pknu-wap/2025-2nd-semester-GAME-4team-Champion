@@ -412,8 +412,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 7
   flipDeadzone: 0.05
-  combat: {fileID: 480569104}
-  blockFlipFromMovement: 0
 --- !u!114 &480569108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -450,6 +448,26 @@ MonoBehaviour:
   chargeKnockMul: 2
   chargeRangeMul: 1.2
   chargeRadiusMul: 1.2
+  chargeActionName: Charge
+  lockMoveDuringCharge: 1
+  chargeTriggerName: AtkCharge
+  chargeWindup: 0.05
+  chargeActive: 0.06
+  chargeRecovery: 0.12
+  minChargeHold: 0.1
+  chargeFullTime: 0.8
+  minChargeDamageMul: 1
+  maxChargeDamageMul: 3
+  minChargeKnockMul: 1
+  maxChargeKnockMul: 2
+  riposteTriggerName: AtkRiposte
+  riposteWindup: 0.02
+  riposteActive: 0.06
+  riposteRecovery: 0.1
+  riposteDamageMul: 2
+  riposteKnockMul: 2
+  riposteRangeMul: 1.1
+  riposteRadiusMul: 1
 --- !u!114 &480569109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -471,6 +489,11 @@ MonoBehaviour:
   blockKnockMul: 0.3
   weavingPostHold: 0.1
   staminaBreakTime: 1.5
+  postHold: 0.1
+  guardSpeedMultiplier: 0.6
+  blockStartStateName: BlockStart
+  safeStartTags:
+  - Block
 --- !u!95 &480569110
 Animator:
   serializedVersion: 7
@@ -507,6 +530,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   combat: {fileID: 480569104}
   defense: {fileID: 480569109}
+  attack: {fileID: 0}
   moveRef: {fileID: 480569107}
   animator: {fileID: 480569110}
   rb: {fileID: 480569105}
@@ -560,7 +584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ba37f6c927d31c4fb92859c0ff20bf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 100
+  damage: 5
   knockback: 5
   parryable: 1
   attackInterval: 1
