@@ -1,31 +1,30 @@
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
-public class BossFight : MonoBehaviour
+public class EnemyFight_02 : MonoBehaviour
 {
     [Header("Dash (Melee)")]
-    [SerializeField] private float DashSpeed = 12f; // 돌진 속도
-    [SerializeField] private float PreWindupShort = 2f; // 근거리 공격 대기 시간 ( 짧게 )
-    [SerializeField] private float PreWindupMid = 3f; // 근거리 공격 대기 시간 ( 중간 )
-    [SerializeField] private float PreWindupLong = 4f; // 근거리 공격 대기 시간 ( 길게 )
-    [SerializeField] private float PreWindupRoll = 0.7f; // 근거리 공격 대기 시간 ( 연타 )
+    [SerializeField] private float DashSpeed = 12f; 
+    [SerializeField] private float PreWindupShort = 2f; 
+    [SerializeField] private float PreWindupMid = 3f; 
+    [SerializeField] private float PreWindupLong = 4f; 
+    [SerializeField] private float PreWindupRoll = 0.7f; 
 
     [Header("Melee Logic")]
-    [SerializeField] private float NoDashCloseRange = 2.5f;   // dist > 값 → One/OneOne, dist <= 값 → OneTwo
-    [SerializeField] private float StopOffset = 1.0f;         // 최종적으로 플레이어 앞에서 유지할 간격
+    [SerializeField] private float NoDashCloseRange = 2.5f;   
+    [SerializeField] private float StopOffset = 1.0f;         
 
     [Header("Melee Stop Settings")]
-    [SerializeField] private float DashStopDistance = 1.15f;  // 이 거리 이하면 대쉬 종료
-    [SerializeField] private float MaxDashTime = 0.45f;       // 대쉬 최대 시간
-    [SerializeField] private bool LockDashDirection = false;  // true=대쉬 시작 방향 고정, false=추적
+    [SerializeField] private float DashStopDistance = 1.15f;  
+    [SerializeField] private float MaxDashTime = 0.45f;       
+    [SerializeField] private bool LockDashDirection = false;  
 
     [Header("Dash (Range)")]
-    [SerializeField] private float RetreatSpeed = 6f; // 원거리 공격 시 멀어지는 속도
-    [SerializeField] private float RetreatDuration = 1.25f; // RetreateSpeed 후퇴 duration
-    [SerializeField] private float RangePreWindupShort = 1.0f; // 원거리 공격 대기 시간 ( 짧게 )
-    [SerializeField] private float RangePreWindupMid = 1.3f; // 원거리 공격 대기 시간 ( 중간 )
-    [SerializeField] private float RangePreWindupLong = 1.5f; // 원거리 공격 대기 시간 ( 길게 )
-
+    [SerializeField] private float RetreatSpeed = 6f; 
+    [SerializeField] private float RetreatDuration = 1.25f; 
+    [SerializeField] private float RangePreWindupShort = 1.0f; 
+    [SerializeField] private float RangePreWindupMid = 1.3f; 
+    [SerializeField] private float RangePreWindupLong = 1.5f; 
 
     [Header("Projectile (Ranged Attack)")]
     [SerializeField] private GameObject ProjectilePrefab;
@@ -35,9 +34,9 @@ public class BossFight : MonoBehaviour
     [SerializeField] private float VolleyInterval = 0.2f;
 
     [Header("Post-Snap Control")]
-    [SerializeField] private float SnapNoMoveDuration = 0.8f; // Snap 후 이동 금지 시간
+    [SerializeField] private float SnapNoMoveDuration = 0.8f; 
 
-    private BossCore _core;
+    private EnemyCore_02 _core;
     private SpriteRenderer Sprite;
 
     private float _curPreWindup = 2f;
@@ -52,9 +51,8 @@ public class BossFight : MonoBehaviour
         Sprite = GetComponent<SpriteRenderer>();
     }
 
-    public void BindCore(BossCore core) => _core = core;
+    public void BindCore(EnemyCore_02 core) => _core = core;
 
-    // 외부(패링 등)에서 호출
     public void InterruptDash()
     {
         isDashing = false;
@@ -78,12 +76,12 @@ public class BossFight : MonoBehaviour
         if (dist > NoDashCloseRange)
         {
             int pick = Random.Range(0, 2);
-            Melee_Attack(pick == 0 ? BossCore.MeleeAttackType.One
-                                   : BossCore.MeleeAttackType.OneOne);
+            Melee_Attack(pick == 0 ? EnemyCore_02.MeleeAttackType.BatDown
+                                   : EnemyCore_02.MeleeAttackType.BatRestDown);
         }
         else
         {
-            Melee_Attack(BossCore.MeleeAttackType.OneTwo);
+            Melee_Attack(EnemyCore_02.MeleeAttackType.OneTwo);
         }
     }
 
@@ -93,34 +91,34 @@ public class BossFight : MonoBehaviour
         Melee_Attack_DistanceBased();
     }
 
-    public void Melee_Attack(BossCore.MeleeAttackType type)
+    public void Melee_Attack(EnemyCore_02.MeleeAttackType type)
     {
         if (_core.IsActing) return;
         Sprite.color = Color.red;
 
         switch (type)
         {
-            case BossCore.MeleeAttackType.One:
+            case EnemyCore_02.MeleeAttackType.BatDown:
                 _curPreWindup = PreWindupShort;
-                _core.LastMeleeType = BossCore.MeleeAttackType.One;
+                _core.LastMeleeType = EnemyCore_02.MeleeAttackType.BatDown;
                 _core.IsActing = true;
                 StartCoroutine(MeleeDash());
                 break;
-            case BossCore.MeleeAttackType.OneOne:
+            case EnemyCore_02.MeleeAttackType.BatRestDown:
                 _curPreWindup = PreWindupMid;
-                _core.LastMeleeType = BossCore.MeleeAttackType.OneOne;
+                _core.LastMeleeType = EnemyCore_02.MeleeAttackType.BatRestDown;
                 _core.IsActing = true;
                 StartCoroutine(MeleeDash());
                 break;
-            case BossCore.MeleeAttackType.OneTwo:
+            case EnemyCore_02.MeleeAttackType.OneTwo:
                 _curPreWindup = PreWindupLong;
-                _core.LastMeleeType = BossCore.MeleeAttackType.OneTwo;
+                _core.LastMeleeType = EnemyCore_02.MeleeAttackType.OneTwo;
                 _core.IsActing = true;
                 StartCoroutine(MeleeStrikeNoDash());
                 break;
-            case BossCore.MeleeAttackType.Roll:
+            case EnemyCore_02.MeleeAttackType.Roll:
                 _curPreWindup = PreWindupRoll;
-                _core.LastMeleeType = BossCore.MeleeAttackType.Roll;
+                _core.LastMeleeType = EnemyCore_02.MeleeAttackType.Roll;
                 _core.IsActing = true;
                 StartCoroutine(MeleeStrikeRoll());
                 break;
@@ -136,7 +134,6 @@ public class BossFight : MonoBehaviour
 
         if (_curPreWindup > 0f) yield return new WaitForSeconds(_curPreWindup);
 
-        // lockedDir 벡터 ( 방향 ) 찾기
         Vector2 lockedDir = Vector2.right;
         if (_core.Player != null)
         {
@@ -145,7 +142,7 @@ public class BossFight : MonoBehaviour
         }
 
         float elapsed = 0f;
-        while (isDashing) // 돌진 중
+        while (isDashing) 
         {
             if (_core.Player == null) break;
 
@@ -154,7 +151,6 @@ public class BossFight : MonoBehaviour
 
             if (dist <= DashStopDistance) break;
 
-            // 대시 시작 방향을 고정한 일직선 돌진 패턴 ( lockedDir )
             Vector2 dir = LockDashDirection
                 ? lockedDir
                 : (toPlayer.sqrMagnitude > 1e-8f ? toPlayer.normalized : lockedDir);
@@ -225,20 +221,20 @@ public class BossFight : MonoBehaviour
     public void Range_Attack()
     {
         if (_core.IsActing) return;
-        var type = (BossCore.RangeAttackType)Random.Range(0, 3);
+        var type = (EnemyCore_02.RangeAttackType)Random.Range(0, 3);
         Range_Attack(type);
     }
 
-    public void Range_Attack(BossCore.RangeAttackType type)
+    public void Range_Attack(EnemyCore_02.RangeAttackType type)
     {
         if (_core.IsActing) return;
         switch (type)
         {
-            case BossCore.RangeAttackType.Short:
+            case EnemyCore_02.RangeAttackType.Short:
                 _desiredDistance = 5f;  _rangePreWindup = RangePreWindupShort; _volleyCount = VolleyCountShort; break;
-            case BossCore.RangeAttackType.Mid:
+            case EnemyCore_02.RangeAttackType.Mid:
                 _desiredDistance = 7f;  _rangePreWindup = RangePreWindupMid;   _volleyCount = VolleyCountMid;   break;
-            case BossCore.RangeAttackType.Long:
+            case EnemyCore_02.RangeAttackType.Long:
                 _desiredDistance = 9f;  _rangePreWindup = RangePreWindupLong;  _volleyCount = VolleyCountLong;  break;
         }
         _core.IsActing = true;
@@ -251,7 +247,7 @@ public class BossFight : MonoBehaviour
 
         _core.TriggerMeleeDamage();
 
-        if (_core.LastMeleeType == BossCore.MeleeAttackType.OneOne)
+        if (_core.LastMeleeType == EnemyCore_02.MeleeAttackType.BatRestDown)
         {
             yield return new WaitForSeconds(0.5f);
             _core.TriggerMeleeDamage();
@@ -284,7 +280,7 @@ public class BossFight : MonoBehaviour
         }
 
         _core.Rb.linearVelocity = Vector2.zero;
-        if (_rangePreWindup > 0f) yield return new WaitForSeconds(_rangePreWindup);
+        yield return new WaitForSeconds(_rangePreWindup);
 
         Sprite.color = Color.blue;
         for (int i = 0; i < _volleyCount; i++)
@@ -346,7 +342,7 @@ public class BossFight : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
-        if (_core == null) _core = GetComponent<BossCore>();
+        if (_core == null) _core = GetComponent<EnemyCore_02>();
         if (_core == null) return;
 
         Gizmos.color = new Color(1f, 0.6f, 0f, 0.35f);

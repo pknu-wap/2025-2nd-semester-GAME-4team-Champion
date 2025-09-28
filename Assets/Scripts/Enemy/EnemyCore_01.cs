@@ -2,13 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-public class BossCore : MonoBehaviour, IParryable, IDamageable
+public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 {
     [Header("Common")]
     [SerializeField] private float AttackCooldown = 2f;
-    public float SummonTimer = 5f;
-    [SerializeField] private bool Summoned = false;
-    public Slider BossTimerSlider;
     [SerializeField] public Transform Player;
 
     [Header("Health / Stamina")]
@@ -22,21 +19,7 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
     [SerializeField] public float Speed = 3.0f;
     [SerializeField] public float MinChaseDistance = 1.3f;
 
-    [Header("UI & Cinematic")]
-    public Text Timer;
-    public GameObject Hp;
-    public GameObject Stamina;
-    [SerializeField] private GameObject Ui;
-    [SerializeField] private GameObject UiBroke;
-    [SerializeField] private CameraShaking CamShake;
-    [SerializeField] private Animator BlackHoleAnim;
-    [SerializeField] private Animator HandAnim;
-    [SerializeField] private Animator BeltAnim;
-    [SerializeField] private Text TextUi;
-    [SerializeField] private string FullText = "NEW CHALLENGER";
-
     [Header("Rendering")]
-    [SerializeField] public SpriteRenderer SpriteRenderer;
     [SerializeField] public Collider2D MovementArea;
 
     [Header("Runtime")]
@@ -44,11 +27,9 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
     public Rigidbody2D Rb { get; private set; }
     public bool IsActing { get; set; }
     private Collider2D PlayerCol;
-    private AnimatorUpdateMode BhOldMode, HandOldMode, BeltOldMode;
-    private float BhOldSpeed, HandOldSpeed, BeltOldSpeed;
     private Coroutine TypingCo;
 
-    private BossFight _combat;
+    private EnemyFight_01 _combat;
 
     public enum MeleeAttackType { One, OneOne, OneTwo, Roll }
     public enum RangeAttackType { Short, Mid, Long }
@@ -88,61 +69,19 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
     private void Awake()
     {
         Rb = GetComponent<Rigidbody2D>();
-        _combat = GetComponent<BossFight>();
-        if (_combat == null) _combat = gameObject.AddComponent<BossFight>();
+        _combat = GetComponent<EnemyFight_01>();
+        if (_combat == null) _combat = gameObject.AddComponent<EnemyFight_01>();
         _combat.BindCore(this);
     }
 
     private void Start()
     {
         AttackTimer = 0f;
-
-        if (CamShake == null)
-        {
-            var mainCam = Camera.main;
-            if (mainCam != null) CamShake = mainCam.GetComponent<CameraShaking>();
-        }
-        if (Player != null) PlayerCol = Player.GetComponent<Collider2D>();
-
-#if UNITY_2022_3_OR_NEWER
-        if (_gm == null) _gm = FindFirstObjectByType<GameManager>();
-#else
-        if (_gm == null) _gm = FindObjectOfType<GameManager>();
-#endif
-
-        if (!Summoned)
-        {
-            Rb.linearVelocity = Vector2.zero;
-            if (SpriteRenderer != null) SpriteRenderer.enabled = false;
-            if (TryGetComponent<Collider2D>(out var selfCol)) selfCol.enabled = false;
-        }
-
-        if (BossTimerSlider != null)
-        {
-            BossTimerSlider.maxValue = Mathf.Max(SummonTimer, 0f);
-            BossTimerSlider.value = SummonTimer;
-        }
-
         Rb.position = ClampInside(Rb.position);
     }
 
     private void Update()
     {
-        if (Player == null || Rb == null) return;
-
-        if (!Summoned)
-        {
-            if (SummonTimer > 0f)
-            {
-                SummonTimer -= Time.deltaTime;
-                if (Timer != null) Timer.text = Mathf.CeilToInt(SummonTimer).ToString();
-                if (BossTimerSlider != null) BossTimerSlider.value = SummonTimer;
-            }
-
-            if (SummonTimer <= 0f) ActivateBoss();
-            return;
-        }
-
         if (_noMoveRemain > 0f) _noMoveRemain -= Time.deltaTime;
 
         if (!IsActing)
@@ -158,12 +97,6 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
 
     private void FixedUpdate()
     {
-        if (!Summoned)
-        {
-            Rb.linearVelocity = Vector2.zero;
-            return;
-        }
-
         if (_noMoveRemain > 0f)
         {
             Rb.linearVelocity = Vector2.zero;
@@ -178,7 +111,7 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
 
     public void ApplyHit(float damage, float knockback, Vector2 direction, GameObject source)
     {
-        Debug.Log($"[BossCore] ApplyHit called by {source.name}");
+        Debug.Log($"[Enemy_01_Core] ApplyHit called by {source.name}");
 
         CurrentHp -= damage;
 
@@ -186,7 +119,7 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
 
         if (hitCount >= 3 && Random.value <= 0.7f)
         {
-            Debug.Log("[BossCore] Parry triggered by accumulated hits!");
+            Debug.Log("[Enemy_01_Core] Parry triggered by accumulated hits!");
             OnParried(source.transform.position);
             hitCount = 0;
         }
@@ -198,94 +131,13 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
 
         if (CurrentHp <= 0f)
         {
-            Debug.Log("[BossCore] Boss defeated!");
+            Debug.Log("[Enemy_01_Core] Enemy defeated!");
         }
     }
-
-    private void OnDisable()  => ResumeFromCinematic();
-    private void OnDestroy()  => ResumeFromCinematic();
 
     public void StartNoMoveCooldown(float seconds)
     {
         _noMoveRemain = Mathf.Max(_noMoveRemain, Mathf.Max(0f, seconds));
-    }
-
-    private void ActivateBoss()
-    {
-        Time.timeScale = 0f;
-        Summoned = true;
-
-        if (SpriteRenderer != null) SpriteRenderer.enabled = true;
-        if (TryGetComponent<Collider2D>(out var selfCol)) selfCol.enabled = true;
-
-        Rb.linearVelocity = Vector2.zero;
-
-        if (BossTimerSlider != null) BossTimerSlider.gameObject.SetActive(false);
-        if (Hp != null) Hp.SetActive(true);
-        if (Stamina != null) Stamina.SetActive(true);
-
-        if (BlackHoleAnim != null)
-        {
-            BhOldMode = BlackHoleAnim.updateMode;
-            BhOldSpeed = BlackHoleAnim.speed;
-            BlackHoleAnim.updateMode = AnimatorUpdateMode.UnscaledTime;
-            BlackHoleAnim.speed = 1f;
-        }
-        if (HandAnim != null)
-        {
-            HandOldMode = HandAnim.updateMode;
-            HandOldSpeed = HandAnim.speed;
-            HandAnim.updateMode = AnimatorUpdateMode.UnscaledTime;
-            HandAnim.speed = 1f;
-        }
-        if (BeltAnim != null)
-        {
-            BeltOldMode = BeltAnim.updateMode;
-            BeltOldSpeed = BeltAnim.speed;
-            BeltAnim.updateMode = AnimatorUpdateMode.UnscaledTime;
-            BeltAnim.speed = 1f;
-        }
-
-        StartCoroutine(MoveUi());
-    }
-
-    private IEnumerator MoveUi()
-    {
-        float t = 0f;
-        while (t < 1f) { t += Time.unscaledDeltaTime; yield return null; }
-
-        if (BeltAnim != null) BeltAnim.SetTrigger("BeltStart");
-
-        yield return new WaitForSecondsRealtime(7f);
-
-        if (CamShake != null) StartCoroutine(CamShake.ImpulseMoveMent());
-        yield return new WaitForSecondsRealtime(0.1f);
-
-        if (BlackHoleAnim != null) BlackHoleAnim.SetBool("BlackHoleStart", true);
-        if (UiBroke != null) UiBroke.SetActive(true);
-
-        yield return new WaitForSecondsRealtime(2f);
-        if (HandAnim != null) HandAnim.SetTrigger("HandStart");
-        yield return new WaitForSecondsRealtime(4f);
-
-        if (BlackHoleAnim != null) BlackHoleAnim.SetBool("BlackHoleStart", false);
-        if (UiBroke != null) UiBroke.SetActive(false);
-
-        yield return new WaitForSecondsRealtime(1f);
-        PlayText(FullText);
-
-        yield return new WaitForSecondsRealtime(1.7f);
-        if (Ui != null) Ui.SetActive(false);
-
-        ResumeFromCinematic();
-    }
-
-    private void ResumeFromCinematic()
-    {
-        Time.timeScale = 1f;
-        if (BlackHoleAnim != null) { BlackHoleAnim.updateMode = BhOldMode; BlackHoleAnim.speed = BhOldSpeed; }
-        if (HandAnim != null) { HandAnim.updateMode = HandOldMode; HandAnim.speed = HandOldSpeed; }
-        if (BeltAnim != null) { BeltAnim.updateMode = BeltOldMode; BeltAnim.speed = BeltOldSpeed; }
     }
 
     private void AttackWayChoice()
@@ -395,13 +247,13 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
             {
                 Vector2 hitDir = (Player.position - transform.position).normalized;
                 ph.OnHit(10f, 6f, hitDir, _currentParryable, gameObject);
-                Debug.Log($"[BossCore] Hit applied -> parryable={_currentParryable}");
+                Debug.Log($"[Enemy_01_Core] Hit applied -> parryable={_currentParryable}");
 
                 hitCount++;
 
                 if (hitCount >= 3 && Random.value <= 0.6f)
                 {
-                    Debug.Log("[BossCore] Parry triggered automatically after 3 hits.");
+                    Debug.Log("[Enemy_01_Core] Parry triggered automatically after 3 hits.");
                     OnParried(Player.position);
                     hitCount = 0;
                     return;
@@ -457,42 +309,16 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
         }
     }
 
-    public void PlayText(string message)
-    {
-        if (TextUi == null) return;
-        if (TypingCo != null) StopCoroutine(TypingCo);
-        TypingCo = StartCoroutine(TypeTextRoutine(message));
-    }
-
-    private IEnumerator TypeTextRoutine(string message)
-    {
-        if (TextUi == null) yield break;
-        TextUi.text = "";
-        int count = 0;
-        foreach (char c in message)
-        {
-            TextUi.text += c;
-            count++;
-            if (CamShake != null && (count % 4 == 0))
-            {
-                StartCoroutine(CamShake.ImpulseMoveMent());
-            }
-            yield return new WaitForSecondsRealtime(0.05f);
-        }
-    }
-
     public void OnParried(Vector3 parrySourcePosition)
     {
-        Debug.Log("[BossCore] Parried by player -> stamina +10 then -5 (success only)");
+        Debug.Log("[Enemy_01_Core] Parried by player -> stamina +10 then -5 (success only)");
 
-        // 패링 '성공 시에만' 스태미나 처리(+10 후 -5)
         if (Player != null && Player.TryGetComponent<PlayerCombat>(out var pc))
         {
             pc.AddStamina(10f);
             pc.AddStamina(-5f);
         }
 
-        // 넉백
         if (Rb != null)
         {
             Vector2 dir = ((Vector2)transform.position - (Vector2)parrySourcePosition).normalized;
