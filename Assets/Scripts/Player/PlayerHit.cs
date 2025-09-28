@@ -60,70 +60,73 @@ public class PlayerHit : MonoBehaviour
 
     public void OnHit(float damage, float knockback, Vector2 hitDir, bool parryable, GameObject attacker = null, float hitstun = -1f)
     {
-        if (Time.time < iFrameEndTime) return;
-
-        combat.EnterCombat("GotHit");
-
-        Vector2 facing = FacingOrRight();
-        Vector2 inFrontToEnemy = -hitDir.normalized; // 플레이어→적
-        if (defense && defense.IsBlocking)
+        if (combat.IsHealing) combat.CancelHealing();
         {
-            if (moveRef == null || moveRef.LastFacing.sqrMagnitude < 0.0001f || Vector2.Dot(facing, inFrontToEnemy) < 0f)
-                facing = inFrontToEnemy;
-        }
+            if (Time.time < iFrameEndTime) return;
 
-        // 방어/위빙 판단(정면 콘/패링 윈도우는 PlayerDefense가 처리)
-        var outcome = defense ? defense.Evaluate(facing, inFrontToEnemy, parryable) : DefenseOutcome.None;
+            combat.EnterCombat("GotHit");
 
-        // === 위빙(패링) 성공 ===
-        if (outcome == DefenseOutcome.Parry)
-        {
-            if (debugLogs) Debug.Log($"[WEAVING OK] t={Time.time:F2}s, attacker={(attacker ? attacker.name : "null")}");
-            PlayRandomWeaving();
-
-
-            var parryableTarget = attacker ? attacker.GetComponent<IParryable>() : null;
-            parryableTarget?.OnParried(transform.position);
-
-            float windowEnd = defense.LastBlockPressedTime + defense.ParryWindow;
-            float lockDur = Mathf.Max(0f, (windowEnd + defense.WeavingPostHold) - Time.time);
-            Debug.Log($"[HIT] Arming RIPOSTE window={lockDur:F2}s  (now={Time.time:F2})");
-            defense.StartParryLock(lockDur, true);   // 이동락(속도 0 권장)
-            defense.ForceBlockFor(lockDur);          // 가드 유지
-            attack?.ArmCounter(lockDur * 1.5f);
-            // 짧은 i-frame (원하면 수치 조절)
-            iFrameEndTime = Time.time + 0.05f;
-            return;
-        }
-
-        // === 일반 가드 성공 ===
-        if (outcome == DefenseOutcome.Block)
-        {
-            float finalDamage = damage * defense.BlockDamageMul;
-            float finalKnock = knockback * defense.BlockKnockMul;
-
-            combat.ApplyDamage(finalDamage);
-            ApplyKnockbackXOnly(inFrontToEnemy, finalKnock);
-
-            // 스태미너 감소 & 브레이크
-            combat.AddStamina(-damage);
-            if (combat.Stamina <= 0f) defense.TriggerStaminaBreak();
-            else
+            Vector2 facing = FacingOrRight();
+            Vector2 inFrontToEnemy = -hitDir.normalized; // 플레이어→적
+            if (defense && defense.IsBlocking)
             {
-                float stun = (hitstun >= 0f ? hitstun : baseHitstun) * blockHitstunMul;
-                StartHitstun(stun, playHitAnim: false);
+                if (moveRef == null || moveRef.LastFacing.sqrMagnitude < 0.0001f || Vector2.Dot(facing, inFrontToEnemy) < 0f)
+                    facing = inFrontToEnemy;
             }
 
-            animator?.SetTrigger("BlockHit");
-            return;
+            // 방어/위빙 판단(정면 콘/패링 윈도우는 PlayerDefense가 처리)
+            var outcome = defense ? defense.Evaluate(facing, inFrontToEnemy, parryable) : DefenseOutcome.None;
+
+            // === 위빙(패링) 성공 ===
+            if (outcome == DefenseOutcome.Parry)
+            {
+                if (debugLogs) Debug.Log($"[WEAVING OK] t={Time.time:F2}s, attacker={(attacker ? attacker.name : "null")}");
+                PlayRandomWeaving();
+
+
+                var parryableTarget = attacker ? attacker.GetComponent<IParryable>() : null;
+                parryableTarget?.OnParried(transform.position);
+
+                float windowEnd = defense.LastBlockPressedTime + defense.ParryWindow;
+                float lockDur = Mathf.Max(0f, (windowEnd + defense.WeavingPostHold) - Time.time);
+                Debug.Log($"[HIT] Arming RIPOSTE window={lockDur:F2}s  (now={Time.time:F2})");
+                defense.StartParryLock(lockDur, true);   // 이동락(속도 0 권장)
+                defense.ForceBlockFor(lockDur);          // 가드 유지
+                attack?.ArmCounter(lockDur * 1.5f);
+                // 짧은 i-frame (원하면 수치 조절)
+                iFrameEndTime = Time.time + 0.05f;
+                return;
+            }
+
+            // === 일반 가드 성공 ===
+            if (outcome == DefenseOutcome.Block)
+            {
+                float finalDamage = damage * defense.BlockDamageMul;
+                float finalKnock = knockback * defense.BlockKnockMul;
+
+                combat.ApplyDamage(finalDamage);
+                ApplyKnockbackXOnly(inFrontToEnemy, finalKnock);
+
+                // 스태미너 감소 & 브레이크
+                combat.AddStamina(-damage);
+                if (combat.Stamina <= 0f) defense.TriggerStaminaBreak();
+                else
+                {
+                    float stun = (hitstun >= 0f ? hitstun : baseHitstun) * blockHitstunMul;
+                    StartHitstun(stun, playHitAnim: false);
+                }
+
+                animator?.SetTrigger("BlockHit");
+                return;
+            }
+
+            // === 가드 실패(측/후방/비방어) ===
+            combat.ApplyDamage(damage);
+            ApplyKnockbackXOnly(inFrontToEnemy, knockback);
+            combat.AddStamina(-damage * combat.StaminaLossOnHitMul);
+            float stunRaw = (hitstun >= 0f ? hitstun : baseHitstun);
+            StartHitstun(stunRaw, playHitAnim: true);
         }
-
-        // === 가드 실패(측/후방/비방어) ===
-        combat.ApplyDamage(damage);
-        ApplyKnockbackXOnly(inFrontToEnemy, knockback);
-
-        float stunRaw = (hitstun >= 0f ? hitstun : baseHitstun);
-        StartHitstun(stunRaw, playHitAnim: true);
     }
 
     // X축으로만 넉백
@@ -170,7 +173,13 @@ public class PlayerHit : MonoBehaviour
     public void PlayRandomWeaving()
     {
         if (!animator) return;
-        int idx = Mathf.Clamp(Random.Range(1, weavingVariants + 1), 1, weavingVariants);
+        int max = Mathf.Max(1, weavingVariants);             // 최소 1
+        int idx = Mathf.Clamp(Random.Range(1, max + 1), 1, max);
+
         animator.SetTrigger($"Weaving{idx}");
+
+        // ★ 방금 뽑힌 Weaving 번호를 공격 스크립트에 넘겨준다
+        if (attack != null)
+            attack.SetLastWeavingIndex(idx);
     }
 }

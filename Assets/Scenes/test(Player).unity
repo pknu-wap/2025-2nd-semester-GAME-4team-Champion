@@ -275,7 +275,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -4805033873276769599, guid: 38492ed79e53c8f4f86121ab9c19511a, type: 3}
+  m_Sprite: {fileID: 174261792, guid: 3bdd821cdab8a354d99e85da9f46a7ca, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -320,8 +320,12 @@ MonoBehaviour:
   attack: {fileID: 480569108}
   hit: {fileID: 480569111}
   hpMax: 100
-  staminaMax: 100
+  stamina: 100
   staminaRegenPerSec: 25
+  staminaLossOnHitMul: 1.5
+  healDuration: 0.5
+  healAmount: 30
+  lockPhysicsOnHeal: 1
   autoFaceOnCombatEnter: 1
   autoFaceSearchRadius: 15
   disengageDistance: 150
@@ -412,6 +416,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 7
   flipDeadzone: 0.05
+  combat: {fileID: 0}
 --- !u!114 &480569108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -443,31 +448,26 @@ MonoBehaviour:
   active: 0.06
   recovery: 0.15
   minRecovery: 0.05
+  chargeActionName: Charge
   chargeTime: 0.5
+  minChargeHold: 0.1
+  lockMoveDuringCharge: 1
   chargeDamageMul: 3
   chargeKnockMul: 2
   chargeRangeMul: 1.2
   chargeRadiusMul: 1.2
-  chargeActionName: Charge
-  lockMoveDuringCharge: 1
-  chargeTriggerName: AtkCharge
-  chargeWindup: 0.05
-  chargeActive: 0.06
-  chargeRecovery: 0.12
-  minChargeHold: 0.1
-  chargeFullTime: 0.8
-  minChargeDamageMul: 1
-  maxChargeDamageMul: 3
-  minChargeKnockMul: 1
-  maxChargeKnockMul: 2
-  riposteTriggerName: AtkRiposte
-  riposteWindup: 0.02
-  riposteActive: 0.06
-  riposteRecovery: 0.1
-  riposteDamageMul: 2
-  riposteKnockMul: 2
-  riposteRangeMul: 1.1
-  riposteRadiusMul: 1
+  counterTriggerName: Counter
+  counterWindup: 0.02
+  counterActive: 0.06
+  counterRecovery: 0.1
+  counterDamageMul: 2
+  counterKnockMul: 2
+  counterRangeMul: 1.1
+  counterRadiusMul: 1
+  debugDrawHitbox: 1
+  comboGizmoColor: {r: 0, g: 1, b: 1, a: 1}
+  counterGizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmoDrawDuration: 0.15
 --- !u!114 &480569109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -584,7 +584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ba37f6c927d31c4fb92859c0ff20bf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 5
+  damage: 30
   knockback: 5
   parryable: 1
   attackInterval: 1

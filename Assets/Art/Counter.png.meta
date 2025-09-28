@@ -1,55 +1,76 @@
 fileFormatVersion: 2
-guid: 3bdd821cdab8a354d99e85da9f46a7ca
+guid: 348a431816e878f45a7af1613c5ee4ca
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8392948094274226395
-    second: Idle,running 1_0
+      213: 4952043566522609014
+    second: Counter_0
   - first:
-      213: 9153064232826748076
-    second: Idle,running 1_1
+      213: 821160465587363890
+    second: Counter_1
   - first:
-      213: 7038900169637704563
-    second: Idle,running 1_2
+      213: 7973724869237210883
+    second: Counter_2
   - first:
-      213: -6886927099695156535
-    second: Idle,running 1_3
+      213: 1607589912642770814
+    second: Counter_3
   - first:
-      213: 2848863677490164637
-    second: Idle,running 1_4
+      213: -7585873666924653829
+    second: Counter_4
   - first:
-      213: -1026176333616043614
-    second: Idle,running 1_5
+      213: 5732573060494408714
+    second: Counter_5
   - first:
-      213: 5369779176423824532
-    second: Idle,running 1_6
+      213: -2731217718724457291
+    second: Counter_6
   - first:
-      213: 9125979190780843004
-    second: Idle,running 1_7
+      213: 3051487520224703916
+    second: Counter_7
   - first:
-      213: -8606076567511456966
-    second: Idle,running 1_8
+      213: -1780595900215330471
+    second: Counter_8
   - first:
-      213: 3098300798154479044
-    second: Idle,running 1_9
+      213: -5347720534100763733
+    second: Counter_9
   - first:
-      213: -9219994658597964287
-    second: Idle,running 1_10
+      213: -4948577973710627539
+    second: Counter_10
   - first:
-      213: 7975914489190771399
-    second: Idle,running 1_11
+      213: -940704513861100576
+    second: Counter_11
   - first:
-      213: -389469835547911281
-    second: Idle,running 1_12
+      213: -5958696726306361200
+    second: Counter_12
   - first:
-      213: 3239443347793680008
-    second: Idle,running 1_13
+      213: -4455641114013297410
+    second: Counter_13
   - first:
-      213: -1585098617362995554
-    second: Idle,running 1_14
+      213: -4542063816414296179
+    second: Counter_14
   - first:
-      213: -3284461171921247929
-    second: Idle,running 1_15
+      213: -3641204504787847395
+    second: Counter_15
+  - first:
+      213: -8938109996912058984
+    second: Counter_16
+  - first:
+      213: -811408989187007170
+    second: Counter_17
+  - first:
+      213: -7175790307662012358
+    second: Counter_18
+  - first:
+      213: -9088690779673502567
+    second: Counter_19
+  - first:
+      213: 4741431624752992964
+    second: Counter_20
+  - first:
+      213: -3525428598872433671
+    second: Counter_21
+  - first:
+      213: 543363444915393811
+    second: Counter_22
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -145,7 +166,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Idle,running_0
+      name: Counter_0
       rect:
         serializedVersion: 2
         x: 5
@@ -158,16 +179,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: df696ff3efdfb0d49a731873a0b1813a
-      internalID: 174261792
+      spriteID: 67da6def26139b440800000000000000
+      internalID: 4952043566522609014
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle,running_1
+      name: Counter_1
       rect:
         serializedVersion: 2
         x: 50
@@ -180,16 +201,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 742dbfe572d688e43b31b85b0c469ef7
-      internalID: -1681816077
+      spriteID: 230edeeb719556b00800000000000000
+      internalID: 821160465587363890
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle,running_2
+      name: Counter_2
       rect:
         serializedVersion: 2
         x: 95
@@ -202,16 +223,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 4121d3a2be1b5f84b8715a97595acb30
-      internalID: 1948865181
+      spriteID: 30ff49f958c58ae60800000000000000
+      internalID: 7973724869237210883
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle,running_3
+      name: Counter_3
       rect:
         serializedVersion: 2
         x: 140
@@ -224,16 +245,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: ad4f7d1d2cc8a1649a6b1ea3a75e6ef6
-      internalID: -97446113
+      spriteID: e77d297128e4f4610800000000000000
+      internalID: 1607589912642770814
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle,running_4
+      name: Counter_4
       rect:
         serializedVersion: 2
         x: 185
@@ -246,16 +267,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 4bf85a396d85b66448d8a417dc04d110
-      internalID: -60200005
+      spriteID: bf257f3771099b690800000000000000
+      internalID: -7585873666924653829
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle,running_5
+      name: Counter_5
       rect:
         serializedVersion: 2
         x: 230
@@ -268,16 +289,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: ee97fd37059fb6545ba77b0cf840737e
-      internalID: -851326736
+      spriteID: a0c3eb773d03e8f40800000000000000
+      internalID: 5732573060494408714
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle,running_6
+      name: Counter_6
       rect:
         serializedVersion: 2
         x: 275
@@ -290,16 +311,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: f5458b678b5774e4488c8bd28a0fe43c
-      internalID: -975441209
+      spriteID: 5bc0d2794f3c81ad0800000000000000
+      internalID: -2731217718724457291
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle,running_7
+      name: Counter_7
       rect:
         serializedVersion: 2
         x: 320
@@ -312,16 +333,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 679bb3bb692576c45809741b6398e1fd
-      internalID: 1670955743
+      spriteID: ca5f78f6bbf095a20800000000000000
+      internalID: 3051487520224703916
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle,running_8
+      name: Counter_8
       rect:
         serializedVersion: 2
         x: 365
@@ -334,16 +355,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: bfc0f04f0483aef47bc278ee2403528a
-      internalID: 415136310
+      spriteID: 959f527767d0a47e0800000000000000
+      internalID: -1780595900215330471
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle,running_9
+      name: Counter_9
       rect:
         serializedVersion: 2
         x: 410
@@ -356,16 +377,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: ea2e35a3f8dd8734782d48fed8b58468
-      internalID: 1105617943
+      spriteID: bab9cd6f18419c5b0800000000000000
+      internalID: -5347720534100763733
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle,running_10
+      name: Counter_10
       rect:
         serializedVersion: 2
         x: 455
@@ -378,16 +399,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 244a5fc5ac66a33438e03656bf4e8201
-      internalID: -1831473972
+      spriteID: d2dd7a53d8e135bb0800000000000000
+      internalID: -4948577973710627539
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle,running_11
+      name: Counter_11
       rect:
         serializedVersion: 2
         x: 500
@@ -400,16 +421,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: b35a35d82a2280f47aeb2cf40156d5d3
-      internalID: -68858474
+      spriteID: 0ebd3bc8a32f1f2f0800000000000000
+      internalID: -940704513861100576
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle,running_12
+      name: Counter_12
       rect:
         serializedVersion: 2
         x: 545
@@ -422,16 +443,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: c208ef6c5c4566a40b80d38271ba2f2f
-      internalID: 2140623366
+      spriteID: 090f930e5e47e4da0800000000000000
+      internalID: -5958696726306361200
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle,running_13
+      name: Counter_13
       rect:
         serializedVersion: 2
         x: 590
@@ -444,16 +465,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 1b01636e859feb34f938c5dab9abbbc3
-      internalID: -1509731715
+      spriteID: ef49c9883026a22c0800000000000000
+      internalID: -4455641114013297410
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle,running_14
+      name: Counter_14
       rect:
         serializedVersion: 2
         x: 635
@@ -466,16 +487,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 926ae16dc558eb94f858145964826396
-      internalID: 7857076
+      spriteID: d87887b160957f0c0800000000000000
+      internalID: -4542063816414296179
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle,running_15
+      name: Counter_15
       rect:
         serializedVersion: 2
         x: 680
@@ -488,10 +509,120 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: e994e38d1b92adf4ba8527822fe728b8
-      internalID: 540678162
+      spriteID: d1771997bc7d77dc0800000000000000
+      internalID: -3641204504787847395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Counter_16
+      rect:
+        serializedVersion: 2
+        x: 725
+        y: 4
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89d50be505475f380800000000000000
+      internalID: -8938109996912058984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Counter_17
+      rect:
+        serializedVersion: 2
+        x: 770
+        y: 4
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3d13f7c2db4db4f0800000000000000
+      internalID: -811408989187007170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Counter_18
+      rect:
+        serializedVersion: 2
+        x: 815
+        y: 4
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a306d11fbb87a6c90800000000000000
+      internalID: -7175790307662012358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Counter_19
+      rect:
+        serializedVersion: 2
+        x: 860
+        y: 4
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99c513cc3eb7ed180800000000000000
+      internalID: -9088690779673502567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Counter_20
+      rect:
+        serializedVersion: 2
+        x: 905
+        y: 4
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c2943801f2fcc140800000000000000
+      internalID: 4741431624752992964
       vertices: []
       indices: 
       edges: []
@@ -500,7 +631,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 40c445fc6709a3d49982774df2ff634d
+    spriteID: 9f95f11f2c340c54588638af69f287ed
     internalID: 0
     vertices: []
     indices: 
@@ -510,22 +641,27 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Idle,running_0: 174261792
-      Idle,running_1: -1681816077
-      Idle,running_10: -1831473972
-      Idle,running_11: -68858474
-      Idle,running_12: 2140623366
-      Idle,running_13: -1509731715
-      Idle,running_14: 7857076
-      Idle,running_15: 540678162
-      Idle,running_2: 1948865181
-      Idle,running_3: -97446113
-      Idle,running_4: -60200005
-      Idle,running_5: -851326736
-      Idle,running_6: -975441209
-      Idle,running_7: 1670955743
-      Idle,running_8: 415136310
-      Idle,running_9: 1105617943
+      Counter_0: 4952043566522609014
+      Counter_1: 821160465587363890
+      Counter_10: -4948577973710627539
+      Counter_11: -940704513861100576
+      Counter_12: -5958696726306361200
+      Counter_13: -4455641114013297410
+      Counter_14: -4542063816414296179
+      Counter_15: -3641204504787847395
+      Counter_16: -8938109996912058984
+      Counter_17: -811408989187007170
+      Counter_18: -7175790307662012358
+      Counter_19: -9088690779673502567
+      Counter_2: 7973724869237210883
+      Counter_20: 4741431624752992964
+      Counter_3: 1607589912642770814
+      Counter_4: -7585873666924653829
+      Counter_5: 5732573060494408714
+      Counter_6: -2731217718724457291
+      Counter_7: 3051487520224703916
+      Counter_8: -1780595900215330471
+      Counter_9: -5347720534100763733
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

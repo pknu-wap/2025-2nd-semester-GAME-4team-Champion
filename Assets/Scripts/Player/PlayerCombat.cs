@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerCombat : MonoBehaviour
@@ -17,18 +18,33 @@ public class PlayerCombat : MonoBehaviour
     // --------- Vitals (체력/스태미나) ---------
     [Header("Vitals")]
     [SerializeField] private float hpMax = 100f;
-    [SerializeField] private float staminaMax = 100f;
+    [SerializeField] private float stamina = 100f;
     [SerializeField] private float staminaRegenPerSec = 25f;
+    [Header("Stamina on Hit")]
+    [SerializeField] private float staminaLossOnHitMul = 1.0f; // 비가드 피격 시 소모 배수(= 데미지 * 이 값)
+
 
     private float hp;
     public float Hp01 => Mathf.Clamp01(hp / Mathf.Max(1f, hpMax));
 
     public float Stamina { get; private set; }
-    public float StaminaMax => staminaMax;
-    public float Stamina01 => Mathf.Clamp01(Stamina / Mathf.Max(1f, staminaMax));
+    public float StaminaMax => stamina;
+    public float Stamina01 => Mathf.Clamp01(Stamina / Mathf.Max(1f, stamina));
 
     public event Action<float, float> OnHealthChanged;
     public event Action<float, float> OnStaminaChanged;
+    public float StaminaLossOnHitMul => staminaLossOnHitMul;
+
+    [Header("Heal (R to Cast)")]
+    [SerializeField] private float healDuration = 0.5f;  // 캐스팅 시간(초)
+    [SerializeField] private float healAmount = 30f;     // 회복량(HP)
+    [SerializeField] private bool lockPhysicsOnHeal = true; // 캐스팅 동안 완전정지 여부
+
+    private bool isHealing = false;
+    public bool IsHealing => isHealing;
+    private Coroutine healCo;
+    private PlayerMove inputWrapper;
+    private InputAction healAction;
 
     // === Combat State ===
     [Header("Facing (Auto)")]
@@ -84,19 +100,91 @@ public class PlayerCombat : MonoBehaviour
         if (!defense) defense = GetComponent<PlayerDefense>();
         if (!attack) attack = GetComponent<PlayerAttack>();
         if (!hit) hit = GetComponent<PlayerHit>();
+        inputWrapper = new PlayerMove();
 
         hp = hpMax;
-        Stamina = staminaMax;
+        Stamina = stamina;
         OnHealthChanged?.Invoke(hp, hpMax);
-        OnStaminaChanged?.Invoke(Stamina, staminaMax);
+        OnStaminaChanged?.Invoke(Stamina, stamina);
 
         if (defense) defense.Bind(this, moveRef, animator);
         if (attack) attack.Bind(this, moveRef, animator);
     }
 
-    private void OnEnable() => StartCoroutine(VitalsTick());
-    private void OnDisable() => StopAllCoroutines();
+    private void OnEnable()
+    {
+        StartCoroutine(VitalsTick());
 
+        // ★ Heal 액션 바인딩 (Input Actions에 "Heal" 추가 필요. 예: <Keyboard>/r)
+        inputWrapper.Enable();
+        healAction = inputWrapper.asset.FindAction("Heal");
+        if (healAction != null)
+            healAction.started += OnHealStarted;
+        else
+            Debug.LogWarning("[PlayerCombat] 'Heal' 액션이 없습니다. .inputactions에 추가하세요 (예: R키).");
+    }
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+
+        if (healAction != null)
+            healAction.started -= OnHealStarted;
+        inputWrapper.Disable();
+    }
+    private void OnHealStarted(InputAction.CallbackContext _)
+    {
+        // 이미 힐 중 / 히트스턴 / 가드브레이크 상태면 힐 불가
+        if (isHealing || (hit != null && hit.InHitstun) || (defense != null && defense.IsStaminaBroken))
+            return;
+
+        // “완전 무방비” 요구면 가드 해제(공격은 아래 코루틴에서 컴포넌트 비활성으로 막음)
+        defense?.ForceUnblock();
+
+        if (healCo != null) StopCoroutine(healCo);
+        healCo = StartCoroutine(HealRoutine());
+    }
+
+    private IEnumerator HealRoutine()
+    {
+        isHealing = true;
+
+        // 이동 잠금(원하면 완전 고정)
+        if (lockPhysicsOnHeal) moveRef?.SetMovementLocked(true, hardFreezePhysics: true, zeroVelocity: true);
+        else moveRef?.SetMovementLocked(true, hardFreezePhysics: false, zeroVelocity: true);
+
+        // 가드/공격 입력 차단을 위해 컴포넌트 비활성
+        bool defWasEnabled = defense && defense.enabled;
+        bool atkWasEnabled = attack && attack.enabled;
+        if (defense) defense.enabled = false;
+        if (attack) attack.enabled = false;
+
+        animator?.SetTrigger("HealStart");
+
+        yield return new WaitForSeconds(healDuration);
+
+        // 체력 회복
+        hp = Mathf.Min(hpMax, hp + healAmount);
+        OnHealthChanged?.Invoke(hp, hpMax);
+        Debug.Log($"[HEAL] +{healAmount}HP => {hp}/{hpMax}");
+
+        EndHealing();
+
+        // 원상 복구
+        if (defense) defense.enabled = defWasEnabled;
+        if (attack) attack.enabled = atkWasEnabled;
+    }
+    private void EndHealing()
+    {
+        isHealing = false;
+        moveRef?.SetMovementLocked(false, hardFreezePhysics: lockPhysicsOnHeal);
+        healCo = null;
+    }
+    public void CancelHealing()
+    {
+        if (!isHealing) return;
+        StopCoroutine(healCo);
+        EndHealing();
+    }
     // Combat State 제어
     public void EnterCombat(string reason = null)
     {
@@ -185,7 +273,7 @@ public class PlayerCombat : MonoBehaviour
         var wait = new WaitForEndOfFrame();
         while (true)
         {
-            if (defense && !defense.IsStaminaBroken && !defense.IsBlocking && Stamina < staminaMax)
+            if (defense && !defense.IsStaminaBroken && !defense.IsBlocking && Stamina < stamina)
             {
                 AddStamina(staminaRegenPerSec * Time.deltaTime);
             }
@@ -205,8 +293,14 @@ public class PlayerCombat : MonoBehaviour
 
     public void AddStamina(float delta)
     {
-        Stamina = Mathf.Clamp(Stamina + delta, 0f, staminaMax);
-        OnStaminaChanged?.Invoke(Stamina, staminaMax);
+        Stamina = Mathf.Clamp(Stamina + delta, 0f, stamina);
+        OnStaminaChanged?.Invoke(Stamina, stamina);
+
+        // 스태미나가 0이 되면 확실히 가드브레이크 트리거
+        if (Stamina <= 0f && defense != null && !defense.IsStaminaBroken)
+        {
+            defense.TriggerStaminaBreak();
+        }
     }
 
     private void OnDeath()

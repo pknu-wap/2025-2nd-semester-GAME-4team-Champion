@@ -43,13 +43,18 @@ public class PlayerAttack : MonoBehaviour
 
     [Header("Counter (Riposte)")]
     [SerializeField] private string counterTriggerName = "Counter";
-    [SerializeField] private float counterWindup = 0.02f;
+    [SerializeField] private float counterWindup = 0.05f;
     [SerializeField] private float counterActive = 0.06f;
     [SerializeField] private float counterRecovery = 0.10f;
     [SerializeField] private float counterDamageMul = 2.0f;
     [SerializeField] private float counterKnockMul = 2.0f;
     [SerializeField] private float counterRangeMul = 1.1f;
     [SerializeField] private float counterRadiusMul = 1.0f;
+    private int lastWeavingIndex = 1;
+    public void SetLastWeavingIndex(int idx)
+    {
+        lastWeavingIndex = Mathf.Clamp(idx, 1, 3);
+    }
 
     [Header("Debug Draw")]
     [SerializeField] private bool debugDrawHitbox = true;
@@ -177,8 +182,6 @@ public class PlayerAttack : MonoBehaviour
         attackHeld = true;
         attackPressedTime = Time.time;
 
-        // 일반 콤보  차지와 별개 키이므로 그대로 사용
-        // (여기선 Charging bool 사용 안 함)
     }
 
     private void OnAttackCanceled(InputAction.CallbackContext _)
@@ -257,43 +260,43 @@ public class PlayerAttack : MonoBehaviour
         chargeWaitCo = null;
     }
 
+    // Counter(=Riposte) 실행 코루틴 이름/내용 정리
+    // 기존 DoRiposteAttack()이 있다면 이름만 바꾸고 내용 교체, 없으면 그대로 추가
     private IEnumerator DoCounterAttack()
     {
         isAttacking = true;
-        counterArmed = false; // 창 소모
+        counterArmed = false;
 
-        // 애니가 없어도 트리거는 남겨둠(나중에 연결할 때 편함)
-        if (animator) animator.SetTrigger(counterTriggerName);
-
-        // 이동 금지  미끄럼 방지(즉시 속도 0)
-        if (lockMoveDuringAttack)
+        // ★ 이동 잠금 + 미끄럼 방지
+        if (lockMoveDuringAttack && moveRef)
         {
             float lockTime = counterWindup + counterActive + counterRecovery;
             if (attackMoveLockCo != null) StopCoroutine(attackMoveLockCo);
             attackMoveLockCo = StartCoroutine(LockMoveFor(lockTime, zeroVelocity: true));
         }
 
-        // 짧은 선딜
+        // 위빙 번호와 동일한 Counter 트리거
+        if (animator) animator.SetTrigger($"Counter{lastWeavingIndex}");
+
+        // 선딜
         yield return new WaitForSeconds(counterWindup);
 
-
+        // 히트박스 (Counter 배수 사용)
         DoHitbox(baseDamage * counterDamageMul,
                  baseKnockback * counterKnockMul,
                  baseRange * counterRangeMul,
                  baseRadius * counterRadiusMul);
 
-        // 눈에 보이는 로그(데미지 확인용)
-        Debug.Log($"[COUNTER] dmg≈{baseDamage * counterDamageMul}, r={baseRadius * counterRadiusMul}");
-
-        // 전투 진입 보장
+        // 전투 진입 보장(선택)
         combat.EnterCombat("Counter");
 
-        // 활성 후딜
+        // 활성 + 후딜
         yield return new WaitForSeconds(counterActive + counterRecovery);
 
         isAttacking = false;
         attackCo = null;
     }
+
 
     private IEnumerator DoAttackStep(int step)
     {

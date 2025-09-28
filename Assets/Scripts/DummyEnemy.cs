@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DummyEnemy : MonoBehaviour, IDamageable, IParryable
 {
-    [SerializeField] private float hp = 100f;
+    [SerializeField] private float hp = 1000f;
     [SerializeField] private Rigidbody2D rb;
 
     private void Reset()

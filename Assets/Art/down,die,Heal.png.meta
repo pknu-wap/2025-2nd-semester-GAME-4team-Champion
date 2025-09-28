@@ -1,25 +1,28 @@
 fileFormatVersion: 2
-guid: 1e55ab396ed5ae44f839a111e1c4bd80
+guid: f6b03e28ade8cfe4da759a7684af68cb
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6985487119934694856
-    second: down,die_0
+      213: -4196913021971361822
+    second: down,die,Heal_0
   - first:
-      213: -1245999387498884616
-    second: down,die_1
+      213: -1985208017285802481
+    second: down,die,Heal_1
   - first:
-      213: -8592879438324922958
-    second: down,die_2
+      213: 5842229007287110198
+    second: down,die,Heal_2
   - first:
-      213: -136942882231276549
-    second: down,die_3
+      213: -965005422837775405
+    second: down,die,Heal_3
   - first:
-      213: 7633786683894735269
-    second: down,die_4
+      213: -898683090670830928
+    second: down,die,Heal_4
   - first:
-      213: -652417930462952287
-    second: down,die_5
+      213: -1412396682517520238
+    second: down,die,Heal_5
+  - first:
+      213: 8692801431239715641
+    second: down,die,Heal_6
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -115,7 +118,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: down,die_0
+      name: down,die,Heal_0
       rect:
         serializedVersion: 2
         x: 5
@@ -123,21 +126,21 @@ TextureImporter:
         width: 40
         height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 83ad931a9709e0f90800000000000000
-      internalID: -6985487119934694856
+      spriteID: 2ef8f2cb7d191c5c0800000000000000
+      internalID: -4196913021971361822
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: down,die_1
+      name: down,die,Heal_1
       rect:
         serializedVersion: 2
         x: 50
@@ -145,21 +148,21 @@ TextureImporter:
         width: 40
         height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8f156cd982255bee0800000000000000
-      internalID: -1245999387498884616
+      spriteID: f061c6c83df1374e0800000000000000
+      internalID: -1985208017285802481
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: down,die_2
+      name: down,die,Heal_2
       rect:
         serializedVersion: 2
         x: 95
@@ -167,21 +170,21 @@ TextureImporter:
         width: 40
         height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2b582e88da5ffb880800000000000000
-      internalID: -8592879438324922958
+      spriteID: 63ac4d32454c31150800000000000000
+      internalID: 5842229007287110198
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: down,die_3
+      name: down,die,Heal_3
       rect:
         serializedVersion: 2
         x: 140
@@ -189,21 +192,21 @@ TextureImporter:
         width: 40
         height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bfb26169c2b791ef0800000000000000
-      internalID: -136942882231276549
+      spriteID: 3d3cd654eac9b92f0800000000000000
+      internalID: -965005422837775405
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: down,die_4
+      name: down,die,Heal_4
       rect:
         serializedVersion: 2
         x: 185
@@ -211,15 +214,59 @@ TextureImporter:
         width: 40
         height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5a127a02b88a0f960800000000000000
-      internalID: 7633786683894735269
+      spriteID: 0ba3aee8d7c3783f0800000000000000
+      internalID: -898683090670830928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: down,die,Heal_5
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 4
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2906a9053b8266ce0800000000000000
+      internalID: -1412396682517520238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: down,die,Heal_6
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 4
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93bec0468d803a870800000000000000
+      internalID: 8692801431239715641
       vertices: []
       indices: 
       edges: []
@@ -228,7 +275,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 2e78516ac0bae0b48a4784d506ed6760
+    spriteID: 10d7fed5ee617f541aedb9f053292cc5
     internalID: 0
     vertices: []
     indices: 
@@ -238,12 +285,13 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      down,die_0: -6985487119934694856
-      down,die_1: -1245999387498884616
-      down,die_2: -8592879438324922958
-      down,die_3: -136942882231276549
-      down,die_4: 7633786683894735269
-      down,die_5: -652417930462952287
+      down,die,Heal_0: -4196913021971361822
+      down,die,Heal_1: -1985208017285802481
+      down,die,Heal_2: 5842229007287110198
+      down,die,Heal_3: -965005422837775405
+      down,die,Heal_4: -898683090670830928
+      down,die,Heal_5: -1412396682517520238
+      down,die,Heal_6: 8692801431239715641
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
