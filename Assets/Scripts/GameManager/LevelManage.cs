@@ -33,46 +33,53 @@ public class LevelManage : MonoBehaviour
 
     public void GetExp(int addexp)  //경험치 휙득 및 레벨업
     {
-        exp += addexp;
-        resetexp();
-        /*if (exp >= maxexp)
+        if  (level < 15)
         {
-            level += exp/maxexp;
-            exp %= maxexp;
-        }*/
-        if (exp >= maxexp)
-        {
-            while (exp >= maxexp)
+            exp += addexp;
+            resetexp();
+            /*if (exp >= maxexp)
             {
-                exp -= maxexp;
-                level += 1;
-                if (level % 5 == 0)
-                {   
-                    levelselectcount += 1;
-                }
-                if (levelselectcount >= 1)
-                {
-                    levelupselect.settingRandom();
-                    levelupselect.RandomSelect();
-                    levelupselect.showLevelUp();
-        
-                }
-                
-            }
-            /*for (int i = 0; i <= (exp/maxexp); i++)
-            {
-                level += 1;
-                exp -= maxexp;
-                if (level % 5 == 0)
-                {
-                    levelupselect.settingRandom();
-                    levelupselect.RandomSelect();
-                    levelupselect.showLevelUp();
-                }
+                level += exp/maxexp;
+                exp %= maxexp;
             }*/
+            if (exp >= maxexp)
+            {
+                while (exp >= maxexp)
+                {
+                    exp -= maxexp;
+                    level += 1;
+                    if (level % 5 == 0)
+                    {   
+                        levelselectcount += 1;
+                    }
+                    if (levelselectcount >= 1)
+                    {
+                        levelupselect.settingRandom();
+                        levelupselect.RandomSelect();
+                        levelupselect.showLevelUp();
+            
+                    }
+                    
+                }
+                /*for (int i = 0; i <= (exp/maxexp); i++)
+                {
+                    level += 1;
+                    exp -= maxexp;
+                    if (level % 5 == 0)
+                    {
+                        levelupselect.settingRandom();
+                        levelupselect.RandomSelect();
+                        levelupselect.showLevelUp();
+                    }
+                }*/
+            }
+            
+            resetexp();
         }
-        
-        resetexp();
+        else
+        {
+            level = 15;
+        }
     }
 
 
