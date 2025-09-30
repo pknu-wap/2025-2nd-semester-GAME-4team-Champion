@@ -18,9 +18,10 @@ public class GameManager : MonoBehaviour
     private float lastactiontime;   //마지막으로 영향을 받은 시간
 
 
-    public Slider enemyhpbar;   //적 슬라이드바
+    public Slider[] enemyhpbar;   //적 슬라이드바
     public Slider[] enemystaminabar;
-    public Image[] fillimage;   //적 슬라이드바*2, 적 슬라이드바 배경*2, 플레이어 슬라이드바, 플레이어 슬라이드바 배경 순
+    public Image[] fillimage;   //플레이어 스테미나 *6, 플레이어 체력 * 3
+    public Image[] enemyfillimage;   //적 스테미나 *6, 적 체력 * 3
     public float enemymaxhp = 100; //적 체력
     public float enemycurrenthp = 100;
     public float enemymaxstamina = 100f; //적 스테미나
@@ -67,7 +68,8 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             fillimage[i].color = new Color(255 / 255f, (245 - currentstamina) / 255f, 57 / 255f, 1000 * (staminabar[i].value - staminabar[i].minValue));
-
+            
+            enemyfillimage[i].color = new Color(255 / 255f, (245 - enemycurrentstamina) / 255f, 57 / 255f, 1000 * (enemystaminabar[i].value - enemystaminabar[i].minValue));
 
             //fillimage[i].color = new Color(217/255f, (207-enemycurrentstamina)/255f, 28/255f, 10*enemycurrentstamina);
             //fillimage[i+2].color = new Color(105/255f, 107/255f, 30/255f, 10*enemycurrentstamina);
@@ -121,7 +123,7 @@ public class GameManager : MonoBehaviour
     {
         float ratio = maxhp > 0f ? currenthp / maxhp : 0f;
 
-        // 1) 플레이어 HP 슬라이더들 값만 안전하게 갱신
+        //플레이어 HP 슬라이더들 값만 갱신
         if (hpbar != null)
         {
             int count = hpbar.Length;
@@ -129,6 +131,9 @@ public class GameManager : MonoBehaviour
             {
                 if (hpbar[i] == null) continue;
                 hpbar[i].value = ratio;
+                Color c = fillimage[i+6].color;
+                c.a = 1000 * (hpbar[i].value - hpbar[i].minValue);
+                fillimage[i+6].color = c;
             }
         }
     }
@@ -144,8 +149,29 @@ public class GameManager : MonoBehaviour
 
     private void resetenemystamina() //적 스테미나 갱신
     {
-        enemystaminabar[0].value = enemycurrentstamina / enemymaxstamina;
-        enemystaminabar[1].value = enemycurrentstamina / enemymaxstamina;
+        for (int i = 0; i < 6; i++)
+        {
+            enemystaminabar[i].value = enemycurrentstamina / enemymaxstamina;
+        }
+    }
+
+    private void resetenemyhp() //적 체력 갱신
+    {
+        float ratio = enemymaxhp > 0f ? enemycurrenthp / enemymaxhp : 0f;
+
+        //적 HP 슬라이더들 값만 갱신
+        if (enemyhpbar != null)
+        {
+            int count = enemyhpbar.Length;
+            for (int i = 0; i < count; i++)
+            {
+                if (enemyhpbar[i] == null) continue;
+                enemyhpbar[i].value = ratio;
+                Color c = enemyfillimage[i+6].color;
+                c.a = 1000 * (hpbar[i].value - enemyhpbar[i].minValue);
+                enemyfillimage[i+6].color = c;
+            }
+        }
     }
 
     public void TakePlayerDamage(float amount)
