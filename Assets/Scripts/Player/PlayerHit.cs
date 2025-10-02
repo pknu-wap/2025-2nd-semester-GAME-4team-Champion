@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+ï»¿using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -7,25 +6,30 @@ using Random = UnityEngine.Random;
 public class PlayerHit : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private PlayerCombat combat;          // Ã¼·Â/½ºÅÂ¹Ì³Ê, ÀüÅõ»óÅÂ, ¾Ö´Ï µî
-    [SerializeField] private PlayerDefense defense;        // °¡µå/À§ºù(ÆĞ¸µ) ÆÇ´Ü & ¶ô
-    [SerializeField] private PlayerAttack attack;
-    [SerializeField] private PlayerMoveBehaviour moveRef;  // ÀÌµ¿¶ô/¹Ù¶óº¸´Â ¹æÇâ ÂüÁ¶
+    [SerializeField] private PlayerCombat combat;          // HP/STM/ì „íˆ¬/ì „ì—­ë½
+    [SerializeField] private PlayerDefense defense;        // ê°€ë“œ/ìœ„ë¹™(íŒ¨ë§) íŒì • & ë½
+    [SerializeField] private PlayerAttack attack;          // Weaving ì¸ë±ìŠ¤ ì „ë‹¬/ì¹´ìš´í„° ì°½
+    [SerializeField] private Player_Heal healer;           // (ì„ íƒ) ì¹˜ìœ  ì¤‘ë‹¨ìš©
+    [SerializeField] private PlayerMoveBehaviour moveRef;  // ì´ë™ë½/ë°”ë¼ë³´ëŠ” ë°©í–¥
     [SerializeField] private Animator animator;
     [SerializeField] private Rigidbody2D rb;
 
     [Header("Hit Reaction (Config)")]
-    [SerializeField] private float baseHitstun = 0.20f;   // ±âº» °æÁ÷
-    [SerializeField] private float blockHitstunMul = 0.5f;// °¡µå½Ã °æÁ÷ ¹è¼ö
-     
+    [SerializeField] private float baseHitstun = 1.5f;     // ê¸°ë³¸ ê²½ì§
+    [SerializeField] private float blockHitstunMul = 0.5f;  // ê°€ë“œì‹œ ê²½ì§ ë°°ìˆ˜
+
+    [Header("On-Hit Locks / Stamina")]
+    [SerializeField] private float actionLockOnUnguardedHit = 2f; // ë¹„ê°€ë“œ í”¼ê²© ì‹œ ì „ì—­ í–‰ë™ë½ ì‹œê°„
+    [SerializeField] private float staminaLossOnHitMul = 1.0f;       // í”¼ê²© ì‹œ ìŠ¤íƒœë¯¸ë‚˜ ì¶”ê°€ ê°ì†Œ ë°°ìˆ˜
+
     [Header("Animation Variants")]
-    [SerializeField] private int weavingVariants = 3;
-    [SerializeField] private int hitVariants = 3;
+    [SerializeField] private int weavingVariants = 3;       // Weaving1..N
+    [SerializeField] private int hitVariants = 3;           // Hit1..N
 
     [Header("Debug")]
     [SerializeField] private bool debugLogs = true;
 
-    // === »óÅÂ ===
+    // === ìƒíƒœ ===
     private bool inHitstun = false;
     private float hitstunEndTime = 0f;
     private float iFrameEndTime = 0f;
@@ -40,7 +44,7 @@ public class PlayerHit : MonoBehaviour
         if (!moveRef) moveRef = GetComponent<PlayerMoveBehaviour>();
         if (!animator) animator = GetComponent<Animator>();
         if (!rb) rb = GetComponent<Rigidbody2D>();
-        if (!attack) attack = GetComponent<PlayerAttack>(); // ¡Ú ÇÙ½É
+        if (!attack) attack = GetComponent<PlayerAttack>();
     }
 
     private void Reset()
@@ -53,103 +57,130 @@ public class PlayerHit : MonoBehaviour
         if (!attack) attack = GetComponent<PlayerAttack>();
     }
 
+    public void Bind(PlayerCombat c, PlayerMoveBehaviour m, Animator a, Rigidbody2D rigid = null)
+    {
+        combat = c; moveRef = m; animator = a; rb = rigid ? rigid : rb;
+    }
+
     private Vector2 FacingOrRight()
     {
         return (moveRef && moveRef.LastFacing.sqrMagnitude > 0f) ? moveRef.LastFacing : Vector2.right;
     }
 
-    public void OnHit(float damage, float knockback, Vector2 hitDir, bool parryable, GameObject attacker = null, float hitstun = -1f)
+    public void OnHit(float damage, float knockback, Vector2 hitDir, bool parryable,
+                      GameObject attacker = null, float hitstun = -1f)
     {
-        if (combat.IsHealing) combat.CancelHealing();
+        // i-í”„ë ˆì„ ì¤‘ì´ë©´ ë¬´ì‹œ
+        if (Time.time < iFrameEndTime) return;
+
+        // ì¹˜ìœ  ì¤‘ì´ë©´ ì¦‰ì‹œ ì¤‘ë‹¨
+        if (healer && healer.IsHealing) healer.CancelHealing();
+
+        // ì „íˆ¬ ì§„ì…
+        combat?.EnterCombat("GotHit");
+
+        // ë°©í–¥ ì¤€ë¹„
+        Vector2 facing = FacingOrRight();
+        Vector2 toEnemy = -hitDir.normalized; // í”Œë ˆì´ì–´â†’ì 
+
+        // ë°©ì–´/ìœ„ë¹™ íŒì • (ì •ë©´ ì½˜/íŒ¨ë§ ìœˆë„ëŠ” PlayerDefenseê°€ ë‹´ë‹¹)
+        var outcome = defense ? defense.Evaluate(facing, toEnemy, parryable) : DefenseOutcome.None; // PlayerDefense ê¸°ì¤€
+
+        // ===== ìœ„ë¹™(íŒ¨ë§) ì„±ê³µ =====
+        if (outcome == DefenseOutcome.Parry)
         {
-            if (Time.time < iFrameEndTime) return;
+            if (debugLogs) Debug.Log($"[WEAVING OK] t={Time.time:F2}s, attacker={(attacker ? attacker.name : "null")}");
 
-            combat.EnterCombat("GotHit");
+            // â˜… ì¸ë±ìŠ¤ëŠ” 'í•œ ë²ˆë§Œ' ë½‘ëŠ”ë‹¤
+            int idx = PickWeavingIndex();
 
-            Vector2 facing = FacingOrRight();
-            Vector2 inFrontToEnemy = -hitDir.normalized; // ÇÃ·¹ÀÌ¾î¡æÀû
-            if (defense && defense.IsBlocking)
+            // ìœ„ë¹™ ì• ë‹ˆë„, ë§¤ì¹­ìš© ì¸ë±ìŠ¤ë„ ê°™ì€ ê°’ìœ¼ë¡œ
+            if (animator) animator.SetTrigger($"Weaving{idx}");
+            if (attack) attack.SetLastWeavingIndex(idx);
+
+            // (ì„ íƒ) íŒ¨ë§ ì½œë°±
+            var parryableTarget = attacker ? attacker.GetComponent<IParryable>() : null;
+            parryableTarget?.OnParried(transform.position);
+
+            // ë½/ê°€ë“œ ìœ ì§€/ë¦¬ê²Œì¸
+            float windowEnd = defense.LastBlockPressedTime + defense.ParryWindow;
+            float lockDur = Mathf.Max(0f, (windowEnd + defense.PostHold) - Time.time);
+            defense.StartParryLock(lockDur, true);
+            defense.ForceBlockFor(lockDur);
+            defense.OnWeavingSuccessRegain();
+
+            // â˜… ê°™ì€ ì¸ë±ìŠ¤ë¥¼ ìœ ì§€í•œ ìƒíƒœë¡œ ì¹´ìš´í„° ì°½ ì˜¤í”ˆ (ì¤‘ë³µ SetLastWeavingIndex ì œê±°)
+            if (attack)
             {
-                if (moveRef == null || moveRef.LastFacing.sqrMagnitude < 0.0001f || Vector2.Dot(facing, inFrontToEnemy) < 0f)
-                    facing = inFrontToEnemy;
+                attack.ArmCounter(lockDur * 2f);
+                Debug.Log($"[COUNTER-ARM] idx={idx}, window={(lockDur * 2f):F2}s");
             }
 
-            // ¹æ¾î/À§ºù ÆÇ´Ü(Á¤¸é ÄÜ/ÆĞ¸µ À©µµ¿ì´Â PlayerDefense°¡ Ã³¸®)
-            var outcome = defense ? defense.Evaluate(facing, inFrontToEnemy, parryable) : DefenseOutcome.None;
-
-            // === À§ºù(ÆĞ¸µ) ¼º°ø ===
-            if (outcome == DefenseOutcome.Parry)
-            {
-                if (debugLogs) Debug.Log($"[WEAVING OK] t={Time.time:F2}s, attacker={(attacker ? attacker.name : "null")}");
-                PlayRandomWeaving();
-
-
-                var parryableTarget = attacker ? attacker.GetComponent<IParryable>() : null;
-                parryableTarget?.OnParried(transform.position);
-
-                float windowEnd = defense.LastBlockPressedTime + defense.ParryWindow;
-                float lockDur = Mathf.Max(0f, (windowEnd + defense.WeavingPostHold) - Time.time);
-                Debug.Log($"[HIT] Arming RIPOSTE window={lockDur:F2}s  (now={Time.time:F2})");
-                defense.StartParryLock(lockDur, true);   // ÀÌµ¿¶ô(¼Óµµ 0 ±ÇÀå)
-                defense.ForceBlockFor(lockDur);          // °¡µå À¯Áö
-                attack?.ArmCounter(lockDur * 1.5f);
-                // ÂªÀº i-frame (¿øÇÏ¸é ¼öÄ¡ Á¶Àı)
-                iFrameEndTime = Time.time + 0.05f;
-                return;
-            }
-
-            // === ÀÏ¹İ °¡µå ¼º°ø ===
-            if (outcome == DefenseOutcome.Block)
-            {
-                float finalDamage = damage * defense.BlockDamageMul;
-                float finalKnock = knockback * defense.BlockKnockMul;
-
-                combat.ApplyDamage(finalDamage);
-                ApplyKnockbackXOnly(inFrontToEnemy, finalKnock);
-
-                // ½ºÅÂ¹Ì³Ê °¨¼Ò & ºê·¹ÀÌÅ©
-                combat.AddStamina(-damage);
-                if (combat.Stamina <= 0f) defense.TriggerStaminaBreak();
-                else
-                {
-                    float stun = (hitstun >= 0f ? hitstun : baseHitstun) * blockHitstunMul;
-                    StartHitstun(stun, playHitAnim: false);
-                }
-
-                animator?.SetTrigger("BlockHit");
-                return;
-            }
-
-            // === °¡µå ½ÇÆĞ(Ãø/ÈÄ¹æ/ºñ¹æ¾î) ===
-            combat.ApplyDamage(damage);
-            ApplyKnockbackXOnly(inFrontToEnemy, knockback);
-            combat.AddStamina(-damage * combat.StaminaLossOnHitMul);
-            float stunRaw = (hitstun >= 0f ? hitstun : baseHitstun);
-            StartHitstun(stunRaw, playHitAnim: true);
+            iFrameEndTime = Time.time + 0.05f;
+            return;
         }
+
+        // ===== ì¼ë°˜ ê°€ë“œ ì„±ê³µ =====
+        if (outcome == DefenseOutcome.Block)
+        {
+            float finalDamage = damage * defense.BlockDamageMul;
+            float finalKnock = knockback * defense.BlockKnockMul;
+
+            combat?.ApplyDamage(finalDamage);
+            ApplyKnockbackXOnly(toEnemy, finalKnock);
+
+            // ìŠ¤íƒœë¯¸ë‚˜ ê°ì†Œ & ë¸Œë ˆì´í¬ ì²˜ë¦¬
+            float guardSpend = damage * defense.GuardHitStaminaCostMul;
+            combat.AddStamina(-damage * defense.GuardHitStaminaCostMul);
+            defense.RegisterGuardHitStaminaCost(guardSpend);
+            if (combat && combat.Stamina <= 0f) defense.TriggerStaminaBreak();
+            else
+            {
+                float stun = (hitstun >= 0f ? hitstun : baseHitstun) * blockHitstunMul;
+                StartHitstun(stun, playHitAnim: false); // ê°€ë“œ ì¤‘ Hit ì• ë‹ˆ ê¸ˆì§€
+            }
+
+            animator?.SetTrigger("BlockHit");
+            return;
+        }
+
+        // ===== ê°€ë“œ ì‹¤íŒ¨ / ì¸¡Â·í›„ë°© / ë¹„ë°©ì–´ =====
+        combat?.ApplyDamage(damage);
+        // ë¹„ê°€ë“œ í”¼ê²© ì‹œ ì „ì—­ í–‰ë™ ì ê¸ˆ(ê³µê²© ì—°íƒ€ ë°©ì§€ ìš©ë„) â€” PlayerCombatì— ë§ì¶¤
+        combat?.StartActionLock(actionLockOnUnguardedHit, false);
+
+        ApplyKnockbackXOnly(toEnemy, knockback);
+
+        // í”¼ê²© ì‹œ ìŠ¤íƒœë¯¸ë‚˜ ê°ì†Œ(ë°°ìˆ˜ëŠ” ì´ í´ë˜ìŠ¤ì—ì„œ ì§ë ¬í™”ë¡œ ì¡°ì •)
+        if (combat) combat.AddStamina(-damage * staminaLossOnHitMul);
+        if (combat && combat.Stamina <= 0f) defense.TriggerStaminaBreak();
+        float stunRaw = (hitstun >= 0f ? hitstun : baseHitstun);
+        StartHitstun(stunRaw, playHitAnim: true);
     }
 
-    // XÃàÀ¸·Î¸¸ ³Ë¹é
+    // Xì¶• ë„‰ë°±ë§Œ ì ìš©(ìƒí•˜ ë¯¸ë„ëŸ¬ì§ ë°©ì§€)
     private void ApplyKnockbackXOnly(Vector2 dirToEnemy, float force)
     {
         if (!rb || force <= 0f) return;
         float x = -Mathf.Sign(dirToEnemy.x);
         if (Mathf.Abs(x) < 0.0001f)
-            x = (moveRef && Mathf.Abs(moveRef.LastFacing.x) > 0.0001f) ? Mathf.Sign(moveRef.LastFacing.x) : 1f;
+            x = (moveRef && Mathf.Abs(moveRef.LastFacing.x) > 0.0001f)
+              ? Mathf.Sign(moveRef.LastFacing.x) : 1f;
 
         rb.linearVelocity = new Vector2(x * force, 0f);
     }
 
     public void StartHitstun(float duration, bool playHitAnim = true)
     {
+        combat?.BlockStaminaRegenFor(duration);
         if (duration <= 0f) return;
 
         float end = Time.time + duration;
         hitstunEndTime = Mathf.Max(hitstunEndTime, end);
         if (hitstunCo == null) hitstunCo = StartCoroutine(HitstunRoutine());
 
-        // ¹°¸®´Â »ì¸®°í Á¶ÀÛ¸¸ Àá±İ
-        moveRef?.SetMovementLocked(true, hardFreezePhysics: false, zeroVelocity: false);
+        // ë¬¼ë¦¬ëŠ” ì‚´ë¦¬ê³  ì¡°ì‘ë§Œ ì ê¸ˆ
+        moveRef?.AddMovementLock("HITSTUN", hardFreezePhysics: false, zeroVelocity: true);
 
         if (playHitAnim) PlayRandomHit();
     }
@@ -159,7 +190,7 @@ public class PlayerHit : MonoBehaviour
         inHitstun = true;
         while (Time.time < hitstunEndTime) yield return null;
         inHitstun = false;
-        moveRef?.SetMovementLocked(false, hardFreezePhysics: false);
+        moveRef?.RemoveMovementLock("HITSTUN", hardFreezePhysics: false);
         hitstunCo = null;
     }
 
@@ -170,16 +201,17 @@ public class PlayerHit : MonoBehaviour
         animator.SetTrigger($"Hit{idx}");
     }
 
-    public void PlayRandomWeaving()
+    // Weaving íŠ¸ë¦¬ê±°ì™€ Counter ë§¤ì¹­ì„ ìœ„í•´ ì¸ë±ìŠ¤ë¥¼ ë½‘ì•„ ì „ë‹¬
+    private int PickWeavingIndex()
+    {
+        int max = Mathf.Max(1, weavingVariants);
+        return Mathf.Clamp(Random.Range(1, max + 1), 1, max);
+    }
+
+    public void PlayWeaving(int idx)
     {
         if (!animator) return;
-        int max = Mathf.Max(1, weavingVariants);             // ÃÖ¼Ò 1
-        int idx = Mathf.Clamp(Random.Range(1, max + 1), 1, max);
-
+        idx = Mathf.Clamp(idx, 1, Mathf.Max(1, weavingVariants));
         animator.SetTrigger($"Weaving{idx}");
-
-        // ¡Ú ¹æ±İ »ÌÈù Weaving ¹øÈ£¸¦ °ø°İ ½ºÅ©¸³Æ®¿¡ ³Ñ°ÜÁØ´Ù
-        if (attack != null)
-            attack.SetLastWeavingIndex(idx);
     }
 }

@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,56 +6,56 @@ public enum DefenseOutcome { None, Block, Parry }
 
 public class PlayerDefense : MonoBehaviour
 {
-    [Header("References")]
+    [Header("Refs")]
     [SerializeField] private PlayerCombat combat;
     [SerializeField] private PlayerMoveBehaviour moveRef;
     [SerializeField] private Animator animator;
 
-    // ===== Guard / Weaving Config =====
-    [Header("Guard / Weaving (Config)")]
-    [SerializeField] private float guardAngle = 120f;      // Á¤¸é ÄÜ °¢µµ
-    [SerializeField] private float parryWindow = 0.3f;     // ÆĞ¸µ À©µµ¿ì
-    [SerializeField] private float blockDamageMul = 0f;    // °¡µå½Ã µ¥¹ÌÁö ¹è¼ö
-    [SerializeField] private float blockKnockMul = 0.3f;   // °¡µå½Ã ³Ë¹é ¹è¼ö
-    [SerializeField] private float weavingPostHold = 0.10f;// ÆĞ¸µ ÈÄ °¡µå À¯Áö/Àá±İ Ãß°¡ ½Ã°£
-    [SerializeField] private float staminaBreakTime = 1.5f;// °¡µå ºê·¹ÀÌÅ© Áö¼Ó
-    [SerializeField] private float postHold = 0.10f;           // Ãß°¡ °­Á¦ °¡µå ½Ã°£
-    [SerializeField, Range(0f, 1.5f)] private float guardSpeedMultiplier = 0.6f;
-
-    [Header("Block Animation Restart (Safe)")]
-    [SerializeField] private string blockStartStateName = "Block"; // ºí·Ï ½ÃÀÛ ½ºÅ×ÀÌÆ® ÀÌ¸§
-    [SerializeField] private string[] safeStartTags = new[] { "Block" };
-
-    // ==== States ====
-    private bool isBlocking = false;
-    private float blockPressedTime = -999f;
-
-    // Parry Lock
-    private float parryLockEndTime = 0f;
-    private Coroutine parryLockCo;
-
-    // Stamina Break
-    private bool staminaBroken = false;
-    private float staminaBreakEndTime = 0f;
-    private Coroutine breakCo;
-
-    // Input
     private PlayerMove inputWrapper;
     private InputAction blockAction;
+
+    // ---- Block State ----
+    private bool isBlocking = false;
+    private float blockPressedTime = -999f;
     private Coroutine forcedBlockCo;
 
-    // === Public getters ===
     public bool IsBlocking => isBlocking;
-    public bool IsParryLocked => Time.time < parryLockEndTime;
-    public bool IsStaminaBroken => staminaBroken;
     public float LastBlockPressedTime => blockPressedTime;
+    public float WeavingPostHold => postHold;
 
+    // ---- Weaving / Guard common config (ê¸°ì¡´ ê°’ ìœ ì§€í•´ë„ ë¨) ----
+    [Header("Weaving / Block (Config)")]
+    [SerializeField] private float guardAngle = 120f;
+    [SerializeField] private float parryWindow = 0.30f;
+    [SerializeField] private float postHold = 0.10f;                // ìœ„ë¹™ í›„ ì¶”ê°€ ìœ ì§€
+
+    [SerializeField] private float blockDamageMul = 0f;              // ê°€ë“œì‹œ HPí”¼í•´ ë°°ìˆ˜
+    [SerializeField] private float blockKnockMul = 0.3f;             // ê°€ë“œì‹œ ë„‰ë°± ë°°ìˆ˜
+    [SerializeField, Range(0f, 1f)] private float guardSpeedMultiplier = 0.6f;
+
+    // ---- Guard Regain System ----
+    [Header("Guard Regain System")]
+    [SerializeField] private float guardStartCost = 15f;      // ê°€ë“œ "ì‹œì‘" 1íšŒ ì†Œëª¨ëŸ‰
+    [SerializeField, Range(0f, 1f)] private float guardHitStaminaCostMul = 0.5f; // ê°€ë“œ ìƒíƒœì—ì„œ ë§ì„ ë•Œ ìŠ¤íƒœë¯¸ë‚˜ ì†Œëª¨ ë°°ìœ¨(ê¸°ë³¸ì˜ 50%)
+    [SerializeField, Range(0f, 1f)] private float parryRegainPercent = 0.8f;     // ìœ„ë¹™ ì„±ê³µ ì‹œ, ì´ë²ˆ ê°€ë“œ ì¤‘ ì†Œëª¨ëŸ‰ì˜ íšŒë³µ ë¹„ìœ¨(ê¸°ë³¸ 80%)
+
+    private float lastGuardStartCost = 0f;    // ì§ì „ ê°€ë“œì‹œ ì†Œëª¨í•œ ì–‘(íŒ¨ë§ í™˜ê¸‰ìš©)
+    // ì´ë²ˆ â€œê°€ë“œ ì„¸ì…˜(ë²„íŠ¼ ëˆ„ë¥¸~í•´ì œ)â€ ë™ì•ˆ ìŠ¤íƒœë¯¸ë‚˜ë¡œ ì‹¤ì œ ì†Œëª¨ëœ ì´ëŸ‰ì„ ëˆ„ì 
+    private float guardSpentThisSession = 0f;
+
+    // ---- Parry Lock (ì›€ì§ì„ ì ê¸ˆ) ----
+    private float parryLockEndTime = 0f;
+    private Coroutine parryLockCo;
+    public bool IsParryLocked => Time.time < parryLockEndTime;
+
+    // ì™¸ë¶€ì—ì„œ ì½ë„ë¡ ë…¸ì¶œ(ë‹¤ë¥¸ ìŠ¤í¬ë¦½íŠ¸ê°€ ì°¸ì¡°)
     public float GuardAngle => guardAngle;
     public float ParryWindow => parryWindow;
+    public float PostHold => postHold;
     public float BlockDamageMul => blockDamageMul;
     public float BlockKnockMul => blockKnockMul;
-    public float WeavingPostHold => weavingPostHold;
-    public float StaminaBreakTime => staminaBreakTime;
+    public float GuardHitStaminaCostMul => guardHitStaminaCostMul;
+    public float ParryRegainPercent => parryRegainPercent;
 
     public void Bind(PlayerCombat c, PlayerMoveBehaviour m, Animator a)
     {
@@ -74,20 +74,23 @@ public class PlayerDefense : MonoBehaviour
         if (!combat) combat = GetComponent<PlayerCombat>();
         if (!moveRef) moveRef = GetComponent<PlayerMoveBehaviour>();
         if (!animator) animator = GetComponent<Animator>();
-
         inputWrapper = new PlayerMove();
     }
 
     private void OnEnable()
     {
-        if (inputWrapper == null) inputWrapper = new PlayerMove();
         inputWrapper.Enable();
+        inputWrapper.Combat.Enable();
 
         blockAction = inputWrapper.asset.FindAction("Block");
         if (blockAction != null)
         {
             blockAction.started += OnBlockStarted;
             blockAction.canceled += OnBlockCanceled;
+        }
+        else
+        {
+            Debug.LogWarning("[PlayerDefense] 'Block' ì•¡ì…˜ì´ ì—†ìŠµë‹ˆë‹¤.");
         }
     }
 
@@ -98,71 +101,130 @@ public class PlayerDefense : MonoBehaviour
             blockAction.started -= OnBlockStarted;
             blockAction.canceled -= OnBlockCanceled;
         }
-        if (inputWrapper != null) inputWrapper.Disable();
+        inputWrapper.Disable();
 
         if (forcedBlockCo != null) { StopCoroutine(forcedBlockCo); forcedBlockCo = null; }
-
-        // ¾ÈÀü º¹±¸
-        moveRef?.SetGuardSpeedScale(1f);
-        moveRef?.SetMovementLocked(false, hardFreezePhysics: false);
+        if (parryLockCo != null) { StopCoroutine(parryLockCo); parryLockCo = null; }
     }
 
+    // === Input ===
     private void OnBlockStarted(InputAction.CallbackContext _)
     {
-        float now = Time.time;
+        if (combat == null || IsStaminaBroken) return;
 
-        if (now < blockPressedTime)
-        {
-            isBlocking = true;
-            animator?.SetBool("isBlocking", true);
-            return;
-        }
-
-        // Æò¼Ò ½ÃÀÛ ·ÎÁ÷
         isBlocking = true;
-        blockPressedTime = now;
+        blockPressedTime = Time.time;
         animator?.SetBool("isBlocking", true);
-
-        if (animator && !string.IsNullOrEmpty(blockStartStateName) && IsSafeToRestartBlockAnim())
-        {
-            // Áï½Ã Àç½ÃÀÛ(¿¬Å¸ ´ëÀÀ) °ø°İ/È÷Æ®/À§ºù µî¿¡¼­´Â È£ÃâµÇÁö ¾ÊÀ½
-        }
-        // else: °ø°İ/È÷Æ®/À§ºù ÁßÀÌ¸é Àı´ë °ÇµéÁö ¾ÊÀ½(=Äµ½½ ¾øÀ½)
-
-        // (WeavingÀ©µµ + 0.1) µ¿¾È ÀÌµ¿ ¿ÏÀü Á¤Áö + Àç½ÃÀÛ ¶ô Å¸ÀÌ¸Ó ¼³Á¤
-        float lockDuration = Mathf.Max(0f, parryWindow + postHold);
-        blockPressedTime = now + lockDuration;
-
-        moveRef?.SetMovementLocked(true, hardFreezePhysics: false, zeroVelocity: true);
-
-        // °¡µå Áß ÀÌµ¿ °¨¼Ó
         moveRef?.SetGuardSpeedScale(guardSpeedMultiplier);
-
-        // °­Á¦ °¡µå À¯Áö(³¡³ª¸é ¹öÆ° »óÅÂ·Î À¯Áö/ÇØÁ¦)
-        if (forcedBlockCo != null) StopCoroutine(forcedBlockCo);
-        forcedBlockCo = StartCoroutine(ForceBlockRoutine(lockDuration));
+        // â˜… ê°€ë“œ "ì‹œì‘" 1íšŒ ì†Œëª¨
+        lastGuardStartCost = Mathf.Max(0f, guardStartCost);
+        float lockduration = ParryWindow + postHold;
+        combat?.BlockStaminaRegenFor(lockduration);
+        if (lastGuardStartCost > 0f)
+        {
+            combat.AddStamina(-lastGuardStartCost);
+            // AddStaminaê°€ ìì²´ì ìœ¼ë¡œ ë¸Œë ˆì´í¬ë¥¼ íŠ¸ë¦¬ê±°í•˜ì§€ ì•ŠëŠ”ë‹¤ë©´ ì—¬ê¸°ì„œ ì²´í¬
+            if (combat.IsStaminaBroken)
+            {
+                // ì‹œì‘í•˜ìë§ˆì ë¸Œë ˆì´í¬ë©´ ì¦‰ì‹œ í•´ì œ
+                StopBlocking();
+                return;
+            }
+        }
     }
-
-
 
     private void OnBlockCanceled(InputAction.CallbackContext _)
     {
-        // °­Á¦ À¯Áö ½Ã°£ µ¿¾ÈÀº ÇØÁ¦ÇÏÁö ¾ÊÀ½
+        // ê°•ì œ ìœ ì§€ ì¤‘ì´ë©´ ë²„íŠ¼ ë–¼ë„ ëë‚  ë•Œê¹Œì§€ ìœ ì§€
         if (forcedBlockCo != null) return;
 
+        StopBlocking();
+    }
+
+    private void StopBlocking()
+    {
         isBlocking = false;
         animator?.SetBool("isBlocking", false);
 
         moveRef?.SetGuardSpeedScale(1f);
-        moveRef?.SetMovementLocked(false, hardFreezePhysics: false);
+
+        // ì„¸ì…˜ ì¢…ë£Œ ì‹œ ëˆ„ì ì¹˜ëŠ” ìœ ì§€í•˜ì§€ ì•Šì•„ë„ ë¨(ë‹¤ìŒ ê°€ë“œì— ì˜í–¥ X)
+        guardSpentThisSession = 0f;
     }
 
-    // === ¿ÜºÎ¿¡¼­ °­Á¦ Á¦¾î ===
-    public void ForceUnblock()
+    // ê°•ì œ ê°€ë“œ ìœ ì§€(ìœ„ë¹™ ìœˆë„ìš°+0.1)
+    private IEnumerator ForceBlockRoutine(float seconds)
     {
-        if (forcedBlockCo != null) { StopCoroutine(forcedBlockCo); forcedBlockCo = null; }
-        isBlocking = false;
-        animator?.SetBool("isBlocking", false);
+        float end = Time.time + Mathf.Max(0f, seconds);
+        isBlocking = true;
+        animator?.SetBool("isBlocking", true);
+        while (Time.time < end)
+            yield return null;
+
+        forcedBlockCo = null;
+
+        // ë²„íŠ¼ì´ ê³„ì† ëˆŒë¦° ìƒíƒœë©´ ìœ ì§€, ì•„ë‹ˆë©´ í•´ì œ
+        bool stillPressed = blockAction != null && blockAction.IsPressed();
+        if (!stillPressed)
+            StopBlocking();
+    }
+
+
+    public void OnWeavingSuccessRegain()
+    {
+        if (lastGuardStartCost > 0f)
+            combat.AddStamina(lastGuardStartCost * parryRegainPercent);
+    }
+
+    /// <summary>ê°€ë“œ ì¤‘ í”¼ê²©ìœ¼ë¡œ ìŠ¤íƒœë¯¸ë‚˜ê°€ ë¹ ì§ˆ ë•Œ, ëˆ„ì (ë¦¬ê²Œì¸ ëŒ€ë¹„)</summary>
+    public void RegisterGuardHitStaminaCost(float amount)
+    {
+        if (amount > 0f) guardSpentThisSession += amount;
+    }
+
+    /// <summary>ìœ„ë¹™ ì„±ê³µ ì‹œ, ì´ë²ˆ ê°€ë“œ ì„¸ì…˜ì—ì„œ ì†Œëª¨í•œ ìŠ¤íƒœë¯¸ë‚˜ì˜ ì¼ë¶€ë¥¼ íšŒë³µ</summary>
+    public void RegainStaminaOnParry()
+    {
+        if (combat == null || guardSpentThisSession <= 0f || parryRegainPercent <= 0f) return;
+        float regain = guardSpentThisSession * parryRegainPercent;
+        combat.AddStamina(+regain);
+        // íšŒë³µ í›„ ë‚¨ì€ ì†Œëª¨ì¹˜ë§Œ ë‚¨ê¸°ê³  ì‹¶ë‹¤ë©´ ë‹¤ìŒ ì¤„ì„ ì¼œì„¸ìš”.
+        // guardSpentThisSession *= (1f - parryRegainPercent);
+        // ë³´í†µì€ ì„¸ì…˜ì„ ì´ˆê¸°í™”
+        guardSpentThisSession = 0f;
+    }
+
+    /// <summary>í”¼ê²© ë°©í–¥ íŒì • í¬í•¨: ê°€ë“œ/ìœ„ë¹™ ì—¬ë¶€ë¥¼ ë¦¬í„´</summary>
+    public DefenseOutcome Evaluate(Vector2 facing, Vector2 inFrontToEnemy, bool parryable)
+    {
+        if (!isBlocking || combat == null || IsStaminaBroken) return DefenseOutcome.None;
+
+        // ì •ë©´ ì½˜ íŒì •
+        float cosHalf = Mathf.Cos(guardAngle * 0.5f * Mathf.Deg2Rad);
+        bool inFront = Vector2.Dot(facing, inFrontToEnemy) >= cosHalf;
+        if (!inFront) return DefenseOutcome.None;
+
+        bool canParry = parryable && (Time.time - blockPressedTime) <= parryWindow;
+        return canParry ? DefenseOutcome.Parry : DefenseOutcome.Block;
+    }
+
+    // === Parry Lock ===
+    public void StartParryLock(float duration, bool zeroVelocityOnStart = true)
+    {
+        if (duration <= 0f) return;
+        parryLockEndTime = Mathf.Max(parryLockEndTime, Time.time + duration);
+        if (parryLockCo == null) parryLockCo = StartCoroutine(ParryLockRoutine());
+
+        moveRef?.SetMovementLocked(true, hardFreezePhysics: false, zeroVelocity: zeroVelocityOnStart);
+    }
+
+    private IEnumerator ParryLockRoutine()
+    {
+        while (Time.time < parryLockEndTime)
+            yield return null;
+
+        moveRef?.SetMovementLocked(false, hardFreezePhysics: false);
+        parryLockCo = null;
     }
 
     public void ForceBlockFor(float seconds)
@@ -171,122 +233,14 @@ public class PlayerDefense : MonoBehaviour
         forcedBlockCo = StartCoroutine(ForceBlockRoutine(seconds));
     }
 
-    private IEnumerator ForceBlockRoutine(float seconds)
-    {
-        float end = Time.time + Mathf.Max(0f, seconds);
-
-        // °­Á¦·Î °¡µå À¯Áö
-        isBlocking = true;
-        animator?.SetBool("isBlocking", true);
-
-        // Á¤ÇØÁø ½Ã°£ µ¿¾È ´ë±â
-        while (Time.time < end) yield return null;
-
-        forcedBlockCo = null;
-
-        // ½Ã°£ÀÌ ³¡³µÀ» ¶§, ¹öÆ°ÀÌ ¿©ÀüÈ÷ ´­·ÁÀÖÀ¸¸é ¡æ °¡µå °è¼Ó, ÀÌµ¿¶ô¸¸ ÇØÁ¦
-        bool stillPressed = blockAction != null && blockAction.IsPressed();
-        if (stillPressed)
-        {
-            moveRef?.SetMovementLocked(false, hardFreezePhysics: false);
-            // °¨¼ÓÀº °¡µå ÁßÀÌ¹Ç·Î À¯Áö(¹öÆ° ¶¿ ¶§ ÇØÁ¦µÊ)
-        }
-        else
-        {
-            // ¹öÆ°µµ ¾È ´­¸² ¡æ °¡µå & °¨¼Ó ¸ğµÎ ÇØÁ¦
-            isBlocking = false;
-            animator?.SetBool("isBlocking", false);
-            moveRef?.SetGuardSpeedScale(1f);
-            moveRef?.SetMovementLocked(false, hardFreezePhysics: false);
-        }
-    }
+    // === Stamina Break ===
+    public bool IsStaminaBroken => combat != null && combat.IsStaminaBroken;
 
 
-    public DefenseOutcome Evaluate(Vector2 facing, Vector2 dirToEnemy/*=ÇÃ·¹ÀÌ¾î¡æÀû*/, bool parryable)
-    {
-        if (!isBlocking || IsStaminaBroken) return DefenseOutcome.None;
-
-        float cosHalf = Mathf.Cos(guardAngle * 0.5f * Mathf.Deg2Rad);
-        bool inFront = Vector2.Dot(facing, dirToEnemy.normalized) >= cosHalf;
-        if (!inFront) return DefenseOutcome.None;
-
-        bool canParry = parryable && (Time.time - blockPressedTime) <= parryWindow;
-        return canParry ? DefenseOutcome.Parry : DefenseOutcome.Block;
-    }
-
-
-
-    // === ÆĞ¸µ ¼º°ø ÈÄ Á¶ÀÛ Àá±İ(¼Óµµ 0 ¿É¼Ç) ===
-    public void StartParryLock(float duration, bool zeroVelocityOnStart = true)
-    {
-        if (duration <= 0f) return;
-        parryLockEndTime = Mathf.Max(parryLockEndTime, Time.time + duration);
-        if (parryLockCo == null) parryLockCo = StartCoroutine(ParryLockRoutine(zeroVelocityOnStart));
-    }
-
-    private IEnumerator ParryLockRoutine(bool zeroVelocityOnStart)
-    {
-        moveRef?.SetMovementLocked(true, hardFreezePhysics: false, zeroVelocity: zeroVelocityOnStart);
-        while (Time.time < parryLockEndTime) yield return null;
-        moveRef?.SetMovementLocked(false, hardFreezePhysics: false);
-        parryLockCo = null;
-    }
-
-    // === ½ºÅÂ¹Ì³Ê ºê·¹ÀÌÅ© Ã³¸® ===
     public void TriggerStaminaBreak()
     {
-        staminaBroken = true;
-        staminaBreakEndTime = Time.time + staminaBreakTime;
-
-        ForceUnblock();
-        moveRef?.SetMovementLocked(true, true);
-        animator?.SetBool("GuardBroken", true);
-        animator?.SetTrigger("GuardBreak");
-
-        if (breakCo != null) StopCoroutine(breakCo);
-        breakCo = StartCoroutine(BreakRoutine());
-    }
-
-    private IEnumerator BreakRoutine()
-    {
-        while (Time.time < staminaBreakEndTime) yield return null;
-
-        staminaBroken = false;
-        moveRef?.SetMovementLocked(false, true);
-        animator?.SetBool("GuardBroken", false);
-        breakCo = null;
-    }
-    private bool IsSafeToRestartBlockAnim()
-    {
-        if (animator == null) return false;
-
-        // º£ÀÌ½º ·¹ÀÌ¾î ±âÁØ(ÇÊ¿ä½Ã ´Ù¸¥ ·¹ÀÌ¾î ÀÎµ¦½º ÁöÁ¤)
-        int layer = 0;
-
-        // ÀüÀÌ ÁßÀÌ¸é °ÇµéÁö ¾Ê±â
-        if (animator.IsInTransition(layer)) return false;
-
-        var st = animator.GetCurrentAnimatorStateInfo(layer);
-
-        //  ÅÂ±× È­ÀÌÆ®¸®½ºÆ®
-        if (safeStartTags != null)
-        {
-            foreach (var t in safeStartTags)
-            {
-                if (!string.IsNullOrEmpty(t) && st.IsTag(t))
-                    return true;
-            }
-        }
-
-
-        // À§ Á¶°Ç¿¡ ¾È °É¸®¸é ¾ÈÀüÇÏÁö ¾ÊÀ½(=Àı´ë Àç½ÃÀÛ ±İÁö)
-        return false;
-    }
-
-
-    private void Start()
-    {
-        moveRef?.SetGuardSpeedScale(1f);
-        moveRef?.SetMovementLocked(false, hardFreezePhysics: false);
+        // ê°€ë“œ ê°•ì œ í•´ì œ ë° ì´ë™/ì• ë‹ˆ ì²˜ë¦¬
+        StopBlocking();
+        combat?.OnStaminaBreak();
     }
 }

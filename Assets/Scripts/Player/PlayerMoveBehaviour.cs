@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -23,6 +25,9 @@ public class PlayerMoveBehaviour : MonoBehaviour
     private bool movementLocked = false;
     private RigidbodyConstraints2D constraintsBeforeLock;
     private float guardSpeedScale = 1f;
+    private readonly HashSet<string> moveLocks = new HashSet<string>();
+    private const string LegacyLock = "__LEGACY__";
+    private bool IsMovementLocked => moveLocks.Count > 0;
 
     // (선택) 이동으로 X-플립 막기용
     private bool flipFromMovementBlocked = false;
@@ -61,16 +66,15 @@ public class PlayerMoveBehaviour : MonoBehaviour
     }
     private void Move()
     {
-        if (movementLocked) return;
+        if (IsMovementLocked) return;
 
-        // 전투 중이면 Y축 속도에만 Combat 배수 적용
+        // 전투 중이면 Y축만 배수 적용 (기존 로직 그대로)
         float yMul = (combat != null && combat.IsInCombat) ? combat.CombatYSpeedMul : 1f;
-
         float vx = movement.x * moveSpeed * guardSpeedScale;
         float vy = movement.y * moveSpeed * guardSpeedScale * yMul;
-
         rb.linearVelocity = new Vector2(vx, vy);
     }
+
 
     private void AdjustFlipByX()
     {
@@ -84,32 +88,44 @@ public class PlayerMoveBehaviour : MonoBehaviour
     }
 
     // ===== 외부 제어 API =====
-    public void SetMovementLocked(bool locked, bool hardFreezePhysics = true, bool zeroVelocity = true)
+    // 추가: 키 기반 잠금 API (기존 SetMovementLocked도 함께 유지)
+    public void AddMovementLock(string key, bool hardFreezePhysics = false, bool zeroVelocity = true)
     {
-        movementLocked = locked;
-
-        if (locked)
+        if (string.IsNullOrEmpty(key)) key = "__ANON__";
+        if (moveLocks.Add(key))
         {
             if (zeroVelocity)
             {
                 rb.linearVelocity = Vector2.zero;
                 rb.angularVelocity = 0f;
             }
-
             if (hardFreezePhysics)
             {
                 constraintsBeforeLock = rb.constraints;
                 var keepRot = constraintsBeforeLock & RigidbodyConstraints2D.FreezeRotation;
                 rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY | keepRot;
             }
-
             if (animator) animator.SetBool("isMoving", false);
         }
-        else
+    }
+
+    public void RemoveMovementLock(string key, bool hardFreezePhysics = false)
+    {
+        if (string.IsNullOrEmpty(key)) key = "__ANON__";
+        if (moveLocks.Remove(key))
         {
-            if (hardFreezePhysics) rb.constraints = constraintsBeforeLock;
+            if (hardFreezePhysics && moveLocks.Count == 0)
+                rb.constraints = constraintsBeforeLock;
         }
     }
+
+    // 변경: 기존 API는 레거시 키로 래핑하여 하위호환 유지
+    public void SetMovementLocked(bool locked, bool hardFreezePhysics = true, bool zeroVelocity = true)
+    {
+        if (locked) AddMovementLock(LegacyLock, hardFreezePhysics, zeroVelocity);
+        else RemoveMovementLock(LegacyLock, hardFreezePhysics);
+    }
+
 
     public void SetGuardSpeedScale(float scale) => guardSpeedScale = Mathf.Max(0f, scale);
 
