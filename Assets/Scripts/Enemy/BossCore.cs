@@ -29,7 +29,6 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
     [SerializeField] private GameObject Ui;
     [SerializeField] private GameObject UiBroke;
     [SerializeField] private CameraShaking CamShake;
-    [SerializeField] private Animator BlackHoleAnim;
     [SerializeField] private Animator HandAnim;
     [SerializeField] private Animator BeltAnim;
     [SerializeField] private Text TextUi;
@@ -223,14 +222,6 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
         if (BossTimerSlider != null) BossTimerSlider.gameObject.SetActive(false);
         if (Hp != null) Hp.SetActive(true);
         if (Stamina != null) Stamina.SetActive(true);
-
-        if (BlackHoleAnim != null)
-        {
-            BhOldMode = BlackHoleAnim.updateMode;
-            BhOldSpeed = BlackHoleAnim.speed;
-            BlackHoleAnim.updateMode = AnimatorUpdateMode.UnscaledTime;
-            BlackHoleAnim.speed = 1f;
-        }
         if (HandAnim != null)
         {
             HandOldMode = HandAnim.updateMode;
@@ -258,17 +249,15 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
 
         yield return new WaitForSecondsRealtime(7f);
 
-        if (CamShake != null) StartCoroutine(CamShake.ImpulseMoveMent());
+        CamShake.CameraShake();
         yield return new WaitForSecondsRealtime(0.1f);
 
-        if (BlackHoleAnim != null) BlackHoleAnim.SetBool("BlackHoleStart", true);
         if (UiBroke != null) UiBroke.SetActive(true);
 
         yield return new WaitForSecondsRealtime(2f);
         if (HandAnim != null) HandAnim.SetTrigger("HandStart");
         yield return new WaitForSecondsRealtime(4f);
 
-        if (BlackHoleAnim != null) BlackHoleAnim.SetBool("BlackHoleStart", false);
         if (UiBroke != null) UiBroke.SetActive(false);
 
         yield return new WaitForSecondsRealtime(1f);
@@ -283,7 +272,6 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
     private void ResumeFromCinematic()
     {
         Time.timeScale = 1f;
-        if (BlackHoleAnim != null) { BlackHoleAnim.updateMode = BhOldMode; BlackHoleAnim.speed = BhOldSpeed; }
         if (HandAnim != null) { HandAnim.updateMode = HandOldMode; HandAnim.speed = HandOldSpeed; }
         if (BeltAnim != null) { BeltAnim.updateMode = BeltOldMode; BeltAnim.speed = BeltOldSpeed; }
     }
@@ -475,7 +463,7 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
             count++;
             if (CamShake != null && (count % 4 == 0))
             {
-                StartCoroutine(CamShake.ImpulseMoveMent());
+                StartCoroutine(CamShake.CameraShake());
             }
             yield return new WaitForSecondsRealtime(0.05f);
         }

@@ -7,8 +7,8 @@ public class EnemyFight_01 : MonoBehaviour
     [SerializeField] private float DashSpeed = 12f; 
     [SerializeField] private float PreWindupShort = 2f; 
     [SerializeField] private float PreWindupMid = 3f; 
-    [SerializeField] private float PreWindupLong = 4f; 
-    [SerializeField] private float PreWindupRoll = 0.7f; 
+    [SerializeField] private float PreWindupLong = 1f; 
+    [SerializeField] private float PreWindupRoll = 1f; 
 
     [Header("Melee Logic")]
     [SerializeField] private float NoDashCloseRange = 2.5f;   
@@ -46,10 +46,27 @@ public class EnemyFight_01 : MonoBehaviour
     private float _rangePreWindup = 1.0f;
 
     public bool isDashing = false;
+    private Animator anim;
+    public Transform player;
 
     void Start()
     {
         Sprite = GetComponent<SpriteRenderer>();
+        anim = GetComponentInChildren<Animator>();
+    }
+
+    void Update()
+    {
+        if (player == null) return;
+
+        if (player.position.x < transform.position.x)
+        {
+            Sprite.flipX = true;
+        }
+        else
+        {
+            Sprite.flipX = false;
+        }
     }
 
     public void BindCore(EnemyCore_01 core) => _core = core;
@@ -95,7 +112,7 @@ public class EnemyFight_01 : MonoBehaviour
     public void Melee_Attack(EnemyCore_01.MeleeAttackType type)
     {
         if (_core.IsActing) return;
-        Sprite.color = Color.red;
+        anim?.SetTrigger("AttackChoice");
 
         switch (type)
         {
@@ -131,7 +148,7 @@ public class EnemyFight_01 : MonoBehaviour
     {
         isDashing = true;
         _core.Rb.linearVelocity = Vector2.zero;
-        Sprite.color = Color.yellow;
+        anim?.SetTrigger("OneReady");
 
         if (_curPreWindup > 0f) yield return new WaitForSeconds(_curPreWindup);
 
@@ -165,12 +182,18 @@ public class EnemyFight_01 : MonoBehaviour
         }
 
         _core.Rb.linearVelocity = Vector2.zero;
-        StopInFrontOfPlayer();
 
-        Sprite.color = Color.blue;
+        float currentDist = Vector2.Distance(_core.Rb.position, _core.Player.position);
+
+        if (currentDist <= DashStopDistance + 0.2f)
+        {
+            StopInFrontOfPlayer();
+        }
+
+        anim?.SetBool("One", true);
         yield return StartCoroutine(DashFinishStrikeSequence());
 
-        Sprite.color = Color.red;
+        anim?.SetBool("One", false);
         isDashing = false;
         _core.IsActing = false;
     }
@@ -178,30 +201,29 @@ public class EnemyFight_01 : MonoBehaviour
     private IEnumerator MeleeStrikeNoDash()
     {
         _core.Rb.linearVelocity = Vector2.zero;
-        Sprite.color = Color.yellow;
+        anim?.SetTrigger("OneTwoReady");
 
-        if (_curPreWindup > 0f) yield return new WaitForSeconds(_curPreWindup);
+        if (_curPreWindup > 0f)
+            yield return new WaitForSeconds(_curPreWindup);
 
-        Sprite.color = Color.blue;
-        _core.TriggerMeleeDamage();
+        anim?.SetBool("OneTwo", true);
+        yield return StartCoroutine(DashFinishStrikeSequence());
 
-        yield return new WaitForSeconds(0.35f);
-
-        Sprite.color = Color.red;
         _core.IsActing = false;
+        yield return new WaitForSeconds(0.7f);
+        anim?.SetBool("OneTwo", false);
     }
 
     private IEnumerator MeleeStrikeRoll()
     {
         _core.Rb.linearVelocity = Vector2.zero;
-        Sprite.color = Color.yellow;
+        anim?.SetTrigger("RollReady");
 
         if (_curPreWindup > 0f)
             yield return new WaitForSeconds(_curPreWindup);
 
-        Sprite.color = Color.blue;
-
-        for (int i = 0; i < 10; i++)
+        anim?.SetBool("Roll", true);
+        for (int i = 0; i < 5; i++)
         {
             _core.TriggerMeleeDamage();
 
@@ -212,11 +234,11 @@ public class EnemyFight_01 : MonoBehaviour
                 _core.Rb.position = _core.ClampInside(nextPos);
             }
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.3f);
         }
 
-        Sprite.color = Color.red;
         _core.IsActing = false;
+        anim?.SetBool("Roll", false);
     }
 
     public void Range_Attack()
@@ -249,6 +271,11 @@ public class EnemyFight_01 : MonoBehaviour
         _core.TriggerMeleeDamage();
 
         if (_core.LastMeleeType == EnemyCore_01.MeleeAttackType.OneOne)
+        {
+            yield return new WaitForSeconds(0.5f);
+            _core.TriggerMeleeDamage();
+        }
+        else if (_core.LastMeleeType == EnemyCore_01.MeleeAttackType.OneTwo)
         {
             yield return new WaitForSeconds(0.5f);
             _core.TriggerMeleeDamage();
@@ -310,11 +337,9 @@ public class EnemyFight_01 : MonoBehaviour
         if (_core != null)
         {
             _core.Rb.linearVelocity = Vector2.zero;
-            Sprite.color = Color.blue;
 
             yield return StartCoroutine(DashFinishStrikeSequence());
 
-            Sprite.color = Color.red;
             _core.IsActing = false;
         }
     }
@@ -346,9 +371,15 @@ public class EnemyFight_01 : MonoBehaviour
         if (_core == null) _core = GetComponent<EnemyCore_01>();
         if (_core == null) return;
 
-        Gizmos.color = new Color(1f, 0.6f, 0f, 0.35f);
         Vector3 pos = _core.Rb != null ? (Vector3)_core.Rb.position : transform.position;
+
+        // ① 근접 판단 거리 (기존)
+        Gizmos.color = new Color(1f, 0.6f, 0f, 0.35f);
         Gizmos.DrawWireSphere(pos, NoDashCloseRange);
+
+        // ② Dash 멈추는 거리 시각화 (추가)
+        Gizmos.color = new Color(0.2f, 0.5f, 1f, 0.5f);
+        Gizmos.DrawWireSphere(pos, DashStopDistance);
     }
-#endif
+    #endif
 }
