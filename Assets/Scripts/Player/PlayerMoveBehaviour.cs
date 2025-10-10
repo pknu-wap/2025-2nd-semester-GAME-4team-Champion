@@ -7,8 +7,8 @@ using UnityEngine.InputSystem;
 public class PlayerMoveBehaviour : MonoBehaviour
 {
     [Header("Move")]
-    [SerializeField] private float moveSpeed = 7f;
-    [SerializeField] private float flipDeadzone = 0.05f;
+    private float moveSpeed = 7f;
+    private float flipDeadzone = 0.05f;
     [SerializeField] private PlayerCombat combat;
 
     private PlayerMove inputWrapper;   // .inputactions 자동 생성 래퍼

@@ -47,6 +47,7 @@ public class PlayerDefense : MonoBehaviour
     private float parryLockEndTime = 0f;
     private Coroutine parryLockCo;
     public bool IsParryLocked => Time.time < parryLockEndTime;
+    private const string LOCK_PARRY = "PARRYLOCK";
 
     // 외부에서 읽도록 노출(다른 스크립트가 참조)
     public float GuardAngle => guardAngle;
@@ -105,6 +106,7 @@ public class PlayerDefense : MonoBehaviour
 
         if (forcedBlockCo != null) { StopCoroutine(forcedBlockCo); forcedBlockCo = null; }
         if (parryLockCo != null) { StopCoroutine(parryLockCo); parryLockCo = null; }
+        moveRef?.RemoveMovementLock(LOCK_PARRY, false);
     }
 
     // === Input ===
@@ -123,10 +125,8 @@ public class PlayerDefense : MonoBehaviour
         if (lastGuardStartCost > 0f)
         {
             combat.AddStamina(-lastGuardStartCost);
-            // AddStamina가 자체적으로 브레이크를 트리거하지 않는다면 여기서 체크
             if (combat.IsStaminaBroken)
             {
-                // 시작하자마자 브레이크면 즉시 해제
                 StopBlocking();
                 return;
             }
@@ -147,8 +147,6 @@ public class PlayerDefense : MonoBehaviour
         animator?.SetBool("isBlocking", false);
 
         moveRef?.SetGuardSpeedScale(1f);
-
-        // 세션 종료 시 누적치는 유지하지 않아도 됨(다음 가드에 영향 X)
         guardSpentThisSession = 0f;
     }
 
@@ -163,12 +161,10 @@ public class PlayerDefense : MonoBehaviour
 
         forcedBlockCo = null;
 
-        // 버튼이 계속 눌린 상태면 유지, 아니면 해제
         bool stillPressed = blockAction != null && blockAction.IsPressed();
         if (!stillPressed)
             StopBlocking();
     }
-
 
     public void OnWeavingSuccessRegain()
     {
@@ -176,25 +172,19 @@ public class PlayerDefense : MonoBehaviour
             combat.AddStamina(lastGuardStartCost * parryRegainPercent);
     }
 
-    /// <summary>가드 중 피격으로 스태미나가 빠질 때, 누적(리게인 대비)</summary>
     public void RegisterGuardHitStaminaCost(float amount)
     {
         if (amount > 0f) guardSpentThisSession += amount;
     }
 
-    /// <summary>위빙 성공 시, 이번 가드 세션에서 소모한 스태미나의 일부를 회복</summary>
     public void RegainStaminaOnParry()
     {
         if (combat == null || guardSpentThisSession <= 0f || parryRegainPercent <= 0f) return;
         float regain = guardSpentThisSession * parryRegainPercent;
         combat.AddStamina(+regain);
-        // 회복 후 남은 소모치만 남기고 싶다면 다음 줄을 켜세요.
-        // guardSpentThisSession *= (1f - parryRegainPercent);
-        // 보통은 세션을 초기화
         guardSpentThisSession = 0f;
     }
 
-    /// <summary>피격 방향 판정 포함: 가드/위빙 여부를 리턴</summary>
     public DefenseOutcome Evaluate(Vector2 facing, Vector2 inFrontToEnemy, bool parryable)
     {
         if (!isBlocking || combat == null || IsStaminaBroken) return DefenseOutcome.None;
@@ -215,15 +205,13 @@ public class PlayerDefense : MonoBehaviour
         parryLockEndTime = Mathf.Max(parryLockEndTime, Time.time + duration);
         if (parryLockCo == null) parryLockCo = StartCoroutine(ParryLockRoutine());
 
-        moveRef?.SetMovementLocked(true, hardFreezePhysics: false, zeroVelocity: zeroVelocityOnStart);
+        moveRef?.AddMovementLock(LOCK_PARRY, hardFreezePhysics: false, zeroVelocity: zeroVelocityOnStart);
     }
 
     private IEnumerator ParryLockRoutine()
     {
-        while (Time.time < parryLockEndTime)
-            yield return null;
-
-        moveRef?.SetMovementLocked(false, hardFreezePhysics: false);
+        while (Time.time < parryLockEndTime) yield return null;
+        moveRef?.RemoveMovementLock(LOCK_PARRY, hardFreezePhysics: false);
         parryLockCo = null;
     }
 
@@ -235,7 +223,6 @@ public class PlayerDefense : MonoBehaviour
 
     // === Stamina Break ===
     public bool IsStaminaBroken => combat != null && combat.IsStaminaBroken;
-
 
     public void TriggerStaminaBreak()
     {

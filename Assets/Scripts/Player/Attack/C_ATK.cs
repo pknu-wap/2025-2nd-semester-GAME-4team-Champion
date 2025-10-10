@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,11 +27,17 @@ public class C_ATK : MonoBehaviour
     [SerializeField] private bool ignoreEnemyCollisionDuringActive = true;
     [SerializeField] private float extraIgnoreTime = 0.02f;
 
+    private const string LOCK_CATK = "C_ATK";
+
+    // === TAG SYSTEM ===
+    public const string TAG_COUNTER_TRIGGERED = "Tag.Counter.Triggered";
+    public event System.Action<string> OnTag;
+
     // state
     private bool counterArmed = false;
     private float counterExpireTime = -999f;
     private bool isCountering = false;
-    private Coroutine moveLockCo;
+    private Coroutine attackMoveLockCo;
     private Collider2D[] myCols;
 
     public void Bind(PlayerAttack atk, PlayerCombat c, PlayerMoveBehaviour m, Animator a)
@@ -40,18 +46,14 @@ public class C_ATK : MonoBehaviour
         myCols = GetComponents<Collider2D>();
     }
 
-    // PlayerAttack¿¡¼­ È£Ãâ: Ä«¿îÅÍ Ã¢ ¿­±â
     public void ArmCounter(float windowSeconds)
     {
         counterArmed = windowSeconds > 0f;
         counterExpireTime = Time.time + Mathf.Max(0f, windowSeconds);
-        Debug.Log($"[COUNTER-ARM] window={windowSeconds:F2}s, until={counterExpireTime:F2}, now={Time.time:F2}");
     }
 
-    // PlayerAttack.OnAttackStarted ¿¡¼­ ¸ÕÀú È£ÃâµÊ
     public bool TryTriggerCounterOnAttackPress() => TryFireOnAttackPress();
 
-    // ³»ºÎ: ½ÇÁ¦ ¹ßµ¿ ÆÇÁ¤
     public bool TryFireOnAttackPress()
     {
         if (!counterArmed || Time.time > counterExpireTime || isCountering)
@@ -64,99 +66,54 @@ public class C_ATK : MonoBehaviour
     private IEnumerator DoCounter()
     {
         isCountering = true;
-        counterArmed = false; // Ã¢ ¼Ò¸ð
+        counterArmed = false;
 
-        // Weaving ¹øÈ£¿Í ¸ÅÄªÇØ¼­ Counter1~3 Áß ÇÏ³ª Àç»ý
+        OnTag?.Invoke(TAG_COUNTER_TRIGGERED); // íƒœê·¸ 
+
         int idx = (attack != null) ? attack.GetWeavingIndexForCounter() : 1;
         idx = Mathf.Clamp(idx, 1, 3);
-        animator?.SetTrigger($"Counter{idx}"); 
+        animator?.SetTrigger($"Counter{idx}");
+
         if (lockMoveDuringCounter)
         {
             float lockTime = windup + active + recovery;
-            if (moveLockCo != null) StopCoroutine(moveLockCo);
-            moveLockCo = StartCoroutine(LockMoveFor(lockTime, true));
+            if (attackMoveLockCo != null) StopCoroutine(attackMoveLockCo);
+            attackMoveLockCo = StartCoroutine(LockMoveFor(lockTime, true));
         }
 
-        // ¼±µô
         yield return new WaitForSeconds(windup);
 
-        // È÷Æ®¹Ú½º
         float dmg = attack ? attack.baseStats.baseDamage * damageMul : 10f * damageMul;
         float knock = attack ? attack.baseStats.baseKnockback * knockMul : 6f * knockMul;
         float range = attack ? attack.baseStats.baseRange * rangeMul : 0.9f * rangeMul;
         float radius = attack ? attack.baseStats.baseRadius * radiusMul : 0.6f * radiusMul;
         DoHitbox(dmg, knock, range, radius);
 
-        // ÀüÅõ ÁøÀÔ º¸Àå
         combat?.EnterCombat("Counter");
 
-        // È°¼º+ÈÄµô
         yield return new WaitForSeconds(active + recovery);
-
         isCountering = false;
     }
 
-    private IEnumerator LockMoveFor(float seconds, bool zeroVelocity)
+    private IEnumerator LockMoveFor(float seconds, bool zeroVelocity = true)
     {
-        moveRef?.SetMovementLocked(true, hardFreezePhysics: false, zeroVelocity: zeroVelocity);
+        moveRef?.AddMovementLock(LOCK_CATK, false, zeroVelocity);
         yield return new WaitForSeconds(seconds);
-        moveRef?.SetMovementLocked(false, hardFreezePhysics: false);
-        moveLockCo = null;
-        float lockTime = windup + active + recovery;
-        combat?.BlockStaminaRegenFor(lockTime);
+        moveRef?.RemoveMovementLock(LOCK_CATK, false);
+        attackMoveLockCo = null;
     }
 
     private void DoHitbox(float dmg, float knock, float range, float radius)
     {
-        Vector2 facing = (moveRef && moveRef.LastFacing.sqrMagnitude > 0f) ? moveRef.LastFacing : Vector2.right;
+        Vector2 facing = moveRef ? moveRef.LastFacing : Vector2.right;
         Vector2 center = (Vector2)transform.position + facing.normalized * range;
 
         var hits = Physics2D.OverlapCircleAll(center, radius, enemyMask);
-        var seen = new HashSet<Collider2D>();
-        bool any = false;
-
         foreach (var h in hits)
         {
-            if (!h || seen.Contains(h)) continue;
-            seen.Add(h);
-
-            if (ignoreEnemyCollisionDuringActive)
-                IgnoreForSeconds(h.transform.root, active + extraIgnoreTime);
-
-            Vector2 toEnemy = ((Vector2)h.transform.position - (Vector2)transform.position).normalized;
-
-            // ¡Ú ¿ÀÅ¸ ¼öÁ¤: IDamageable (NOT "IDamageABLE")
-            var dmgTarget = h.GetComponentInParent<IDamageable>();
-            if (dmgTarget != null)
-            {
-                dmgTarget.ApplyHit(dmg, knock, toEnemy, gameObject);
-                any = true;
-            }
-            else any = true;
+            var target = h.GetComponentInParent<IDamageable>();
+            target?.ApplyHit(dmg, knock, facing, gameObject);
         }
-
-        if (any) combat?.EnterCombat("CounterHit");
-    }
-
-    private void IgnoreForSeconds(Transform enemyRoot, float seconds)
-    {
-        if (myCols == null) myCols = GetComponents<Collider2D>();
-        var enemyCols = enemyRoot.GetComponentsInChildren<Collider2D>();
-        foreach (var my in myCols)
-        {
-            if (!my) continue;
-            foreach (var ec in enemyCols)
-            {
-                if (!ec) continue;
-                Physics2D.IgnoreCollision(my, ec, true);
-                StartCoroutine(ReenableLater(my, ec, seconds));
-            }
-        }
-    }
-
-    private IEnumerator ReenableLater(Collider2D a, Collider2D b, float t)
-    {
-        yield return new WaitForSeconds(t);
-        if (a && b) Physics2D.IgnoreCollision(a, b, false);
+        combat?.EnterCombat("CounterHit");
     }
 }

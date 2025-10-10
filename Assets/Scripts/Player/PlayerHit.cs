@@ -15,12 +15,12 @@ public class PlayerHit : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
 
     [Header("Hit Reaction (Config)")]
-    [SerializeField] private float baseHitstun = 1.5f;     // 기본 경직
+    [SerializeField] private float baseHitstun = 1.5f;      // 기본 경직
     [SerializeField] private float blockHitstunMul = 0.5f;  // 가드시 경직 배수
 
     [Header("On-Hit Locks / Stamina")]
     [SerializeField] private float actionLockOnUnguardedHit = 2f; // 비가드 피격 시 전역 행동락 시간
-    [SerializeField] private float staminaLossOnHitMul = 1.0f;       // 피격 시 스태미나 추가 감소 배수
+    [SerializeField] private float staminaLossOnHitMul = 1.0f;    // 피격 시 스태미나 추가 감소 배수
 
     [Header("Animation Variants")]
     [SerializeField] private int weavingVariants = 3;       // Weaving1..N
@@ -29,11 +29,22 @@ public class PlayerHit : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool debugLogs = true;
 
+    // === 태그 이벤트(외부 인식용) ===
+    public const string TAG_WEAVING_SUCCESS = "Tag.WeavingSuccess";
+    public const string TAG_GUARD_SUCCESS = "Tag.GuardSuccess";
+    public const string TAG_GOT_HIT = "Tag.GotHit";
+    public event System.Action<string> OnTag; // GameManager/Enemy에서 구독
+
     // === 상태 ===
     private bool inHitstun = false;
+    private bool invulnWhileDead = false;
     private float hitstunEndTime = 0f;
     private float iFrameEndTime = 0f;
     private Coroutine hitstunCo;
+
+    // 랜덤 애니 중복 방지
+    private int lastWeavingIdx = -1;
+    private int lastHitIdx = -1;
 
     public bool InHitstun => inHitstun;
 
@@ -67,9 +78,25 @@ public class PlayerHit : MonoBehaviour
         return (moveRef && moveRef.LastFacing.sqrMagnitude > 0f) ? moveRef.LastFacing : Vector2.right;
     }
 
+    public void SetDeadInvulnerable(bool on)
+    {
+        invulnWhileDead = on;
+
+        // 죽는 순간 남은 히트스턴/락도 즉시 해제(옵션이지만 안전)
+        if (on)
+        {
+            inHitstun = false;
+            if (hitstunCo != null) { StopCoroutine(hitstunCo); hitstunCo = null; }
+            moveRef?.RemoveMovementLock("HITSTUN", hardFreezePhysics: false);
+        }
+    }
+
     public void OnHit(float damage, float knockback, Vector2 hitDir, bool parryable,
                       GameObject attacker = null, float hitstun = -1f)
     {
+        if (invulnWhileDead || (combat != null && combat.HP <= 0f))
+            return;
+
         // i-프레임 중이면 무시
         if (Time.time < iFrameEndTime) return;
 
@@ -84,17 +111,27 @@ public class PlayerHit : MonoBehaviour
         Vector2 toEnemy = -hitDir.normalized; // 플레이어→적
 
         // 방어/위빙 판정 (정면 콘/패링 윈도는 PlayerDefense가 담당)
-        var outcome = defense ? defense.Evaluate(facing, toEnemy, parryable) : DefenseOutcome.None; // PlayerDefense 기준
+        var outcome = defense ? defense.Evaluate(facing, toEnemy, parryable) : DefenseOutcome.None;
 
         // ===== 위빙(패링) 성공 =====
         if (outcome == DefenseOutcome.Parry)
         {
+            var parryProvider = GetComponentInParent<IParryWindowProvider>();
+            bool parryBySkill = parryProvider != null && parryProvider.IsParryWindowActive;
+            if (parryBySkill)
+            {
+                outcome = DefenseOutcome.Parry;
+                parryProvider.OnParrySuccess();
+            }
+
             if (debugLogs) Debug.Log($"[WEAVING OK] t={Time.time:F2}s, attacker={(attacker ? attacker.name : "null")}");
+            OnTag?.Invoke(TAG_WEAVING_SUCCESS); // ★ 태그 이벤트 발행
 
-            // ★ 인덱스는 '한 번만' 뽑는다
-            int idx = PickWeavingIndex();
+            // 인덱스 1회만 뽑고 즉시 중복 방지
+            int idx = NextVariantNoRepeat(Mathf.Max(1, weavingVariants), lastWeavingIdx);
+            lastWeavingIdx = idx;
 
-            // 위빙 애니도, 매칭용 인덱스도 같은 값으로
+            // 위빙 애니/공격 카운터 매칭
             if (animator) animator.SetTrigger($"Weaving{idx}");
             if (attack) attack.SetLastWeavingIndex(idx);
 
@@ -109,11 +146,10 @@ public class PlayerHit : MonoBehaviour
             defense.ForceBlockFor(lockDur);
             defense.OnWeavingSuccessRegain();
 
-            // ★ 같은 인덱스를 유지한 상태로 카운터 창 오픈 (중복 SetLastWeavingIndex 제거)
             if (attack)
             {
                 attack.ArmCounter(lockDur * 2f);
-                Debug.Log($"[COUNTER-ARM] idx={idx}, window={(lockDur * 2f):F2}s");
+                if (debugLogs) Debug.Log($"[COUNTER-ARM] idx={idx}, window={(lockDur * 2f):F2}s");
             }
 
             iFrameEndTime = Time.time + 0.05f;
@@ -131,7 +167,7 @@ public class PlayerHit : MonoBehaviour
 
             // 스태미나 감소 & 브레이크 처리
             float guardSpend = damage * defense.GuardHitStaminaCostMul;
-            combat.AddStamina(-damage * defense.GuardHitStaminaCostMul);
+            combat.AddStamina(-guardSpend);
             defense.RegisterGuardHitStaminaCost(guardSpend);
             if (combat && combat.Stamina <= 0f) defense.TriggerStaminaBreak();
             else
@@ -141,21 +177,23 @@ public class PlayerHit : MonoBehaviour
             }
 
             animator?.SetTrigger("BlockHit");
+            OnTag?.Invoke(TAG_GUARD_SUCCESS); // ★ 태그 이벤트 발행
             return;
         }
 
         // ===== 가드 실패 / 측·후방 / 비방어 =====
         combat?.ApplyDamage(damage);
-        // 비가드 피격 시 전역 행동 잠금(공격 연타 방지 용도) — PlayerCombat에 맞춤
         combat?.StartActionLock(actionLockOnUnguardedHit, false);
-
         ApplyKnockbackXOnly(toEnemy, knockback);
 
-        // 피격 시 스태미나 감소(배수는 이 클래스에서 직렬화로 조정)
+        // 피격 시 스태미나 감소
         if (combat) combat.AddStamina(-damage * staminaLossOnHitMul);
         if (combat && combat.Stamina <= 0f) defense.TriggerStaminaBreak();
+
         float stunRaw = (hitstun >= 0f ? hitstun : baseHitstun);
         StartHitstun(stunRaw, playHitAnim: true);
+
+        OnTag?.Invoke(TAG_GOT_HIT); // ★ 태그 이벤트 발행
     }
 
     // X축 넉백만 적용(상하 미끄러짐 방지)
@@ -182,7 +220,7 @@ public class PlayerHit : MonoBehaviour
         // 물리는 살리고 조작만 잠금
         moveRef?.AddMovementLock("HITSTUN", hardFreezePhysics: false, zeroVelocity: true);
 
-        if (playHitAnim) PlayRandomHit();
+        if (playHitAnim) PlayRandomHit_NoImmediateRepeat();
     }
 
     private IEnumerator HitstunRoutine()
@@ -194,24 +232,50 @@ public class PlayerHit : MonoBehaviour
         hitstunCo = null;
     }
 
-    private void PlayRandomHit()
+    public void AddIFrames(float duration)
+    {
+        iFrameEndTime = Mathf.Max(iFrameEndTime, Time.time + Mathf.Max(0f, duration));
+    }
+
+    public void CancelHitstun()
+    {
+        hitstunEndTime = Time.time;
+        if (hitstunCo != null) { StopCoroutine(hitstunCo); hitstunCo = null; }
+        inHitstun = false;
+        moveRef?.RemoveMovementLock("HITSTUN", hardFreezePhysics: false);
+    }
+
+    private void OnDisable()
+    {
+        if (hitstunCo != null) { StopCoroutine(hitstunCo); hitstunCo = null; }
+        inHitstun = false;
+        moveRef?.RemoveMovementLock("HITSTUN", false); // 잔존락 제거
+    }
+
+    // ===== 랜덤 애니: 즉시 중복 방지 버전 =====
+    private int NextVariantNoRepeat(int count, int last)
+    {
+        if (count <= 1) return 1;
+        int idx = Random.Range(1, count + 1);
+        if (idx == last) idx = (idx % count) + 1; // 바로 다음 번호로 회피
+        return idx;
+    }
+
+    private void PlayRandomHit_NoImmediateRepeat()
     {
         if (!animator || hitVariants <= 0) return;
-        int idx = Mathf.Clamp(Random.Range(1, hitVariants + 1), 1, hitVariants);
+        int idx = NextVariantNoRepeat(Mathf.Max(1, hitVariants), lastHitIdx);
+        lastHitIdx = idx;
         animator.SetTrigger($"Hit{idx}");
     }
 
-    // Weaving 트리거와 Counter 매칭을 위해 인덱스를 뽑아 전달
-    private int PickWeavingIndex()
-    {
-        int max = Mathf.Max(1, weavingVariants);
-        return Mathf.Clamp(Random.Range(1, max + 1), 1, max);
-    }
-
+    // (Weaving 인덱스 수동 재생용 보조)
     public void PlayWeaving(int idx)
     {
         if (!animator) return;
         idx = Mathf.Clamp(idx, 1, Mathf.Max(1, weavingVariants));
+        // 수동 호출 시에도 lastWeavingIdx 갱신
+        lastWeavingIdx = idx;
         animator.SetTrigger($"Weaving{idx}");
     }
 }

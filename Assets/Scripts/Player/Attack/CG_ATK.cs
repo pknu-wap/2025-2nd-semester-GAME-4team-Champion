@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,11 +15,11 @@ public class CG_ATK : MonoBehaviour
     [Header("Timings")]
     [SerializeField] private float windup = 0.15f;
     [SerializeField] private float active = 0.06f;
-    [SerializeField] private float recovery = 0.12f;
+    [SerializeField] private float recovery = 0.3f;
 
     [Header("Charge")]
-    [SerializeField] private float chargeTime = 0.5f;   // Ç®Â÷Áö±îÁö
-    [SerializeField] private float minHold = 0.12f;     // ÀÌ ¹Ì¸¸ÀÌ¸é ¹Ì¹ßµ¿
+    [SerializeField] private float chargeTime = 0.5f;   // í’€ì°¨ì§€ê¹Œì§€
+    [SerializeField] private float minHold = 0.12f;     // ì´ ë¯¸ë§Œì´ë©´ ë¯¸ë°œë™
     [SerializeField] private bool lockMoveDuringCharge = true;
 
     [Header("Hitbox")]
@@ -28,18 +28,20 @@ public class CG_ATK : MonoBehaviour
     [SerializeField] private float baseKnockback = 6f;
     [SerializeField] private float baseRange = 0.9f;
     [SerializeField] private float baseRadius = 0.6f;
-    [SerializeField] private float chargeDamageMul = 5.0f;
+    [SerializeField] private float chargeDamageMul = 2.0f;
     [SerializeField] private float chargeKnockMul = 2.0f;
     [SerializeField] private float chargeRangeMul = 1.2f;
     [SerializeField] private float chargeRadiusMul = 1.2f;
 
     public bool IsAttacking { get; private set; }
 
+    private const string LOCK_CGATK = "CG_ATK";
+
     // charge state
     private bool isCharging = false;
     private float chargeStartTime = 0f;
     private Coroutine waitCo;
-    private Coroutine moveLockCo;
+    private Coroutine attackMoveLockCo;
     private Collider2D[] myCols;
 
     public void Bind(PlayerAttack atk, PlayerCombat c, PlayerMoveBehaviour m, Animator a)
@@ -81,14 +83,14 @@ public class CG_ATK : MonoBehaviour
 
         if (waitCo != null) { StopCoroutine(waitCo); waitCo = null; }
 
-        // ¹Ì´Ï¸Ø ¹Ì¸¸ÀÌ¸é ÇØÁ¦¸¸
+        // ë¯¸ë‹ˆë©ˆ ë¯¸ë§Œì´ë©´ í•´ì œë§Œ
         if (held < minHold)
         {
             if (lockMoveDuringCharge) moveRef?.SetMovementLocked(false, false);
             return;
         }
 
-        // Ç®Â÷Áö ÀÌÀü¿¡ ¶¼¸é ¹ßµ¿ ¾ÈµÊ(Ç®Â÷Áö´Â WaitThenFire¿¡¼­ Áï½Ã ¹ßµ¿)
+        // í’€ì°¨ì§€ ì´ì „ì— ë–¼ë©´ ë°œë™ ì•ˆë¨(í’€ì°¨ì§€ëŠ” WaitThenFireì—ì„œ ì¦‰ì‹œ ë°œë™)
         if (lockMoveDuringCharge) moveRef?.SetMovementLocked(false, false);
     }
 
@@ -118,11 +120,11 @@ public class CG_ATK : MonoBehaviour
             animator.SetTrigger("AtkCharge");
         }
 
-        // °ø°İ ±¸°£ µ¿¾È ÀÌµ¿¶ô À¯Áö
+        // ê³µê²© êµ¬ê°„ ë™ì•ˆ ì´ë™ë½ ìœ ì§€
         if (lockMoveDuringCharge && moveRef)
         {
-            if (moveLockCo != null) StopCoroutine(moveLockCo);
-            moveLockCo = StartCoroutine(LockMoveFor(windup + 0.07f + active + recovery));
+            if (attackMoveLockCo != null) StopCoroutine(attackMoveLockCo);
+            attackMoveLockCo = StartCoroutine(LockMoveFor(windup + 0.07f + active + recovery));
         }
 
         yield return new WaitForSeconds(windup + 0.07f);
@@ -141,13 +143,13 @@ public class CG_ATK : MonoBehaviour
         if (lockMoveDuringCharge) moveRef?.SetMovementLocked(false, false);
     }
 
-    private IEnumerator LockMoveFor(float seconds)
+    private IEnumerator LockMoveFor(float seconds, bool zeroVelocity = true)
     {
-        moveRef?.SetMovementLocked(true, false, true);
+        moveRef?.AddMovementLock(LOCK_CGATK, false, zeroVelocity);
         yield return new WaitForSeconds(seconds);
-        moveRef?.SetMovementLocked(false, false);
-        moveLockCo = null;
-        float lockTime = (windup + 0.07f) + active + recovery;
+        moveRef?.RemoveMovementLock(LOCK_CGATK, false);
+        attackMoveLockCo = null;
+        float lockTime = windup + active + recovery;
         combat?.BlockStaminaRegenFor(lockTime);
     }
 
@@ -168,7 +170,7 @@ public class CG_ATK : MonoBehaviour
 
             Vector2 toEnemy = ((Vector2)h.transform.position - (Vector2)transform.position).normalized;
 
-            // ¡Ú ¿©±â! IDamageable ·Î ¼öÁ¤
+            // â˜… ì—¬ê¸°! IDamageable ë¡œ ìˆ˜ì •
             var dmgTarget = h.GetComponentInParent<IDamageable>();
             if (dmgTarget != null)
             {

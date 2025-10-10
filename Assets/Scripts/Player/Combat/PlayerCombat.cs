@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,32 +9,41 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private PlayerMoveBehaviour moveRef;
     [SerializeField] private Animator animator;
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private PlayerDefense defense;   // ¼±ÅÃ
-    [SerializeField] private PlayerAttack attack;     // ¼±ÅÃ
-    [SerializeField] private PlayerHit hit;           // ¼±ÅÃ
-    [SerializeField] private Player_Heal healer;      // ¼±ÅÃ
-    [SerializeField] private CombatState combatState; // ¡Ú ÀüÅõ»óÅÂ Àü´ã ÄÄÆ÷³ÍÆ®
+    [SerializeField] private PlayerDefense defense;   // ì„ íƒ
+    [SerializeField] private PlayerAttack attack;     // ì„ íƒ
+    [SerializeField] private PlayerHit hit;           // ì„ íƒ
+    [SerializeField] private Player_Heal healer;      // ì„ íƒ
+    [SerializeField] private CombatState combatState; // ì „íˆ¬ìƒíƒœ ì „ë‹´ ì»´í¬ë„ŒíŠ¸
 
     // ---------- Vitals ----------
     [Header("Vitals")]
-    [SerializeField] private float hpMax = 100f;
-    [SerializeField] private float staminaMax = 100f;
-    [SerializeField] private float staminaRegenPerSec = 25f;
-    [SerializeField] private float staminaBreakTime = 1.5f;
+    private float hpMax = 100f;
+    private float staminaMax = 100f;
+    private float staminaRegenPerSec = 25f;
+    private float staminaBreakTime = 1.5f;
+    private Player_Revive revive;
 
     public event Action<float, float> OnHealthChanged;   // (current, max)
     public event Action<float, float> OnStaminaChanged;  // (current, max)
 
-    // ===== Stamina regen block (°øÅë) =====
+    // ---------- TAGS ----------
+    public const string TAG_GUARD_BROKEN = "Tag.Guard.Broken";
+    public const string TAG_DEAD = "Tag.Dead";
+    public event Action<string> OnTag;
+
+    // ---------- Die ----------
+    private bool isDead = false;
+    private Coroutine deathCo;
+    private float deadBoolDelay = 0.05f;
+
+    private const string LOCK_ACTION = "ACTIONLOCK";
+
+    // ===== Stamina regen block (ê³µí†µ) =====
     [Header("Stamina Regen Control")]
-    [SerializeField] private float regenBlockExtra = 1f;   // Çàµ¿ Á¾·á ÈÄ Ãß°¡·Î ¸·À» ½Ã°£
+    [SerializeField] private float regenBlockExtra = 1f;   // í–‰ë™ ì¢…ë£Œ í›„ ì¶”ê°€ë¡œ ë§‰ì„ ì‹œê°„
     private float noRegenUntil = 0f;
 
-    public float RegenBlockExtra
-    {
-        get => regenBlockExtra;
-        set => regenBlockExtra = Mathf.Max(0f, value);
-    }
+    public float RegenBlockExtra { get => regenBlockExtra; set => regenBlockExtra = Mathf.Max(0f, value); }
     public bool IsStaminaRegenBlocked => Time.time < noRegenUntil;
 
     private float hp;
@@ -44,6 +53,7 @@ public class PlayerCombat : MonoBehaviour
     public float HPMax => hpMax;
     public float Stamina => stamina;
     public float StaminaMax => staminaMax;
+    public bool IsDead => isDead;
     public float Hp01 => Mathf.Clamp01(hp / Mathf.Max(1f, hpMax));
     public float Stamina01 => Mathf.Clamp01(stamina / Mathf.Max(1f, staminaMax));
 
@@ -57,9 +67,9 @@ public class PlayerCombat : MonoBehaviour
     private float actionLockEndTime = 0f;
     private Coroutine actionLockCo;
 
-    /// <summary>ÇöÀç Àü¿ª Çàµ¿(°ø°İ/¹æ¾î/ÀÔ·Â) Àá±İ ¿©ºÎ</summary>
+    /// <summary>í˜„ì¬ ì „ì—­ í–‰ë™(ê³µê²©/ë°©ì–´/ì…ë ¥) ì ê¸ˆ ì—¬ë¶€</summary>
     public bool IsActionLocked => Time.time < actionLockEndTime;
-    /// <summary>±¸¹öÀü È£È¯: IsAttackLocked</summary>
+    /// <summary>êµ¬ë²„ì „ í˜¸í™˜: IsAttackLocked</summary>
     public bool IsAttackLocked => IsActionLocked;
     public float ActionLockRemaining => Mathf.Max(0f, actionLockEndTime - Time.time);
 
@@ -73,6 +83,7 @@ public class PlayerCombat : MonoBehaviour
         if (!hit) hit = GetComponent<PlayerHit>();
         if (!healer) healer = GetComponent<Player_Heal>();
         if (!combatState) combatState = GetComponent<CombatState>();
+        if (!revive) revive = GetComponent<Player_Revive>();
     }
 
     private void Awake()
@@ -85,15 +96,16 @@ public class PlayerCombat : MonoBehaviour
         if (!hit) hit = GetComponent<PlayerHit>();
         if (!healer) healer = GetComponent<Player_Heal>();
         if (!combatState) combatState = GetComponent<CombatState>();
-        if (!combatState) combatState = gameObject.AddComponent<CombatState>(); // ¾ÈÀüÀåÄ¡
+        if (!revive) revive = GetComponent<Player_Revive>();
+        if (!combatState) combatState = gameObject.AddComponent<CombatState>(); // ì•ˆì „ì¥ì¹˜
 
-        // ÃÊ±âÈ­
+        // ì´ˆê¸°í™”
         hp = hpMax;
         stamina = staminaMax;
         OnHealthChanged?.Invoke(hp, hpMax);
         OnStaminaChanged?.Invoke(stamina, staminaMax);
 
-        // ¹ÙÀÎµù
+        // ë°”ì¸ë”©
         attack?.Bind(this, moveRef, animator);
         defense?.Bind(this, moveRef, animator);
         hit?.Bind(this, moveRef, animator, rb);
@@ -102,7 +114,11 @@ public class PlayerCombat : MonoBehaviour
     }
 
     private void OnEnable() => StartCoroutine(VitalsTick());
-    private void OnDisable() => StopAllCoroutines();
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        moveRef?.RemoveMovementLock(LOCK_ACTION);
+    }
 
     // ---------------- Vitals Ops ----------------
     public void ApplyDamage(float amount)
@@ -118,6 +134,8 @@ public class PlayerCombat : MonoBehaviour
     {
         if (IsStaminaBroken) return;
         IsStaminaBroken = true;
+
+        OnTag?.Invoke(TAG_GUARD_BROKEN);  // ğŸ”¸ GuardBroken íƒœê·¸
 
         moveRef?.SetMovementLocked(true, hardFreezePhysics: true);
         animator?.SetBool("GuardBroken", true);
@@ -137,9 +155,16 @@ public class PlayerCombat : MonoBehaviour
     public void Heal(float amount)
     {
         if (amount <= 0f) return;
-        hp = Mathf.Min(hpMax, hp + amount);
+        float before = hp;
+        hp = Mathf.Clamp(hp + amount, 0f, hpMax);
         OnHealthChanged?.Invoke(hp, hpMax);
-        if (debugLogs) Debug.Log($"[HP] +{amount} => {hp}/{hpMax}");
+
+        if (before <= 0f && hp > 0f)
+        {
+            moveRef?.SetMovementLocked(false, hardFreezePhysics: false);
+            animator?.ResetTrigger("Die");
+            animator?.SetBool("Dead", false);
+        }
     }
 
     public void AddStamina(float delta)
@@ -148,11 +173,9 @@ public class PlayerCombat : MonoBehaviour
         stamina = Mathf.Clamp(stamina + delta, 0f, staminaMax);
         if (!Mathf.Approximately(before, stamina))
             OnStaminaChanged?.Invoke(stamina, staminaMax);
-        // µğ¹ö±×¶ó¸é ³²°ÜµÒ
-        // if (debugLogs) Debug.Log($"[STM] {(delta>=0?"+":"")}{delta} => {stamina}/{staminaMax}");
     }
 
-    /// <summary>Çàµ¿À¸·Î ÀÎÇØ '¸ø ¿òÁ÷ÀÌ´Â ½Ã°£ + extra' ¸¸Å­ ½ºÅÂ¹Ì³ª Àç»ıÀ» ¸·´Â´Ù.</summary>
+    /// <summary>í–‰ë™ìœ¼ë¡œ ì¸í•´ 'ëª» ì›€ì§ì´ëŠ” ì‹œê°„ + extra' ë§Œí¼ ìŠ¤íƒœë¯¸ë‚˜ ì¬ìƒì„ ë§‰ëŠ”ë‹¤.</summary>
     public void BlockStaminaRegenFor(float baseSeconds)
     {
         float target = Time.time + Mathf.Max(0f, baseSeconds) + regenBlockExtra;
@@ -164,7 +187,7 @@ public class PlayerCombat : MonoBehaviour
         var waitEndFrame = new WaitForEndOfFrame();
         while (true)
         {
-            if (defense && !defense.IsStaminaBroken && !defense.IsBlocking
+            if (hp > 0f && defense && !defense.IsStaminaBroken && !defense.IsBlocking
                 && stamina < staminaMax && !IsStaminaRegenBlocked)
             {
                 stamina = Mathf.Min(staminaMax, stamina + staminaRegenPerSec * Time.deltaTime);
@@ -176,16 +199,38 @@ public class PlayerCombat : MonoBehaviour
 
     private void OnDeath()
     {
-        if (debugLogs) Debug.Log("[Player] DEAD");
+        if (isDead) return;                 // ì¤‘ë³µ ë°©ì§€
+        isDead = true;
+
+        OnTag?.Invoke(TAG_DEAD);            // íƒœê·¸ 
+
+        GetComponent<PlayerHit>()?.SetDeadInvulnerable(true);
         moveRef?.SetMovementLocked(true, true);
         animator?.SetTrigger("Die");
+
+        if (deathCo != null) StopCoroutine(deathCo);
+        deathCo = StartCoroutine(CoMarkDeadAndMaybeRevive());
+    }
+
+    private IEnumerator CoMarkDeadAndMaybeRevive()
+    {
+        // í•œ í”„ë ˆì„ ëŒ€ê¸°(ê°™ì€ í”„ë ˆì„ì— ë“¤ì–´ì˜¨ Hit íŠ¸ë¦¬ê±° í¡ìˆ˜)
+        yield return null;
+
+        if (deadBoolDelay > 0f)
+            yield return new WaitForSeconds(deadBoolDelay);
+
+        animator?.SetBool("Dead", true);
+
+        // ë¶€í™œ ë¡œì§ì€ Dead ì¼  ë’¤ì— í˜¸ì¶œ
+        revive?.BeginReviveIfAvailable();
     }
 
     // ---------------- Global Action Lock ----------------
     public void StartActionLock(float duration, bool zeroVelocityOnStart = false)
     {
         float until = Time.time + Mathf.Max(0f, duration);
-        if (until <= actionLockEndTime && actionLockCo != null) return; // ÀÌ¹Ì ´õ ±æ°Ô Àá±İ
+        if (until <= actionLockEndTime && actionLockCo != null) return; // ì´ë¯¸ ë” ê¸¸ê²Œ ì ê¸ˆ
 
         actionLockEndTime = until;
         if (actionLockCo != null) StopCoroutine(actionLockCo);
@@ -194,18 +239,13 @@ public class PlayerCombat : MonoBehaviour
 
     private IEnumerator ActionLockRoutine(bool zeroVelocityOnStart)
     {
-        moveRef?.SetMovementLocked(true, hardFreezePhysics: false, zeroVelocity: zeroVelocityOnStart);
-
-        while (Time.time < actionLockEndTime)
-            yield return null;
-
-        moveRef?.SetMovementLocked(false, hardFreezePhysics: false);
+        moveRef?.AddMovementLock(LOCK_ACTION, hardFreezePhysics: false, zeroVelocity: zeroVelocityOnStart);
+        while (Time.time < actionLockEndTime) yield return null;
+        moveRef?.RemoveMovementLock(LOCK_ACTION, hardFreezePhysics: false);
         actionLockCo = null;
-
-        if (showActionLockDebug) Debug.Log("[ActionLock] released");
     }
 
-    // ----------------- Combat State (À§ÀÓ/·¡ÇÎ) -----------------
+    // ----------------- Combat State (ìœ„ì„/ë˜í•‘) -----------------
     public bool IsInCombat => combatState != null && combatState.IsInCombat;
     public float CombatYSpeedMul => combatState ? combatState.CombatYSpeedMul : 1f;
     public LayerMask EnemyMask => combatState ? combatState.EnemyMask : default;

@@ -24,25 +24,31 @@ public class CombatState : MonoBehaviour
     [SerializeField] private bool autoFaceEvenWhileAttacking = false;
     [SerializeField] private float autoFaceInputDeadzoneX = 0.2f;
 
+    [Header("Optimization")]
+    [SerializeField] private int overlapBufferSize = 48; // NonAlloc 버퍼 크기(상황에 맞게 조정)
+
     // ---------- State ----------
     private bool inCombat = false;
     private Coroutine combatMonitorCo;
 
-    // ---------- Public API (PlayerCombat과 동일 인터페이스) ----------
+    // NonAlloc 버퍼
+    private Collider2D[] _overlapBuf;
+
+    // ---------- Public API ----------
     public bool IsInCombat => inCombat;
     public float CombatYSpeedMul => combatYSpeedMultiplier;
     public LayerMask EnemyMask => enemyMask;
 
-    // 바인딩(소유자/레퍼런스 세팅)
     public void Bind(PlayerCombat ownerCombat, PlayerMoveBehaviour mv, Animator anim, PlayerAttack atk)
     {
         owner = ownerCombat;
         moveRef = mv;
         animator = anim;
         attack = atk;
+        if (_overlapBuf == null || _overlapBuf.Length != Mathf.Max(8, overlapBufferSize))
+            _overlapBuf = new Collider2D[Mathf.Max(8, overlapBufferSize)];
     }
 
-    // 인스펙터에서 직접 세팅하고 싶다면 필요 없음. 런타임 보강
     private void Reset()
     {
         if (!owner) owner = GetComponent<PlayerCombat>();
@@ -63,7 +69,8 @@ public class CombatState : MonoBehaviour
         if (autoFaceOnCombatEnter) TryAutoFaceNearestEnemyX();
         if (combatMonitorCo != null) StopCoroutine(combatMonitorCo);
         combatMonitorCo = StartCoroutine(CombatMonitor());
-        if (owner && owner.DebugLogs) Debug.Log($"[Combat] Enter ({reason})");
+
+        if (owner != null && owner.DebugLogs) Debug.Log($"[Combat] Enter ({reason})");
     }
 
     public void ExitCombat()
@@ -80,7 +87,7 @@ public class CombatState : MonoBehaviour
             combatMonitorCo = null;
         }
 
-        if (owner && owner.DebugLogs) Debug.Log("[Combat] Exit");
+        if (owner != null && owner.DebugLogs) Debug.Log("[Combat] Exit");
     }
 
     // ----- Internal -----
@@ -131,8 +138,9 @@ public class CombatState : MonoBehaviour
         float bestSqr = float.PositiveInfinity;
         Vector2 myPos = transform.position;
 
-        foreach (var h in hits)
+        for (int i = 0; i < hits.Length; i++)
         {
+            var h = hits[i];
             if (!h) continue;
             float d2 = ((Vector2)h.transform.position - myPos).sqrMagnitude;
             if (d2 < bestSqr) { bestSqr = d2; nearest = h.transform; }

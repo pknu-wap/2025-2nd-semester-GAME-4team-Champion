@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7310471862890927651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9033678239373956408}
+  - component: {fileID: 5486950187532172470}
+  m_Layer: 0
+  m_Name: Uppercut
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9033678239373956408
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7310471862890927651}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.9995414, y: -0.12619437, z: -0.011705639}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5486950187532172470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7310471862890927651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4857037a13aff54a9cdd8776f425d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack: {fileID: 0}
+  combat: {fileID: 0}
+  moveRef: {fileID: 0}
+  animator: {fileID: 0}
+  enemyMaskOverride:
+    serializedVersion: 2
+    m_Bits: 0
+  knockMul: 1.2
+  rangeMul: 1
+  radiusMul: 1
+  windup: 0.08
+  active: 0.06
+  recovery: 0.24
+  fixed2xWindow: 0.5
+  fullChargeTime: 3
+  lockMoveDuringCharge: 1
+  cooldownSeconds: 8
+  chargeBool: Charging
+  fireTrigger: Uppercut
+  vfxPrefab: {fileID: 0}
+  vfxPoint: {fileID: 0}
+  vfxLifetime: 0.6

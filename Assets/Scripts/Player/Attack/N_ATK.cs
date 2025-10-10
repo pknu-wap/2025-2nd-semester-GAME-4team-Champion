@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,6 +29,14 @@ public class N_ATK : MonoBehaviour
     [SerializeField] private float recovery = 0.12f;
     [SerializeField] private float minRecovery = 0.05f;
 
+    private const string LOCK_NATK = "N_ATK";
+
+    private float comboFreezeEndTime = 0f;
+    private bool IsComboFrozen => Time.time < comboFreezeEndTime;
+    public void FreezeComboTimerFor(float seconds)
+    {
+        comboFreezeEndTime = Mathf.Max(comboFreezeEndTime, Time.time + Mathf.Max(0f, seconds));
+    }
 
     // state
     private int comboIndex = 0;
@@ -48,9 +56,14 @@ public class N_ATK : MonoBehaviour
     public bool IsAttacking => isAttacking;
     private void Awake()
     {
-        if (!owner) owner = GetComponent<PlayerAttack>(); // °°Àº ¿ÀºêÁ§Æ®¸é ÀÚµ¿ ÂüÁ¶
+        if (!owner) owner = GetComponent<PlayerAttack>(); // ê°™ì€ ì˜¤ë¸Œì íŠ¸ë©´ ìë™ ì°¸ì¡°
         if (!defense) defense = GetComponent<PlayerDefense>();
         if (!hit) hit = GetComponent<PlayerHit>();
+    }
+
+    private void Update()
+    {
+        if (IsComboFrozen) lastAttackEndTime = Time.time;
     }
 
     public void Bind(PlayerAttack atk, PlayerCombat c, PlayerMoveBehaviour m, Animator a)
@@ -70,12 +83,13 @@ public class N_ATK : MonoBehaviour
         }
         else
         {
-            if (Time.time - lastAttackEndTime > comboGapMax) comboIndex = 0;
+            if (!IsComboFrozen && (Time.time - lastAttackEndTime > comboGapMax))
+                comboIndex = 0;
             attackCo = StartCoroutine(DoAttackStep(comboIndex));
         }
     }
 
-    public void OnAttackCanceled() { /* ÄŞº¸´Â Ãë¼Ò µ¿ÀÛ ¾øÀ½ */ }
+    public void OnAttackCanceled() { /* ì½¤ë³´ëŠ” ì·¨ì†Œ ë™ì‘ ì—†ìŒ */ }
 
     private IEnumerator DoAttackStep(int step)
     {
@@ -93,7 +107,7 @@ public class N_ATK : MonoBehaviour
 
         yield return new WaitForSeconds(windup);
 
-        // ¡Ú ¿©±â¼­¸¸ attack.baseStats¸¦ ÀĞ¾î »ç¿ë (·±Å¸ÀÓ º¯°æ ¹İ¿µ)
+        // â˜… ì—¬ê¸°ì„œë§Œ attack.baseStatsë¥¼ ì½ì–´ ì‚¬ìš© (ëŸ°íƒ€ì„ ë³€ê²½ ë°˜ì˜)
         DoHitbox(attack.baseStats.baseDamage,
                  attack.baseStats.baseKnockback,
                  attack.baseStats.baseRange,
@@ -101,7 +115,7 @@ public class N_ATK : MonoBehaviour
 
         yield return new WaitForSeconds(active);
 
-        // ÃÖ¼Ò ÈÄµô + Äµ½½ °¡´É ÈÄµô
+        // ìµœì†Œ í›„ë”œ + ìº”ìŠ¬ ê°€ëŠ¥ í›„ë”œ
         float t = 0f;
         while (t < minRecovery) { t += Time.deltaTime; yield return null; }
         while (t < recovery)
@@ -121,17 +135,22 @@ public class N_ATK : MonoBehaviour
         }
         else
         {
-            comboIndex = 0;
             nextBuffered = false;
+
+            // ğŸ”¸ ìŠ¤í‚¬ ì‹œì „ ì¤‘(ì½¤ë³´ íƒ€ì´ë¨¸ ë™ê²°)ì´ë¼ë©´ ë‹¤ìŒ íƒ€ë¡œ ì´ì–´ì§€ë„ë¡ ì¸ë±ìŠ¤ ë³´ì¡´
+            if (IsComboFrozen)
+                comboIndex = Mathf.Min(step + 1, maxCombo - 1);
+            else
+                comboIndex = 0; // í‰ì†Œì²˜ëŸ¼ ë¦¬ì…‹
         }
         attackCo = null;
     }
 
     private IEnumerator LockMoveFor(float seconds, bool zeroVelocity = true)
     {
-        moveRef?.SetMovementLocked(true, false, zeroVelocity);
+        moveRef?.AddMovementLock(LOCK_NATK, false, zeroVelocity);
         yield return new WaitForSeconds(seconds);
-        moveRef?.SetMovementLocked(false, false);
+        moveRef?.RemoveMovementLock(LOCK_NATK, false);
         attackMoveLockCo = null;
         float lockTime = windup + active + recovery;
         combat?.BlockStaminaRegenFor(lockTime);
