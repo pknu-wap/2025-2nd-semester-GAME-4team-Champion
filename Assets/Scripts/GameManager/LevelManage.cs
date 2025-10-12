@@ -11,18 +11,19 @@ public class LevelManage : MonoBehaviour
 
     public TextMeshProUGUI leveltext;
     public int level = 1;
-    public int levelselectcount = 1;    //레벨업시 레벨업 창 뜨는 횟수 카운트
+    public int levelselectcount = 0;    //레벨업시 레벨업 창 뜨는 횟수 카운트
 
     public LevelUpSelect levelupselect; 
+    public DayTimer daytimer;
 
     void Start()
     {
         resetexp();
         if (level == 1 && exp == 0)
         {
-            levelupselect.settingRandom();
+            /*levelupselect.settingRandom();
             levelupselect.RandomSelect();
-            levelupselect.showLevelUp();
+            levelupselect.showLevelUp();*/
         }
     }
 
@@ -33,53 +34,35 @@ public class LevelManage : MonoBehaviour
 
     public void GetExp(int addexp)  //경험치 휙득 및 레벨업
     {
-        if  (level < 15)
+
+        exp += addexp;
+        resetexp();
+        if (exp >= maxexp)
         {
-            exp += addexp;
-            resetexp();
-            /*if (exp >= maxexp)
+            while (exp >= maxexp)
             {
-                level += exp/maxexp;
-                exp %= maxexp;
-            }*/
-            if (exp >= maxexp)
-            {
-                while (exp >= maxexp)
+            exp -= maxexp;
+                level += 1;
+                if (level == 5 || level == 10)
                 {
-                    exp -= maxexp;
-                    level += 1;
-                    if (level % 5 == 0)
-                    {   
-                        levelselectcount += 1;
-                    }
-                    if (levelselectcount >= 1)
-                    {
-                        levelupselect.settingRandom();
-                        levelupselect.RandomSelect();
-                        levelupselect.showLevelUp();
-            
-                    }
-                    
+
                 }
-                /*for (int i = 0; i <= (exp/maxexp); i++)
+                else
+                {   
+                    levelselectcount += 1;
+                }
+
+                if (levelselectcount >= 1)
                 {
-                    level += 1;
-                    exp -= maxexp;
-                    if (level % 5 == 0)
-                    {
-                        levelupselect.settingRandom();
-                        levelupselect.RandomSelect();
-                        levelupselect.showLevelUp();
-                    }
-                }*/
+                    levelupselect.settingRandom();
+                    levelupselect.RandomSelect();
+                    levelupselect.showLevelUp();
+                    daytimer.StopTimer();
+                }
+                
             }
-            
-            resetexp();
         }
-        else
-        {
-            level = 15;
-        }
+        resetexp();
     }
 
 

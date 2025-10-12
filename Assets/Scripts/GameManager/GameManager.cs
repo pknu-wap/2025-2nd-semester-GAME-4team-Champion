@@ -12,7 +12,9 @@ public class GameManager : MonoBehaviour
     public float currentstamina = 0f;
     public float playerstaminaregen = 2;
 
-    public List<int> playerpower = new List<int> { 0, 0 };    //플레이어 레벨업 선택시 능력치(저스트 가드시 적 스테미나, 가드시 스테미나 감소)
+    public float reducestamina = 0; //가드시 스테미나 감소량
+    public float gainhp= 0; //위빙 성공시 체력 회복
+
 
     public float regentime = 2f;    // 스테미나 회복 대기 시간
     private float lastactiontime;   //마지막으로 영향을 받은 시간
@@ -29,7 +31,7 @@ public class GameManager : MonoBehaviour
     public float enemystaminaregen = 2;
 
     public float enemyregentime = 2f;    // 스테미나 회복 대기 시간
-    private float enemylastactiontime;   //마지막으로 영향을 받은 시간
+    public float enemylastactiontime;   //마지막으로 영향을 받은 시간
 
     void Start()
     {
@@ -86,9 +88,9 @@ public class GameManager : MonoBehaviour
         lastactiontime = Time.time;
     }
 
-    public void guard() //가드 성공
+    public void guard(int down) //가드 성공
     {
-        currentstamina += (20 + playerpower[1]);
+        currentstamina += (down - reducestamina);
         if (currentstamina > maxstamina)
         {
             currentstamina = maxstamina;
@@ -98,10 +100,10 @@ public class GameManager : MonoBehaviour
         lastactiontime = Time.time;
     }
 
-    public void justguard() //저스트 가드 성공
+    public void justguard() //위빙(저스트 가드) 성공
     {
         currentstamina += 1;
-        enemycurrentstamina += (30 + playerpower[0]);
+        enemycurrentstamina += (30);
         if (currentstamina > maxstamina)
         {
             currentstamina = maxstamina;
@@ -111,6 +113,11 @@ public class GameManager : MonoBehaviour
             enemycurrentstamina = enemymaxstamina;
         }
 
+        if (currenthp + gainhp < maxhp) //위빙시 체력 회복
+        {
+            currenthp += gainhp;
+            resetcurrenthp();
+        }
         resetcurrentstamina();
         resetenemystamina();
 
@@ -135,6 +142,11 @@ public class GameManager : MonoBehaviour
                 c.a = 1000 * (hpbar[i].value - hpbar[i].minValue);
                 fillimage[i+6].color = c;
             }
+        }
+
+        if (currenthp > maxhp)
+        {
+            currenthp = maxhp;
         }
     }
 
