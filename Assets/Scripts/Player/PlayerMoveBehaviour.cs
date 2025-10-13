@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,25 +11,26 @@ public class PlayerMoveBehaviour : MonoBehaviour
     private float flipDeadzone = 0.05f;
     [SerializeField] private PlayerCombat combat;
 
-    private PlayerMove inputWrapper;   // .inputactions ÀÚµ¿ »ı¼º ·¡ÆÛ
+    private PlayerMove inputWrapper;
     private Vector2 movement;
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer sprite;
 
-    // ¿ÜºÎ¿¡¼­ ÀĞ±â/»ç¿ë
+    // ì™¸ë¶€ì—ì„œ ì½ê¸°/ì‚¬ìš©
     public Vector2 LastFacing { get; private set; } = Vector2.right;
     public Vector2 CurrentInput => movement;
 
-    // ÀÌµ¿ Àá±İ & °¡µå½Ã °¨¼Ó
-    private bool movementLocked = false;
+    // ì´ë™ ì ê¸ˆ & ê°€ë“œì‹œ ê°ì†
     private RigidbodyConstraints2D constraintsBeforeLock;
     private float guardSpeedScale = 1f;
+
+    // ë‹¤ì¤‘ ë½ ê´€ë¦¬(í‚¤ ê¸°ë°˜)
     private readonly HashSet<string> moveLocks = new HashSet<string>();
     private const string LegacyLock = "__LEGACY__";
     private bool IsMovementLocked => moveLocks.Count > 0;
 
-    // (¼±ÅÃ) ÀÌµ¿À¸·Î X-ÇÃ¸³ ¸·±â¿ë
+    // (ì„ íƒ) ì´ë™ìœ¼ë¡œ X-í”Œë¦½ ë§‰ê¸°ìš©
     private bool flipFromMovementBlocked = false;
 
     private void Awake()
@@ -39,6 +40,7 @@ public class PlayerMoveBehaviour : MonoBehaviour
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         if (!combat) combat = GetComponent<PlayerCombat>();
+        constraintsBeforeLock = rb.constraints; // ì´ˆê¸°ê°’ ì €ì¥
     }
 
     private void OnEnable() => inputWrapper.Enable();
@@ -48,7 +50,7 @@ public class PlayerMoveBehaviour : MonoBehaviour
     {
         movement = inputWrapper.Movement.Move.ReadValue<Vector2>();
 
-        if (!movementLocked && movement.sqrMagnitude > 0.0001f)
+        if (!IsMovementLocked && movement.sqrMagnitude > 0.0001f)
             LastFacing = movement.normalized;
 
         if (animator)
@@ -64,34 +66,31 @@ public class PlayerMoveBehaviour : MonoBehaviour
         AdjustFlipByX();
         Move();
     }
+
     private void Move()
     {
         if (IsMovementLocked) return;
 
-        // ÀüÅõ ÁßÀÌ¸é YÃà¸¸ ¹è¼ö Àû¿ë (±âÁ¸ ·ÎÁ÷ ±×´ë·Î)
         float yMul = (combat != null && combat.IsInCombat) ? combat.CombatYSpeedMul : 1f;
         float vx = movement.x * moveSpeed * guardSpeedScale;
         float vy = movement.y * moveSpeed * guardSpeedScale * yMul;
-        rb.linearVelocity = new Vector2(vx, vy);
+        rb.linearVelocity = new Vector2(vx, vy); // âœ… í‘œì¤€ ì†ì„±
     }
-
 
     private void AdjustFlipByX()
     {
         if (!sprite || flipFromMovementBlocked) return;
-
         float x = movement.x;
         if (Mathf.Abs(x) < flipDeadzone) return;
-
-        // ¿øº»ÀÌ ¿À¸¥ÂÊÀ» º¸´Â ½ºÇÁ¶óÀÌÆ®¶ó°í °¡Á¤
         sprite.flipX = (x < 0f);
     }
 
-    // ===== ¿ÜºÎ Á¦¾î API =====
-    // Ãß°¡: Å° ±â¹İ Àá±İ API (±âÁ¸ SetMovementLockedµµ ÇÔ²² À¯Áö)
+    // ===== ì™¸ë¶€ ì œì–´ API =====
     public void AddMovementLock(string key, bool hardFreezePhysics = false, bool zeroVelocity = true)
     {
         if (string.IsNullOrEmpty(key)) key = "__ANON__";
+        bool firstLock = moveLocks.Count == 0;
+
         if (moveLocks.Add(key))
         {
             if (zeroVelocity)
@@ -101,7 +100,10 @@ public class PlayerMoveBehaviour : MonoBehaviour
             }
             if (hardFreezePhysics)
             {
-                constraintsBeforeLock = rb.constraints;
+                // ì²« ì ê¸ˆ ì‹œì ì˜ ì œì•½ì„ ì €ì¥í•´ ë‘ê³  Freeze
+                if (firstLock)
+                    constraintsBeforeLock = rb.constraints;
+
                 var keepRot = constraintsBeforeLock & RigidbodyConstraints2D.FreezeRotation;
                 rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY | keepRot;
             }
@@ -112,25 +114,26 @@ public class PlayerMoveBehaviour : MonoBehaviour
     public void RemoveMovementLock(string key, bool hardFreezePhysics = false)
     {
         if (string.IsNullOrEmpty(key)) key = "__ANON__";
-        if (moveLocks.Remove(key))
+        if (!moveLocks.Remove(key)) return;
+
+        //  ë§ˆì§€ë§‰ ë½ì´ í•´ì œë˜ëŠ” ìˆœê°„, ëˆ„ê°€ í•´ì œí•˜ë“  ë¬´ì¡°ê±´ ì œì•½ ë³µêµ¬
+        if (moveLocks.Count == 0)
         {
-            if (hardFreezePhysics && moveLocks.Count == 0)
-                rb.constraints = constraintsBeforeLock;
+            rb.constraints = constraintsBeforeLock;
         }
     }
 
-    // º¯°æ: ±âÁ¸ API´Â ·¹°Å½Ã Å°·Î ·¡ÇÎÇÏ¿© ÇÏÀ§È£È¯ À¯Áö
+    // ê¸°ì¡´ APIëŠ” ë ˆê±°ì‹œ í‚¤ë¡œ ë˜í•‘í•˜ì—¬ í•˜ìœ„í˜¸í™˜ ìœ ì§€
     public void SetMovementLocked(bool locked, bool hardFreezePhysics = true, bool zeroVelocity = true)
     {
         if (locked) AddMovementLock(LegacyLock, hardFreezePhysics, zeroVelocity);
         else RemoveMovementLock(LegacyLock, hardFreezePhysics);
     }
 
-
     public void SetGuardSpeedScale(float scale) => guardSpeedScale = Mathf.Max(0f, scale);
 
-    // (¼±ÅÃ) ´Ù¸¥ µ¥¼­ È£ÃâÇÏ·Á¸é
     public void SetFlipFromMovementBlocked(bool blocked) => flipFromMovementBlocked = blocked;
+
     public void FaceTargetX(float targetX)
     {
         if (!sprite) return;

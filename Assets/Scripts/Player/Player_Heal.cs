@@ -1,12 +1,7 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-/// <summary>
-/// ÂªÀº Èú ¾×¼Ç(Â÷Áö ¼ÒºñÇü).
-/// - ¾ÈÁ¤È­: Å° ±â¹İ ÀÌµ¿¶ô("HEAL"), ÄÚ·çÆ¾ Á¤¸®
-/// - ÅÂ±×: ½ÃÀÛ/Á¾·á
-/// </summary>
 public class Player_Heal : MonoBehaviour
 {
     [Header("Config")]
@@ -22,6 +17,13 @@ public class Player_Heal : MonoBehaviour
     [SerializeField] private PlayerCombat combat;
     [SerializeField] private PlayerMoveBehaviour moveRef;
     [SerializeField] private Animator animator;
+
+    // ğŸ”¸ Heal ì„±ê³µ VFX
+    [Header("VFX (On Success)")]
+    [SerializeField] private GameObject healSuccessVFX;
+    [SerializeField] private bool healVfxAttachToPlayer = true;
+    [SerializeField] private Vector2 healVfxOffset = new Vector2(0f, 0f);
+    [SerializeField] private float healVfxLifetime = 1.2f;
 
     private PlayerMove inputWrapper;
     private InputAction healAction;
@@ -67,7 +69,7 @@ public class Player_Heal : MonoBehaviour
         if (healAction != null)
             healAction.performed += OnHealPerformed;
         else
-            Debug.LogWarning("[Player_Heal] 'Heal' ¾×¼ÇÀÌ ¾ø½À´Ï´Ù.");
+            Debug.LogWarning("[Player_Heal] 'Heal' ì•¡ì…˜ì´ ì—†ìŠµë‹ˆë‹¤.");
     }
 
     private void OnDisable()
@@ -82,7 +84,7 @@ public class Player_Heal : MonoBehaviour
 
         if (IsHealing)
         {
-            // °­Á¦ Á¾·á ÅÂ±×
+            // ê°•ì œ ì¢…ë£Œ íƒœê·¸
             OnTag?.Invoke(TAG_HEAL_END);
         }
 
@@ -107,7 +109,7 @@ public class Player_Heal : MonoBehaviour
         healCo = StartCoroutine(HealRoutine());
     }
 
-    /// <summary>Èú °­Á¦ Ãë¼Ò. refundCharge=true ½Ã Â÷Áö 1È¸ ¹İÈ¯.</summary>
+    /// <summary>í ê°•ì œ ì·¨ì†Œ. refundCharge=true ì‹œ ì°¨ì§€ 1íšŒ ë°˜í™˜.</summary>
     public void CancelHealing(bool refundCharge = false)
     {
         if (!IsHealing) return;
@@ -122,7 +124,7 @@ public class Player_Heal : MonoBehaviour
         moveRef?.RemoveMovementLock(LOCK_HEAL, false);
         if (animator) animator.SetBool("Healing", false);
 
-        // ÅÂ±×: Á¾·á
+        // íƒœê·¸: ì¢…ë£Œ
         OnTag?.Invoke(TAG_HEAL_END);
     }
 
@@ -135,23 +137,50 @@ public class Player_Heal : MonoBehaviour
     private IEnumerator HealRoutine()
     {
         IsHealing = true;
-        OnTag?.Invoke(TAG_HEAL_START); // ÅÂ±×: ½ÃÀÛ
+        OnTag?.Invoke(TAG_HEAL_START); // íƒœê·¸: ì‹œì‘
 
         combat?.BlockStaminaRegenFor(healDuration);
         combat?.StartActionLock(healDuration, true);
 
         moveRef?.AddMovementLock(LOCK_HEAL, false, true);
-        if (animator) animator.SetBool("Healing", true);
+        if (animator) animator.SetTrigger("HealStart");
 
         yield return new WaitForSeconds(healDuration);
 
+        // === ì‹¤ì œ í ì ìš© ===
         if (combat != null) combat.Heal(+combat.HPMax * healAmount);
+
+        // ğŸ”¸ í ì„±ê³µ VFX (ë”± ì—¬ê¸°ë§Œ ì¶”ê°€)
+        SpawnHealSuccessVFX();
 
         IsHealing = false;
         moveRef?.RemoveMovementLock(LOCK_HEAL, false);
-        if (animator) animator.SetBool("Healing", false);
         healCo = null;
 
-        OnTag?.Invoke(TAG_HEAL_END); // ÅÂ±×: Á¾·á
+        OnTag?.Invoke(TAG_HEAL_END); // íƒœê·¸: ì¢…ë£Œ
+    }
+
+    private void SpawnHealSuccessVFX()
+    {
+        if (!healSuccessVFX) return;
+
+        var go = Instantiate(healSuccessVFX, transform.position, Quaternion.identity);
+
+        // VFXê°€ ì¢Œ/ìš° ë°˜ì „ì„ ë”°ë¼ê°€ë„ë¡(ìˆìœ¼ë©´ ì‚¬ìš©)
+        var sr = GetComponentInChildren<SpriteRenderer>();
+        var follower = go.GetComponent<VFXFollowFlip>();
+        if (sr && follower == null) follower = go.AddComponent<VFXFollowFlip>();
+
+        if (follower != null)
+        {
+            follower.Init(transform, sr, healVfxOffset, healVfxAttachToPlayer);
+        }
+        else
+        {
+            if (healVfxAttachToPlayer) { go.transform.SetParent(transform, true); go.transform.localPosition += (Vector3)healVfxOffset; }
+            else { go.transform.position += (Vector3)healVfxOffset; }
+        }
+
+        if (healVfxLifetime > 0f) Destroy(go, healVfxLifetime);
     }
 }

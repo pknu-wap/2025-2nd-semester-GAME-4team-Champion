@@ -51,7 +51,7 @@ public class N_ATK : MonoBehaviour
     public PlayerHit Hit => hit;
     public bool IsStaminaBroken => defense != null && defense.IsStaminaBroken;
     public bool IsParryLocked => defense != null && defense.IsParryLocked;
-    public bool InHitstun => hit != null && hit.InHitstun;
+    public bool InHitstun => hit != null && hit.inHitstun;
 
     public bool IsAttacking => isAttacking;
     private void Awake()
@@ -75,7 +75,7 @@ public class N_ATK : MonoBehaviour
 
     public void OnAttackStarted()
     {
-        if (combat != null && (defense.IsStaminaBroken || hit.InHitstun || defense.IsParryLocked)) return;
+        if (combat != null && (defense.IsStaminaBroken || hit.inHitstun || defense.IsParryLocked)) return;
 
         if (isAttacking)
         {

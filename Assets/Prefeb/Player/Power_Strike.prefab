@@ -55,10 +55,13 @@ MonoBehaviour:
   knockMul: 1.5
   rangeMul: 1
   radiusMul: 1
-  triggerName: Skill_PowerStrike
+  triggerName: PowerStrike
   lockMoveDuringSkill: 1
   cooldownSeconds: 8
-  vfxPrefab: {fileID: 0}
+  vfxPrefab: {fileID: 4550023586731943255, guid: 94f4ada598e888041a4c2526056713ff, type: 3}
   vfxOffset: {x: 0.6, y: 0}
   attachToPlayer: 1
-  flipOnLeft: 1
+  vfxStartDelay: 0.5
+  vfxFadeIn: 0.05
+  vfxHold: 0
+  vfxFadeOut: 0.5

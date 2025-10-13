@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,7 +9,7 @@ public class PlayerHit : MonoBehaviour
     [Header("References")]
     [SerializeField] private PlayerCombat combat;          // HP/STM/전투/전역락
     [SerializeField] private PlayerDefense defense;        // 가드/위빙(패링) 판정 & 락
-    [SerializeField] private PlayerAttack attack;          // Weaving 인덱스 전달/카운터 창
+    [SerializeField] private PlayerAttack attack;          // 카운터/위빙 인덱스 전달
     [SerializeField] private Player_Heal healer;           // (선택) 치유 중단용
     [SerializeField] private PlayerMoveBehaviour moveRef;  // 이동락/바라보는 방향
     [SerializeField] private Animator animator;
@@ -23,6 +24,7 @@ public class PlayerHit : MonoBehaviour
     [SerializeField] private float staminaLossOnHitMul = 1.0f;    // 피격 시 스태미나 추가 감소 배수
 
     [Header("Animation Variants")]
+        [SerializeField] private bool playWeavingAnimOnParry = false;
     [SerializeField] private int weavingVariants = 3;       // Weaving1..N
     [SerializeField] private int hitVariants = 3;           // Hit1..N
 
@@ -35,18 +37,30 @@ public class PlayerHit : MonoBehaviour
     public const string TAG_GOT_HIT = "Tag.GotHit";
     public event System.Action<string> OnTag; // GameManager/Enemy에서 구독
 
+    // === 인터럽트 방송용 구조체 & 버퍼 ===
+    public struct HitInterruptInfo
+    {
+        public bool Blocked;     // 가드 피해인지
+        public bool Parried;     // 패링 성공인지
+        public float Damage;     // 실제 들어간 피해(감쇠 후)
+        public GameObject Attacker;
+    }
+    private static readonly List<IHitInterruptListener> _listenersBuf = new List<IHitInterruptListener>(8);
+
     // === 상태 ===
-    private bool inHitstun = false;
+    private bool _inHitstun = false;        // 내부용 필드(이름 변경)
     private bool invulnWhileDead = false;
     private float hitstunEndTime = 0f;
     private float iFrameEndTime = 0f;
     private Coroutine hitstunCo;
-
-    // 랜덤 애니 중복 방지
     private int lastWeavingIdx = -1;
     private int lastHitIdx = -1;
 
-    public bool InHitstun => inHitstun;
+    // 🔸 외부에서 안전하게 읽게 해주는 공개 프로퍼티(읽기 전용)
+    public bool InHitstun => _inHitstun;
+
+    // 🔸 기존 외부 코드 호환용(소문자 이름으로 접근해도 동작)
+    public bool inHitstun => _inHitstun;
 
     private void Awake()
     {
@@ -68,6 +82,7 @@ public class PlayerHit : MonoBehaviour
         if (!attack) attack = GetComponent<PlayerAttack>();
     }
 
+    // 🔸 다른 곳에서 이걸 호출한다면 유지가 필요합니다. (없으면 호출부만 제거해도 무방)
     public void Bind(PlayerCombat c, PlayerMoveBehaviour m, Animator a, Rigidbody2D rigid = null)
     {
         combat = c; moveRef = m; animator = a; rb = rigid ? rigid : rb;
@@ -82,81 +97,70 @@ public class PlayerHit : MonoBehaviour
     {
         invulnWhileDead = on;
 
-        // 죽는 순간 남은 히트스턴/락도 즉시 해제(옵션이지만 안전)
         if (on)
         {
-            inHitstun = false;
+            _inHitstun = false;
             if (hitstunCo != null) { StopCoroutine(hitstunCo); hitstunCo = null; }
             moveRef?.RemoveMovementLock("HITSTUN", hardFreezePhysics: false);
         }
     }
 
+    /// <summary>공격에 맞았을 때 들어오는 공통 진입점</summary>
     public void OnHit(float damage, float knockback, Vector2 hitDir, bool parryable,
                       GameObject attacker = null, float hitstun = -1f)
     {
-        if (invulnWhileDead || (combat != null && combat.HP <= 0f))
-            return;
+        if (invulnWhileDead || (combat != null && combat.HP <= 0f)) return;
+        if (Time.time < iFrameEndTime) return; // i-frame
 
-        // i-프레임 중이면 무시
-        if (Time.time < iFrameEndTime) return;
-
-        // 치유 중이면 즉시 중단
         if (healer && healer.IsHealing) healer.CancelHealing();
 
-        // 전투 진입
         combat?.EnterCombat("GotHit");
 
-        // 방향 준비
         Vector2 facing = FacingOrRight();
         Vector2 toEnemy = -hitDir.normalized; // 플레이어→적
 
-        // 방어/위빙 판정 (정면 콘/패링 윈도는 PlayerDefense가 담당)
+        // 1) 방어/위빙(패링) 시스템 우선 판정
         var outcome = defense ? defense.Evaluate(facing, toEnemy, parryable) : DefenseOutcome.None;
 
-        // ===== 위빙(패링) 성공 =====
-        if (outcome == DefenseOutcome.Parry)
+        // 2) 스킬의 패링 윈도우 검사 (자식 방향 전체 스캔)
+        IParryWindowProvider activeParry = FindActiveParryWindow();
+        if (activeParry != null)
         {
-            var parryProvider = GetComponentInParent<IParryWindowProvider>();
-            bool parryBySkill = parryProvider != null && parryProvider.IsParryWindowActive;
-            if (parryBySkill)
+            // 정책: parryable == false면 강제 패링하지 않음 (필요시 허용 가능)
+            if (parryable)
             {
                 outcome = DefenseOutcome.Parry;
-                parryProvider.OnParrySuccess();
+                activeParry.OnParrySuccess();
             }
+        }
 
+        // 3) 결과 처리
+        if (outcome == DefenseOutcome.Parry)
+        {
             if (debugLogs) Debug.Log($"[WEAVING OK] t={Time.time:F2}s, attacker={(attacker ? attacker.name : "null")}");
-            OnTag?.Invoke(TAG_WEAVING_SUCCESS); // ★ 태그 이벤트 발행
 
-            // 인덱스 1회만 뽑고 즉시 중복 방지
+            OnTag?.Invoke(TAG_WEAVING_SUCCESS);
+
             int idx = NextVariantNoRepeat(Mathf.Max(1, weavingVariants), lastWeavingIdx);
             lastWeavingIdx = idx;
+            animator?.SetTrigger($"Weaving{idx}");
+            attack?.SetLastWeavingIndex(idx);
 
-            // 위빙 애니/공격 카운터 매칭
-            if (animator) animator.SetTrigger($"Weaving{idx}");
-            if (attack) attack.SetLastWeavingIndex(idx);
-
-            // (선택) 패링 콜백
             var parryableTarget = attacker ? attacker.GetComponent<IParryable>() : null;
             parryableTarget?.OnParried(transform.position);
 
-            // 락/가드 유지/리게인
             float windowEnd = defense.LastBlockPressedTime + defense.ParryWindow;
             float lockDur = Mathf.Max(0f, (windowEnd + defense.PostHold) - Time.time);
             defense.StartParryLock(lockDur, true);
             defense.ForceBlockFor(lockDur);
             defense.OnWeavingSuccessRegain();
 
-            if (attack)
-            {
-                attack.ArmCounter(lockDur * 2f);
-                if (debugLogs) Debug.Log($"[COUNTER-ARM] idx={idx}, window={(lockDur * 2f):F2}s");
-            }
+            if (attack) attack.ArmCounter(lockDur * 2f);
 
             iFrameEndTime = Time.time + 0.05f;
-            return;
+            return; // 패링 성공 시 종료(스킬 인터럽트 방송 X)
         }
 
-        // ===== 일반 가드 성공 =====
         if (outcome == DefenseOutcome.Block)
         {
             float finalDamage = damage * defense.BlockDamageMul;
@@ -165,35 +169,83 @@ public class PlayerHit : MonoBehaviour
             combat?.ApplyDamage(finalDamage);
             ApplyKnockbackXOnly(toEnemy, finalKnock);
 
-            // 스태미나 감소 & 브레이크 처리
             float guardSpend = damage * defense.GuardHitStaminaCostMul;
-            combat.AddStamina(-guardSpend);
-            defense.RegisterGuardHitStaminaCost(guardSpend);
-            if (combat && combat.Stamina <= 0f) defense.TriggerStaminaBreak();
+            if (!(combat && combat.IsStaminaBroken))
+            {
+                combat.AddStamina(-guardSpend);
+                defense.RegisterGuardHitStaminaCost(guardSpend);
+                if (combat && combat.Stamina <= 0f) defense.TriggerStaminaBreak();
+            }
             else
             {
                 float stun = (hitstun >= 0f ? hitstun : baseHitstun) * blockHitstunMul;
-                StartHitstun(stun, playHitAnim: false); // 가드 중 Hit 애니 금지
+                StartHitstun(stun, playHitAnim: false);
             }
 
             animator?.SetTrigger("BlockHit");
-            OnTag?.Invoke(TAG_GUARD_SUCCESS); // ★ 태그 이벤트 발행
+            OnTag?.Invoke(TAG_GUARD_SUCCESS);
+
+            // 가드시에도 스킬 인터럽트 방송(요청 사양)
+            NotifyHitInterrupt(blocked: true, parried: false, damageApplied: finalDamage, attacker);
             return;
         }
 
-        // ===== 가드 실패 / 측·후방 / 비방어 =====
+        // ===== 가드 실패 / 비방어 =====
         combat?.ApplyDamage(damage);
         combat?.StartActionLock(actionLockOnUnguardedHit, false);
         ApplyKnockbackXOnly(toEnemy, knockback);
 
-        // 피격 시 스태미나 감소
-        if (combat) combat.AddStamina(-damage * staminaLossOnHitMul);
+        if (!(combat && combat.IsStaminaBroken))
+        {
+            combat.AddStamina(-damage * staminaLossOnHitMul);
+        }
         if (combat && combat.Stamina <= 0f) defense.TriggerStaminaBreak();
 
         float stunRaw = (hitstun >= 0f ? hitstun : baseHitstun);
         StartHitstun(stunRaw, playHitAnim: true);
 
-        OnTag?.Invoke(TAG_GOT_HIT); // ★ 태그 이벤트 발행
+        OnTag?.Invoke(TAG_GOT_HIT);
+
+        // 스킬 인터럽트 방송
+        NotifyHitInterrupt(blocked: false, parried: false, damageApplied: damage, attacker);
+    }
+
+    /// <summary>플레이어 자식 트리에서 "현재 열려 있는" 패링 윈도우 제공자를 찾아 반환</summary>
+    private IParryWindowProvider FindActiveParryWindow()
+    {
+        var providers = GetComponentsInChildren<IParryWindowProvider>(true);
+        for (int i = 0; i < providers.Length; i++)
+        {
+            var p = providers[i];
+            if (p != null && p.IsParryWindowActive) return p;
+        }
+        return null;
+    }
+
+    // === 스킬 인터럽트 방송 ===
+    private void NotifyHitInterrupt(bool blocked, bool parried, float damageApplied, GameObject attacker)
+    {
+        if (parried) return;
+
+        _listenersBuf.Clear();
+        GetComponentsInChildren(_listenersBuf); // 플레이어 트리 아래의 모든 Listener 수집
+
+        var info = new HitInterruptInfo
+        {
+            Blocked = blocked,
+            Parried = parried,
+            Damage = damageApplied,
+            Attacker = attacker
+        };
+
+        for (int i = 0; i < _listenersBuf.Count; i++)
+        {
+            try { _listenersBuf[i].OnPlayerHitInterrupt(info); }
+            catch (System.SystemException e)
+            {
+                if (debugLogs) Debug.LogWarning($"[Interrupt] listener error: {e.Message}");
+            }
+        }
     }
 
     // X축 넉백만 적용(상하 미끄러짐 방지)
@@ -205,6 +257,7 @@ public class PlayerHit : MonoBehaviour
             x = (moveRef && Mathf.Abs(moveRef.LastFacing.x) > 0.0001f)
               ? Mathf.Sign(moveRef.LastFacing.x) : 1f;
 
+        // ✅ Rigidbody2D의 올바른 속성은 velocity 입니다.
         rb.linearVelocity = new Vector2(x * force, 0f);
     }
 
@@ -217,7 +270,6 @@ public class PlayerHit : MonoBehaviour
         hitstunEndTime = Mathf.Max(hitstunEndTime, end);
         if (hitstunCo == null) hitstunCo = StartCoroutine(HitstunRoutine());
 
-        // 물리는 살리고 조작만 잠금
         moveRef?.AddMovementLock("HITSTUN", hardFreezePhysics: false, zeroVelocity: true);
 
         if (playHitAnim) PlayRandomHit_NoImmediateRepeat();
@@ -225,9 +277,9 @@ public class PlayerHit : MonoBehaviour
 
     private IEnumerator HitstunRoutine()
     {
-        inHitstun = true;
+        _inHitstun = true;
         while (Time.time < hitstunEndTime) yield return null;
-        inHitstun = false;
+        _inHitstun = false;
         moveRef?.RemoveMovementLock("HITSTUN", hardFreezePhysics: false);
         hitstunCo = null;
     }
@@ -241,15 +293,15 @@ public class PlayerHit : MonoBehaviour
     {
         hitstunEndTime = Time.time;
         if (hitstunCo != null) { StopCoroutine(hitstunCo); hitstunCo = null; }
-        inHitstun = false;
+        _inHitstun = false;
         moveRef?.RemoveMovementLock("HITSTUN", hardFreezePhysics: false);
     }
 
     private void OnDisable()
     {
         if (hitstunCo != null) { StopCoroutine(hitstunCo); hitstunCo = null; }
-        inHitstun = false;
-        moveRef?.RemoveMovementLock("HITSTUN", false); // 잔존락 제거
+        _inHitstun = false;
+        moveRef?.RemoveMovementLock("HITSTUN", false);
     }
 
     // ===== 랜덤 애니: 즉시 중복 방지 버전 =====
@@ -269,12 +321,10 @@ public class PlayerHit : MonoBehaviour
         animator.SetTrigger($"Hit{idx}");
     }
 
-    // (Weaving 인덱스 수동 재생용 보조)
     public void PlayWeaving(int idx)
     {
         if (!animator) return;
         idx = Mathf.Clamp(idx, 1, Mathf.Max(1, weavingVariants));
-        // 수동 호출 시에도 lastWeavingIdx 갱신
         lastWeavingIdx = idx;
         animator.SetTrigger($"Weaving{idx}");
     }

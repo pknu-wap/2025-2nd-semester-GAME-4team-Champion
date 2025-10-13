@@ -1,12 +1,12 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 /// <summary>
-/// »ç¸Á ½Ã ÀÏÁ¤ ½Ã°£ µ¿¾È Attack ¿¬Å¸·®¿¡ ºñ·ÊÇØ ÀÏÁ¤ Ã¼·ÂÀ¸·Î ºÎÈ°.
-/// - ÄÚ·çÆ¾ ¾ÈÁ¤È­: try/finally·Î ¶ô/ÀÔ·Â/»óÅÂ È®½ÇÈ÷ Á¤¸®
-/// - ÀÌµ¿¶ô: Å° ±â¹İ("REVIVE")
-/// - ÅÂ±×: Mash(Å¬¸¯ ¼ö), Success/Fail
+/// ì‚¬ë§ ì‹œ ì¼ì • ì‹œê°„ ë™ì•ˆ Attack ì—°íƒ€ëŸ‰ì— ë¹„ë¡€í•´ ì¼ì • ì²´ë ¥ìœ¼ë¡œ ë¶€í™œ.
+/// - try/finallyë¡œ ë½/ì…ë ¥/ìƒíƒœ í™•ì‹¤íˆ ì •ë¦¬
+/// - ì´ë™ë½: í‚¤ ê¸°ë°˜("REVIVE", "REVIVE_SUCCESS")
+/// - íƒœê·¸: Mash(í´ë¦­ ìˆ˜), Success/Fail
 /// </summary>
 public class Player_Revive : MonoBehaviour
 {
@@ -14,7 +14,7 @@ public class Player_Revive : MonoBehaviour
     [SerializeField] private PlayerCombat combat;
     [SerializeField] private PlayerMoveBehaviour moveRef;
     [SerializeField] private Animator animator;
-    [SerializeField] private PlayerHit hit; // Á×À» ¶§ ¹«Àû OFF ÀüÈ¯¿ë
+    [SerializeField] private PlayerHit hit; // ì£½ìŒ ë¬´ì  OFF ì „í™˜ìš©
 
     [Header("Revive (Mashing) Settings")]
     [SerializeField] private int maxRevives = 2;
@@ -23,13 +23,23 @@ public class Player_Revive : MonoBehaviour
     [SerializeField] private int pressesForMax = 30;
     [SerializeField] private string attackActionName = "Attack";
 
+    [Header("Movement Lock During Revive (Casting)")]
+    [SerializeField] private bool lockMovementHardDuringRevive = true; // ì°½ ë™ì•ˆ ì™„ì „ ê³ ì •(ë¬¼ë¦¬ Freeze)
+    [SerializeField] private bool blockFlipDuringRevive = true;
+
+    [Header("Movement Lock After Success")]
+    [SerializeField] private bool lockMovementOnSuccess = true;     // âœ… ì„±ê³µ ì§í›„ì—ë„ ì ê¸ˆ
+    [SerializeField] private float successLockDuration = 0.6f;      // âœ… ì ê¸ˆ ìœ ì§€ ì‹œê°„
+    [SerializeField] private bool hardFreezeOnSuccess = true;       // âœ… ë¬¼ë¦¬ Freeze í¬í•¨ ì—¬ë¶€
+    [SerializeField] private bool blockFlipOnSuccess = true;        // âœ… ì„±ê³µ ë½ ë™ì•ˆ Flip ì°¨ë‹¨
+
     [Header("Debug")]
     [SerializeField] private bool debugLogs = false;
 
     // ===== Tag system =====
-    public const string TAG_REVIVE_MASH = "Tag.Revive.Mash";     // °ª: ´©Àû Å¬¸¯ ¼ö (OnTagInt)
-    public const string TAG_REVIVE_SUCCESS = "Tag.Revive.Success";  // ¼º°ø ½Ã
-    public const string TAG_REVIVE_FAIL = "Tag.Revive.Fail";     // ½ÇÆĞ ½Ã
+    public const string TAG_REVIVE_MASH = "Tag.Revive.Mash";     // ê°’: ëˆ„ì  í´ë¦­ ìˆ˜ (OnTagInt)
+    public const string TAG_REVIVE_SUCCESS = "Tag.Revive.Success";
+    public const string TAG_REVIVE_FAIL = "Tag.Revive.Fail";
     public event System.Action<string> OnTag;
     public event System.Action<string, int> OnTagInt;
 
@@ -43,8 +53,9 @@ public class Player_Revive : MonoBehaviour
     private PlayerMove inputWrapper;
     private InputAction attackAction;
 
-    // Lock key
+    // Lock keys
     private const string LOCK_REVIVE = "REVIVE";
+    private const string LOCK_REVIVE_SUCCESS = "REVIVE_SUCCESS";
 
     public bool IsReviving => reviveActive;
     public int MashCount => mashCount;
@@ -66,7 +77,7 @@ public class Player_Revive : MonoBehaviour
         inputWrapper = new PlayerMove();
     }
 
-    /// <summary>»ç¸Á ½Ã PlayerCombat.OnDeath()¿¡¼­ È£Ãâ</summary>
+    /// <summary>ì‚¬ë§ ì‹œ PlayerCombat.OnDeath()ì—ì„œ í˜¸ì¶œ</summary>
     public bool BeginReviveIfAvailable()
     {
         if (reviveActive) return false;
@@ -86,15 +97,21 @@ public class Player_Revive : MonoBehaviour
         mashCount = 0;
         windowEnd = Time.time + reviveWindowSec;
 
-        // ÀÔ·Â ¼¼ÆÃ
+        // ì…ë ¥ ì„¸íŒ… (ì—°íƒ€ ê°ì§€ ì „ìš©)
         inputWrapper.Enable();
         attackAction = inputWrapper.asset.FindAction(attackActionName);
         if (attackAction != null) attackAction.started += OnMash;
-        else if (debugLogs) Debug.LogWarning($"[Revive] '{attackActionName}' ¾×¼Ç ¾øÀ½.");
+        else if (debugLogs) Debug.LogWarning($"[Revive] '{attackActionName}' ì•¡ì…˜ ì—†ìŒ.");
 
-        // ÀÌµ¿¶ô + ÀüÅõ ÀÔ·Â ºñÈ°¼º
-        moveRef?.AddMovementLock(LOCK_REVIVE, hardFreezePhysics: false, zeroVelocity: true);
+        // ğŸ”’ ì´ë™ë½ + ì†ë„ 0 + (ì˜µì…˜) ë¬¼ë¦¬ ë™ê²° + (ì˜µì…˜) í”Œë¦½ ì°¨ë‹¨
+        moveRef?.AddMovementLock(
+            LOCK_REVIVE,
+            hardFreezePhysics: lockMovementHardDuringRevive,
+            zeroVelocity: true
+        );
+        if (blockFlipDuringRevive) moveRef?.SetFlipFromMovementBlocked(true);
 
+        // ì „íˆ¬ ì…ë ¥ ë¹„í™œì„±
         var atkHub = GetComponent<PlayerAttack>();
         var nAtk = GetComponent<N_ATK>();
         var cgAtk = GetComponent<CG_ATK>();
@@ -124,11 +141,11 @@ public class Player_Revive : MonoBehaviour
 
         try
         {
-            // Ã¢ À¯Áö
+            // ì°½ ìœ ì§€
             while (Time.time < windowEnd && combat != null && combat.HP <= 0f)
                 yield return null;
 
-            // È¸º¹ °è»ê
+            // íšŒë³µ ê³„ì‚°
             float ratio = (pressesForMax > 0) ? Mathf.Clamp01((float)mashCount / pressesForMax) : 1f;
             float healAmount = (combat != null ? combat.HPMax : 0f) * maxHealPercent * ratio;
 
@@ -136,15 +153,14 @@ public class Player_Revive : MonoBehaviour
 
             if (combat != null && healAmount > 0f)
             {
-                // ºÎÈ°!
+                // ë¶€í™œ!
                 combat.Heal(healAmount);
                 success = true;
 
-                // Á×À½ ¹«Àû OFF
+                // ì£½ìŒ ë¬´ì  OFF
                 hit?.SetDeadInvulnerable(false);
 
-                // Àá±İ/»óÅÂ º¹¿ø
-                moveRef?.RemoveMovementLock(LOCK_REVIVE, hardFreezePhysics: true);
+                // ìƒíƒœ ë³µì›
                 if (atkHub) atkHub.enabled = atkHubWas;
                 if (nAtk) nAtk.enabled = nAtkWas;
                 if (cgAtk) cgAtk.enabled = cgAtkWas;
@@ -156,31 +172,47 @@ public class Player_Revive : MonoBehaviour
                 moveRef?.SetGuardSpeedScale(1f);
                 animator?.SetTrigger("Revive");
 
-                // ÅÂ±×: ¼º°ø
+                // âœ… ì„±ê³µ ì§í›„ì—ë„ ì´ë™ ì ê¸ˆ ìœ ì§€(ì˜µì…˜)
+                if (lockMovementOnSuccess && moveRef != null)
+                {
+                    moveRef.AddMovementLock(LOCK_REVIVE_SUCCESS, hardFreezeOnSuccess, true);
+                    if (blockFlipOnSuccess) moveRef.SetFlipFromMovementBlocked(true);
+                    StartCoroutine(ReleaseSuccessLockAfterDelay(successLockDuration));
+                }
+
+                // íƒœê·¸: ì„±ê³µ
                 OnTag?.Invoke(TAG_REVIVE_SUCCESS);
             }
             else
             {
-                // ÅÂ±×: ½ÇÆĞ
+                // íƒœê·¸: ì‹¤íŒ¨
                 OnTag?.Invoke(TAG_REVIVE_FAIL);
             }
         }
         finally
         {
-            // ÀÔ·Â Á¤¸®
+            // ì…ë ¥ ì •ë¦¬
             if (attackAction != null) attackAction.started -= OnMash;
             inputWrapper.Disable();
 
-            // ¿ì¸® Å°ÀÇ ÀÌµ¿¶ô ÇØÁ¦(¼º°øÀÌ¸é ÀÌ¹Ì hardFreeze ÇØÁ¦)
-            moveRef?.RemoveMovementLock(LOCK_REVIVE, hardFreezePhysics: !success);
+            // ğŸ”“ ìºìŠ¤íŒ… ë½ í•´ì œ (ì„±ê³µ ë½ì€ ë³„ë„ë¡œ ë‚¨ì•„ ìˆì„ ìˆ˜ ìˆìŒ)
+            if (blockFlipDuringRevive) moveRef?.SetFlipFromMovementBlocked(false);
+            moveRef?.RemoveMovementLock(LOCK_REVIVE, hardFreezePhysics: false);
 
             reviveActive = false;
         }
     }
 
+    private IEnumerator ReleaseSuccessLockAfterDelay(float t)
+    {
+        if (t > 0f) yield return new WaitForSeconds(t);
+        if (blockFlipOnSuccess) moveRef?.SetFlipFromMovementBlocked(false);
+        moveRef?.RemoveMovementLock(LOCK_REVIVE_SUCCESS, hardFreezePhysics: hardFreezeOnSuccess);
+    }
+
     private void OnMash(InputAction.CallbackContext _)
     {
-        // ´©Àû & ÅÂ±×(°ª Æ÷ÇÔ)
+        // ëˆ„ì  & íƒœê·¸(ê°’ í¬í•¨)
         mashCount++;
         OnTagInt?.Invoke(TAG_REVIVE_MASH, mashCount);
 
@@ -195,7 +227,10 @@ public class Player_Revive : MonoBehaviour
             if (attackAction != null) attackAction.started -= OnMash;
             inputWrapper.Disable();
         }
+        // ëª¨ë“  ë½ ì•ˆì „ í•´ì œ
+        if (blockFlipDuringRevive || blockFlipOnSuccess) moveRef?.SetFlipFromMovementBlocked(false);
         moveRef?.RemoveMovementLock(LOCK_REVIVE, hardFreezePhysics: false);
+        moveRef?.RemoveMovementLock(LOCK_REVIVE_SUCCESS, hardFreezePhysics: hardFreezeOnSuccess);
         reviveActive = false;
     }
 }

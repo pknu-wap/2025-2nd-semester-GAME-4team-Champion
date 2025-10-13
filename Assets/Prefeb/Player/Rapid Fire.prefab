@@ -57,8 +57,27 @@ MonoBehaviour:
   maxDuration: 3
   hitsPerSecond: 5
   stopGraceAfterBase: 0.35
-  cooldownSeconds: 6
+  cooldownSeconds: 1
   animStartTrigger: RapidFire_Start
   animLoopBool: RapidFire_Loop
   animEndTrigger: RapidFire_End
   animFinishTrigger: RapidFire_Finish
+  rapidVFX:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  rapidVfxOffset: {x: 0, y: 0.2}
+  rapidAttachToPlayer: 0
+  rapidVfxStartDelay: 0
+  rapidVfxFadeIn: 0.02
+  rapidVfxHold: 0.1
+  rapidVfxFadeOut: 0.3
+  finisherVFX: {fileID: 4550023586731943255, guid: 94f4ada598e888041a4c2526056713ff, type: 3}
+  finisherVfxOffset: {x: 0, y: 0}
+  finisherAttachToPlayer: 0
+  finisherVfxStartDelay: 0.5
+  finisherVfxFadeIn: 0.02
+  finisherVfxHold: 0
+  finisherVfxFadeOut: 0.1

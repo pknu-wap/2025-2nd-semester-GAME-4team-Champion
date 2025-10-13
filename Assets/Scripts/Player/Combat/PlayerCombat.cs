@@ -21,6 +21,9 @@ public class PlayerCombat : MonoBehaviour
     private float staminaMax = 100f;
     private float staminaRegenPerSec = 25f;
     private float staminaBreakTime = 1.5f;
+    private float hp;
+    private float stamina;
+    public bool IsStaminaBroken { get; private set; } = false;
     private Player_Revive revive;
 
     public event Action<float, float> OnHealthChanged;   // (current, max)
@@ -45,10 +48,6 @@ public class PlayerCombat : MonoBehaviour
 
     public float RegenBlockExtra { get => regenBlockExtra; set => regenBlockExtra = Mathf.Max(0f, value); }
     public bool IsStaminaRegenBlocked => Time.time < noRegenUntil;
-
-    private float hp;
-    private float stamina;
-    public bool IsStaminaBroken { get; private set; } = false;
     public float HP => hp;
     public float HPMax => hpMax;
     public float Stamina => stamina;
@@ -207,7 +206,8 @@ public class PlayerCombat : MonoBehaviour
         GetComponent<PlayerHit>()?.SetDeadInvulnerable(true);
         moveRef?.SetMovementLocked(true, true);
         animator?.SetTrigger("Die");
-
+        animator?.ResetTrigger("Hit");
+        animator.SetBool("immune", false);
         if (deathCo != null) StopCoroutine(deathCo);
         deathCo = StartCoroutine(CoMarkDeadAndMaybeRevive());
     }
@@ -230,9 +230,11 @@ public class PlayerCombat : MonoBehaviour
     public void StartActionLock(float duration, bool zeroVelocityOnStart = false)
     {
         float until = Time.time + Mathf.Max(0f, duration);
-        if (until <= actionLockEndTime && actionLockCo != null) return; // 이미 더 길게 잠금
+        if (until <= actionLockEndTime && actionLockCo != null) return;
 
         actionLockEndTime = until;
+
+
         if (actionLockCo != null) StopCoroutine(actionLockCo);
         actionLockCo = StartCoroutine(ActionLockRoutine(zeroVelocityOnStart));
     }

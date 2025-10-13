@@ -21,14 +21,7 @@ GameObject:
   - component: {fileID: 308294729237397139}
   - component: {fileID: 3783610308665852847}
   - component: {fileID: 4481926030795619273}
-  - component: {fileID: 3146935903415370470}
-  - component: {fileID: 4943823797915319973}
-  - component: {fileID: 3492418815177415858}
-  - component: {fileID: 4496459476963941165}
-  - component: {fileID: 2569297535071903092}
-  - component: {fileID: 6864052987075308965}
   - component: {fileID: 1332311307344902613}
-  - component: {fileID: 8292456280804285135}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -252,6 +245,10 @@ MonoBehaviour:
   combat: {fileID: 2104005021133491782}
   moveRef: {fileID: 4079474712408179494}
   animator: {fileID: 6122205903531132171}
+  healSuccessVFX: {fileID: 8982581208070349644, guid: f9495f7e82f2d8e489effd87ed90f983, type: 3}
+  healVfxAttachToPlayer: 1
+  healVfxOffset: {x: 0, y: 0}
+  healVfxLifetime: 0.2
 --- !u!114 &8130335648973316733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,10 +266,16 @@ MonoBehaviour:
   animator: {fileID: 6122205903531132171}
   hit: {fileID: 0}
   maxRevives: 2
-  reviveWindowSec: 10
-  maxHealPercent: 0.5
+  reviveWindowSec: 3
+  maxHealPercent: 0.4
   pressesForMax: 30
   attackActionName: Attack
+  lockMovementHardDuringRevive: 1
+  blockFlipDuringRevive: 1
+  lockMovementOnSuccess: 1
+  successLockDuration: 0.6
+  hardFreezeOnSuccess: 1
+  blockFlipOnSuccess: 1
   debugLogs: 1
 --- !u!114 &2104005021133491782
 MonoBehaviour:
@@ -320,6 +323,7 @@ MonoBehaviour:
   blockHitstunMul: 0.5
   actionLockOnUnguardedHit: 0.6
   staminaLossOnHitMul: 1
+  playWeavingAnimOnParry: 0
   weavingVariants: 3
   hitVariants: 3
   debugLogs: 1
@@ -364,208 +368,15 @@ MonoBehaviour:
   animator: {fileID: 6122205903531132171}
   attackActionName: Attack
   chargeActionName: Charge
-  normalAtk: {fileID: 3146935903415370470}
-  chargeAtk: {fileID: 3492418815177415858}
-  counterAtk: {fileID: 4943823797915319973}
+  normalAtk: {fileID: 719947633008659139, guid: 69371c39689c3974892f4bf23bd8cb20, type: 3}
+  chargeAtk: {fileID: 2302877030648206405, guid: ae9e81d727dfc3743972931471b0d884, type: 3}
+  counterAtk: {fileID: 7594863098480470863, guid: e91ce5a0dce51174a881658b1d767d4e, type: 3}
   baseStats:
     baseDamage: 10
     baseKnockback: 6
     baseRange: 0.9
     baseRadius: 0.6
   weavingIndexForCounter: 1
---- !u!114 &3146935903415370470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4415293478567363716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cf49227f63f533428dca15b73a1d99c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  combat: {fileID: 2104005021133491782}
-  moveRef: {fileID: 4079474712408179494}
-  animator: {fileID: 6122205903531132171}
-  attack: {fileID: 0}
-  owner: {fileID: 0}
-  defense: {fileID: 0}
-  hit: {fileID: 0}
-  maxCombo: 4
-  comboGapMax: 1
-  lockMoveDuringAttack: 1
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 64
-  ignoreEnemyCollisionDuringActive: 1
-  extraIgnoreTime: 0.02
-  windup: 0.15
-  active: 0.06
-  recovery: 0.12
-  minRecovery: 0.05
---- !u!114 &4943823797915319973
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4415293478567363716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcbc8516c8a332545b78027f4d1c59b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  combat: {fileID: 2104005021133491782}
-  moveRef: {fileID: 4079474712408179494}
-  animator: {fileID: 6122205903531132171}
-  attack: {fileID: 4481926030795619273}
-  windup: 0.05
-  active: 0.06
-  recovery: 0.1
-  lockMoveDuringCounter: 1
-  damageMul: 2
-  knockMul: 2
-  rangeMul: 1.1
-  radiusMul: 1
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 64
-  ignoreEnemyCollisionDuringActive: 1
-  extraIgnoreTime: 0.02
---- !u!114 &3492418815177415858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4415293478567363716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d437dd6ed65c654994f2855decf6a68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  combat: {fileID: 2104005021133491782}
-  moveRef: {fileID: 4079474712408179494}
-  animator: {fileID: 6122205903531132171}
-  attack: {fileID: 4481926030795619273}
-  defense: {fileID: 3783610308665852847}
-  hit: {fileID: 308294729237397139}
-  windup: 0.15
-  active: 0.06
-  recovery: 0.12
-  chargeTime: 0.5
-  minHold: 0.12
-  lockMoveDuringCharge: 1
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 64
-  baseDamage: 10
-  baseKnockback: 6
-  baseRange: 0.9
-  baseRadius: 0.6
-  chargeDamageMul: 5
-  chargeKnockMul: 2
-  chargeRangeMul: 1.2
-  chargeRadiusMul: 1.2
---- !u!114 &4496459476963941165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4415293478567363716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8518b357aa884bf42861a108325b3462, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  combat: {fileID: 2104005021133491782}
-  attack: {fileID: 4481926030795619273}
-  moveRef: {fileID: 4079474712408179494}
-  animator: {fileID: 6122205903531132171}
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 64
-  damageMul: 1.5
-  knockMul: 1
-  rangeMul: 1
-  radiusMul: 1
-  windup: 0.1
-  active: 0.06
-  recovery: 0.12
-  zeroVelocityOnStart: 1
-  maxUsesPerSeries: 3
-  windowDuration: 3
-  cooldownDuration: 8
-  animTriggerBase: Combination
-  variants: 3
-  vfxPrefab: {fileID: 0}
-  vfxSpawnPoint: {fileID: 0}
-  vfxLifetime: 0.6
-  vfxFadeTime: 0.4
---- !u!114 &2569297535071903092
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4415293478567363716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4857037a13aff54a9cdd8776f425d92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attack: {fileID: 0}
-  combat: {fileID: 0}
-  moveRef: {fileID: 0}
-  animator: {fileID: 0}
-  enemyMaskOverride:
-    serializedVersion: 2
-    m_Bits: 64
-  knockMul: 1.2
-  rangeMul: 1
-  radiusMul: 1
-  windup: 0.08
-  active: 0.06
-  recovery: 0.24
-  fixed2xWindow: 0.5
-  fullChargeTime: 3
-  lockMoveDuringCharge: 1
-  cooldownSeconds: 8
-  chargeBool: Charging
-  fireTrigger: Uppercut
-  vfxPrefab: {fileID: 0}
-  vfxPoint: {fileID: 0}
-  vfxLifetime: 0.6
---- !u!114 &6864052987075308965
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4415293478567363716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a836053d7a59d94c83f551b74604400, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attack: {fileID: 0}
-  combat: {fileID: 0}
-  moveRef: {fileID: 0}
-  animator: {fileID: 0}
-  windup: 0.1
-  parryWindow: 0.2
-  recovery: 0.5
-  damageMulOnParry: 2.5
-  knockMul: 1
-  rangeMul: 1
-  radiusMul: 1
-  betweenHits: 0.1
-  cooldownSeconds: 5
-  animParryStartTrigger: ParryStart
-  animParrySuccessTrigger: ParrySuccess
-  animParryFailTrigger: ParryFail
 --- !u!114 &1332311307344902613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -588,36 +399,6 @@ MonoBehaviour:
   autoLearnOnStart: 1
   debugLogs: 0
   initialSkills:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
---- !u!114 &8292456280804285135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4415293478567363716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e7970b14e9ae4e48ac61b193e6d1978, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attack: {fileID: 4481926030795619273}
-  combat: {fileID: 2104005021133491782}
-  moveRef: {fileID: 4079474712408179494}
-  animator: {fileID: 6122205903531132171}
-  windup: 0.06
-  active: 0.06
-  recovery: 0.3
-  damageMul: 3
-  knockMul: 1.5
-  rangeMul: 1
-  radiusMul: 1
-  triggerName: Skill_PowerStrike
-  lockMoveDuringSkill: 1
-  cooldownSeconds: 1
-  vfxPrefab: {fileID: 4550023586731943255, guid: 94f4ada598e888041a4c2526056713ff, type: 3}
-  vfxOffset: {x: 0.6, y: 0}
-  attachToPlayer: 1
-  flipOnLeft: 1
+  - {fileID: 2801212621990124742, guid: 121d1e59a5b26fc42919ef6a331d1bff, type: 3}
+  - {fileID: 477632037043853310, guid: b9566f31b0567244583fd80c0f45bd0c, type: 3}
+  - {fileID: 5486950187532172470, guid: 924c085dac85e6341a9ea6f63fa86ec8, type: 3}

@@ -50,21 +50,26 @@ MonoBehaviour:
   animator: {fileID: 0}
   enemyMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   damageMul: 1.5
   knockMul: 1
   rangeMul: 2
   radiusMul: 1
   windup: 0.1
   active: 0.06
-  recovery: 0.12
+  recovery: 0.3
   zeroVelocityOnStart: 1
   maxUsesPerSeries: 3
   windowDuration: 3
   cooldownDuration: 8
   animTriggerBase: Combination
-  variants: 3
-  vfxPrefab: {fileID: 0}
-  vfxSpawnPoint: {fileID: 0}
-  vfxLifetime: 0.6
-  vfxFadeTime: 0.4
+  stepVFX:
+  - {fileID: 4550023586731943255, guid: 94f4ada598e888041a4c2526056713ff, type: 3}
+  - {fileID: 3683808320282051713, guid: feab01312e3a53643b95e78180034eeb, type: 3}
+  - {fileID: 2668384885870992709, guid: ed61945cae13d284e9014a2153ac3424, type: 3}
+  vfxOffset: {x: 0.7, y: 0}
+  vfxAttachToPlayer: 1
+  vfxStartDelay: 0
+  vfxFadeIn: 0.03
+  vfxHold: 0
+  vfxFadeOut: 0.35

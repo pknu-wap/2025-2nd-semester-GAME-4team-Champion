@@ -21,7 +21,7 @@ public class Skill_PowerStrike : MonoBehaviour, IPlayerSkill
     [SerializeField] private float knockMul = 1.5f;
     [SerializeField] private float rangeMul = 1.0f;
     [SerializeField] private float radiusMul = 1.0f;
-    [SerializeField] private string triggerName = "Skill_PowerStrike";
+    [SerializeField] private string triggerName = "PowerStrike";
     [SerializeField] private bool lockMoveDuringSkill = true;
 
     [Header("Cooldown")]
@@ -30,19 +30,24 @@ public class Skill_PowerStrike : MonoBehaviour, IPlayerSkill
     public float CooldownRemain => Mathf.Max(0f, (lastCastEndTime + cooldownSeconds) - Time.time);
     public bool IsOnCooldown => CooldownRemain > 0f;
 
-    [Header("VFX (optional)")]
+    [Header("VFX")]
+    [SerializeField] private float vfxScaleMul = 1f;
     [SerializeField] private GameObject vfxPrefab;
     [SerializeField] private Vector2 vfxOffset = new Vector2(0.6f, 0f);
     [SerializeField] private bool attachToPlayer = true;
-    [SerializeField] private bool flipOnLeft = true;
+    [SerializeField] private float vfxStartDelay = 0f;   // 🔸 시작 딜레이
+    [SerializeField] private float vfxFadeIn = 0.05f;    // 🔸 페이드 인
+    [SerializeField] private float vfxHold = 0.0f;       // 유지 시간(옵션)
+    [SerializeField] private float vfxFadeOut = 0.5f;    // 🔸 페이드 아웃
 
     // ==== TAG ====
     public const string TAG_POWERSTRIKE_CAST = "Tag.Skill.PowerStrike.Cast";
     public event System.Action<string> OnTag;
 
-    // reuse
     private static readonly HashSet<int> _seenIds = new HashSet<int>(32);
     private Coroutine castCo;
+    private SpriteRenderer _cachedPlayerSR;
+    private SpriteRenderer PlayerSR => _cachedPlayerSR ??= combat.GetComponentInChildren<SpriteRenderer>();
 
     private void Reset()
     {
@@ -55,25 +60,16 @@ public class Skill_PowerStrike : MonoBehaviour, IPlayerSkill
     public string SkillName => "PowerStrike";
 
     public bool TryCastSkill(PlayerCombat c, PlayerMoveBehaviour m, Animator a)
-    {
-        combat = c; moveRef = m; animator = a;
-        return TryCastInternal();
-    }
+    { combat = c; moveRef = m; animator = a; return TryCastInternal(); }
 
     public bool TryCastSkill(PlayerAttack owner, PlayerCombat c, PlayerMoveBehaviour m, Animator a)
-    {
-        attack = owner; combat = c; moveRef = m; animator = a;
-        return TryCastInternal();
-    }
+    { attack = owner; combat = c; moveRef = m; animator = a; return TryCastInternal(); }
 
     private bool TryCastInternal()
     {
         if (!combat || !moveRef || !animator) return false;
         if (IsOnCooldown) return false;
-
         if (combat.HP <= 0f) return false;
-        var reviver = combat.GetComponent<Player_Revive>(); if (reviver != null && reviver.IsReviving) return false;
-        var healer = combat.GetComponent<Player_Heal>(); if (healer != null && healer.IsHealing) return false;
         if (combat.IsActionLocked || combat.IsStaminaBroken) return false;
 
         if (castCo != null) StopCoroutine(castCo);
@@ -81,92 +77,90 @@ public class Skill_PowerStrike : MonoBehaviour, IPlayerSkill
         return true;
     }
 
+    private bool isCasting;
+
+    public void OnPlayerHitInterrupt(PlayerHit.HitInterruptInfo info)
+    {
+        if (!isCasting) return;
+        if (castCo != null) { StopCoroutine(castCo); castCo = null; }
+        isCasting = false;
+        animator?.ResetTrigger(triggerName);
+        moveRef?.RemoveMovementLock("LOCK_POWERSTRIKE", false);
+    }
+
     private IEnumerator CastRoutine()
     {
         float total = windup + active + recovery;
+        if (lockMoveDuringSkill) combat.StartActionLock(total, true);
 
-        if (lockMoveDuringSkill)
-            combat.StartActionLock(total, true);
-
-        var vfxCo = StartCoroutine(SpawnAndFadeVFX());
+        // VFX (시작 타이밍과 페이드 제어)
+        StartCoroutine(SpawnVFXWithFollowAndFade(vfxPrefab, vfxOffset, attachToPlayer,
+                                                 vfxStartDelay, vfxFadeIn, vfxHold, vfxFadeOut));
 
         // 선딜
         yield return new WaitForSeconds(windup);
 
-        // 애니메이션
-        if (!string.IsNullOrEmpty(triggerName))
-            animator.SetTrigger(triggerName);
+        if (!string.IsNullOrEmpty(triggerName)) animator.SetTrigger(triggerName);
 
-        // 🔸 태그: 공격 시전 시점
         OnTag?.Invoke(TAG_POWERSTRIKE_CAST);
 
-        // 히트 계산
-        var stats = (attack != null && attack.baseStats != null)
-            ? attack.baseStats
-            : new PlayerAttack.AttackBaseStats();
+        var stats = (attack != null && attack.baseStats != null) ? attack.baseStats : new PlayerAttack.AttackBaseStats();
+        float dmg = stats.baseDamage * damageMul;
+        float knock = stats.baseKnockback * knockMul;
+        float range = stats.baseRange * rangeMul;
+        float radius = stats.baseRadius * radiusMul;
 
-        float finalDamage = stats.baseDamage * damageMul;
-        float finalKnock = stats.baseKnockback * knockMul;
-        float finalRange = stats.baseRange * rangeMul;
-        float finalRadius = stats.baseRadius * radiusMul;
-
-        DoHitbox(finalDamage, finalKnock, finalRange, finalRadius);
+        DoHitbox(dmg, knock, range, radius);
 
         yield return new WaitForSeconds(active + recovery);
-
+        animator.SetBool("immune", false);
         combat.EnterCombat("Skill_PowerStrike");
         lastCastEndTime = Time.time;
         castCo = null;
     }
 
-    private IEnumerator SpawnAndFadeVFX()
+    private IEnumerator SpawnVFXWithFollowAndFade(GameObject prefab, Vector2 offset, bool attach,
+                                                  float startDelay, float fadeIn, float hold, float fadeOut)
     {
-        if (!vfxPrefab || !combat) yield break;
+        if (!prefab || !combat) yield break;
+        if (startDelay > 0f) yield return new WaitForSeconds(startDelay);
 
-        Vector2 facing = (moveRef && moveRef.LastFacing.sqrMagnitude > 0f) ? moveRef.LastFacing : Vector2.right;
-        Vector3 basePos = combat.transform.position;
-        Vector3 spawnPos = basePos + (Vector3)(facing.normalized * vfxOffset.x + new Vector2(0f, vfxOffset.y));
+        var go = Instantiate(prefab, combat.transform.position, Quaternion.identity);
+        go.transform.localScale = go.transform.localScale * Mathf.Max(0.0001f, vfxScaleMul);
+        if (attach) go.transform.SetParent(combat.transform, true);
 
-        var go = Instantiate(vfxPrefab, spawnPos, Quaternion.identity);
-        if (attachToPlayer) go.transform.SetParent(combat.transform);
-
-        if (flipOnLeft && facing.x < 0f)
-        {
-            var s = go.transform.localScale;
-            s.x = Mathf.Abs(s.x) * -1f;
-            go.transform.localScale = s;
-        }
+        var follower = go.GetComponent<VFXFollowFlip>() ?? go.AddComponent<VFXFollowFlip>();
+        follower.Init(combat.transform, PlayerSR, offset, attach);
 
         var sr = go.GetComponentInChildren<SpriteRenderer>();
         var cg = go.GetComponentInChildren<CanvasGroup>();
-        var ps = go.GetComponentInChildren<ParticleSystem>();
 
         if (sr != null)
         {
             Color c = sr.color;
-            float t = 0f;
-            while (t < 0.05f) { sr.color = new Color(c.r, c.g, c.b, Mathf.Lerp(0f, 1f, t / 0.05f)); t += Time.deltaTime; yield return null; }
-            sr.color = new Color(c.r, c.g, c.b, 1f);
-            t = 0f;
-            while (t < 0.5f) { sr.color = new Color(c.r, c.g, c.b, Mathf.Lerp(1f, 0f, t / 0.5f)); t += Time.deltaTime; yield return null; }
+            if (fadeIn > 0f) { float t = 0f; while (t < fadeIn) { sr.color = new Color(c.r, c.g, c.b, Mathf.Lerp(0f, 1f, t / fadeIn)); t += Time.deltaTime; yield return null; } sr.color = new Color(c.r, c.g, c.b, 1f); }
+            if (hold > 0f) yield return new WaitForSeconds(hold);
+            if (fadeOut > 0f) { float t = 0f; while (t < fadeOut) { sr.color = new Color(c.r, c.g, c.b, Mathf.Lerp(1f, 0f, t / fadeOut)); t += Time.deltaTime; yield return null; } }
             Destroy(go); yield break;
         }
         if (cg != null)
         {
-            float t = 0f;
-            while (t < 0.05f) { cg.alpha = Mathf.Lerp(0f, 1f, t / 0.05f); t += Time.deltaTime; yield return null; }
-            cg.alpha = 1f; t = 0f;
-            while (t < 0.5f) { cg.alpha = Mathf.Lerp(1f, 0f, t / 0.5f); t += Time.deltaTime; yield return null; }
+            if (fadeIn > 0f) { float t = 0f; while (t < fadeIn) { cg.alpha = Mathf.Lerp(0f, 1f, t / fadeIn); t += Time.deltaTime; yield return null; } cg.alpha = 1f; }
+            if (hold > 0f) yield return new WaitForSeconds(hold);
+            if (fadeOut > 0f) { float t = 0f; while (t < fadeOut) { cg.alpha = Mathf.Lerp(1f, 0f, t / fadeOut); t += Time.deltaTime; yield return null; } }
             Destroy(go); yield break;
         }
-        if (ps != null) { ps.Play(); yield return new WaitForSeconds(0.35f); Destroy(go); yield break; }
+
+        // 렌더러 없으면 수명만 기다렸다 제거(페이드 불가)
+        if (fadeIn > 0f) yield return new WaitForSeconds(fadeIn);
+        if (hold > 0f) yield return new WaitForSeconds(hold);
+        if (fadeOut > 0f) yield return new WaitForSeconds(fadeOut);
         Destroy(go);
     }
 
     private void DoHitbox(float dmg, float knock, float range, float radius)
     {
         if (!combat) return;
-
         Vector2 facing = (moveRef && moveRef.LastFacing.sqrMagnitude > 0f) ? moveRef.LastFacing : Vector2.right;
         Vector2 center = (Vector2)combat.transform.position + facing.normalized * range;
 
@@ -174,18 +168,17 @@ public class Skill_PowerStrike : MonoBehaviour, IPlayerSkill
         if (hits == null || hits.Length == 0) return;
 
         _seenIds.Clear();
-        for (int i = 0; i < hits.Length; i++)
+        foreach (var h in hits)
         {
-            var h = hits[i];
             if (!h) continue;
-
             int rid = h.transform.root.GetInstanceID();
             if (!_seenIds.Add(rid)) continue;
-
-            Vector2 toEnemy = ((Vector2)h.transform.position - (Vector2)combat.transform.position).normalized;
             var dmgTarget = h.GetComponentInParent<IDamageable>();
             if (dmgTarget != null)
-                dmgTarget.ApplyHit(dmg, knock, toEnemy, combat.gameObject);
+            {
+                Vector2 dir = ((Vector2)h.transform.position - (Vector2)combat.transform.position).normalized;
+                dmgTarget.ApplyHit(dmg, knock, dir, combat.gameObject);
+            }
         }
     }
 }

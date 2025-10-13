@@ -23,6 +23,12 @@ TextureImporter:
   - first:
       213: 8692801431239715641
     second: down,die,Heal_6
+  - first:
+      213: 4407649151723586149
+    second: down,die,Heal_7
+  - first:
+      213: -7438290281083423656
+    second: down,die,Heal_8
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -121,8 +127,8 @@ TextureImporter:
       name: down,die,Heal_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 4
+        x: 0
+        y: 0
         width: 40
         height: 40
       alignment: 0
@@ -143,8 +149,8 @@ TextureImporter:
       name: down,die,Heal_1
       rect:
         serializedVersion: 2
-        x: 50
-        y: 4
+        x: 45
+        y: 0
         width: 40
         height: 40
       alignment: 0
@@ -165,8 +171,8 @@ TextureImporter:
       name: down,die,Heal_2
       rect:
         serializedVersion: 2
-        x: 95
-        y: 4
+        x: 90
+        y: 0
         width: 40
         height: 40
       alignment: 0
@@ -187,8 +193,8 @@ TextureImporter:
       name: down,die,Heal_3
       rect:
         serializedVersion: 2
-        x: 140
-        y: 4
+        x: 135
+        y: 0
         width: 40
         height: 40
       alignment: 0
@@ -209,8 +215,8 @@ TextureImporter:
       name: down,die,Heal_4
       rect:
         serializedVersion: 2
-        x: 185
-        y: 4
+        x: 180
+        y: 0
         width: 40
         height: 40
       alignment: 0
@@ -231,8 +237,8 @@ TextureImporter:
       name: down,die,Heal_5
       rect:
         serializedVersion: 2
-        x: 230
-        y: 4
+        x: 225
+        y: 0
         width: 40
         height: 40
       alignment: 0
@@ -253,8 +259,8 @@ TextureImporter:
       name: down,die,Heal_6
       rect:
         serializedVersion: 2
-        x: 275
-        y: 4
+        x: 270
+        y: 0
         width: 40
         height: 40
       alignment: 0
@@ -271,11 +277,55 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: down,die,Heal_7
+      rect:
+        serializedVersion: 2
+        x: 315
+        y: 0
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 562490ffc8d1b2d30800000000000000
+      internalID: 4407649151723586149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: down,die,Heal_8
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 0
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85438cb2662e5c890800000000000000
+      internalID: -7438290281083423656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 10d7fed5ee617f541aedb9f053292cc5
+    spriteID: 607908b840e33fa4db6f8d0883ca8fa1
     internalID: 0
     vertices: []
     indices: 
@@ -292,6 +342,8 @@ TextureImporter:
       down,die,Heal_4: -898683090670830928
       down,die,Heal_5: -1412396682517520238
       down,die,Heal_6: 8692801431239715641
+      down,die,Heal_7: 4407649151723586149
+      down,die,Heal_8: -7438290281083423656
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

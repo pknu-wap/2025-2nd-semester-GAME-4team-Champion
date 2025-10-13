@@ -56,7 +56,7 @@ public class CG_ATK : MonoBehaviour
     public void OnChargeStarted()
     {
         if ((defense != null && (defense.IsStaminaBroken || defense.IsParryLocked)) ||
-            (hit != null && hit.InHitstun) || IsAttacking) return;
+            (hit != null && hit.inHitstun) || IsAttacking) return;
 
         isCharging = true;
         chargeStartTime = Time.time;

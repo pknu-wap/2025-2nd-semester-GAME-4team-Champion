@@ -1,13 +1,7 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// European Uppercut - ¬˜¡ˆ«¸ Ω∫≈≥
-/// - ≈∞ «ÿ¡¶ Ω√: 0~0.5s °Ê x2 ∞Ì¡§(√÷º“)
-/// - 0.5~3.0s: x2°Êx5 º±«¸
-/// - 3.0s: ¿⁄µø πﬂµø(√÷¥Î)
-/// </summary>
 public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
 {
     [Header("Refs")]
@@ -16,7 +10,7 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
     [SerializeField] private PlayerMoveBehaviour moveRef;
     [SerializeField] private Animator animator;
 
-    [Header("Hitbox / Base from PlayerAttack")]
+    [Header("Hitbox / Base")]
     [SerializeField] private LayerMask enemyMaskOverride;
     [SerializeField] private float knockMul = 1.2f;
     [SerializeField] private float rangeMul = 1.0f;
@@ -36,23 +30,33 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
     [SerializeField] private float cooldownSeconds = 8f;
 
     [Header("Animation")]
-    [SerializeField] private string chargeBool = "U_Charging";
-    [SerializeField] private string fireTrigger = "Uppercut";
+    [SerializeField] private string chargeBool = "E_Charging";
+    [SerializeField] private string fireTrigger = "E_Uppercut";
 
-    [Header("VFX (optional)")]
-    [SerializeField] private GameObject vfxPrefab;
-    [SerializeField] private Transform vfxPoint;
-    [SerializeField] private float vfxLifetime = 0.6f;
+    // ==== VFX ====
+    [Header("VFX ‚Äî Charge Loop")]
+    [SerializeField] private GameObject chargeVFX;
+    [SerializeField] private bool chargeAttachToPlayer = true;
+    [SerializeField] private Vector2 chargeVfxOffset = new Vector2(0.2f, 0f);
+    [SerializeField] private float chargeVfxFadeIn = 0.05f;
+    [SerializeField] private float chargeVfxFadeOut = 0.25f;
+
+    [Header("VFX ‚Äî Fire")]
+    [SerializeField] private GameObject fireVFX;
+    [SerializeField] private bool fireAttachToPlayer = false;
+    [SerializeField] private Vector2 fireVfxOffset = new Vector2(0.6f, 0f);
+    [SerializeField] private float fireVfxStartDelay = 0f; // üî∏ ÏãúÏûë ÌÉÄÏù¥Î∞ç
+    [SerializeField] private float fireVfxFadeIn = 0.03f;
+    [SerializeField] private float fireVfxHold = 0f;
+    [SerializeField] private float fireVfxFadeOut = 0.35f;
 
     // ==== TAG ====
-    public const string TAG_UPPERCUT_MIN = "Tag.Skill.Uppercut.Min"; // x2
-    public const string TAG_UPPERCUT_MAX = "Tag.Skill.Uppercut.Max"; // x5
+    public const string TAG_UPPERCUT_MIN = "Tag.Skill.Uppercut.Min";
+    public const string TAG_UPPERCUT_MAX = "Tag.Skill.Uppercut.Max";
     public event System.Action<string> OnTag;
 
-    // reuse
     private static readonly HashSet<int> _seenIds = new HashSet<int>(32);
 
-    // ===== State =====
     public string SkillName => "European Uppercut";
     public float GetTotalDuration() => windup + active + recovery;
 
@@ -64,6 +68,9 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
     private float chargeStartTime;
     private float lastCastEndTime = -999f;
     private Coroutine waitFullChargeCo;
+    private GameObject chargeFxInstance;
+    private SpriteRenderer _cachedPlayerSR;
+    private SpriteRenderer PlayerSR => _cachedPlayerSR ??= combat.GetComponentInChildren<SpriteRenderer>();
 
     public void Bind(PlayerAttack atk, PlayerCombat c, PlayerMoveBehaviour m, Animator a)
     { attack = atk; combat = c; moveRef = m; animator = a; }
@@ -72,9 +79,7 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
     { if (owner) attack = owner; if (c) combat = c; if (m) moveRef = m; if (a) animator = a; return OnChargeStarted(); }
 
     public void ReleaseCharge() => OnChargeReleased();
-
-    public bool TryCastSkill(PlayerAttack owner, PlayerCombat c, PlayerMoveBehaviour m, Animator a)
-    { return TryStartCharge(owner, c, m, a); }
+    public bool TryCastSkill(PlayerAttack owner, PlayerCombat c, PlayerMoveBehaviour m, Animator a) => TryStartCharge(owner, c, m, a);
 
     public bool OnChargeStarted()
     {
@@ -91,10 +96,25 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
         if (lockMoveDuringCharge) moveRef.SetMovementLocked(true, false, true);
         animator.SetBool(chargeBool, true);
 
+        SpawnChargeVFX(); // üî∏ ÌéòÏù¥Îìú Ïù∏ Ìè¨Ìï®
+
         if (waitFullChargeCo != null) StopCoroutine(waitFullChargeCo);
         waitFullChargeCo = StartCoroutine(WaitAndAutoFire());
-
         return true;
+    }
+
+    public void OnPlayerHitInterrupt(PlayerHit.HitInterruptInfo info)
+    {
+        if (IsCharging)
+        {
+            // Ï∞®ÏßÄÎßå Ï∑®ÏÜå(Î∞úÎèôÏùÄ Ïú†ÏßÄ)
+            IsCharging = false;
+            animator?.SetBool(chargeBool, false);
+            if (lockMoveDuringCharge) moveRef?.SetMovementLocked(false, false);
+            if (waitFullChargeCo != null) { StopCoroutine(waitFullChargeCo); waitFullChargeCo = null; }
+            // KillChargeVFX();
+        }
+        // IsAttacking(Î∞úÎèô Ï§ë)Ïùº ÎïåÎäî Ï∑®ÏÜåÌïòÏßÄ ÏïäÏùå(ÏöîÏ≤≠ÏÇ¨Ìï≠)
     }
 
     public void OnChargeReleased()
@@ -104,6 +124,7 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
         float held = Time.time - chargeStartTime;
         IsCharging = false;
         if (waitFullChargeCo != null) { StopCoroutine(waitFullChargeCo); waitFullChargeCo = null; }
+
         StartCoroutine(FireWithHeld(held));
     }
 
@@ -111,8 +132,7 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
     {
         while (IsCharging)
         {
-            float held = Time.time - chargeStartTime;
-            if (held >= fullChargeTime)
+            if ((Time.time - chargeStartTime) >= fullChargeTime)
             {
                 IsCharging = false;
                 yield return StartCoroutine(FireWithHeld(fullChargeTime));
@@ -128,14 +148,16 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
         animator.SetBool(chargeBool, false);
         if (lockMoveDuringCharge) moveRef.SetMovementLocked(false, false);
 
+        // Charge VFX ÌéòÏù¥Îìú ÏïÑÏõÉ
+        yield return StartCoroutine(FadeOutAndKillChargeVFX());
+
         var stats = (attack && attack.baseStats != null) ? attack.baseStats : new PlayerAttack.AttackBaseStats();
-        float dmgMul = ComputeDamageMul(heldSec);   // 0~0.5: 2, 3.0: 5
+        float dmgMul = ComputeDamageMul(heldSec);
         float dmg = stats.baseDamage * dmgMul;
         float knock = stats.baseKnockback * knockMul;
         float range = stats.baseRange * rangeMul;
         float radius = stats.baseRadius * radiusMul;
 
-        // ≈¬±◊: √÷º“/√÷¥Î µ•πÃ¡ˆ ±∏∞£
         if (heldSec <= fixed2xWindow + 0.0001f) OnTag?.Invoke(TAG_UPPERCUT_MIN);
         else if (heldSec >= fullChargeTime - 0.0001f) OnTag?.Invoke(TAG_UPPERCUT_MAX);
 
@@ -146,17 +168,12 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
         if (!string.IsNullOrEmpty(fireTrigger)) animator.SetTrigger(fireTrigger);
         yield return new WaitForSeconds(windup);
 
+        // Fire VFX (ÎîúÎ†àÏù¥+ÌéòÏù¥Îìú)
+        StartCoroutine(SpawnFireVFXWithFade());
+
         DoHitbox(dmg, knock, range, radius);
 
-        if (vfxPrefab)
-        {
-            Transform p = vfxPoint ? vfxPoint : transform;
-            var go = Instantiate(vfxPrefab, p.position, p.rotation);
-            Destroy(go, vfxLifetime);
-        }
-
         yield return new WaitForSeconds(active + recovery);
-
         combat.EnterCombat("Skill_EuropeanUppercut");
         lastCastEndTime = Time.time;
         IsAttacking = false;
@@ -173,24 +190,103 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
     private void DoHitbox(float dmg, float knock, float range, float radius)
     {
         if (!combat) return;
-
         Vector2 facing = (moveRef && moveRef.LastFacing.sqrMagnitude > 0f) ? moveRef.LastFacing : Vector2.right;
         Vector2 center = (Vector2)combat.transform.position + facing.normalized * range;
 
-        LayerMask mask = enemyMaskOverride.value != 0 ? enemyMaskOverride : combat.EnemyMask;
-        var hits = Physics2D.OverlapCircleAll(center, radius, mask);
+        var hits = Physics2D.OverlapCircleAll(center, radius, enemyMaskOverride.value != 0 ? enemyMaskOverride : combat.EnemyMask);
         if (hits == null || hits.Length == 0) return;
 
         _seenIds.Clear();
-        for (int i = 0; i < hits.Length; i++)
+        foreach (var h in hits)
         {
-            var h = hits[i]; if (!h) continue;
+            if (!h) continue;
             int rid = h.transform.root.GetInstanceID();
             if (!_seenIds.Add(rid)) continue;
-
-            Vector2 dir = ((Vector2)h.transform.position - (Vector2)combat.transform.position).normalized;
             var dmgTarget = h.GetComponentInParent<IDamageable>();
-            if (dmgTarget != null) dmgTarget.ApplyHit(dmg, knock, dir, combat.gameObject);
+            if (dmgTarget != null)
+            {
+                Vector2 dir = ((Vector2)h.transform.position - (Vector2)combat.transform.position).normalized;
+                dmgTarget.ApplyHit(dmg, knock, dir, combat.gameObject);
+            }
         }
+    }
+
+    // --- VFX Helpers ---
+    private void SpawnChargeVFX()
+    {
+        if (!chargeVFX || !combat || chargeFxInstance) return;
+
+        chargeFxInstance = Instantiate(chargeVFX, combat.transform.position, Quaternion.identity);
+        var follower = chargeFxInstance.GetComponent<VFXFollowFlip>() ?? chargeFxInstance.AddComponent<VFXFollowFlip>();
+        follower.Init(combat.transform, PlayerSR, chargeVfxOffset, chargeAttachToPlayer);
+
+        var sr = chargeFxInstance.GetComponentInChildren<SpriteRenderer>();
+        var cg = chargeFxInstance.GetComponentInChildren<CanvasGroup>();
+
+        if (sr != null) { Color c = sr.color; sr.color = new Color(c.r, c.g, c.b, 0f); StartCoroutine(FadeSprite(sr, 0f, 1f, chargeVfxFadeIn)); }
+        else if (cg != null) { cg.alpha = 0f; StartCoroutine(FadeCanvas(cg, 0f, 1f, chargeVfxFadeIn)); }
+    }
+
+    private IEnumerator FadeOutAndKillChargeVFX()
+    {
+        if (!chargeFxInstance) yield break;
+
+        var sr = chargeFxInstance.GetComponentInChildren<SpriteRenderer>();
+        var cg = chargeFxInstance.GetComponentInChildren<CanvasGroup>();
+
+        if (sr != null) yield return FadeSprite(sr, sr.color.a, 0f, chargeVfxFadeOut);
+        else if (cg != null) yield return FadeCanvas(cg, cg.alpha, 0f, chargeVfxFadeOut);
+
+        Destroy(chargeFxInstance);
+        chargeFxInstance = null;
+    }
+
+    private IEnumerator SpawnFireVFXWithFade()
+    {
+        if (!fireVFX || !combat) yield break;
+        if (fireVfxStartDelay > 0f) yield return new WaitForSeconds(fireVfxStartDelay);
+
+        var go = Instantiate(fireVFX, combat.transform.position, Quaternion.identity);
+        var follower = go.GetComponent<VFXFollowFlip>() ?? go.AddComponent<VFXFollowFlip>();
+        follower.Init(combat.transform, PlayerSR, fireVfxOffset, fireAttachToPlayer);
+
+        var sr = go.GetComponentInChildren<SpriteRenderer>();
+        var cg = go.GetComponentInChildren<CanvasGroup>();
+
+        if (sr != null)
+        {
+            Color c = sr.color; sr.color = new Color(c.r, c.g, c.b, 0f);
+            if (fireVfxFadeIn > 0f) yield return FadeSprite(sr, 0f, 1f, fireVfxFadeIn);
+            if (fireVfxHold > 0f) yield return new WaitForSeconds(fireVfxHold);
+            if (fireVfxFadeOut > 0f) yield return FadeSprite(sr, 1f, 0f, fireVfxFadeOut);
+            Destroy(go); yield break;
+        }
+        if (cg != null)
+        {
+            cg.alpha = 0f;
+            if (fireVfxFadeIn > 0f) yield return FadeCanvas(cg, 0f, 1f, fireVfxFadeIn);
+            if (fireVfxHold > 0f) yield return new WaitForSeconds(fireVfxHold);
+            if (fireVfxFadeOut > 0f) yield return FadeCanvas(cg, 1f, 0f, fireVfxFadeOut);
+            Destroy(go); yield break;
+        }
+
+        float t = fireVfxFadeIn + fireVfxHold + fireVfxFadeOut;
+        if (t > 0f) yield return new WaitForSeconds(t);
+        Destroy(go);
+    }
+
+    private IEnumerator FadeSprite(SpriteRenderer sr, float from, float to, float time)
+    {
+        if (time <= 0f) { var c = sr.color; sr.color = new Color(c.r, c.g, c.b, to); yield break; }
+        float t = 0f; var col = sr.color;
+        while (t < time) { sr.color = new Color(col.r, col.g, col.b, Mathf.Lerp(from, to, t / time)); t += Time.deltaTime; yield return null; }
+        sr.color = new Color(col.r, col.g, col.b, to);
+    }
+    private IEnumerator FadeCanvas(CanvasGroup cg, float from, float to, float time)
+    {
+        if (time <= 0f) { cg.alpha = to; yield break; }
+        float t = 0f;
+        while (t < time) { cg.alpha = Mathf.Lerp(from, to, t / time); t += Time.deltaTime; yield return null; }
+        cg.alpha = to;
     }
 }
