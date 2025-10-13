@@ -6,12 +6,9 @@ using System.Collections.Generic;
 public class RhythmGame : MonoBehaviour
 {
     [Header("Prefabs & Spawn")]
-    public GameObject AttackPrefab;
-    public GameObject DefensePrefab;
-    public GameObject ChargePrefab;
-    public Transform spawnPoint;
-    public Transform targetPoint;
-    public Transform rhythmParent;
+    public GameObject AttackPrefab, DefensePrefab, ChargePrefab;
+    public Transform spawnPoint, targetPoint, rhythmParent, MainPotal;
+    public RhythmPotal RhythmPotal;
     public float noteSpeed = 3f;
 
     [Header("UI")]
@@ -22,6 +19,8 @@ public class RhythmGame : MonoBehaviour
     private List<RhythmNote> activeNotes = new List<RhythmNote>();
     private bool isCharging = false;
     private float chargeValue = 0f;
+    private bool isGameEnded = false;
+    private bool allNotesSpawned = false; // ✅ 스폰 완료 여부 플래그
 
     void Start()
     {
@@ -39,6 +38,13 @@ public class RhythmGame : MonoBehaviour
     void Update()
     {
         HandleInput();
+
+        // ✅ 모든 노트가 사라졌고, 스폰도 끝났고, 아직 종료되지 않았다면
+        if (allNotesSpawned && !isGameEnded && activeNotes.Count == 0)
+        {
+            Debug.Log("🎯 모든 노트가 처리됨! 게임 종료로 이동");
+            EndGame();
+        }
     }
 
     private IEnumerator SpawnRoutine()
@@ -48,24 +54,15 @@ public class RhythmGame : MonoBehaviour
             SpawnNote();
             yield return new WaitForSeconds(Random.Range(0.4f, 1f));
         }
+
+        allNotesSpawned = true; // ✅ 스폰 완료 플래그 설정
+        Debug.Log("🎵 모든 노트 스폰 완료");
     }
 
     private void SpawnNote()
     {
-        int noteType;
-
-        if (lastNoteType == 2 && Random.value <= 0.8f)
-            noteType = 1;
-        else
-            noteType = Random.Range(1, 4);
-
-        GameObject prefab = null;
-        switch (noteType)
-        {
-            case 1: prefab = AttackPrefab; break;
-            case 2: prefab = DefensePrefab; break;
-            case 3: prefab = ChargePrefab; break;
-        }
+        int noteType = (lastNoteType == 2 && Random.value <= 0.8f) ? 1 : Random.Range(1, 4);
+        GameObject prefab = (noteType == 1) ? AttackPrefab : (noteType == 2) ? DefensePrefab : ChargePrefab;
 
         GameObject noteObj = Instantiate(prefab, spawnPoint.position, Quaternion.identity, rhythmParent);
         RhythmNote rhythmNote = noteObj.GetComponent<RhythmNote>();
@@ -79,11 +76,10 @@ public class RhythmGame : MonoBehaviour
 
     private void HandleInput()
     {
-        if (Input.GetMouseButtonDown(0))
-            TryHit(1);
+        if (isGameEnded) return;
 
-        if (Input.GetMouseButtonDown(1))
-            TryHit(2);
+        if (Input.GetMouseButtonDown(0)) TryHit(1);
+        if (Input.GetMouseButtonDown(1)) TryHit(2);
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
@@ -113,6 +109,7 @@ public class RhythmGame : MonoBehaviour
                 Debug.Log($"⚡ Charge Success! {chargeValue:F1}% → +{gainedScore}점");
                 UpdateScoreText();
 
+                // ✅ 차지 노트 제거
                 for (int i = activeNotes.Count - 1; i >= 0; i--)
                 {
                     RhythmNote note = activeNotes[i];
@@ -168,5 +165,30 @@ public class RhythmGame : MonoBehaviour
     {
         if (scoreText != null)
             scoreText.text = $"Score: {score}";
+    }
+
+    private void EndGame()
+    {
+        if (isGameEnded) return;
+        isGameEnded = true;
+
+        Debug.Log("🎮 리듬게임 종료! 3초 후 이동합니다...");
+
+        if (RhythmPotal != null)
+            RhythmPotal.EndRhythmMiniGame();
+
+        StartCoroutine(MoveAfterDelay());
+    }
+
+    private IEnumerator MoveAfterDelay()
+    {
+        yield return new WaitForSeconds(3f);
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null && MainPotal != null)
+        {
+            player.transform.position = MainPotal.position;
+            Debug.Log("✅ 플레이어가 MainPotal로 이동했습니다!");
+        }
     }
 }

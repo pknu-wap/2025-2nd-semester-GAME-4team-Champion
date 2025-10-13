@@ -51,6 +51,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 
     [Header("Game References")]
     [SerializeField] private GameManager _gm;
+    public bool IsDead() => _isDead;
 
     public enum MeleeAttackType { One, OneOne, OneTwo, Roll }
     public enum RangeAttackType { Short, Mid, Long }
@@ -98,19 +99,35 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         if (!IsActing && !_isHit)
         {
             AttackTimer += Time.deltaTime;
-            if (AttackTimer >= AttackCooldown)
+
+            if (Player != null)
             {
-                AttackWayChoice();
-                AttackTimer = 0f;
+                float distanceToPlayer = Vector2.Distance(Rb.position, Player.position);
+
+                if (distanceToPlayer <= RecognizedArea && AttackTimer >= AttackCooldown)
+                {
+                    AttackWayChoice();
+                    AttackTimer = 0f;
+                }
             }
         }
 
         if (CurrentHp <= 0)
             Die();
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            Die();
+        }
     }
 
     private void FixedUpdate()
     {
+        if (_isDead)
+        {
+            return;
+        }
+
         if (_noMoveRemain > 0f || IsAnimationPlaying())
         {
             Rb.linearVelocity = Vector2.zero;
@@ -150,7 +167,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         }
 
         bool recentlyHit = Time.time - lastHitTime < 1f;
-        if (!IsGuarding && !recentlyHit && Random.value <= 0.7f)
+        if (!IsGuarding && !recentlyHit && Random.value <= 0.4f)
         {
             StartGuard(hitSource);
             OnGuarded(hitSource);
@@ -304,41 +321,30 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 
 
     #region Damage Window
-    public void TriggerMeleeDamage() => StartCoroutine(DoMeleeDamage());
+    private Coroutine damageCoroutine;
+    public void TriggerMeleeDamage()
+    {
+        if (_hitWindowOpen) return;  
+        StartCoroutine(DoMeleeDamage());
+    }
 
     private IEnumerator DoMeleeDamage()
     {
-        if (_gm == null) yield break;
-
-        switch (LastMeleeType)
-        {
-            case MeleeAttackType.One:
-                yield return OpenHitWindow();
-                break;
-            case MeleeAttackType.OneOne:
-                yield return OpenHitWindow();
-                yield return new WaitForSeconds(0.1f);
-                yield return OpenHitWindow();
-                break;
-            case MeleeAttackType.OneTwo:
-                yield return OpenHitWindow();
-                yield return new WaitForSeconds(0.1f);
-                yield return OpenHitWindow();
-                break;
-            case MeleeAttackType.Roll:
-                yield return OpenHitWindow();
-                break;
-        }
+        yield return OpenHitWindow();
     }
-
     private IEnumerator OpenHitWindow()
     {
+        if (_hitWindowOpen) yield break;
         _currentParryable = AllowParry;
         _hitAppliedThisWindow = false;
         _hitWindowOpen = true;
+
         TryApplyHit_OnlyIfInRange();
+
         yield return new WaitForSeconds(hitActiveDuration);
+
         _hitWindowOpen = false;
+        _hitAppliedThisWindow = false;
     }
 
     private void TryApplyHit_OnlyIfInRange()
@@ -370,7 +376,8 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         if (anim == null) return false;
         AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);
         return state.IsName("Attack") || state.IsName("Hit") || state.IsName("Guard") ||
-               state.IsName("Weave") || state.IsName("WeaveAttack");
+               state.IsName("Weave") || state.IsName("WeaveAttack") || state.IsName("OneReady")
+               || state.IsName("OneTwoReady") || state.IsName("RollReady");
     }
 
     public void AIMoveMent()
@@ -396,17 +403,29 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     {
         if (_isDead) return;
         _isDead = true;
+        IsActing = true;
 
-        Rb.linearVelocity = Vector2.zero;
-        anim?.SetBool("IsDead", true);
+        anim?.SetBool("Death", true);
 
-        if (Rb != null && Player != null)
+        Vector2 knockbackDir = ((Vector2)transform.position - (Vector2)Player.position).normalized;
+        Rb.AddForce(knockbackDir * 12f, ForceMode2D.Impulse);
+
+        StartCoroutine(TransitionToDie(0.6f));
+    }
+
+    private IEnumerator TransitionToDie(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        if (anim != null)
         {
-            Vector2 knockbackDir = ((Vector2)transform.position - (Vector2)Player.position).normalized;
-            Rb.AddForce(knockbackDir * 10f, ForceMode2D.Impulse);
+            anim.ResetTrigger("Death");
+            anim.SetTrigger("Die");
         }
 
-        StartCoroutine(DeathMotion(2f));
+        Rb.linearVelocity = Vector2.zero;
+        Rb.simulated = false;
+        Destroy(gameObject, 2f);
     }
 
     private IEnumerator DeathMotion(float waitTime)

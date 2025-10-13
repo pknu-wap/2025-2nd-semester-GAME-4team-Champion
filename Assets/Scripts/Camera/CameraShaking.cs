@@ -1,29 +1,39 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 
 public class CameraShaking : MonoBehaviour
 {
-    [SerializeField] private Animator Camera;
+    public static CameraShaking Instance;
+    public bool IsShaking { get; private set; }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private Transform cam;
+    private Vector3 originalPos;
+
+    void Awake()
     {
-
+        Instance = this;
+        cam = transform;
+        originalPos = cam.localPosition;
     }
 
-    // Update is called once per frame
-    void Update()
+    public IEnumerator Shake(float duration, float magnitude)
     {
-        if (Input.GetKeyDown(KeyCode.K))
+        if (IsShaking) yield break;
+
+        IsShaking = true;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
         {
-            StartCoroutine(CameraShake());
-        }
-    }
+            float x = Random.Range(-1f, 1f) * magnitude;
+            float y = Random.Range(-1f, 1f) * magnitude;
 
-    public IEnumerator CameraShake()
-    {
-        Camera.SetTrigger("Shake");
-        yield return null;
+            cam.localPosition = originalPos + new Vector3(x, y, 0);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        cam.localPosition = originalPos;
+        IsShaking = false;
     }
 }

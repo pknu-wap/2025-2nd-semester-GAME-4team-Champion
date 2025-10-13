@@ -59,6 +59,11 @@ public class EnemyFight_01 : MonoBehaviour
     {
         if (player == null) return;
 
+        if (_core != null && _core.IsDead())
+        {
+            return;
+        }
+
         if (player.position.x < transform.position.x)
         {
             Sprite.flipX = true;
@@ -266,18 +271,25 @@ public class EnemyFight_01 : MonoBehaviour
 
     private IEnumerator DashFinishStrikeSequence()
     {
-        if (_core == null) yield break;
-
-        _core.TriggerMeleeDamage();
-
-        if (_core.LastMeleeType == EnemyCore_01.MeleeAttackType.OneOne)
+        if (_core.LastMeleeType == EnemyCore_01.MeleeAttackType.One)
         {
-            yield return new WaitForSeconds(0.5f);
+            _core.TriggerMeleeDamage();
+        }
+        else if (_core.LastMeleeType == EnemyCore_01.MeleeAttackType.OneOne)
+        {
+            _core.TriggerMeleeDamage();
+            yield return new WaitForSeconds(0.4f);
             _core.TriggerMeleeDamage();
         }
         else if (_core.LastMeleeType == EnemyCore_01.MeleeAttackType.OneTwo)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.4f);
+            _core.TriggerMeleeDamage();
+            yield return new WaitForSeconds(0.4f);
+            _core.TriggerMeleeDamage();
+        }
+        else
+        {
             _core.TriggerMeleeDamage();
         }
     }

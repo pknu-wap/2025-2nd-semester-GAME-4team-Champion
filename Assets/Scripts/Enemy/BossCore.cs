@@ -249,7 +249,6 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
 
         yield return new WaitForSecondsRealtime(7f);
 
-        CamShake.CameraShake();
         yield return new WaitForSecondsRealtime(0.1f);
 
         if (UiBroke != null) UiBroke.SetActive(true);
@@ -463,7 +462,6 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
             count++;
             if (CamShake != null && (count % 4 == 0))
             {
-                StartCoroutine(CamShake.CameraShake());
             }
             yield return new WaitForSecondsRealtime(0.05f);
         }
