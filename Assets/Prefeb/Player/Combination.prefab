@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2797021520967027736
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 150467030385034836}
+  - component: {fileID: 2801212621990124742}
+  m_Layer: 0
+  m_Name: Combination
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &150467030385034836
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2797021520967027736}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.2469895, y: -0.03656383, z: -0.012870373}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2801212621990124742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2797021520967027736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8518b357aa884bf42861a108325b3462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  combat: {fileID: 0}
+  attack: {fileID: 0}
+  moveRef: {fileID: 0}
+  animator: {fileID: 0}
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 64
+  damageMul: 1.5
+  knockMul: 1
+  rangeMul: 2
+  radiusMul: 1
+  windup: 0.2
+  active: 0.06
+  recovery: 0.3
+  zeroVelocityOnStart: 1
+  maxUsesPerSeries: 3
+  windowDuration: 3
+  cooldownDuration: 8
+  animTriggerBase: Combination
+  stepVFX:
+  - {fileID: 4550023586731943255, guid: 94f4ada598e888041a4c2526056713ff, type: 3}
+  - {fileID: 3683808320282051713, guid: feab01312e3a53643b95e78180034eeb, type: 3}
+  - {fileID: 2668384885870992709, guid: ed61945cae13d284e9014a2153ac3424, type: 3}
+  vfxOffset: {x: 0.7, y: 0}
+  vfxAttachToPlayer: 1
+  vfxStartDelay: 0
+  vfxFadeIn: 0.03
+  vfxHold: 0
+  vfxFadeOut: 0.35
