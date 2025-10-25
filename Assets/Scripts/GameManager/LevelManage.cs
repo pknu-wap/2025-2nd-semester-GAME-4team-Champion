@@ -57,7 +57,9 @@ public class LevelManage : MonoBehaviour
                     levelupselect.settingRandom();
                     levelupselect.RandomSelect();
                     levelupselect.showLevelUp();
-                    daytimer.StopTimer();
+                    //daytimer.StopTimer();
+
+                    Time.timeScale = 0f;    //시간 정지
                 }
                 
             }

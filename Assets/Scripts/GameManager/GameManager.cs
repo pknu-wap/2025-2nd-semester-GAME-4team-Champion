@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
+    public GameObject player;
+
     public Slider[] hpbar;    //플레이어 슬라이드바
     public Slider[] staminabar;
     public float maxhp = 100;   //플레이어 체력
