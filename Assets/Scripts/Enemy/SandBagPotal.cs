@@ -6,6 +6,7 @@ public class SandBagPotal : MonoBehaviour
     public string playerTag = "Player";
     public Transform target;
     public GameObject sandbag;
+    public GameObject SandBagCanvas;
     public CameraFollow camFollow;
     public Transform player;
 
@@ -14,19 +15,18 @@ public class SandBagPotal : MonoBehaviour
         if (other.CompareTag(playerTag))
         {
             other.transform.position = target.position;
-            StartCoroutine(StartSandbagMiniGame());
+            StartSandbagMiniGame();
         }
     }
 
-    IEnumerator StartSandbagMiniGame()
+    private void StartSandbagMiniGame()
     {
-        Debug.Log("잠시 후 게임을 시작합니다.");
-        yield return new WaitForSeconds(3f);
-
-        if (sandbag != null)
-        {
-            sandbag.SetActive(true);
-        }
+        SandBagCanvas.SetActive(true);
+    }
+    public void ClickStartBTN()
+    {
+        sandbag.SetActive(true);
+        SandBagCanvas.SetActive(false);
     }
 
     public void EndSandbagMiniGame()

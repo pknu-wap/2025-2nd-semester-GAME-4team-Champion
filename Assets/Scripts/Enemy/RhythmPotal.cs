@@ -6,6 +6,7 @@ public class RhythmPotal : MonoBehaviour
     public string playerTag = "Player";
     public Transform target;
     public GameObject Rhythm;
+    public GameObject RhythmCanvas;
     public CameraFollow camFollow;
     public Transform player;
 
@@ -14,23 +15,24 @@ public class RhythmPotal : MonoBehaviour
         if (other.CompareTag(playerTag))
         {
             other.transform.position = target.position;
-            StartCoroutine(StartRhythmMiniGame());
+            StartRhythmMiniGame();
         }
     }
 
-    IEnumerator StartRhythmMiniGame()
+    private void StartRhythmMiniGame()
     {
         if (camFollow != null && Rhythm != null)
         {
             camFollow.target = Rhythm.transform;
         }
-        Debug.Log("잠시 후 게임을 시작합니다.");
-        yield return new WaitForSeconds(3f);
 
-        if (Rhythm != null)
-        {
-            Rhythm.SetActive(true);
-        }
+        RhythmCanvas.SetActive(true);
+    }
+
+    public void ClickStartBTN()
+    {
+        Rhythm.SetActive(true);
+        RhythmCanvas.SetActive(false);
     }
 
     public void EndRhythmMiniGame()
