@@ -1,0 +1,1299 @@
+fileFormatVersion: 2
+guid: 609edb18b0f2f7447a8bc52deb47196b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6243290840596908767
+    second: yangahchi-Sheet_0
+  - first:
+      213: -4028845143519619435
+    second: yangahchi-Sheet_1
+  - first:
+      213: -7469007766279558432
+    second: yangahchi-Sheet_2
+  - first:
+      213: 4441268836720574291
+    second: yangahchi-Sheet_3
+  - first:
+      213: 8149403410664310827
+    second: yangahchi-Sheet_4
+  - first:
+      213: 2073453494526703122
+    second: yangahchi-Sheet_5
+  - first:
+      213: -387476562821220973
+    second: yangahchi-Sheet_6
+  - first:
+      213: 8858252371934695570
+    second: yangahchi-Sheet_7
+  - first:
+      213: 8251395215582904653
+    second: yangahchi-Sheet_8
+  - first:
+      213: -5437503392053521933
+    second: yangahchi-Sheet_9
+  - first:
+      213: -783408923845130611
+    second: yangahchi-Sheet_10
+  - first:
+      213: 7136300461297418450
+    second: yangahchi-Sheet_11
+  - first:
+      213: -772619811190824945
+    second: yangahchi-Sheet_12
+  - first:
+      213: 6610354699107395377
+    second: yangahchi-Sheet_13
+  - first:
+      213: -6785573920432705992
+    second: yangahchi-Sheet_14
+  - first:
+      213: 5611148382484190929
+    second: yangahchi-Sheet_15
+  - first:
+      213: -669277113877685371
+    second: yangahchi-Sheet_16
+  - first:
+      213: 2174026688795204307
+    second: yangahchi-Sheet_17
+  - first:
+      213: 5450812729867866204
+    second: yangahchi-Sheet_18
+  - first:
+      213: 7916518804301484466
+    second: yangahchi-Sheet_19
+  - first:
+      213: -3293178636528748303
+    second: yangahchi-Sheet_20
+  - first:
+      213: -9023741787485706127
+    second: yangahchi-Sheet_21
+  - first:
+      213: 4248893602282692819
+    second: yangahchi-Sheet_22
+  - first:
+      213: 105712038652085540
+    second: yangahchi-Sheet_23
+  - first:
+      213: -7398470348927992543
+    second: yangahchi-Sheet_24
+  - first:
+      213: -6471080015311729566
+    second: yangahchi-Sheet_25
+  - first:
+      213: -6373410569153917050
+    second: yangahchi-Sheet_26
+  - first:
+      213: -7784282188779501620
+    second: yangahchi-Sheet_27
+  - first:
+      213: -3922119780586263372
+    second: yangahchi-Sheet_28
+  - first:
+      213: 6475269494759732732
+    second: yangahchi-Sheet_29
+  - first:
+      213: -8724015958087112377
+    second: yangahchi-Sheet_30
+  - first:
+      213: -6608502150652768932
+    second: yangahchi-Sheet_31
+  - first:
+      213: 4304773227801994161
+    second: yangahchi-Sheet_32
+  - first:
+      213: -8916384140521202160
+    second: yangahchi-Sheet_33
+  - first:
+      213: 1987146863788922263
+    second: yangahchi-Sheet_34
+  - first:
+      213: 1493459977012783746
+    second: yangahchi-Sheet_35
+  - first:
+      213: 5241565061471267862
+    second: yangahchi-Sheet_36
+  - first:
+      213: -2047383898965108467
+    second: yangahchi-Sheet_37
+  - first:
+      213: 5693438068363578041
+    second: yangahchi-Sheet_38
+  - first:
+      213: 7373666850363636962
+    second: yangahchi-Sheet_39
+  - first:
+      213: 4292778390954204190
+    second: yangahchi-Sheet_40
+  - first:
+      213: -1986802390157244717
+    second: yangahchi-Sheet_41
+  - first:
+      213: 8953344583542680995
+    second: yangahchi-Sheet_42
+  - first:
+      213: 7564091562963814923
+    second: yangahchi-Sheet_43
+  - first:
+      213: 4735937454076442685
+    second: yangahchi-Sheet_44
+  - first:
+      213: 2968524619123217862
+    second: yangahchi-Sheet_45
+  - first:
+      213: 5774058752236204420
+    second: yangahchi-Sheet_46
+  - first:
+      213: -7424375359296943566
+    second: yangahchi-Sheet_47
+  - first:
+      213: -8430139884837583320
+    second: yangahchi-Sheet_48
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 40
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: yangahchi-Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 223
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12575c01f006b59a0800000000000000
+      internalID: -6243290840596908767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 223
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 596947d00baa618c0800000000000000
+      internalID: -4028845143519619435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 223
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0eae5425201c85890800000000000000
+      internalID: -7469007766279558432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 223
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35ffdb4e97e82ad30800000000000000
+      internalID: 4441268836720574291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 178
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b28c000893f781170800000000000000
+      internalID: 8149403410664310827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 178
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2167e87b7f266cc10800000000000000
+      internalID: 2073453494526703122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 178
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 395704a7e186f9af0800000000000000
+      internalID: -387476562821220973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_7
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 178
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 290dde76995deea70800000000000000
+      internalID: 8858252371934695570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_8
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 178
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d414d261b38d28270800000000000000
+      internalID: 8251395215582904653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_9
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 178
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f11bab597b1a84b0800000000000000
+      internalID: -5437503392053521933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_10
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 178
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8607540cb5c025f0800000000000000
+      internalID: -783408923845130611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_11
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 135
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d0c616b57b390360800000000000000
+      internalID: 7136300461297418450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_12
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 135
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f00aa8f006a1745f0800000000000000
+      internalID: -772619811190824945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_13
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 135
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13761af5392bcbb50800000000000000
+      internalID: 6610354699107395377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_14
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 135
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83e247b887cc4d1a0800000000000000
+      internalID: -6785573920432705992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_15
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 135
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d65af789bdcedd40800000000000000
+      internalID: 5611148382484190929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_16
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 135
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58b950bc20046b6f0800000000000000
+      internalID: -669277113877685371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_17
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 135
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3da5bd541c1bb2e10800000000000000
+      internalID: 2174026688795204307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_18
+      rect:
+        serializedVersion: 2
+        x: 317
+        y: 135
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5093f45c4d25ab40800000000000000
+      internalID: 5450812729867866204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_19
+      rect:
+        serializedVersion: 2
+        x: 362
+        y: 135
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b11714b8ef1ddd60800000000000000
+      internalID: 7916518804301484466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_21
+      rect:
+        serializedVersion: 2
+        x: 452
+        y: 135
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 178e01477aa35c280800000000000000
+      internalID: -9023741787485706127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_22
+      rect:
+        serializedVersion: 2
+        x: 497
+        y: 135
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d06d7c383a17fa30800000000000000
+      internalID: 4248893602282692819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_23
+      rect:
+        serializedVersion: 2
+        x: 542
+        y: 135
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42507500a80977100800000000000000
+      internalID: 105712038652085540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_24
+      rect:
+        serializedVersion: 2
+        x: 587
+        y: 135
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12df2ea9a6a535990800000000000000
+      internalID: -7398470348927992543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_25
+      rect:
+        serializedVersion: 2
+        x: 630
+        y: 135
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26c0736e20b1236a0800000000000000
+      internalID: -6471080015311729566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_26
+      rect:
+        serializedVersion: 2
+        x: 675
+        y: 135
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68f4cd9ead81d87a0800000000000000
+      internalID: -6373410569153917050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_28
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 88
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bc6f9ff6d4d199c0800000000000000
+      internalID: -3922119780586263372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_30
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 88
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 749e06b35b11ee680800000000000000
+      internalID: -8724015958087112377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_32
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 88
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b3efb96170adbb30800000000000000
+      internalID: 4304773227801994161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_33
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 43
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01e9e4f7dd3a24480800000000000000
+      internalID: -8916384140521202160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_34
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 43
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7959ba45b83c39b10800000000000000
+      internalID: 1987146863788922263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_35
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 43
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28a2c18bfe5d9b410800000000000000
+      internalID: 1493459977012783746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_36
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 43
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61ce71407a7cdb840800000000000000
+      internalID: 5241565061471267862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_37
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 43
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d09945ff03b3693e0800000000000000
+      internalID: -2047383898965108467
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_20
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 135
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f318b93b944555049b7e26957633f84d
+      internalID: -3293178636528748303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_27
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 88
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8d1faa9b36df024fb1968e45bbc56f2
+      internalID: -7784282188779501620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_29
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 88
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc93677d39fb64d40afb01ff4113c8cc
+      internalID: 6475269494759732732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_31
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 88
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 274214654f3fd7b46841986754dc4ee4
+      internalID: -6608502150652768932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_38
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 135
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d47a21a7d79c64e48bbceb22713ae354
+      internalID: 5693438068363578041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_39
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 0
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d6458ca4eec8d3c4090b337b3b762252
+      internalID: 7373666850363636962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_40
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d42a1299ca9af2448acb8848d920256
+      internalID: 4292778390954204190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_41
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 0
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c6dc6d4c46690f448443a0cc43ca873
+      internalID: -1986802390157244717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_42
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 0
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35bafda18dcccef4681c2406e505376a
+      internalID: 8953344583542680995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_43
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 0
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 56918f90a784db84993cb478b0148038
+      internalID: 7564091562963814923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yangahchi-Sheet_44
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 0
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b39c318d699bdda47aaa1d5430da4e9a
+      internalID: 4735937454076442685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5c8dc434af31d034fa469ee345432ac7
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      yangahchi-Sheet_0: -6243290840596908767
+      yangahchi-Sheet_1: -4028845143519619435
+      yangahchi-Sheet_10: -783408923845130611
+      yangahchi-Sheet_11: 7136300461297418450
+      yangahchi-Sheet_12: -772619811190824945
+      yangahchi-Sheet_13: 6610354699107395377
+      yangahchi-Sheet_14: -6785573920432705992
+      yangahchi-Sheet_15: 5611148382484190929
+      yangahchi-Sheet_16: -669277113877685371
+      yangahchi-Sheet_17: 2174026688795204307
+      yangahchi-Sheet_18: 5450812729867866204
+      yangahchi-Sheet_19: 7916518804301484466
+      yangahchi-Sheet_2: -7469007766279558432
+      yangahchi-Sheet_20: -3293178636528748303
+      yangahchi-Sheet_21: -9023741787485706127
+      yangahchi-Sheet_22: 4248893602282692819
+      yangahchi-Sheet_23: 105712038652085540
+      yangahchi-Sheet_24: -7398470348927992543
+      yangahchi-Sheet_25: -6471080015311729566
+      yangahchi-Sheet_26: -6373410569153917050
+      yangahchi-Sheet_27: -7784282188779501620
+      yangahchi-Sheet_28: -3922119780586263372
+      yangahchi-Sheet_29: 6475269494759732732
+      yangahchi-Sheet_3: 4441268836720574291
+      yangahchi-Sheet_30: -8724015958087112377
+      yangahchi-Sheet_31: -6608502150652768932
+      yangahchi-Sheet_32: 4304773227801994161
+      yangahchi-Sheet_33: -8916384140521202160
+      yangahchi-Sheet_34: 1987146863788922263
+      yangahchi-Sheet_35: 1493459977012783746
+      yangahchi-Sheet_36: 5241565061471267862
+      yangahchi-Sheet_37: -2047383898965108467
+      yangahchi-Sheet_38: 5693438068363578041
+      yangahchi-Sheet_39: 7373666850363636962
+      yangahchi-Sheet_4: 8149403410664310827
+      yangahchi-Sheet_40: 4292778390954204190
+      yangahchi-Sheet_41: -1986802390157244717
+      yangahchi-Sheet_42: 8953344583542680995
+      yangahchi-Sheet_43: 7564091562963814923
+      yangahchi-Sheet_44: 4735937454076442685
+      yangahchi-Sheet_5: 2073453494526703122
+      yangahchi-Sheet_6: -387476562821220973
+      yangahchi-Sheet_7: 8858252371934695570
+      yangahchi-Sheet_8: 8251395215582904653
+      yangahchi-Sheet_9: -5437503392053521933
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
