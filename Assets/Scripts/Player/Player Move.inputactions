@@ -14,15 +14,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Jump",
-                    "type": "Button",
-                    "id": "899aeced-62d2-46f1-9581-dfe554ef5797",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -80,17 +71,6 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "c0f463ac-f765-400a-a704-c3b3cedf0405",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         },
@@ -111,24 +91,6 @@
                     "name": "Attack",
                     "type": "Button",
                     "id": "d199f673-ee91-4ed5-979f-7e17a2402a8d",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Charge",
-                    "type": "Button",
-                    "id": "64c1ec70-4868-4efa-a117-51b0abe40696",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Heal",
-                    "type": "Button",
-                    "id": "77315ef9-f9af-4240-925c-98c08ca3ebe6",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -155,96 +117,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Attack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "dc97f8f8-edf1-48d0-b34e-bb87d07bba72",
-                    "path": "<Keyboard>/tab",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Charge",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "dd880246-8253-4374-8a89-ca9c60be902d",
-                    "path": "<Keyboard>/r",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Heal",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Skill",
-            "id": "84c57e2a-ca55-440b-af75-5b0256005c2a",
-            "actions": [
-                {
-                    "name": "Skill1",
-                    "type": "Button",
-                    "id": "04152553-7edc-4c8a-9c31-2c3e044fed87",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Skill2",
-                    "type": "Button",
-                    "id": "784e2715-30a8-470f-b6b3-4bbbd0359941",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Skill3",
-                    "type": "Button",
-                    "id": "cad6f62b-872e-4a81-a33a-d3ccd7202e89",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "94da6716-044a-4e16-9cf5-9735e4ffd85b",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Skill1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "54a772e2-c3ea-46ee-a291-92d4d096e537",
-                    "path": "<Keyboard>/2",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Skill2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "821c54c4-ed6d-44f5-b95e-5d74b80796ba",
-                    "path": "<Keyboard>/3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Skill3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

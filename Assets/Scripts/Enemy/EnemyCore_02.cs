@@ -1,0 +1,336 @@
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+
+public class EnemyCore_02 : MonoBehaviour, IParryable, IDamageable
+{
+    [Header("Common")]
+    [SerializeField] private float AttackCooldown = 2f;
+    [SerializeField] public Transform Player;
+
+    [Header("Health / Stamina")]
+    public float MaxHp = 100f;
+    public float CurrentHp = 100f;
+    public float MaxStamina = 100f;
+    public float CurrentStamina = 100f;
+
+    [Header("General")]
+    [SerializeField] public float RecognizedArea = 10f;
+    [SerializeField] public float Speed = 3.0f;
+    [SerializeField] public float MinChaseDistance = 1.3f;
+
+    [Header("Rendering")]
+    [SerializeField] public Collider2D MovementArea;
+
+    [Header("Runtime")]
+    [SerializeField] public float AttackTimer = 0f;
+    public Rigidbody2D Rb { get; private set; }
+    public bool IsActing { get; set; }
+    private Collider2D PlayerCol;
+    private Coroutine TypingCo;
+
+    private EnemyFight_02 _combat;
+
+    public enum MeleeAttackType { BatDown, BatRestDown, OneTwo, Roll }
+    public enum RangeAttackType { Short, Mid, Long }
+    public enum AttackSelectMode
+    {
+        Random,
+        Melee_BatDown,
+        Melee_BatRestDown,
+        Melee_OneTwo,
+        Melee_Roll,
+        Range_Short,
+        Range_Mid,
+        Range_Long
+    }
+
+    [Header("Attack Select (Debug)")]
+    public AttackSelectMode SelectMode = AttackSelectMode.Random;
+
+    public MeleeAttackType LastMeleeType { get; set; }
+
+    [Header("Hit Window")]
+    [SerializeField] private float hitActiveDuration = 0.08f;
+    private bool _hitWindowOpen = false;
+    private bool _hitAppliedThisWindow = false;
+
+    [Header("Parry Settings")]
+    public bool AllowParry = true;
+    private bool _currentParryable = true;
+
+    // 🔒 Snap 이후 잠깐 이동 금지(붙음 방지)
+    private float _noMoveRemain = 0f;
+
+    [SerializeField] private GameManager _gm;
+
+    [Header("Parry Counter")]
+    private int hitCount = 0;
+
+    private void Awake()
+    {
+        Rb = GetComponent<Rigidbody2D>();
+        _combat = GetComponent<EnemyFight_02>();
+        if (_combat == null) _combat = gameObject.AddComponent<EnemyFight_02>();
+        _combat.BindCore(this);
+    }
+
+    private void Start()
+    {
+        AttackTimer = 0f;
+        Rb.position = ClampInside(Rb.position);
+    }
+
+    private void Update()
+    {
+        if (_noMoveRemain > 0f) _noMoveRemain -= Time.deltaTime;
+
+        if (!IsActing)
+        {
+            AttackTimer += Time.deltaTime;
+            if (AttackTimer >= AttackCooldown)
+            {
+                AttackWayChoice();
+                AttackTimer = 0f;
+            }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (_noMoveRemain > 0f)
+        {
+            Rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        if (!IsActing)
+        {
+            AIMoveMent();
+        }
+    }
+
+    public void ApplyHit(float damage, float knockback, Vector2 direction, GameObject source)
+    {
+        Debug.Log($"[Enemy_01_Core] ApplyHit called by {source.name}");
+
+        CurrentHp -= damage;
+
+        hitCount++;
+
+        if (hitCount >= 3 && Random.value <= 0.7f)
+        {
+            Debug.Log("[Enemy_01_Core] Parry triggered by accumulated hits!");
+            OnParried(source.transform.position);
+            hitCount = 0;
+        }
+
+        if (_combat != null && _combat.isDashing)
+        {
+            _combat.InterruptDash();
+        }
+
+        if (CurrentHp <= 0f)
+        {
+            Debug.Log("[Enemy_01_Core] Enemy defeated!");
+        }
+    }
+
+    public void StartNoMoveCooldown(float seconds)
+    {
+        _noMoveRemain = Mathf.Max(_noMoveRemain, Mathf.Max(0f, seconds));
+    }
+
+    private void AttackWayChoice()
+    {
+        if (_combat == null) return;
+
+        switch (SelectMode)
+        {
+            case AttackSelectMode.Random:
+            {
+                int type = Random.Range(0, 2);
+                if (type == 0) _combat.Melee_Attack_DistanceBased();
+                else           _combat.Range_Attack();
+                break;
+            }
+            case AttackSelectMode.Melee_BatDown:    _combat.Melee_Attack(MeleeAttackType.BatDown);     break;
+            case AttackSelectMode.Melee_BatRestDown: _combat.Melee_Attack(MeleeAttackType.BatRestDown);  break;
+            case AttackSelectMode.Melee_OneTwo: _combat.Melee_Attack(MeleeAttackType.OneTwo);  break;
+            case AttackSelectMode.Melee_Roll: _combat.Melee_Attack(MeleeAttackType.Roll);  break;
+            case AttackSelectMode.Range_Short:  _combat.Range_Attack(RangeAttackType.Short);   break;
+            case AttackSelectMode.Range_Mid:    _combat.Range_Attack(RangeAttackType.Mid);     break;
+            case AttackSelectMode.Range_Long:   _combat.Range_Attack(RangeAttackType.Long);    break;
+        }
+    }
+
+    public void TriggerMeleeDamage()
+    {
+        StartCoroutine(DoMeleeDamage());
+    }
+
+    private IEnumerator OpenHitWindow()
+    {
+        _currentParryable = AllowParry;
+        _hitAppliedThisWindow = false;
+        _hitWindowOpen = true;
+
+        TryApplyHit_OnlyIfInRange();
+
+        yield return new WaitForSeconds(hitActiveDuration);
+        _hitWindowOpen = false;
+    }
+
+    private void TryApplyHit_OnlyIfInRange()
+    {
+        if (Player == null) return;
+
+        Vector2 center = transform.position;
+        float radius = 1.2f;
+        LayerMask playerMask = LayerMask.GetMask("Player");
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(center, radius, playerMask);
+
+        foreach (var hit in hits)
+        {
+            var ph = hit.GetComponent<PlayerHit>();
+            if (ph != null)
+            {
+                Vector2 hitDir = (hit.transform.position - transform.position).normalized;
+                ph.OnHit(10f, 6f, hitDir, _currentParryable, gameObject);
+                _hitAppliedThisWindow = true;
+            }
+        }
+    }
+
+    private IEnumerator DoMeleeDamage()
+    {
+        if (_gm == null) yield break;
+
+        switch (LastMeleeType)
+        {
+            case MeleeAttackType.BatDown:
+                yield return OpenHitWindow();
+                break;
+
+            case MeleeAttackType.BatRestDown:
+                yield return OpenHitWindow();
+                yield return new WaitForSeconds(0.1f);
+                yield return OpenHitWindow();
+                break;
+
+            case MeleeAttackType.OneTwo:
+                yield return OpenHitWindow();
+                yield return new WaitForSeconds(0.05f);
+                yield return OpenHitWindow();
+                break;
+
+            case MeleeAttackType.Roll:
+                yield return OpenHitWindow();
+                break;
+        }
+    }
+
+    private void TryApplyHit(Collider2D other)
+    {
+        bool isPlayerHit = (PlayerCol != null) ? (other == PlayerCol) : other.CompareTag("Player");
+        if (!isPlayerHit) return;
+
+        if (!_hitWindowOpen)
+        {
+            TriggerMeleeDamage();
+        }
+
+        if (_hitWindowOpen && !_hitAppliedThisWindow)
+        {
+            var ph = Player != null ? Player.GetComponent<PlayerHit>() : null;
+            if (ph != null)
+            {
+                Vector2 hitDir = (Player.position - transform.position).normalized;
+                ph.OnHit(10f, 6f, hitDir, _currentParryable, gameObject);
+                Debug.Log($"[Enemy_01_Core] Hit applied -> parryable={_currentParryable}");
+
+                hitCount++;
+
+                if (hitCount >= 3 && Random.value <= 0.6f)
+                {
+                    Debug.Log("[Enemy_01_Core] Parry triggered automatically after 3 hits.");
+                    OnParried(Player.position);
+                    hitCount = 0;
+                    return;
+                }
+            }
+
+            _hitAppliedThisWindow = true;
+
+            if ((_combat != null && _combat.isDashing) &&
+                (LastMeleeType == MeleeAttackType.BatDown || LastMeleeType == MeleeAttackType.BatRestDown))
+            {
+                _combat.InterruptDash();
+            }
+        }
+    }
+
+    public void ForceNextAction()
+    {
+        IsActing = false;
+        AttackTimer = AttackCooldown;
+    }
+
+    public Vector2 ClampInside(Vector2 p)
+    {
+        if (MovementArea == null) return p;
+        Vector2 closest = MovementArea.ClosestPoint(p);
+        Vector2 center = (Vector2)MovementArea.bounds.center;
+        Vector2 inward = (center - closest).sqrMagnitude > 1e-8f ? (center - closest).normalized : Vector2.zero;
+        return closest + inward * 0.14f;
+    }
+
+    public void AIMoveMent()
+    {
+        if (Player == null) { Rb.linearVelocity = Vector2.zero; return; }
+
+        Vector2 toPlayer = (Vector2)Player.position - Rb.position;
+        float dist = toPlayer.magnitude;
+
+        if (dist < MinChaseDistance)
+        {
+            Rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        if (dist <= RecognizedArea)
+        {
+            Vector2 dir = toPlayer.sqrMagnitude > 1e-8f ? toPlayer.normalized : Vector2.zero;
+            Rb.linearVelocity = dir * Speed;
+        }
+        else
+        {
+            Rb.linearVelocity = Vector2.zero;
+        }
+    }
+
+    public void OnParried(Vector3 parrySourcePosition)
+    {
+        Debug.Log("[Enemy_01_Core] Parried by player -> stamina +10 then -5 (success only)");
+
+        if (Player != null && Player.TryGetComponent<PlayerCombat>(out var pc))
+        {
+            pc.AddStamina(10f);
+            pc.AddStamina(-5f);
+        }
+
+        if (Rb != null)
+        {
+            Vector2 dir = ((Vector2)transform.position - (Vector2)parrySourcePosition).normalized;
+            Rb.AddForce(dir * 2f, ForceMode2D.Impulse);
+        }
+
+        _combat?.InterruptDash();
+
+        StartNoMoveCooldown(0.6f);
+
+        IsActing = false;
+        AttackTimer = 0f;
+    }
+}
