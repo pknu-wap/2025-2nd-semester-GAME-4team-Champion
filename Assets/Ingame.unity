@@ -12193,7 +12193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf0f29a6bab5e964280091e13e26b88f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 8
+  moveSpeed: 10
   flipDeadzone: 0.05
   combat: {fileID: 1408308634286102537}
   blockFlipFromMovement: 0
