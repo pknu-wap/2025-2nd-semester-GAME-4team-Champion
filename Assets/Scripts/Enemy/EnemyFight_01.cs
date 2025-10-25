@@ -1,42 +1,43 @@
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
-public class BossFight : MonoBehaviour
+public class EnemyFight_01 : MonoBehaviour
 {
     [Header("Dash (Melee)")]
-    [SerializeField] private float DashSpeed = 12f;
-    [SerializeField] private float PreWindupShort = 2f;
-    [SerializeField] private float PreWindupMid = 3f;
-    [SerializeField] private float PreWindupLong = 4f;
-    [SerializeField] private float PreWindupRoll = 0.7f;
+    [SerializeField] private float DashSpeed = 12f; 
+    [SerializeField] private float PreWindupShort = 2f; 
+    [SerializeField] private float PreWindupMid = 3f; 
+    [SerializeField] private float PreWindupLong = 1f; 
+    [SerializeField] private float PreWindupRoll = 1f; 
 
     [Header("Melee Logic")]
-    [SerializeField] private float NoDashCloseRange = 2.5f;
-    [SerializeField] private float StopOffset = 1.0f;
+    [SerializeField] private float NoDashCloseRange = 2.5f;   
+    [SerializeField] private float StopOffset = 1.0f;         
 
     [Header("Melee Stop Settings")]
-    [SerializeField] private float DashStopDistance = 1.15f;
-    [SerializeField] private float MaxDashTime = 0.45f;
-    [SerializeField] private bool LockDashDirection = false;
+    [SerializeField] private float DashStopDistance = 1.15f;  
+    [SerializeField] private float MaxDashTime = 0.45f;       
+    [SerializeField] private bool LockDashDirection = false;  
 
     [Header("Dash (Range)")]
-    [SerializeField] private float RetreatSpeed = 6f;
-    [SerializeField] private float RetreatDuration = 1.25f;
-    [SerializeField] private float RangePreWindupShort = 1.0f;
-    [SerializeField] private float RangePreWindupMid = 1.3f;
-    [SerializeField] private float RangePreWindupLong = 1.5f;
+    [SerializeField] private float RetreatSpeed = 6f; 
+    [SerializeField] private float RetreatDuration = 1.25f; 
+    [SerializeField] private float RangePreWindupShort = 1.0f; 
+    [SerializeField] private float RangePreWindupMid = 1.3f; 
+    [SerializeField] private float RangePreWindupLong = 1.5f; 
 
     [Header("Projectile (Ranged Attack)")]
     [SerializeField] private GameObject ProjectilePrefab;
+    [SerializeField] private Transform FirePoint;
     [SerializeField] private int VolleyCountShort = 1;
     [SerializeField] private int VolleyCountMid = 2;
     [SerializeField] private int VolleyCountLong = 3;
     [SerializeField] private float VolleyInterval = 0.2f;
 
     [Header("Post-Snap Control")]
-    [SerializeField] private float SnapNoMoveDuration = 0.8f;
+    [SerializeField] private float SnapNoMoveDuration = 0.8f; 
 
-    private BossCore _core;
+    private EnemyCore_01 _core;
     private SpriteRenderer Sprite;
 
     private float _curPreWindup = 2f;
@@ -45,13 +46,35 @@ public class BossFight : MonoBehaviour
     private float _rangePreWindup = 1.0f;
 
     public bool isDashing = false;
+    private Animator anim;
+    public Transform player;
 
     void Start()
     {
         Sprite = GetComponent<SpriteRenderer>();
+        anim = GetComponentInChildren<Animator>();
     }
 
-    public void BindCore(BossCore core) => _core = core;
+    void Update()
+    {
+        if (player == null) return;
+
+        if (_core != null && _core.IsDead())
+        {
+            return;
+        }
+
+        if (player.position.x < transform.position.x)
+        {
+            Sprite.flipX = true;
+        }
+        else
+        {
+            Sprite.flipX = false;
+        }
+    }
+
+    public void BindCore(EnemyCore_01 core) => _core = core;
 
     public void InterruptDash()
     {
@@ -64,6 +87,7 @@ public class BossFight : MonoBehaviour
         }
     }
 
+    // 거리 기반 자동 분기
     public void Melee_Attack_DistanceBased()
     {
         if (_core.IsActing) return;
@@ -75,12 +99,12 @@ public class BossFight : MonoBehaviour
         if (dist > NoDashCloseRange)
         {
             int pick = Random.Range(0, 2);
-            Melee_Attack(pick == 0 ? BossCore.MeleeAttackType.One
-                                   : BossCore.MeleeAttackType.OneOne);
+            Melee_Attack(pick == 0 ? EnemyCore_01.MeleeAttackType.One
+                                   : EnemyCore_01.MeleeAttackType.OneOne);
         }
         else
         {
-            Melee_Attack(BossCore.MeleeAttackType.OneTwo);
+            Melee_Attack(EnemyCore_01.MeleeAttackType.OneTwo);
         }
     }
 
@@ -90,45 +114,46 @@ public class BossFight : MonoBehaviour
         Melee_Attack_DistanceBased();
     }
 
-    public void Melee_Attack(BossCore.MeleeAttackType type)
+    public void Melee_Attack(EnemyCore_01.MeleeAttackType type)
     {
         if (_core.IsActing) return;
-        Sprite.color = Color.red;
+        anim?.SetTrigger("AttackChoice");
 
         switch (type)
         {
-            case BossCore.MeleeAttackType.One:
+            case EnemyCore_01.MeleeAttackType.One:
                 _curPreWindup = PreWindupShort;
-                _core.LastMeleeType = BossCore.MeleeAttackType.One;
+                _core.LastMeleeType = EnemyCore_01.MeleeAttackType.One;
                 _core.IsActing = true;
                 StartCoroutine(MeleeDash());
                 break;
-            case BossCore.MeleeAttackType.OneOne:
+            case EnemyCore_01.MeleeAttackType.OneOne:
                 _curPreWindup = PreWindupMid;
-                _core.LastMeleeType = BossCore.MeleeAttackType.OneOne;
+                _core.LastMeleeType = EnemyCore_01.MeleeAttackType.OneOne;
                 _core.IsActing = true;
                 StartCoroutine(MeleeDash());
                 break;
-            case BossCore.MeleeAttackType.OneTwo:
+            case EnemyCore_01.MeleeAttackType.OneTwo:
                 _curPreWindup = PreWindupLong;
-                _core.LastMeleeType = BossCore.MeleeAttackType.OneTwo;
+                _core.LastMeleeType = EnemyCore_01.MeleeAttackType.OneTwo;
                 _core.IsActing = true;
                 StartCoroutine(MeleeStrikeNoDash());
                 break;
-            case BossCore.MeleeAttackType.Roll:
+            case EnemyCore_01.MeleeAttackType.Roll:
                 _curPreWindup = PreWindupRoll;
-                _core.LastMeleeType = BossCore.MeleeAttackType.Roll;
+                _core.LastMeleeType = EnemyCore_01.MeleeAttackType.Roll;
                 _core.IsActing = true;
                 StartCoroutine(MeleeStrikeRoll());
                 break;
         }
     }
 
+    // 대쉬 패턴
     private IEnumerator MeleeDash()
     {
         isDashing = true;
         _core.Rb.linearVelocity = Vector2.zero;
-        Sprite.color = Color.yellow;
+        anim?.SetTrigger("OneReady");
 
         if (_curPreWindup > 0f) yield return new WaitForSeconds(_curPreWindup);
 
@@ -140,7 +165,7 @@ public class BossFight : MonoBehaviour
         }
 
         float elapsed = 0f;
-        while (isDashing)
+        while (isDashing) 
         {
             if (_core.Player == null) break;
 
@@ -162,12 +187,18 @@ public class BossFight : MonoBehaviour
         }
 
         _core.Rb.linearVelocity = Vector2.zero;
-        StopInFrontOfPlayer();
 
-        Sprite.color = Color.blue;
+        float currentDist = Vector2.Distance(_core.Rb.position, _core.Player.position);
+
+        if (currentDist <= DashStopDistance + 0.2f)
+        {
+            StopInFrontOfPlayer();
+        }
+
+        anim?.SetBool("One", true);
         yield return StartCoroutine(DashFinishStrikeSequence());
 
-        Sprite.color = Color.red;
+        anim?.SetBool("One", false);
         isDashing = false;
         _core.IsActing = false;
     }
@@ -175,30 +206,29 @@ public class BossFight : MonoBehaviour
     private IEnumerator MeleeStrikeNoDash()
     {
         _core.Rb.linearVelocity = Vector2.zero;
-        Sprite.color = Color.yellow;
+        anim?.SetTrigger("OneTwoReady");
 
-        if (_curPreWindup > 0f) yield return new WaitForSeconds(_curPreWindup);
+        if (_curPreWindup > 0f)
+            yield return new WaitForSeconds(_curPreWindup);
 
-        Sprite.color = Color.blue;
-        _core.TriggerMeleeDamage();
+        anim?.SetBool("OneTwo", true);
+        yield return StartCoroutine(DashFinishStrikeSequence());
 
-        yield return new WaitForSeconds(0.35f);
-
-        Sprite.color = Color.red;
         _core.IsActing = false;
+        yield return new WaitForSeconds(0.7f);
+        anim?.SetBool("OneTwo", false);
     }
 
     private IEnumerator MeleeStrikeRoll()
     {
         _core.Rb.linearVelocity = Vector2.zero;
-        Sprite.color = Color.yellow;
+        anim?.SetTrigger("RollReady");
 
         if (_curPreWindup > 0f)
             yield return new WaitForSeconds(_curPreWindup);
 
-        Sprite.color = Color.blue;
-
-        for (int i = 0; i < 10; i++)
+        anim?.SetBool("Roll", true);
+        for (int i = 0; i < 5; i++)
         {
             _core.TriggerMeleeDamage();
 
@@ -209,30 +239,30 @@ public class BossFight : MonoBehaviour
                 _core.Rb.position = _core.ClampInside(nextPos);
             }
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.3f);
         }
 
-        Sprite.color = Color.red;
         _core.IsActing = false;
+        anim?.SetBool("Roll", false);
     }
 
     public void Range_Attack()
     {
         if (_core.IsActing) return;
-        var type = (BossCore.RangeAttackType)Random.Range(0, 3);
+        var type = (EnemyCore_01.RangeAttackType)Random.Range(0, 3);
         Range_Attack(type);
     }
 
-    public void Range_Attack(BossCore.RangeAttackType type)
+    public void Range_Attack(EnemyCore_01.RangeAttackType type)
     {
         if (_core.IsActing) return;
         switch (type)
         {
-            case BossCore.RangeAttackType.Short:
+            case EnemyCore_01.RangeAttackType.Short:
                 _desiredDistance = 5f;  _rangePreWindup = RangePreWindupShort; _volleyCount = VolleyCountShort; break;
-            case BossCore.RangeAttackType.Mid:
+            case EnemyCore_01.RangeAttackType.Mid:
                 _desiredDistance = 7f;  _rangePreWindup = RangePreWindupMid;   _volleyCount = VolleyCountMid;   break;
-            case BossCore.RangeAttackType.Long:
+            case EnemyCore_01.RangeAttackType.Long:
                 _desiredDistance = 9f;  _rangePreWindup = RangePreWindupLong;  _volleyCount = VolleyCountLong;  break;
         }
         _core.IsActing = true;
@@ -241,13 +271,25 @@ public class BossFight : MonoBehaviour
 
     private IEnumerator DashFinishStrikeSequence()
     {
-        if (_core == null) yield break;
-
-        _core.TriggerMeleeDamage();
-
-        if (_core.LastMeleeType == BossCore.MeleeAttackType.OneOne)
+        if (_core.LastMeleeType == EnemyCore_01.MeleeAttackType.One)
         {
-            yield return new WaitForSeconds(0.5f);
+            _core.TriggerMeleeDamage();
+        }
+        else if (_core.LastMeleeType == EnemyCore_01.MeleeAttackType.OneOne)
+        {
+            _core.TriggerMeleeDamage();
+            yield return new WaitForSeconds(0.4f);
+            _core.TriggerMeleeDamage();
+        }
+        else if (_core.LastMeleeType == EnemyCore_01.MeleeAttackType.OneTwo)
+        {
+            yield return new WaitForSeconds(0.4f);
+            _core.TriggerMeleeDamage();
+            yield return new WaitForSeconds(0.4f);
+            _core.TriggerMeleeDamage();
+        }
+        else
+        {
             _core.TriggerMeleeDamage();
         }
     }
@@ -307,11 +349,9 @@ public class BossFight : MonoBehaviour
         if (_core != null)
         {
             _core.Rb.linearVelocity = Vector2.zero;
-            Sprite.color = Color.blue;
 
             yield return StartCoroutine(DashFinishStrikeSequence());
 
-            Sprite.color = Color.red;
             _core.IsActing = false;
         }
     }
@@ -333,19 +373,25 @@ public class BossFight : MonoBehaviour
 
     private void FireOneProjectile()
     {
-        if (ProjectilePrefab)
-            Object.Instantiate(ProjectilePrefab, transform.position, Quaternion.identity);
+        if (ProjectilePrefab && FirePoint)
+            Object.Instantiate(ProjectilePrefab, FirePoint.position, Quaternion.identity);
     }
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
-        if (_core == null) _core = GetComponent<BossCore>();
+        if (_core == null) _core = GetComponent<EnemyCore_01>();
         if (_core == null) return;
 
-        Gizmos.color = new Color(1f, 0.6f, 0f, 0.35f);
         Vector3 pos = _core.Rb != null ? (Vector3)_core.Rb.position : transform.position;
+
+        // ① 근접 판단 거리 (기존)
+        Gizmos.color = new Color(1f, 0.6f, 0f, 0.35f);
         Gizmos.DrawWireSphere(pos, NoDashCloseRange);
+
+        // ② Dash 멈추는 거리 시각화 (추가)
+        Gizmos.color = new Color(0.2f, 0.5f, 1f, 0.5f);
+        Gizmos.DrawWireSphere(pos, DashStopDistance);
     }
-#endif
+    #endif
 }

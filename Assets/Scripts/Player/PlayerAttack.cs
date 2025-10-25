@@ -264,39 +264,40 @@ public class PlayerAttack : MonoBehaviour
 
     private void DoHitbox(float dmg, float knock, float range, float radius)
     {
-        Vector2 facing = (moveRef && moveRef.LastFacing.sqrMagnitude > 0f) ? moveRef.LastFacing : Vector2.right;
+        Vector2 facing = (moveRef && moveRef.LastFacing.sqrMagnitude > 0f)
+            ? moveRef.LastFacing
+            : Vector2.right;
+
         Vector2 center = (Vector2)transform.position + facing.normalized * range;
 
-        // if (combat.DebugLogs)
-            // Debug.Log($"[HITBOX] dmg={dmg}, knock={knock}, center={center}, r={radius}");
-
         var hits = Physics2D.OverlapCircleAll(center, radius, enemyMask);
-        var seen = new HashSet<Collider2D>();
+
+        var hitEnemies = new HashSet<EnemyCore_01>();
         bool anyHit = false;
 
         foreach (var h in hits)
         {
-            if (!h || seen.Contains(h)) continue;
-            seen.Add(h);
+            if (!h) continue;
+
+            var enemyCore = h.GetComponentInParent<EnemyCore_01>();
+            if (enemyCore == null) continue;
+
+            if (hitEnemies.Contains(enemyCore))
+                continue;
+
+            hitEnemies.Add(enemyCore);
 
             if (ignoreEnemyCollisionDuringActive)
                 IgnoreCollisionsWith(h.transform.root, active + extraIgnoreTime);
 
             Vector2 toEnemy = ((Vector2)h.transform.position - (Vector2)transform.position).normalized;
-            var dmgTarget = h.GetComponentInParent<IDamageable>();
-            if (dmgTarget != null)
-            {
-                dmgTarget.ApplyHit(dmg, knock, toEnemy, gameObject);
-                anyHit = true;
-            }
-            else if (combat.DebugLogs)
-            {
-                Debug.Log($"[HIT] {h.name} take {dmg}, knock={knock}");
-                anyHit = true;
-            }
+
+            enemyCore.ApplyHit(dmg, knock, toEnemy, gameObject);
+            anyHit = true;
         }
 
-        if (anyHit) combat.EnterCombat("HitEnemy");
+        if (anyHit)
+            combat.EnterCombat("HitEnemy");
     }
 
     private void IgnoreCollisionsWith(Transform enemyRoot, float seconds)

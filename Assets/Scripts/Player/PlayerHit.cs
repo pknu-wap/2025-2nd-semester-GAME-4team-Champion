@@ -6,15 +6,15 @@ using Random = UnityEngine.Random;
 public class PlayerHit : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private PlayerCombat combat;          // Ã¼·Â/½ºÅÂ¹Ì³Ê, ÀüÅõ»óÅÂ, ¾Ö´Ï µî
-    [SerializeField] private PlayerDefense defense;        // °¡µå/À§ºù(ÆÐ¸µ) ÆÇ´Ü & ¶ô
-    [SerializeField] private PlayerMoveBehaviour moveRef;  // ÀÌµ¿¶ô/¹Ù¶óº¸´Â ¹æÇâ ÂüÁ¶
+    [SerializeField] private PlayerCombat combat;          // Ã¼ï¿½ï¿½/ï¿½ï¿½ï¿½Â¹Ì³ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½Ö´ï¿½ ï¿½ï¿½
+    [SerializeField] private PlayerDefense defense;        // ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½(ï¿½Ð¸ï¿½) ï¿½Ç´ï¿½ & ï¿½ï¿½
+    [SerializeField] private PlayerMoveBehaviour moveRef;  // ï¿½Ìµï¿½ï¿½ï¿½/ï¿½Ù¶óº¸´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     [SerializeField] private Animator animator;
     [SerializeField] private Rigidbody2D rb;
 
     [Header("Hit Reaction (Config)")]
-    [SerializeField] private float baseHitstun = 0.20f;   // ±âº» °æÁ÷
-    [SerializeField] private float blockHitstunMul = 0.5f;// °¡µå½Ã °æÁ÷ ¹è¼ö
+    [SerializeField] private float baseHitstun = 0.20f;   // ï¿½âº» ï¿½ï¿½ï¿½ï¿½
+    [SerializeField] private float blockHitstunMul = 0.5f;// ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
      
     [Header("Animation Variants")]
     [SerializeField] private int weavingVariants = 3;
@@ -23,7 +23,7 @@ public class PlayerHit : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool debugLogs = true;
 
-    // === »óÅÂ ===
+    // === ï¿½ï¿½ï¿½ï¿½ ===
     private bool inHitstun = false;
     private float hitstunEndTime = 0f;
     private float iFrameEndTime = 0f;
@@ -52,12 +52,12 @@ public class PlayerHit : MonoBehaviour
         combat.EnterCombat("GotHit");
 
         Vector2 facing = FacingOrRight();
-        Vector2 inFrontToEnemy = -hitDir.normalized; // ÇÃ·¹ÀÌ¾î¡æÀû
+        Vector2 inFrontToEnemy = -hitDir.normalized; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½
 
-        // ¹æ¾î/À§ºù ÆÇ´Ü(Á¤¸é ÄÜ/ÆÐ¸µ À©µµ¿ì´Â PlayerDefense°¡ Ã³¸®)
+        // ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½/ï¿½Ð¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ PlayerDefenseï¿½ï¿½ Ã³ï¿½ï¿½)
         var outcome = defense ? defense.Evaluate(facing, inFrontToEnemy, parryable) : DefenseOutcome.None;
 
-        // === À§ºù(ÆÐ¸µ) ¼º°ø ===
+        // === ï¿½ï¿½ï¿½ï¿½(ï¿½Ð¸ï¿½) ï¿½ï¿½ï¿½ï¿½ ===
         if (outcome == DefenseOutcome.Parry)
         {
             if (debugLogs) Debug.Log($"[WEAVING OK] t={Time.time:F2}s, attacker={(attacker ? attacker.name : "null")}");
@@ -68,15 +68,15 @@ public class PlayerHit : MonoBehaviour
 
             float windowEnd = defense.LastBlockPressedTime + defense.ParryWindow;
             float lockDur = Mathf.Max(0f, (windowEnd + defense.WeavingPostHold) - Time.time);
-            defense.StartParryLock(lockDur, true);   // ÀÌµ¿¶ô(¼Óµµ 0 ±ÇÀå)
-            defense.ForceBlockFor(lockDur);          // °¡µå À¯Áö
+            defense.StartParryLock(lockDur, true);   // ï¿½Ìµï¿½ï¿½ï¿½(ï¿½Óµï¿½ 0 ï¿½ï¿½ï¿½ï¿½)
+            defense.ForceBlockFor(lockDur);          // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-            // ÂªÀº i-frame (¿øÇÏ¸é ¼öÄ¡ Á¶Àý)
+            // Âªï¿½ï¿½ i-frame (ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½)
             iFrameEndTime = Time.time + 0.05f;
             return;
         }
 
-        // === ÀÏ¹Ý °¡µå ¼º°ø ===
+        // === ï¿½Ï¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ===
         if (outcome == DefenseOutcome.Block)
         {
             float finalDamage = damage * defense.BlockDamageMul;
@@ -85,7 +85,7 @@ public class PlayerHit : MonoBehaviour
             combat.ApplyDamage(finalDamage);
             ApplyKnockbackXOnly(inFrontToEnemy, finalKnock);
 
-            // ½ºÅÂ¹Ì³Ê °¨¼Ò & ºê·¹ÀÌÅ©
+            // ï¿½ï¿½ï¿½Â¹Ì³ï¿½ ï¿½ï¿½ï¿½ï¿½ & ï¿½ê·¹ï¿½ï¿½Å©
             combat.AddStamina(-damage);
             if (combat.Stamina <= 0f) defense.TriggerStaminaBreak();
             else
@@ -98,7 +98,7 @@ public class PlayerHit : MonoBehaviour
             return;
         }
 
-        // === °¡µå ½ÇÆÐ(Ãø/ÈÄ¹æ/ºñ¹æ¾î) ===
+        // === ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½/ï¿½Ä¹ï¿½/ï¿½ï¿½ï¿½ï¿½) ===
         combat.ApplyDamage(damage);
         ApplyKnockbackXOnly(inFrontToEnemy, knockback);
 
@@ -106,7 +106,7 @@ public class PlayerHit : MonoBehaviour
         StartHitstun(stunRaw, playHitAnim: true);
     }
 
-    // XÃàÀ¸·Î¸¸ ³Ë¹é
+    // Xï¿½ï¿½ï¿½ï¿½ï¿½Î¸ï¿½ ï¿½Ë¹ï¿½
     private void ApplyKnockbackXOnly(Vector2 dirToEnemy, float force)
     {
         if (!rb || force <= 0f) return;
@@ -125,7 +125,7 @@ public class PlayerHit : MonoBehaviour
         hitstunEndTime = Mathf.Max(hitstunEndTime, end);
         if (hitstunCo == null) hitstunCo = StartCoroutine(HitstunRoutine());
 
-        // ¹°¸®´Â »ì¸®°í Á¶ÀÛ¸¸ Àá±Ý
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ì¸®ï¿½ï¿½ ï¿½ï¿½ï¿½Û¸ï¿½ ï¿½ï¿½ï¿½
         moveRef?.SetMovementLocked(true, hardFreezePhysics: false, zeroVelocity: false);
 
         if (playHitAnim) PlayRandomHit();
