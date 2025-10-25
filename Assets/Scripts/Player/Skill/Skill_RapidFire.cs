@@ -9,6 +9,7 @@ public class Skill_RapidFire : MonoBehaviour, IPlayerSkill
     [SerializeField] private PlayerCombat combat;
     [SerializeField] private PlayerMoveBehaviour moveRef;
     [SerializeField] private Animator animator;
+    [SerializeField] private CameraLockOn cameraLockOn;
 
     [Header("Damage & Hitbox")]
     [SerializeField] private float rapidDamageMul = 0.3f;
@@ -82,6 +83,8 @@ public class Skill_RapidFire : MonoBehaviour, IPlayerSkill
     {
         if (owner) attack = owner; if (c) combat = c; if (m) moveRef = m; if (a) animator = a;
         if (!attack || !combat || !moveRef || !animator) return false;
+        if (!cameraLockOn)
+            cameraLockOn = FindFirstObjectByType<CameraLockOn>(FindObjectsInactive.Include);
 
         if (isActive)
         {
@@ -99,7 +102,8 @@ public class Skill_RapidFire : MonoBehaviour, IPlayerSkill
         rapidVfxIndex = 0;
 
         attack.FreezeComboTimerFor(baseDuration + 0.1f);
-
+        TagBus.Raise("Tag.Zoom");
+        cameraLockOn?.SuppressLockOnZoom(3f);
         if (lockMoveDuringSkill) moveRef?.AddMovementLock(LOCK_RF, false, true);
 
         if (!string.IsNullOrEmpty(animStartTrigger)) animator.SetTrigger(animStartTrigger);
@@ -193,7 +197,7 @@ public class Skill_RapidFire : MonoBehaviour, IPlayerSkill
         float radius = stats.baseRadius * radiusMul;
 
         Hitbox(dmg, knock, range, radius);
-
+        TagBus.Raise("Tag.impact(S)");
         // VFX 0→1→2→3→4 순환
         SpawnVFX_Rapid(rapidVFX, ref rapidVfxIndex, rapidVfxOffset,
                        rapidVfxStartDelay, rapidVfxFadeIn, rapidVfxHold, rapidVfxFadeOut);
@@ -211,11 +215,11 @@ public class Skill_RapidFire : MonoBehaviour, IPlayerSkill
         Hitbox(dmg, knock, range, radius);
 
         OnTag?.Invoke(TAG_RAPID_FINISHER);
-
+        TagBus.Raise("Tag.impact(L)");
         // 피니시 VFX
         SpawnVFX_One(finisherVFX, finisherVfxOffset,
                      finisherVfxStartDelay, finisherVfxFadeIn, finisherVfxHold, finisherVfxFadeOut);
-        animator.SetBool("immune", false);
+        animator.SetBool("RapidFire_Loop", false);
         combat.EnterCombat("RapidFire_Finish");
     }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Skill_PowerStrike : MonoBehaviour, IPlayerSkill
 {
@@ -11,9 +12,9 @@ public class Skill_PowerStrike : MonoBehaviour, IPlayerSkill
     [SerializeField] private Animator animator;
 
     [Header("Timing (sec)")]
-    [SerializeField] private float windup = 0.06f;
+    [SerializeField] private float windup = 0.2f;
     [SerializeField] private float active = 0.06f;
-    [SerializeField] private float recovery = 0.30f;
+    [SerializeField] private float recovery = 0.5f;
     public float GetTotalDuration() => windup + active + recovery;
 
     [Header("Skill Config")]
@@ -96,14 +97,16 @@ public class Skill_PowerStrike : MonoBehaviour, IPlayerSkill
         // VFX (시작 타이밍과 페이드 제어)
         StartCoroutine(SpawnVFXWithFollowAndFade(vfxPrefab, vfxOffset, attachToPlayer,
                                                  vfxStartDelay, vfxFadeIn, vfxHold, vfxFadeOut));
-
+        TagBus.Raise("Tag.Zoom");
+        if (!string.IsNullOrEmpty(triggerName)) animator.SetTrigger(triggerName);
         // 선딜
         yield return new WaitForSeconds(windup);
 
-        if (!string.IsNullOrEmpty(triggerName)) animator.SetTrigger(triggerName);
+        
 
         OnTag?.Invoke(TAG_POWERSTRIKE_CAST);
-
+        
+        
         var stats = (attack != null && attack.baseStats != null) ? attack.baseStats : new PlayerAttack.AttackBaseStats();
         float dmg = stats.baseDamage * damageMul;
         float knock = stats.baseKnockback * knockMul;
@@ -111,11 +114,11 @@ public class Skill_PowerStrike : MonoBehaviour, IPlayerSkill
         float radius = stats.baseRadius * radiusMul;
 
         DoHitbox(dmg, knock, range, radius);
-
+        TagBus.Raise("Tag.impact(L)");
         yield return new WaitForSeconds(active + recovery);
-        animator.SetBool("immune", false);
         combat.EnterCombat("Skill_PowerStrike");
         lastCastEndTime = Time.time;
+        
         castCo = null;
     }
 

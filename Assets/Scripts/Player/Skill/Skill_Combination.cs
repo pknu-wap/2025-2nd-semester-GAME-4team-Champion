@@ -84,7 +84,7 @@ public class Skill_Combination : MonoBehaviour, IPlayerSkill
     private IEnumerator CastRoutine()
     {
         isCasting = true;
-
+        TagBus.Raise("Tag.Zoom");
         combat.EnterCombat("Skill_Combination");
         combat.StartActionLock(GetTotalDuration(), zeroVelocityOnStart);
 
@@ -94,12 +94,12 @@ public class Skill_Combination : MonoBehaviour, IPlayerSkill
         yield return new WaitForSeconds(windup);
 
         DoHitbox();
-
+        TagBus.Raise("Tag.impact(L)");
         // 단계별 VFX (딜레이+페이드)
         StartCoroutine(SpawnStepVFXWithFade(stepIndex));
 
         yield return new WaitForSeconds(active + recovery);
-        animator.SetBool("immune", false);
+
         usesInSeries++;
         windowEndTime = Time.time + windowDuration;
         if (windowRoutine != null) StopCoroutine(windowRoutine);
@@ -147,6 +147,7 @@ public class Skill_Combination : MonoBehaviour, IPlayerSkill
         }
 
         if (tagLastThisCast) OnTag?.Invoke(TAG_COMBINATION_LAST);
+        TagBus.Raise("Tag.Skill.Combination.Last");
     }
 
     private IEnumerator SpawnStepVFXWithFade(int stepIndex)

@@ -48,6 +48,7 @@ MonoBehaviour:
   combat: {fileID: 0}
   moveRef: {fileID: 0}
   animator: {fileID: 0}
+  cameraLockOn: {fileID: 0}
   rapidDamageMul: 0.3
   finisherDamageMul: 2
   knockMul: 1
@@ -57,6 +58,9 @@ MonoBehaviour:
   maxDuration: 3
   hitsPerSecond: 5
   stopGraceAfterBase: 0.35
+  lockMoveDuringSkill: 1
+  finisherWindup: 0.5
+  finisherRecovery: 0.3
   cooldownSeconds: 1
   animStartTrigger: RapidFire_Start
   animLoopBool: RapidFire_Loop
@@ -77,7 +81,7 @@ MonoBehaviour:
   finisherVFX: {fileID: 4550023586731943255, guid: 94f4ada598e888041a4c2526056713ff, type: 3}
   finisherVfxOffset: {x: 0, y: 0}
   finisherAttachToPlayer: 0
-  finisherVfxStartDelay: 0.5
+  finisherVfxStartDelay: 0
   finisherVfxFadeIn: 0.02
   finisherVfxHold: 0
-  finisherVfxFadeOut: 0.1
+  finisherVfxFadeOut: 0.3

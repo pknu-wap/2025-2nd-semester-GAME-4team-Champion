@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 5334114694342557824}
   - component: {fileID: 1002647800148014961}
   - component: {fileID: 6122205903531132171}
+  - component: {fileID: 5517823302463290896}
+  - component: {fileID: 3932439558826628978}
   - component: {fileID: 4937110750679436879}
   - component: {fileID: 4079474712408179494}
   - component: {fileID: 7675904475386462618}
@@ -20,11 +22,15 @@ GameObject:
   - component: {fileID: 2104005021133491782}
   - component: {fileID: 308294729237397139}
   - component: {fileID: 3783610308665852847}
+  - component: {fileID: 5309788676890660211}
+  - component: {fileID: 7953617597104738857}
+  - component: {fileID: 5333607370884437379}
   - component: {fileID: 4481926030795619273}
   - component: {fileID: 1332311307344902613}
-  m_Layer: 0
+  - component: {fileID: 4727009262041665505}
+  m_Layer: 3
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -185,6 +191,38 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5517823302463290896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4415293478567363716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57b479a3f79af484dbe54116fc11e608, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveRef: {fileID: 4079474712408179494}
+--- !u!114 &3932439558826628978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4415293478567363716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eabfdfab17d70b64286f201bf3f19088, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpDuration: 0.35
+  cooldown: 0.35
+  animator: {fileID: 6122205903531132171}
+  jumpTriggerName: Jump
+  ignoreLayersDuringJump: []
+  iFrameDuration: -1
+  actionName: Jump
 --- !u!114 &4937110750679436879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,6 +389,101 @@ MonoBehaviour:
   guardStartCost: 15
   guardHitStaminaCostMul: 0.5
   parryRegainPercent: 0.8
+--- !u!114 &5309788676890660211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4415293478567363716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cf49227f63f533428dca15b73a1d99c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  combat: {fileID: 0}
+  moveRef: {fileID: 0}
+  animator: {fileID: 0}
+  attack: {fileID: 0}
+  owner: {fileID: 0}
+  defense: {fileID: 0}
+  hit: {fileID: 0}
+  maxCombo: 4
+  comboGapMax: 1
+  lockMoveDuringAttack: 1
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 64
+  ignoreEnemyCollisionDuringActive: 1
+  extraIgnoreTime: 0.02
+  windup: 0.15
+  active: 0.06
+  recovery: 0.12
+  minRecovery: 0.05
+--- !u!114 &7953617597104738857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4415293478567363716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d437dd6ed65c654994f2855decf6a68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  combat: {fileID: 0}
+  moveRef: {fileID: 0}
+  animator: {fileID: 0}
+  attack: {fileID: 0}
+  defense: {fileID: 0}
+  hit: {fileID: 0}
+  windup: 0.15
+  active: 0.06
+  recovery: 0.3
+  chargeTime: 0.5
+  minHold: 0.12
+  lockMoveDuringCharge: 1
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 64
+  baseDamage: 10
+  baseKnockback: 6
+  baseRange: 0.9
+  baseRadius: 0.6
+  chargeDamageMul: 2
+  chargeKnockMul: 2
+  chargeRangeMul: 1.2
+  chargeRadiusMul: 1.2
+--- !u!114 &5333607370884437379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4415293478567363716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbc8516c8a332545b78027f4d1c59b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  combat: {fileID: 0}
+  moveRef: {fileID: 0}
+  animator: {fileID: 0}
+  attack: {fileID: 0}
+  windup: 0.02
+  active: 0.06
+  recovery: 0.1
+  lockMoveDuringCounter: 1
+  damageMul: 2
+  knockMul: 2
+  rangeMul: 1.1
+  radiusMul: 1
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 64
+  ignoreEnemyCollisionDuringActive: 1
+  extraIgnoreTime: 0.02
 --- !u!114 &4481926030795619273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368,9 +501,9 @@ MonoBehaviour:
   animator: {fileID: 6122205903531132171}
   attackActionName: Attack
   chargeActionName: Charge
-  normalAtk: {fileID: 719947633008659139, guid: 69371c39689c3974892f4bf23bd8cb20, type: 3}
-  chargeAtk: {fileID: 2302877030648206405, guid: ae9e81d727dfc3743972931471b0d884, type: 3}
-  counterAtk: {fileID: 7594863098480470863, guid: e91ce5a0dce51174a881658b1d767d4e, type: 3}
+  normalAtk: {fileID: 5309788676890660211}
+  chargeAtk: {fileID: 7953617597104738857}
+  counterAtk: {fileID: 5333607370884437379}
   baseStats:
     baseDamage: 10
     baseKnockback: 6
@@ -399,6 +532,59 @@ MonoBehaviour:
   autoLearnOnStart: 1
   debugLogs: 0
   initialSkills:
-  - {fileID: 2801212621990124742, guid: 121d1e59a5b26fc42919ef6a331d1bff, type: 3}
+  - {fileID: 862772400608910830, guid: 0c07dc8e3297a564e961ef7fa263b803, type: 3}
   - {fileID: 477632037043853310, guid: b9566f31b0567244583fd80c0f45bd0c, type: 3}
   - {fileID: 5486950187532172470, guid: 924c085dac85e6341a9ea6f63fa86ec8, type: 3}
+--- !u!114 &4727009262041665505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4415293478567363716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ImpulseDefinition:
+    ImpulseChannel: 1
+    ImpulseShape: 2
+    CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    ImpulseDuration: 0.2
+    ImpulseType: 0
+    DissipationRate: 0.25
+    RawSignal: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    RepeatMode: 0
+    Randomize: 1
+    TimeEnvelope:
+      AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      AttackTime: 0
+      SustainTime: 0.2
+      DecayTime: 0.7
+      ScaleWithImpact: 1
+      HoldForever: 0
+    ImpactRadius: 100
+    DirectionMode: 0
+    DissipationMode: 2
+    DissipationDistance: 100
+    PropagationSpeed: 343
+  DefaultVelocity: {x: 0.5, y: 0.5, z: 0.5}

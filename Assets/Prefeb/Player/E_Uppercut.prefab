@@ -48,13 +48,14 @@ MonoBehaviour:
   combat: {fileID: 0}
   moveRef: {fileID: 0}
   animator: {fileID: 0}
+  cameraLockOn: {fileID: 0}
   enemyMaskOverride:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   knockMul: 1.2
   rangeMul: 1
   radiusMul: 1
-  windup: 0.08
+  windup: 0.2
   active: 0.06
   recovery: 0.5
   fixed2xWindow: 0.5
@@ -63,7 +64,7 @@ MonoBehaviour:
   cooldownSeconds: 8
   chargeBool: E_Charging
   fireTrigger: E_Uppercut
-  chargeVFX: {fileID: 3385190401306845809, guid: ba5a864f6cc80624893cf77b1361b1e0, type: 3}
+  chargeVFX: {fileID: 0}
   chargeAttachToPlayer: 0
   chargeVfxOffset: {x: -0.5, y: 0}
   chargeVfxFadeIn: 0.05
@@ -71,7 +72,7 @@ MonoBehaviour:
   fireVFX: {fileID: 8217739205388595026, guid: a5dd5ab04ae3b82409094038dab4fc6c, type: 3}
   fireAttachToPlayer: 0
   fireVfxOffset: {x: 0, y: 0}
-  fireVfxStartDelay: 0.5
+  fireVfxStartDelay: 0.1
   fireVfxFadeIn: 0.03
   fireVfxHold: 0
   fireVfxFadeOut: 0.35

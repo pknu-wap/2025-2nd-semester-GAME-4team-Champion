@@ -48,9 +48,9 @@ MonoBehaviour:
   combat: {fileID: 0}
   moveRef: {fileID: 0}
   animator: {fileID: 0}
-  windup: 0.06
+  windup: 0.2
   active: 0.06
-  recovery: 0.3
+  recovery: 0.5
   damageMul: 3
   knockMul: 1.5
   rangeMul: 1
@@ -58,10 +58,11 @@ MonoBehaviour:
   triggerName: PowerStrike
   lockMoveDuringSkill: 1
   cooldownSeconds: 8
+  vfxScaleMul: 2
   vfxPrefab: {fileID: 4550023586731943255, guid: 94f4ada598e888041a4c2526056713ff, type: 3}
-  vfxOffset: {x: 0.6, y: 0}
+  vfxOffset: {x: 0, y: 0}
   attachToPlayer: 1
-  vfxStartDelay: 0.5
+  vfxStartDelay: 0.3
   vfxFadeIn: 0.05
   vfxHold: 0
-  vfxFadeOut: 0.5
+  vfxFadeOut: 0.2

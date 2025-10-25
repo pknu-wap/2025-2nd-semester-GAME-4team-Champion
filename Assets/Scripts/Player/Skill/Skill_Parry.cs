@@ -20,7 +20,7 @@ public class Skill_Parry : MonoBehaviour, IPlayerSkill, IParryWindowProvider
     [SerializeField] private float knockMul = 1.0f;
     [SerializeField] private float rangeMul = 1.0f;
     [SerializeField] private float radiusMul = 1.0f;
-    [SerializeField] private float betweenHits = 0.10f;
+    [SerializeField] private float betweenHits = 0.30f;
 
     [Header("Cooldown")]
     [SerializeField] private float cooldownSeconds = 5f;
@@ -30,7 +30,6 @@ public class Skill_Parry : MonoBehaviour, IPlayerSkill, IParryWindowProvider
     [Header("Animation")]
     [SerializeField] private string animParryStartTrigger = "ParryStart";
     [SerializeField] private string animParrySuccessTrigger = "ParrySuccess";
-    [SerializeField] private string animParryFailTrigger = "ParryFail";
 
     [Header("VFX")]
     [SerializeField] private GameObject parryStartVFX;
@@ -83,7 +82,7 @@ public class Skill_Parry : MonoBehaviour, IPlayerSkill, IParryWindowProvider
         successParry = true;
 
         OnTag?.Invoke(TAG_PARRY_SUCCESS);
-
+        TagBus.Raise("Tag.Zoom");
         // 성공 VFX (딜레이+페이드)
         StartCoroutine(SpawnVFXWithFade(parrySuccessVFX, successVfxOffset,
             successVfxStartDelay, successVfxFadeIn, successVfxHold, successVfxFadeOut));
@@ -121,10 +120,7 @@ public class Skill_Parry : MonoBehaviour, IPlayerSkill, IParryWindowProvider
             {
                 if (!string.IsNullOrEmpty(animParrySuccessTrigger)) animator.SetTrigger(animParrySuccessTrigger);
             }
-            else
-            {
-                if (!string.IsNullOrEmpty(animParryFailTrigger)) animator.SetTrigger(animParryFailTrigger);
-            }
+
             yield return new WaitForSeconds(recovery);
         }
         finally
@@ -144,8 +140,10 @@ public class Skill_Parry : MonoBehaviour, IPlayerSkill, IParryWindowProvider
         float radius = stats.baseRadius * radiusMul;
 
         HitOnce(dmg, knock, range, radius);
+        TagBus.Raise("Impact(L)");
         yield return new WaitForSeconds(betweenHits);
         HitOnce(dmg, knock, range, radius);
+        TagBus.Raise("Impact(L)");
 
         combat.EnterCombat("Parry_Counter");
     }

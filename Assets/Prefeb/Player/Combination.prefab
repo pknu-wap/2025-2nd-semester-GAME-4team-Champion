@@ -55,7 +55,7 @@ MonoBehaviour:
   knockMul: 1
   rangeMul: 2
   radiusMul: 1
-  windup: 0.1
+  windup: 0.2
   active: 0.06
   recovery: 0.3
   zeroVelocityOnStart: 1

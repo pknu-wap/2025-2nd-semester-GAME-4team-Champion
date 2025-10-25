@@ -9,6 +9,7 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
     [SerializeField] private PlayerCombat combat;
     [SerializeField] private PlayerMoveBehaviour moveRef;
     [SerializeField] private Animator animator;
+    [SerializeField] private CameraLockOn cameraLockOn;
 
     [Header("Hitbox / Base")]
     [SerializeField] private LayerMask enemyMaskOverride;
@@ -76,7 +77,13 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
     { attack = atk; combat = c; moveRef = m; animator = a; }
 
     public bool TryStartCharge(PlayerAttack owner, PlayerCombat c, PlayerMoveBehaviour m, Animator a)
-    { if (owner) attack = owner; if (c) combat = c; if (m) moveRef = m; if (a) animator = a; return OnChargeStarted(); }
+    {
+        if (owner) attack = owner; if (c) combat = c; if (m) moveRef = m; if (a) animator = a;
+        if (!cameraLockOn)
+            cameraLockOn = FindFirstObjectByType<CameraLockOn>(FindObjectsInactive.Include);
+        return OnChargeStarted();
+
+    }
 
     public void ReleaseCharge() => OnChargeReleased();
     public bool TryCastSkill(PlayerAttack owner, PlayerCombat c, PlayerMoveBehaviour m, Animator a) => TryStartCharge(owner, c, m, a);
@@ -89,7 +96,8 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
         if (combat.HP <= 0f || combat.IsActionLocked || combat.IsStaminaBroken) return false;
 
         attack.FreezeComboTimerFor(fullChargeTime + GetTotalDuration() + 0.2f);
-
+        TagBus.Raise("Tag.Zoom");
+        cameraLockOn.SuppressLockOnZoom(3f);
         IsCharging = true;
         chargeStartTime = Time.time;
 
@@ -172,7 +180,7 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
         StartCoroutine(SpawnFireVFXWithFade());
 
         DoHitbox(dmg, knock, range, radius);
-
+        TagBus.Raise("Tag.impact(L)");
         yield return new WaitForSeconds(active + recovery);
         combat.EnterCombat("Skill_EuropeanUppercut");
         lastCastEndTime = Time.time;
@@ -195,7 +203,7 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
 
         var hits = Physics2D.OverlapCircleAll(center, radius, enemyMaskOverride.value != 0 ? enemyMaskOverride : combat.EnemyMask);
         if (hits == null || hits.Length == 0) return;
-
+        
         _seenIds.Clear();
         foreach (var h in hits)
         {
