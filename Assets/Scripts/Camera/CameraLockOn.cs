@@ -10,7 +10,7 @@ public class CameraLockOn : MonoBehaviour
     [SerializeField] private CinemachineCamera vcam;
 
     [Header("Targets")]
-    [SerializeField] private Transform player;
+    public Transform player;
     [SerializeField] private Transform anchor; // 비워두면 자동 생성
 
     [Header("Enemy Scan")]

@@ -29,6 +29,8 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     [SerializeField] public float Speed = 3.0f;
     [SerializeField] public float MinChaseDistance = 1.3f;
     [SerializeField] public Collider2D MovementArea;
+    private bool _isGroggy = false;
+    [SerializeField] private float groggyDuration = 3f;
 
     [Header("Runtime")]
     public float AttackTimer = 0f;
@@ -96,6 +98,11 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         if (_isDead) return;
         if (_noMoveRemain > 0f) _noMoveRemain -= Time.deltaTime;
 
+        if (!_isGroggy && CurrentStamina >= 100f)
+        {
+            StartCoroutine(EnterGroggy());
+        }
+
         if (!IsActing && !_isHit)
         {
             AttackTimer += Time.deltaTime;
@@ -123,6 +130,12 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 
     private void FixedUpdate()
     {
+        if (_isGroggy)
+        {
+            Rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         if (_isDead)
         {
             return;
@@ -156,9 +169,10 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         {
             lastGuardTime = Time.time;
             OnGuarded(hitSource);
-            guardCount++;
-
-            if (guardCount >= 4 && Random.value <= 0.7f)
+            anim.Play("Enemy_01_Guard", 0, 0f);
+            guardCount += 1;
+            CurrentStamina += 10;
+            if (source != null && guardCount >= 6 && Random.value <= 0.7f)
             {
                 OnParried(hitSource);
                 guardCount = 0;
@@ -167,18 +181,18 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         }
 
         bool recentlyHit = Time.time - lastHitTime < 1f;
-        if (!IsGuarding && !recentlyHit && Random.value <= 0.4f)
+        if (!IsGuarding && !recentlyHit && Random.value <= 0.7f)
         {
             StartGuard(hitSource);
             OnGuarded(hitSource);
-            guardCount++;
+
             return;
         }
         else if (recentlyHit)
         {
             guardBlockCount++;
 
-            if (guardBlockCount >= 5)
+            if (guardBlockCount >= 2)
             {
                 guardBlockCount = 0;
                 StartGuard(hitSource);
@@ -189,7 +203,6 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         }
 
         CurrentHp -= damage;
-        Camera.main.GetComponent<Animator>().SetTrigger("Shake");
         StartCoroutine(HitStop(0.1f));
 
         _isHit = true;
@@ -212,6 +225,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         IsGuarding = true;
         lastGuardTime = Time.time;
         anim?.SetBool("IsGuarding", true);
+        CurrentStamina += 20;
 
         if (guardResetCo != null)
             StopCoroutine(guardResetCo);
@@ -274,7 +288,6 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     private void PlayRandomHit()
     {
         if (anim == null) return;
-        Camera.main.GetComponent<Animator>().SetTrigger("Shake");
         int rand = Random.Range(1, 4);
         anim.CrossFade($"Enemy_01_Hit0{rand}", 0.05f);
     }
@@ -399,6 +412,24 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
             Rb.linearVelocity = Vector2.zero;
     }
 
+    private IEnumerator EnterGroggy()
+    {
+        _isGroggy = true;
+        IsActing = true;
+        Rb.linearVelocity = Vector2.zero;
+
+        yield return new WaitForSeconds(groggyDuration);
+
+        ExitGroggy();
+    }
+
+    private void ExitGroggy()
+    {
+        _isGroggy = false;
+        IsActing = false;
+        CurrentStamina = 0f;
+    }
+
     private void Die()
     {
         if (_isDead) return;
@@ -467,10 +498,10 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
                 else
                     _combat.Range_Attack();
                 break;
-            case AttackSelectMode.Melee_One: _combat.Melee_Attack(MeleeAttackType.One); break;
-            case AttackSelectMode.Melee_OneOne: _combat.Melee_Attack(MeleeAttackType.OneOne); break;
-            case AttackSelectMode.Melee_OneTwo: _combat.Melee_Attack(MeleeAttackType.OneTwo); break;
-            case AttackSelectMode.Melee_Roll: _combat.Melee_Attack(MeleeAttackType.Roll); break;
+            case AttackSelectMode.Melee_One: _combat.Melee_Attack(MeleeAttackType.One); CurrentStamina -= 4; break;
+            case AttackSelectMode.Melee_OneOne: _combat.Melee_Attack(MeleeAttackType.OneOne); CurrentStamina -= 6;break;
+            case AttackSelectMode.Melee_OneTwo: _combat.Melee_Attack(MeleeAttackType.OneTwo); CurrentStamina -= 8; break;
+            case AttackSelectMode.Melee_Roll: _combat.Melee_Attack(MeleeAttackType.Roll); CurrentStamina -= 10;break;
             case AttackSelectMode.Range_Short: _combat.Range_Attack(RangeAttackType.Short); break;
             case AttackSelectMode.Range_Mid: _combat.Range_Attack(RangeAttackType.Mid); break;
             case AttackSelectMode.Range_Long: _combat.Range_Attack(RangeAttackType.Long); break;

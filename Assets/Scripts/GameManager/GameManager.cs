@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
 
     public void getdamaged() //데미지 받음
     {
-        currenthp -= 20;
+        currenthp -= 10;
         resetcurrenthp();
 
         lastactiontime = Time.time;

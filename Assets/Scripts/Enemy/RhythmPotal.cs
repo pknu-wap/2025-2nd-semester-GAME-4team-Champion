@@ -7,7 +7,7 @@ public class RhythmPotal : MonoBehaviour
     public Transform target;
     public GameObject Rhythm;
     public GameObject RhythmCanvas;
-    public CameraFollow camFollow;
+    public CameraLockOn camFollow;
     public Transform player;
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -23,9 +23,9 @@ public class RhythmPotal : MonoBehaviour
     {
         if (camFollow != null && Rhythm != null)
         {
-            camFollow.target = Rhythm.transform;
+            camFollow.player = Rhythm.transform;
         }
-
+        player.GetComponent<PlayerMoveBehaviour>().enabled = false;
         RhythmCanvas.SetActive(true);
     }
 
@@ -39,7 +39,8 @@ public class RhythmPotal : MonoBehaviour
     {
         if (camFollow != null && player != null)
         {
-            camFollow.target = player;
+            camFollow.player = player;
+            player.GetComponent<PlayerMoveBehaviour>().enabled = true;
         }
     }
 }

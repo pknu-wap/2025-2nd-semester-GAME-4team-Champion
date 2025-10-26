@@ -7,7 +7,7 @@ public class SandBagPotal : MonoBehaviour
     public Transform target;
     public GameObject sandbag;
     public GameObject SandBagCanvas;
-    public CameraFollow camFollow;
+    public CameraLockOn camFollow;
     public Transform player;
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -22,6 +22,7 @@ public class SandBagPotal : MonoBehaviour
     private void StartSandbagMiniGame()
     {
         SandBagCanvas.SetActive(true);
+        player.GetComponent<PlayerMoveBehaviour>().enabled = false;
     }
     public void ClickStartBTN()
     {
@@ -33,7 +34,8 @@ public class SandBagPotal : MonoBehaviour
     {
         if (camFollow != null && player != null)
         {
-            camFollow.target = player;
+            camFollow.player = player;
+            player.GetComponent<PlayerMoveBehaviour>().enabled = true;
         }
     }
 }

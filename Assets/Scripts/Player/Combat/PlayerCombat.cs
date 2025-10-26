@@ -25,6 +25,7 @@ public class PlayerCombat : MonoBehaviour
     private float stamina;
     public bool IsStaminaBroken { get; private set; } = false;
     private Player_Revive revive;
+    [SerializeField] private GameManager Gm;
 
     public event Action<float, float> OnHealthChanged;   // (current, max)
     public event Action<float, float> OnStaminaChanged;  // (current, max)
@@ -126,6 +127,7 @@ public class PlayerCombat : MonoBehaviour
         hp = Mathf.Max(0f, hp - amount);
         OnHealthChanged?.Invoke(hp, hpMax);
         if (debugLogs) Debug.Log($"[HP] -{amount} => {hp}/{hpMax}");
+        Gm.getdamaged();
         if (hp <= 0f) OnDeath();
     }
 
@@ -168,6 +170,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void AddStamina(float delta)
     {
+        Gm.guard(10);
         float before = stamina;
         stamina = Mathf.Clamp(stamina + delta, 0f, staminaMax);
         if (!Mathf.Approximately(before, stamina))

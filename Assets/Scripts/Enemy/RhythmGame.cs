@@ -20,10 +20,11 @@ public class RhythmGame : MonoBehaviour
     private bool isCharging = false;
     private float chargeValue = 0f;
     private bool isGameEnded = false;
-    private bool allNotesSpawned = false; // ✅ 스폰 완료 여부 플래그
+    private bool allNotesSpawned = false;
+    public GameObject MiniGame;
 
-    void Start()
-    {
+    void OnEnable()
+{
         if (rhythmParent == null)
         {
             GameObject parentObj = GameObject.Find("MiniGame_Rhythm");
@@ -31,7 +32,24 @@ public class RhythmGame : MonoBehaviour
                 rhythmParent = parentObj.transform;
         }
 
-        UpdateScoreText();
+        lastNoteType = 0;
+        score = 0;
+        isCharging = false;
+        chargeValue = 0f;
+        isGameEnded = false;
+        allNotesSpawned = false;
+
+        foreach (var note in activeNotes)
+        {
+            if (note != null)
+                Destroy(note.gameObject);
+        }
+        activeNotes.Clear();
+
+        if (scoreText != null)
+            scoreText.text = "Score: 0";
+
+        StopAllCoroutines();
         StartCoroutine(SpawnRoutine());
     }
 
@@ -39,10 +57,8 @@ public class RhythmGame : MonoBehaviour
     {
         HandleInput();
 
-        // ✅ 모든 노트가 사라졌고, 스폰도 끝났고, 아직 종료되지 않았다면
         if (allNotesSpawned && !isGameEnded && activeNotes.Count == 0)
         {
-            Debug.Log("🎯 모든 노트가 처리됨! 게임 종료로 이동");
             EndGame();
         }
     }
@@ -55,8 +71,7 @@ public class RhythmGame : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(0.4f, 1f));
         }
 
-        allNotesSpawned = true; // ✅ 스폰 완료 플래그 설정
-        Debug.Log("🎵 모든 노트 스폰 완료");
+        allNotesSpawned = true;
     }
 
     private void SpawnNote()
@@ -106,10 +121,8 @@ public class RhythmGame : MonoBehaviour
             {
                 int gainedScore = Mathf.RoundToInt(chargeValue * 0.2f);
                 score += gainedScore;
-                Debug.Log($"⚡ Charge Success! {chargeValue:F1}% → +{gainedScore}점");
                 UpdateScoreText();
 
-                // ✅ 차지 노트 제거
                 for (int i = activeNotes.Count - 1; i >= 0; i--)
                 {
                     RhythmNote note = activeNotes[i];
@@ -147,7 +160,6 @@ public class RhythmGame : MonoBehaviour
             {
                 score += 3;
                 UpdateScoreText();
-                Debug.Log($"✅ Hit! Type:{type}, +3점");
                 Destroy(note.gameObject);
                 activeNotes.RemoveAt(i);
                 break;
@@ -188,7 +200,7 @@ public class RhythmGame : MonoBehaviour
         if (player != null && MainPotal != null)
         {
             player.transform.position = MainPotal.position;
-            Debug.Log("✅ 플레이어가 MainPotal로 이동했습니다!");
         }
+        MiniGame.SetActive(false);
     }
 }

@@ -27,8 +27,6 @@ public class Projectile : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("플레이어가 피해를 입음 (데미지: " + damage + ")");
-
             PlayerMoveBehaviour move = other.GetComponent<PlayerMoveBehaviour>();
             if (move != null)
             {

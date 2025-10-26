@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using Unity.Cinemachine;
 
 public class Sandbag : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class Sandbag : MonoBehaviour
     private bool hasFinished = false;
     private Rigidbody2D rb;
 
-    public CameraFollow camFollow;
+    public CameraLockOn camFollow;
     public Text scoreText;
     public Transform MainPotal;
     public SandBagPotal SandPotal;
@@ -21,16 +22,29 @@ public class Sandbag : MonoBehaviour
 
     private float lastClickTime = 0f;
     private bool isReturning = false;
+    public GameObject MiniGame;
+    [SerializeField] private CinemachineImpulseSource hitImpulse;
 
-    void Start()
+    void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
         originalPos = transform.position;
 
+        hitCount = 0;
+        isShaking = false;
+        isFlying = false;
+        hasFinished = false;
+        isReturning = false;
+        lastClickTime = 0f;
+
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+        rb.position = originalPos;
+
         if (scoreText != null)
             scoreText.text = "Score: 0";
     }
-
+    
     void Update()
     {
         if (Input.GetMouseButtonDown(0) && !hasFinished && !isFlying)
@@ -42,8 +56,10 @@ public class Sandbag : MonoBehaviour
             lastClickTime = Time.time;
             isReturning = false;
 
-            if (CameraShaking.Instance != null && !CameraShaking.Instance.IsShaking)
-                StartCoroutine(CameraShaking.Instance.Shake(0.5f, 0.2f));
+            // if (CameraShaking.Instance != null && !CameraShaking.Instance.IsShaking)
+            //     StartCoroutine(CameraShaking.Instance.Shake(0.5f, 0.2f));
+
+            hitImpulse.GenerateImpulse();
 
             if (!isFlying && !isShaking)
                 StartCoroutine(ShakeAndFly());
@@ -55,7 +71,7 @@ public class Sandbag : MonoBehaviour
         }
 
         if (isFlying && camFollow != null)
-            camFollow.target = transform;
+            camFollow.player = transform;
     }
 
     IEnumerator ShakeAndFly()
@@ -117,5 +133,6 @@ public class Sandbag : MonoBehaviour
         {
             player.transform.position = MainPotal.position;
         }
+        MiniGame.SetActive(false);
     }
 }
