@@ -5906,6 +5906,8 @@ MonoBehaviour:
   hpMax: 100
   staminaMax: 100
   staminaRegenPerSec: 25
+  hp: 0
+  <Stamina>k__BackingField: 0
   autoFaceOnCombatEnter: 1
   autoFaceSearchRadius: 15
   disengageDistance: 150
@@ -5915,8 +5917,8 @@ MonoBehaviour:
   autoFaceEvenWhileAttacking: 0
   autoFaceInputDeadzoneX: 0.2
   enemyMask:
-    serializedVersion: 2
     m_Bits: 64
+  inCombat: 0
   debugLogs: 1
 --- !u!1 &1490345512502396442
 GameObject:
@@ -6013,9 +6015,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 6
-  flipDeadzone: 0.05
   combat: {fileID: 1408308634286102537}
-  blockFlipFromMovement: 0
 --- !u!224 &1555704429446691232
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11390,7 +11390,6 @@ MonoBehaviour:
   comboGapMax: 1
   lockMoveDuringAttack: 1
   enemyMask:
-    serializedVersion: 2
     m_Bits: 64
   baseDamage: 10
   baseKnockback: 6
@@ -11407,6 +11406,23 @@ MonoBehaviour:
   chargeKnockMul: 2
   chargeRangeMul: 1.2
   chargeRadiusMul: 1.2
+  attackAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b4453575-d8a7-46dd-8c0b-4b68d5cbacd0
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  comboIndex: 0
+  isAttacking: 0
+  nextBuffered: 0
+  lastAttackEndTime: -999
+  chargeLocked: 0
+  attackHeld: 0
+  attackPressedTime: -999
+  myColliders: []
 --- !u!1 &5876345355360096951
 GameObject:
   m_ObjectHideFlags: 0
@@ -11639,6 +11655,20 @@ MonoBehaviour:
   blockKnockMul: 0.3
   weavingPostHold: 0.1
   staminaBreakTime: 1.5
+  isBlocking: 0
+  blockPressedTime: -999
+  parryLockEndTime: 0
+  staminaBroken: 0
+  staminaBreakEndTime: 0
+  blockAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: a967b61e-94c7-4bd4-abcb-a8f2aa78934a
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!114 &6078626885176943073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13965,16 +13995,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 8562855478970666843}
   hpbar:
-  - {fileID: 1368287576744963731}
-  - {fileID: 7582837932527556189}
-  - {fileID: 9023912416650022997}
+  - {fileID: 7516417263229722562}
+  - {fileID: 6564551904695653214}
+  - {fileID: 8343568165278800735}
   staminabar:
-  - {fileID: 4411989476158628970}
-  - {fileID: 4027709924909010665}
-  - {fileID: 1005492674932601267}
-  - {fileID: 7470110125320146814}
-  - {fileID: 7468798533795347443}
-  - {fileID: 2587399376087217703}
+  - {fileID: 6024781171728829384}
+  - {fileID: 8067981055591245749}
+  - {fileID: 3715602674133757412}
+  - {fileID: 3040910443181476109}
+  - {fileID: 4015397127382543885}
+  - {fileID: 7632694037563155293}
   maxhp: 100
   currenthp: 100
   maxstamina: 100
@@ -14809,7 +14839,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 10
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -14973,6 +15003,9 @@ MonoBehaviour:
   weavingVariants: 3
   hitVariants: 3
   debugLogs: 0
+  inHitstun: 0
+  hitstunEndTime: 0
+  iFrameEndTime: 0
 --- !u!222 &8565663291429056242
 CanvasRenderer:
   m_ObjectHideFlags: 0
