@@ -56,9 +56,6 @@ public class Sandbag : MonoBehaviour
             lastClickTime = Time.time;
             isReturning = false;
 
-            // if (CameraShaking.Instance != null && !CameraShaking.Instance.IsShaking)
-            //     StartCoroutine(CameraShaking.Instance.Shake(0.5f, 0.2f));
-
             hitImpulse.GenerateImpulse();
 
             if (!isFlying && !isShaking)
@@ -82,7 +79,7 @@ public class Sandbag : MonoBehaviour
         isFlying = true;
 
         startPos = transform.position;
-        float force = 15f * hitCount;
+        float force = 8f * hitCount;
         rb.AddForce(Vector2.right * force, ForceMode2D.Impulse);
 
         yield return StartCoroutine(TrackDistance());
@@ -92,7 +89,6 @@ public class Sandbag : MonoBehaviour
         hasFinished = true;
 
         Debug.Log("🎯 샌드백 미니게임 종료! 3초 후 이동합니다...");
-        SandPotal.EndSandbagMiniGame();
         StartCoroutine(MoveAfterDelay());
     }
 
@@ -134,5 +130,6 @@ public class Sandbag : MonoBehaviour
             player.transform.position = MainPotal.position;
         }
         MiniGame.SetActive(false);
+        SandPotal.EndSandbagMiniGame();
     }
 }

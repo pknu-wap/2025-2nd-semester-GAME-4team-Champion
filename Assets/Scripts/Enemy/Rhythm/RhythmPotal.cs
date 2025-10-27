@@ -15,18 +15,15 @@ public class RhythmPotal : MonoBehaviour
         if (other.CompareTag(playerTag))
         {
             other.transform.position = target.position;
-            StartRhythmMiniGame();
-        }
-    }
-
-    private void StartRhythmMiniGame()
-    {
-        if (camFollow != null && Rhythm != null)
-        {
             camFollow.player = Rhythm.transform;
+            player.GetComponent<PlayerMoveBehaviour>().enabled = false;
+            RhythmCanvas.SetActive(true);
+            player.GetComponent<SpriteRenderer>().flipX = true;
+            Animator anim = player.GetComponent<Animator>();
+            player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+            anim.SetFloat("moveY", 0);
+            anim.SetFloat("moveX", 0);
         }
-        player.GetComponent<PlayerMoveBehaviour>().enabled = false;
-        RhythmCanvas.SetActive(true);
     }
 
     public void ClickStartBTN()
@@ -37,10 +34,9 @@ public class RhythmPotal : MonoBehaviour
 
     public void EndRhythmMiniGame()
     {
-        if (camFollow != null && player != null)
-        {
-            camFollow.player = player;
-            player.GetComponent<PlayerMoveBehaviour>().enabled = true;
-        }
+        camFollow.player = player;
+        player.GetComponent<PlayerMoveBehaviour>().enabled = true;
+        player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        Rhythm.SetActive(false);
     }
 }

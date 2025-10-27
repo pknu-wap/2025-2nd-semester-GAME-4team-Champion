@@ -27,7 +27,7 @@ public class CameraLockOn : MonoBehaviour
     [SerializeField] private float zoomSmooth = 0.15f;
 
     [Header("Follow Smoothing")]
-    [SerializeField] private float followLerp = 12f;
+    public float followLerp = 12f;
 
     [Header("Combat Gating")]
     [SerializeField] private bool onlyWhenInCombat = true;

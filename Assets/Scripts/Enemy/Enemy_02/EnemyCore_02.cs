@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
+public class EnemyCore_02 : MonoBehaviour, IParryable, IDamageable
 {
     // ──────────────────────────────────────────────────────────────
     #region Common & References
@@ -40,7 +40,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 
     public Rigidbody2D Rb { get; private set; }
     private Animator anim;
-    private EnemyFight_01 _combat;
+    private EnemyFight_02 _combat;
 
     [Header("Hit Window")]
     [SerializeField] private float hitActiveDuration = 0.08f;
@@ -81,8 +81,8 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     private void Awake()
     {
         Rb = GetComponent<Rigidbody2D>();
-        _combat = GetComponent<EnemyFight_01>();
-        if (_combat == null) _combat = gameObject.AddComponent<EnemyFight_01>();
+        _combat = GetComponent<EnemyFight_02>();
+        if (_combat == null) _combat = gameObject.AddComponent<EnemyFight_02>();
         _combat.BindCore(this);
         anim = GetComponentInChildren<Animator>();
     }
@@ -172,7 +172,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
             anim.Play("Enemy_01_Guard", 0, 0f);
             guardCount += 1;
             CurrentStamina += 10;
-            if (source != null && guardCount >= 6 && Random.value <= 0.7f)
+            if (source != null && guardCount >= 6 && Random.value <= 0.6f)
             {
                 OnParried(hitSource);
                 guardCount = 0;
@@ -181,7 +181,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         }
 
         bool recentlyHit = Time.time - lastHitTime < 1f;
-        if (!IsGuarding && !recentlyHit && Random.value <= 0.7f)
+        if (!IsGuarding && !recentlyHit && Random.value <= 0.5f)
         {
             StartGuard(hitSource);
             OnGuarded(hitSource);
@@ -192,7 +192,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         {
             guardBlockCount++;
 
-            if (guardBlockCount >= 2)
+            if (guardBlockCount >= 5)
             {
                 guardBlockCount = 0;
                 StartGuard(hitSource);
@@ -200,7 +200,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
                 guardCount++;
                 return;
             }
-        }
+}
 
         CurrentHp -= damage;
         StartCoroutine(HitStop(0.1f));
@@ -289,7 +289,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     {
         if (anim == null) return;
         int rand = Random.Range(1, 4);
-        anim.CrossFade($"Enemy_01_Hit0{rand}", 0.05f);
+        anim.Play($"Enemy_01_Hit0{rand}", 0, 0);
     }
     #endregion
     // ──────────────────────────────────────────────────────────────
@@ -300,7 +300,6 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     {
         if (isWeaveAttacking) return;
 
-        IsGuarding = false;
         anim?.SetTrigger("Weave");
 
         if (Player != null && Player.TryGetComponent<PlayerCombat>(out var pc))
@@ -436,7 +435,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         _isDead = true;
         IsActing = true;
 
-        anim?.SetBool("Death", true);
+        anim.Play("Enemy_01_Death", 0, 0f);
 
         Vector2 knockbackDir = ((Vector2)transform.position - (Vector2)Player.position).normalized;
         Rb.AddForce(knockbackDir * 12f, ForceMode2D.Impulse);
@@ -450,7 +449,6 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 
         if (anim != null)
         {
-            anim.ResetTrigger("Death");
             anim.SetTrigger("Die");
         }
 

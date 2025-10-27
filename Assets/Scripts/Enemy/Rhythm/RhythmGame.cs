@@ -186,9 +186,6 @@ public class RhythmGame : MonoBehaviour
 
         Debug.Log("🎮 리듬게임 종료! 3초 후 이동합니다...");
 
-        if (RhythmPotal != null)
-            RhythmPotal.EndRhythmMiniGame();
-
         StartCoroutine(MoveAfterDelay());
     }
 
@@ -202,5 +199,6 @@ public class RhythmGame : MonoBehaviour
             player.transform.position = MainPotal.position;
         }
         MiniGame.SetActive(false);
+        RhythmPotal.EndRhythmMiniGame();
     }
 }
