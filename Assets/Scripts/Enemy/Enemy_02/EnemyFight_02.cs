@@ -77,27 +77,6 @@ public class EnemyFight_02 : MonoBehaviour
         _core.ForceNextAction();
     }
 
-    public void ForceInterruptAttack()
-    {
-        StopAllCoroutines();
-        isDashing = false;
-
-        if (_core != null)
-        {
-            _core.Rb.linearVelocity = Vector2.zero;
-            _core.IsActing = false;
-            _core.StartNoMoveCooldown(0.6f);
-        }
-        ResetAnim();
-        StartCoroutine(RestoreAfterHit());
-    }
-
-    private IEnumerator RestoreAfterHit()
-    {
-        yield return new WaitForSeconds(0.3f);
-        if (Sprite != null) Sprite.color = Color.white;
-    }
-
     //───────────────────────────────────────────────────────────────
     #region Melee Attack
     public void Melee_Attack()
@@ -273,8 +252,6 @@ public class EnemyFight_02 : MonoBehaviour
 
     private IEnumerator RetreatThenFire()
     {
-        Sprite.color = Color.green;
-
         float t = 0f;
         while (t < RetreatDuration)
         {
@@ -294,7 +271,6 @@ public class EnemyFight_02 : MonoBehaviour
         _core.Rb.linearVelocity = Vector2.zero;
         if (_rangePreWindup > 0f) yield return new WaitForSeconds(_rangePreWindup);
 
-        Sprite.color = Color.blue;
         for (int i = 0; i < _volleyCount; i++)
         {
             FireOneProjectile();
@@ -302,7 +278,6 @@ public class EnemyFight_02 : MonoBehaviour
                 yield return new WaitForSeconds(VolleyInterval);
         }
 
-        Sprite.color = Color.red;
         _core.IsActing = false;
         _core.ForceNextAction();
     }

@@ -130,15 +130,6 @@ public class EnemyFight_01 : MonoBehaviour
             _core.StartNoMoveCooldown(0.6f);
         }
         ResetAnim();
-
-        _core.StartCoroutine(RestoreAfterHit());
-    }
-
-    private IEnumerator RestoreAfterHit()
-    {
-        yield return new WaitForSeconds(0.3f);
-        if (Sprite != null)
-            Sprite.color = Color.white;
     }
 
     public void Melee_Attack()
@@ -345,8 +336,6 @@ public class EnemyFight_01 : MonoBehaviour
 
     private IEnumerator RetreatThenFire()
     {
-        Sprite.color = Color.green;
-
         float t = 0f;
         while (t < RetreatDuration)
         {
@@ -371,7 +360,6 @@ public class EnemyFight_01 : MonoBehaviour
         _core.Rb.linearVelocity = Vector2.zero;
         if (_rangePreWindup > 0f) yield return new WaitForSeconds(_rangePreWindup);
 
-        Sprite.color = Color.blue;
         for (int i = 0; i < _volleyCount; i++)
         {
             FireOneProjectile();
@@ -379,7 +367,6 @@ public class EnemyFight_01 : MonoBehaviour
                 yield return new WaitForSeconds(VolleyInterval);
         }
 
-        Sprite.color = Color.red;
         _core.IsActing = false;
         _core.ForceNextAction();
     }
@@ -434,11 +421,9 @@ public class EnemyFight_01 : MonoBehaviour
 
         Vector3 pos = _core.Rb != null ? (Vector3)_core.Rb.position : transform.position;
 
-        // ① 근접 판단 거리 (기존)
         Gizmos.color = new Color(1f, 0.6f, 0f, 0.35f);
         Gizmos.DrawWireSphere(pos, NoDashCloseRange);
 
-        // ② Dash 멈추는 거리 시각화 (추가)
         Gizmos.color = new Color(0.2f, 0.5f, 1f, 0.5f);
         Gizmos.DrawWireSphere(pos, DashStopDistance);
     }

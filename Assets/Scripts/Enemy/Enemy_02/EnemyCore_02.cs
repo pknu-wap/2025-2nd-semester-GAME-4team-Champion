@@ -75,7 +75,6 @@ public class EnemyCore_02 : MonoBehaviour, IParryable, IDamageable
     private void Start()
     {
         AttackTimer = 0f;
-        Rb.position = ClampInside(Rb.position);
     }
 
     private void Update()
@@ -87,6 +86,8 @@ public class EnemyCore_02 : MonoBehaviour, IParryable, IDamageable
 
         if (!_isGroggy && CurrentStamina >= 100f)
             StartCoroutine(EnterGroggy());
+
+        Rb.position = ClampInside(Rb.position);
 
         if (!IsActing && !_isHit)
         {
@@ -105,11 +106,6 @@ public class EnemyCore_02 : MonoBehaviour, IParryable, IDamageable
 
         if (CurrentHp <= 0)
             Die();
-
-#if UNITY_EDITOR
-        if (Input.GetKey(KeyCode.Space))
-            Die();
-#endif
     }
 
     private void FixedUpdate()
@@ -282,11 +278,15 @@ public class EnemyCore_02 : MonoBehaviour, IParryable, IDamageable
 
     public Vector2 ClampInside(Vector2 p)
     {
-        if (MovementArea == null) return p;
+        if (MovementArea == null)
+            return p;
+        if (MovementArea.OverlapPoint(p))
+            return p;
+
         Vector2 closest = MovementArea.ClosestPoint(p);
         Vector2 center = MovementArea.bounds.center;
         Vector2 inward = (center - closest).sqrMagnitude > 1e-8f ? (center - closest).normalized : Vector2.zero;
-        return closest + inward * 0.14f;
+        return closest + inward * 0.1f;
     }
 
     public void StartNoMoveCooldown(float seconds)

@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 using UnityEngine.SceneManagement;
 public class TutorialManager : MonoBehaviour
 {
-    public Text TutorialText;
+    public TMP_Text TutorialText;
     public GameObject Enemy;
     public GameObject Player;
     public Transform Position;
@@ -18,7 +19,7 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
-        TutorialText.text = "Move : WASD ☐";
+        TutorialText.text = "움직임 : WASD";
     }
 
     void Update()
@@ -31,19 +32,19 @@ public class TutorialManager : MonoBehaviour
         if (!MoveCompleted && PressedW && PressedA && PressedS && PressedD)
         {
             MoveCompleted = true;
-            TutorialText.text = "Move : WASD ☑\nPunch : Left-click ☐";
+            TutorialText.text = "움직임 : WASD (성공)\n공격 : 좌클릭";
         }
 
         if (MoveCompleted && !AttackCompleted && Input.GetMouseButtonDown(0))
         {
             AttackCompleted = true;
-            TutorialText.text = "Move : WASD ☑\nPunch : Left-click ☑\nGuard : Right-click ☐";
+            TutorialText.text = "움직임 : WASD (성공)\n공격 : 좌클릭 (성공)\n가드 : 우클릭";
         }
 
         if (AttackCompleted && !GuardCompleted && Input.GetMouseButtonDown(1))
         {
             GuardCompleted = true;
-            TutorialText.text = "Move : WASD ☑\nPunch : Left-click ☑\nGuard : Right-click ☑";
+            TutorialText.text = "움직임 : WASD (성공)\n공격 : 좌클릭 (성공)\n가드 : 우클릭 (성공)";
             StartCoroutine(Parry());
         }
 
@@ -68,19 +69,19 @@ public class TutorialManager : MonoBehaviour
     private IEnumerator Parry()
     {
         yield return new WaitForSeconds(2f);
-        TutorialText.text = "Continuously Right-click to guard";
+        TutorialText.text = "우클릭을 꾹 눌러 공격을 방어하세요";
         Enemy.SetActive(true);
     }
     private IEnumerator SuccessParry()
     {
         yield return new WaitForSeconds(2f);
-        TutorialText.text = "Right-click to parry\nafter parrying immediately";
+        TutorialText.text = "공격 타이밍에 맞춰 우클릭을 눌러 패링하세요";
     }
     private IEnumerator SuccessParryAttack()
     {
         yield return new WaitForSeconds(2f);
-        TutorialText.text = "After parrying\nyou can counterattack by Left-click";
-        yield return new WaitForSeconds(2f);
+        TutorialText.text = "패링한 후에는 바로 공격하여 카운터를 날릴 수 있습니다";
+        yield return new WaitForSeconds(4f);
         TutorialText.text = "";
         SceneManager.LoadScene("Ingame");
     }
