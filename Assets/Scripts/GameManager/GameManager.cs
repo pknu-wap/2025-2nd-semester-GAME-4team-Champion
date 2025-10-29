@@ -4,15 +4,23 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject player;
+    public PlayerCombat playercombat;
+    public Player_Heal playerheal;
 
     public Slider[] hpbar;    //플레이어 슬라이드바
     public Slider[] staminabar;
+
     public float maxhp = 100;   //플레이어 체력
     public float currenthp = 100;
+
+    public float heal = 35;
+    public float healdelay = 0.5f;
+    public int healchance = 2;
+
     public float maxstamina = 100f;  //플레이어 스테미나
     public float currentstamina = 0f;
     public float playerstaminaregen = 2;
+
 
     public float reducestamina = 0; //가드시 스테미나 감소량
     public float gainhp= 0; //위빙 성공시 체력 회복
@@ -26,6 +34,7 @@ public class GameManager : MonoBehaviour
     public Slider[] enemystaminabar;
     public Image[] fillimage;   //플레이어 스테미나 *6, 플레이어 체력 * 3
     public Image[] enemyfillimage;   //적 스테미나 *6, 적 체력 * 3
+
     public float enemymaxhp = 100; //적 체력
     public float enemycurrenthp = 100;
     public float enemymaxstamina = 100f; //적 스테미나
@@ -41,6 +50,8 @@ public class GameManager : MonoBehaviour
         resetcurrentstamina();
 
         resetenemystamina();
+
+        matchHealPlayer();
 
         lastactiontime = Time.time;
     }
@@ -84,15 +95,25 @@ public class GameManager : MonoBehaviour
 
     public void getdamaged() //데미지 받음
     {
-        currenthp -= 10;
+
+        playercombat.hp -= 20;
         resetcurrenthp();
 
         lastactiontime = Time.time;
     }
 
+    public void HealPlayer(float amount)
+    {
+        
+    }
+
     public void guard(int down) //가드 성공
     {
-        currentstamina += (down - reducestamina);
+        if (currentstamina + down - reducestamina < maxstamina)
+        {
+            currentstamina += (down - reducestamina);
+        }
+        
         if (currentstamina > maxstamina)
         {
             currentstamina = maxstamina;
@@ -128,8 +149,10 @@ public class GameManager : MonoBehaviour
 
 
 
+
     private void resetcurrenthp() //체력 갱신
     {
+        playercombat.matchingGM();
         float ratio = maxhp > 0f ? currenthp / maxhp : 0f;
 
         //플레이어 HP 슬라이더들 값만 갱신
@@ -154,6 +177,7 @@ public class GameManager : MonoBehaviour
 
     private void resetcurrentstamina() //스테미나 갱신
     {
+        playercombat.matchingGM();
         for (int i = 0; i < 6; i++)
         {
             staminabar[i].value = currentstamina / maxstamina;
@@ -188,13 +212,94 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void TakePlayerDamage(float amount)
+    public void TakePlayerDamage(float amount)  //데미지 받음
     {
-        currenthp -= amount;
+        playercombat.hp -= amount;
         if (currenthp < 0) currenthp = 0;
         resetcurrenthp();
         lastactiontime = Time.time;
         Debug.Log("Damage ->" + amount);
         // TODO: currenthp <= 0이면 사망 처리(리스폰/게임오버) 원하면 여기에 추가
     }
+
+
+
+    //선택지로 인한 능력치 상승
+    public void HpUp(float amount)  //체력 증가
+    {
+        maxhp += amount;
+        currenthp += amount;
+        if (currenthp > maxhp)
+        {
+            currenthp = maxhp;
+        }
+        resetcurrenthp();
+    }
+
+    public void StaminaUp(float amount) //스테미나 증가
+    {
+        maxstamina += amount;
+        resetcurrentstamina();
+    }
+
+    public void GuardStamina(float amount) //가드시 스테미나 증가량 감소
+    {
+        reducestamina += amount;
+    }
+
+    public void WeavingHeal(float amount)   //위빙 성공시 체력 회복
+    {
+        gainhp += amount;
+    }
+
+    public void StaminaRegen(float amount)  //스테미나 회복 속도 증가
+    {
+        playerstaminaregen += amount;
+    }
+
+    public void MoreHeal(float amount)  //기합 회복량 증가
+    {
+        heal += amount;
+        matchHealPlayer();
+    }
+
+    public void ManyHealChance(float amount)    //기합 횟수 증가
+    {
+        healchance += 1;
+        playerheal.chargesLeft += 1;
+        matchHealPlayer();
+    }
+
+    public void MoreStaminaDamage(float amount) //공격시 적 스테미나 충전율 증가/ 추후에 코드 더보고
+    {
+
+    }
+
+    
+
+
+
+    /*
+
+            
+            
+            { "공격시 적 스테미나 충전율 증가", () => { gamemanager.playerstaminaregen += 8; } },
+            { "적 기절 성공시 체력 회복", () => { gamemanager.playerstaminaregen += 8; } },
+            { "적 기절 시간 증가", () => { gamemanager.playerstaminaregen += 8; } },
+
+            { "차지 속도 증가", () => { gamemanager.playerstaminaregen += 8; } },   //아직 콤보x
+
+            { "공격 성공시 스킬 쿨감", () => { gamemanager.playerstaminaregen += 8; } },
+            { "위빙 성공시 스킬 쿨감", () => { gamemanager.playerstaminaregen += 8; } },
+
+            { "적 기절 성공시 스테미나 회복", () => { gamemanager.playerstaminaregen += 8; } }, */
+
+
+    public void matchHealPlayer()   //Player_Heal 코드와 연결
+    {
+        playerheal.healDuration = healdelay;
+        playerheal.healAmount = heal;
+        playerheal.maxCharges = healchance;
+    }
+
 }

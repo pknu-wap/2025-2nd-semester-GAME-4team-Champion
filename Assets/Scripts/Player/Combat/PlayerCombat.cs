@@ -17,12 +17,12 @@ public class PlayerCombat : MonoBehaviour
 
     // ---------- Vitals ----------
     [Header("Vitals")]
-    private float hpMax = 100f;
-    private float staminaMax = 100f;
-    private float staminaRegenPerSec = 25f;
-    private float staminaBreakTime = 1.5f;
-    private float hp;
-    private float stamina;
+    public float hpMax = 100f;
+    public float staminaMax = 100f;
+    public float staminaRegenPerSec = 25f;
+    public float staminaBreakTime = 1.5f;
+    public float hp;
+    public float stamina;
     public bool IsStaminaBroken { get; private set; } = false;
     private Player_Revive revive;
     [SerializeField] private GameManager Gm;
@@ -100,8 +100,8 @@ public class PlayerCombat : MonoBehaviour
         if (!combatState) combatState = gameObject.AddComponent<CombatState>(); // 안전장치
 
         // 초기화
-        hp = hpMax;
-        stamina = staminaMax;
+        matchingGM();
+
         OnHealthChanged?.Invoke(hp, hpMax);
         OnStaminaChanged?.Invoke(stamina, staminaMax);
 
@@ -127,7 +127,7 @@ public class PlayerCombat : MonoBehaviour
         hp = Mathf.Max(0f, hp - amount);
         OnHealthChanged?.Invoke(hp, hpMax);
         if (debugLogs) Debug.Log($"[HP] -{amount} => {hp}/{hpMax}");
-        Gm.getdamaged();
+        Gm.TakePlayerDamage(amount);
         if (hp <= 0f) OnDeath();
     }
 
@@ -257,4 +257,13 @@ public class PlayerCombat : MonoBehaviour
 
     public void EnterCombat(string reason = null) => combatState?.EnterCombat(reason);
     public void ExitCombat() => combatState?.ExitCombat();
+
+    public void matchingGM()    //게임메니저와 능력치 연결
+    {
+        if (Gm == null) return;
+        hp = Gm.currenthp;
+        stamina = Gm.currentstamina;
+        hpMax = Gm.maxhp;
+        staminaMax = Gm.maxstamina;
+    }
 }

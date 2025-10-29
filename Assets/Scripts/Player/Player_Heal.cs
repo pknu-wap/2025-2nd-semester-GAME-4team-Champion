@@ -5,13 +5,13 @@ using UnityEngine.InputSystem;
 public class Player_Heal : MonoBehaviour
 {
     [Header("Config")]
-    [SerializeField] private float healDuration = 0.5f;
-    [SerializeField] private float healAmount = 35f;
+    public float healDuration = 0.5f;
+    public float healAmount = 35f;
 
     [Header("Charges")]
-    [SerializeField] private int maxCharges = 2;
+    public int maxCharges = 2;
     [SerializeField] private bool refillOnEnable = false;
-    private int chargesLeft;
+    public int chargesLeft;
 
     [Header("Refs")]
     [SerializeField] private PlayerCombat combat;
@@ -183,4 +183,6 @@ public class Player_Heal : MonoBehaviour
 
         if (healVfxLifetime > 0f) Destroy(go, healVfxLifetime);
     }
+
+
 }

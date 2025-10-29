@@ -76,7 +76,7 @@ public class DayTimer : MonoBehaviour
         timertext.text = $"D-day";
     }
 
-    /*private void UpdateTimerText()  //시간 표시
+    /*private void UpdateTimerText()  //시간 표시/ ShowDayText가 역할대체
     {
         int min = Mathf.FloorToInt(remaintime/60);
         
