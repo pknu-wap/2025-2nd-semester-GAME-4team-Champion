@@ -13,17 +13,20 @@ public class GameManager : MonoBehaviour
     public float maxhp = 100;   //플레이어 체력
     public float currenthp = 100;
 
-    public float heal = 35;
-    public float healdelay = 0.5f;
+    public bool regenhp = false;    //플레이어 자동 체력회복
+    private float playerhpregen = 2; 
+
+    private float heal = 35;
+    private float healdelay = 0.5f;
     public int healchance = 2;
 
     public float maxstamina = 100f;  //플레이어 스테미나
     public float currentstamina = 0f;
-    public float playerstaminaregen = 2;
+    private float playerstaminaregen = 2;
 
 
-    public float reducestamina = 0; //가드시 스테미나 감소량
-    public float gainhp= 0; //위빙 성공시 체력 회복
+    private float reducestamina = 0; //가드시 스테미나 감소량
+    private float gainhp= 0; //위빙 성공시 체력 회복
 
 
     public float regentime = 2f;    // 스테미나 회복 대기 시간
@@ -68,6 +71,12 @@ public class GameManager : MonoBehaviour
 
             resetcurrentstamina();
         }
+        if  (Time.time - lastactiontime >= regentime && regenhp == true && currenthp <= maxhp)
+        {
+            currenthp += regentime * Time.deltaTime * playerhpregen;
+
+            resetcurrenthp();
+        }
 
         if (Time.time - enemylastactiontime >= enemyregentime && enemycurrentstamina > 0) //적 스테미나 감소
         {
@@ -79,6 +88,8 @@ public class GameManager : MonoBehaviour
 
             resetenemystamina();
         }
+
+
 
         for (int i = 0; i < 6; i++)
         {
@@ -93,22 +104,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void getdamaged() //데미지 받음
+
+    public void changeregentime(float amount)
     {
-
-        playercombat.hp -= 20;
-        resetcurrenthp();
-
-        lastactiontime = Time.time;
+        regentime = amount += 2;
     }
 
-    public void HealPlayer(float amount)
+    public void reviveplayer(float amount)
     {
-        
+        currenthp += amount;
+        currentstamina = 0f;
+
+        resetcurrenthp();
+        resetcurrentstamina();
     }
 
     public void guard(int down) //가드 성공
     {
+
         if (currentstamina + down - reducestamina < maxstamina)
         {
             currentstamina += (down - reducestamina);
@@ -147,12 +160,20 @@ public class GameManager : MonoBehaviour
         lastactiontime = Time.time;
     }
 
-
-
+    public void TakePlayerDamage(float amount)  //데미지 받음
+    {
+        playercombat.hp -= amount;
+        currenthp -= amount;
+        if (currenthp < 0) currenthp = 0;
+        resetcurrenthp();
+        lastactiontime = Time.time;
+        Debug.Log("Damage ->" + amount);
+        // TODO: currenthp <= 0이면 사망 처리(리스폰/게임오버) 원하면 여기에 추가
+    }
 
     private void resetcurrenthp() //체력 갱신
     {
-        playercombat.matchingGM();
+        
         float ratio = maxhp > 0f ? currenthp / maxhp : 0f;
 
         //플레이어 HP 슬라이더들 값만 갱신
@@ -173,16 +194,22 @@ public class GameManager : MonoBehaviour
         {
             currenthp = maxhp;
         }
+
+        if (currenthp <= 0)
+        {
+            //playercombat.OnDeath();
+        }
+        playercombat.matchingGM();
     }
 
     private void resetcurrentstamina() //스테미나 갱신
     {
-        playercombat.matchingGM();
+        
         for (int i = 0; i < 6; i++)
         {
             staminabar[i].value = currentstamina / maxstamina;
         }
-
+        playercombat.matchingGM();
     }
 
     private void resetenemystamina() //적 스테미나 갱신
@@ -212,15 +239,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void TakePlayerDamage(float amount)  //데미지 받음
-    {
-        playercombat.hp -= amount;
-        if (currenthp < 0) currenthp = 0;
-        resetcurrenthp();
-        lastactiontime = Time.time;
-        Debug.Log("Damage ->" + amount);
-        // TODO: currenthp <= 0이면 사망 처리(리스폰/게임오버) 원하면 여기에 추가
-    }
+    
 
 
 

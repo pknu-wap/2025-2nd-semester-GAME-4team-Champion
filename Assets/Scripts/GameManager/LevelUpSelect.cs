@@ -13,8 +13,11 @@ public class LevelUpSelect : MonoBehaviour
     public TextMeshProUGUI[] selectButtonsText;
     
     public List<string> allselectTitle = new List<string> {"체력 증가","스테미나 증가","가드시 스테미나 증가량 감소", "위빙 성공시 체력 회복", "스테미나 회복 속도 증가", 
-                                                            "기합 회복량 증가", "기합 횟수 증가", "공격시 적 스테미나 충전율 증가", "적 기절 성공시 체력 회복", "적 기절 시간 증가", 
-                                                            "차지 속도 증가", "위빙 성공시 스킬 쿨감", "공격 성공시 스킬 쿨감", "적 기절 성공시 스테미나 회복"};
+                                                            "기합 회복량 증가", "기합 횟수 증가", /*"공격시 적 스테미나 충전율 증가", "적 기절 성공시 체력 회복", "적 기절 시간 증가", 
+                                                            "차지 속도 증가", "위빙 성공시 스킬 쿨감", "공격 성공시 스킬 쿨감", "적 기절 성공시 스테미나 회복"*/};
+
+    
+
     public List<string> unselectedTitle;
     public List<string> randomTitle = new List<string> {"a","a","a"};
     public List<string> selectedList = new List<string>();
@@ -126,27 +129,29 @@ public class LevelUpSelect : MonoBehaviour
         gameui[0].SetActive(false);
     }
 
-     private void InitializeUpgradeActions()
+    private void InitializeUpgradeActions()
     {
         upgradeActions = new Dictionary<string, Action>
         {
             { "체력 증가", () => { gamemanager.HpUp(50); } },
             { "스테미나 증가", () => { gamemanager.StaminaUp(50); } },
-            { "가드시 스테미나 증가량 감소", () => { gamemanager.GuardStamina(10); } },
+            { "가드시 스테미나 증가량 감소", () => { gamemanager.GuardStamina(2); } },
             { "위빙 성공시 체력 회복", () => { gamemanager.WeavingHeal(10); } },
             { "스테미나 회복 속도 증가", () => { gamemanager.StaminaRegen(8); } },
             { "기합 회복량 증가", () => { gamemanager.MoreHeal(15); } },
             { "기합 횟수 증가", () => { gamemanager.ManyHealChance(2); } },
 
-            { "공격시 적 스테미나 충전율 증가", () => { gamemanager.playerstaminaregen += 8; } },
+            /*{ "공격시 적 스테미나 충전율 증가", () => { gamemanager.playerstaminaregen += 8; } },
             { "적 기절 성공시 체력 회복", () => { gamemanager.playerstaminaregen += 8; } },
             { "적 기절 시간 증가", () => { gamemanager.playerstaminaregen += 8; } },
             { "차지 속도 증가", () => { gamemanager.playerstaminaregen += 8; } },   //아직 콤보x
             { "공격 성공시 스킬 쿨감", () => { gamemanager.playerstaminaregen += 8; } },
             { "위빙 성공시 스킬 쿨감", () => { gamemanager.playerstaminaregen += 8; } },
-            { "적 기절 성공시 스테미나 회복", () => { gamemanager.playerstaminaregen += 8; } },            
+            { "적 기절 성공시 스테미나 회복", () => { gamemanager.playerstaminaregen += 8; } },*/            
         };
     }
+
+
 
     public void CheckCombinationEffects()
     {
@@ -182,14 +187,14 @@ public class LevelUpSelect : MonoBehaviour
             new CombinationEffect  //자동으로 체력 회복
             {
                 titles = new string[] { "체력 증가", "기합 회복량 증가" },
-                effect = () => { gamemanager.maxhp += 50; gamemanager.currenthp += 50; }
+                effect = () => { gamemanager.regenhp = true; }
             },
             new CombinationEffect   //가드시 스테미나 증가 감소
             {
                 titles = new string[] { "가드시 스테미나 증가량 감소", "위빙 성공시 체력 회복" },
-                effect = () => { gamemanager.maxhp += 50; gamemanager.currenthp += 50; }
+                effect = () => { gamemanager.GuardStamina(2); }
             },
-            new CombinationEffect   //회복량 증가
+            /*new CombinationEffect   //회복량 증가
             {
                 titles = new string[] { "적 기절 성공시 체력 회복", "적 기절 성공시 스테미나 회복" },
                 effect = () => { gamemanager.maxhp += 50; gamemanager.currenthp += 50; }
@@ -198,22 +203,22 @@ public class LevelUpSelect : MonoBehaviour
             {
                 titles = new string[] { "공격 성공시 스킬 쿨감", "위빙 성공시 스킬 쿨감" },
                 effect = () => { gamemanager.maxhp += 50; gamemanager.currenthp += 50; }
-            },
+            },*/
             new CombinationEffect   //스테미나 증가
             {
                 titles = new string[] { "스테미나 증가", "스테미나 회복 속도 증가" },
-                effect = () => { gamemanager.maxhp += 50; gamemanager.currenthp += 50; }
+                effect = () => { gamemanager.StaminaUp(50); }
             },
             new CombinationEffect   //피의 거짓 회복 시스템
             {
                 titles = new string[] { "기합 회복량 증가", "기합 횟수 증가" },
                 effect = () => { gamemanager.maxhp += 50; gamemanager.currenthp += 50; }
             },
-            new CombinationEffect
+            /*new CombinationEffect
             {
                 titles = new string[] { "적 기절 시간 증가", "공격시 적 스테미나 충전율 증가" },
                 effect = () => { gamemanager.maxhp += 50; gamemanager.currenthp += 50; }
-            },
+            },*/
 
         };
     }

@@ -102,7 +102,7 @@ public class PlayerCombat : MonoBehaviour
         // 초기화
         matchingGM();
 
-        OnHealthChanged?.Invoke(hp, hpMax);
+        //OnHealthChanged?.Invoke(hp, hpMax);
         OnStaminaChanged?.Invoke(stamina, staminaMax);
 
         // 바인딩
@@ -124,8 +124,8 @@ public class PlayerCombat : MonoBehaviour
     public void ApplyDamage(float amount)
     {
         if (amount <= 0f) return;
-        hp = Mathf.Max(0f, hp - amount);
-        OnHealthChanged?.Invoke(hp, hpMax);
+        //hp = Mathf.Max(0f, hp - amount);
+        //OnHealthChanged?.Invoke(hp, hpMax);
         if (debugLogs) Debug.Log($"[HP] -{amount} => {hp}/{hpMax}");
         Gm.TakePlayerDamage(amount);
         if (hp <= 0f) OnDeath();
@@ -155,10 +155,12 @@ public class PlayerCombat : MonoBehaviour
 
     public void Heal(float amount)
     {
+        matchingGM();
         if (amount <= 0f) return;
         float before = hp;
-        hp = Mathf.Clamp(hp + amount, 0f, hpMax);
-        OnHealthChanged?.Invoke(hp, hpMax);
+        //hp = Mathf.Clamp(hp + amount, 0f, hpMax);
+        Gm.reviveplayer(amount);
+        //OnHealthChanged?.Invoke(hp, hpMax);
 
         if (before <= 0f && hp > 0f)
         {
@@ -180,8 +182,9 @@ public class PlayerCombat : MonoBehaviour
     /// <summary>행동으로 인해 '못 움직이는 시간 + extra' 만큼 스태미나 재생을 막는다.</summary>
     public void BlockStaminaRegenFor(float baseSeconds)
     {
-        float target = Time.time + Mathf.Max(0f, baseSeconds) + regenBlockExtra;
-        if (target > noRegenUntil) noRegenUntil = target;
+        Gm.changeregentime(baseSeconds);
+        //float target = Time.time + Mathf.Max(0f, baseSeconds) + regenBlockExtra;
+        //if (target > noRegenUntil) noRegenUntil = target;
     }
 
     private IEnumerator VitalsTick()
@@ -213,6 +216,8 @@ public class PlayerCombat : MonoBehaviour
         animator.SetBool("immune", false);
         if (deathCo != null) StopCoroutine(deathCo);
         deathCo = StartCoroutine(CoMarkDeadAndMaybeRevive());
+
+        Gm.regenhp = false;
     }
 
     private IEnumerator CoMarkDeadAndMaybeRevive()
@@ -227,6 +232,7 @@ public class PlayerCombat : MonoBehaviour
 
         // 부활 로직은 Dead 켠 뒤에 호출
         revive?.BeginReviveIfAvailable();
+        //Gm.reviveplayer();
     }
 
     // ---------------- Global Action Lock ----------------
