@@ -3,7 +3,6 @@ using System.Collections;
 
 public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 {
-    // ──────────────────────────────────────────────────────────────
     #region Common & References
     [Header("Common")]
     [SerializeField] private float AttackCooldown = 2f;
@@ -90,18 +89,19 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     private void Start()
     {
         AttackTimer = 0f;
-        Rb.position = ClampInside(Rb.position);
     }
 
     private void Update()
     {
         if (_isDead) return;
-        if (_noMoveRemain > 0f) _noMoveRemain -= Time.deltaTime;
+
+        if (_noMoveRemain > 0f)
+            _noMoveRemain -= Time.deltaTime;
 
         if (!_isGroggy && CurrentStamina >= 100f)
-        {
             StartCoroutine(EnterGroggy());
-        }
+        
+        Rb.position = ClampInside(Rb.position);
 
         if (!IsActing && !_isHit)
         {
@@ -110,7 +110,6 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
             if (Player != null)
             {
                 float distanceToPlayer = Vector2.Distance(Rb.position, Player.position);
-
                 if (distanceToPlayer <= RecognizedArea && AttackTimer >= AttackCooldown)
                 {
                     AttackWayChoice();
@@ -172,7 +171,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
             anim.Play("Enemy_01_Guard", 0, 0f);
             guardCount += 1;
             CurrentStamina += 10;
-            if (source != null && guardCount >= 6 && Random.value <= 0.6f)
+            if (source != null && guardCount >= 6 && Random.value <= 0.7f)
             {
                 OnParried(hitSource);
                 guardCount = 0;
@@ -181,7 +180,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         }
 
         bool recentlyHit = Time.time - lastHitTime < 1f;
-        if (!IsGuarding && !recentlyHit && Random.value <= 0.5f)
+        if (!IsGuarding && !recentlyHit && Random.value <= 0.3f)
         {
             StartGuard(hitSource);
             OnGuarded(hitSource);
@@ -200,7 +199,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
                 guardCount++;
                 return;
             }
-}
+        }
 
         CurrentHp -= damage;
         StartCoroutine(HitStop(0.1f));
@@ -285,6 +284,13 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         _isHit = false;
     }
 
+    public void SetPhysicsDuringAttack(bool isAttacking)
+    {
+        if (Rb == null) return;
+        Rb.bodyType = isAttacking ? RigidbodyType2D.Kinematic : RigidbodyType2D.Dynamic;
+        Rb.linearVelocity = Vector2.zero;
+    }
+
     private void PlayRandomHit()
     {
         if (anim == null) return;
@@ -300,22 +306,25 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     {
         if (isWeaveAttacking) return;
 
-        anim?.SetTrigger("Weave");
-
-        if (Player != null && Player.TryGetComponent<PlayerCombat>(out var pc))
+        if (_hitWindowOpen)
         {
-            pc.AddStamina(10f);
-            pc.AddStamina(-5f);
+            _hitWindowOpen = false;
+            _hitAppliedThisWindow = false;
         }
 
         _combat?.InterruptDash();
-        StartCoroutine(DelayedWeaveAttackTrigger());
+        Rb.linearVelocity = Vector2.zero;
 
-        StartNoMoveCooldown(0.6f);
-        IsActing = false;
+        StartNoMoveCooldown(0.3f);
+
+        Vector2 knockbackDir = ((Vector2)transform.position - (Vector2)parrySourcePosition).normalized;
+        Rb.AddForce(knockbackDir * 3f, ForceMode2D.Impulse);
+
+        IsActing = true;
         AttackTimer = 0f;
         guardCount = 0;
     }
+
 
     private IEnumerator DelayedWeaveAttackTrigger()
     {
@@ -472,11 +481,15 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     #region Utility & Attack Selection
     public Vector2 ClampInside(Vector2 p)
     {
-        if (MovementArea == null) return p;
+        if (MovementArea == null)
+            return p;
+        if (MovementArea.OverlapPoint(p))
+            return p;
+
         Vector2 closest = MovementArea.ClosestPoint(p);
         Vector2 center = MovementArea.bounds.center;
         Vector2 inward = (center - closest).sqrMagnitude > 1e-8f ? (center - closest).normalized : Vector2.zero;
-        return closest + inward * 0.14f;
+        return closest + inward * 0.1f;
     }
 
     public void StartNoMoveCooldown(float seconds)
@@ -496,10 +509,10 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
                 else
                     _combat.Range_Attack();
                 break;
-            case AttackSelectMode.Melee_One: _combat.Melee_Attack(MeleeAttackType.One); CurrentStamina -= 4; break;
-            case AttackSelectMode.Melee_OneOne: _combat.Melee_Attack(MeleeAttackType.OneOne); CurrentStamina -= 6;break;
-            case AttackSelectMode.Melee_OneTwo: _combat.Melee_Attack(MeleeAttackType.OneTwo); CurrentStamina -= 8; break;
-            case AttackSelectMode.Melee_Roll: _combat.Melee_Attack(MeleeAttackType.Roll); CurrentStamina -= 10;break;
+            case AttackSelectMode.Melee_One: _combat.Melee_Attack(MeleeAttackType.One); if(CurrentStamina > 0) CurrentStamina -= 4; break;
+            case AttackSelectMode.Melee_OneOne: _combat.Melee_Attack(MeleeAttackType.OneOne); if(CurrentStamina > 0) CurrentStamina -= 6;break;
+            case AttackSelectMode.Melee_OneTwo: _combat.Melee_Attack(MeleeAttackType.OneTwo); if(CurrentStamina > 0) CurrentStamina -= 8; break;
+            case AttackSelectMode.Melee_Roll: _combat.Melee_Attack(MeleeAttackType.Roll); if(CurrentStamina > 0) CurrentStamina -= 10;break;
             case AttackSelectMode.Range_Short: _combat.Range_Attack(RangeAttackType.Short); break;
             case AttackSelectMode.Range_Mid: _combat.Range_Attack(RangeAttackType.Mid); break;
             case AttackSelectMode.Range_Long: _combat.Range_Attack(RangeAttackType.Long); break;
