@@ -8,13 +8,20 @@ public class Changer : MonoBehaviour
 {
     [SerializeField] private string sceneToLoad;    //씬 이름
     [SerializeField] private float loadingtime = 1f;
+    [SerializeField] private GameObject fadeobject;
     [SerializeField] private Image fadeImage;   
     [SerializeField] private float fadeDuration = 1f; // 페이드 속도
 
     public void ChangeScene()
     {
         Debug.Log("버튼 눌러짐");
+        fadeobject.SetActive(true);
         StartCoroutine(FadeAndLoad());
+        
+    }
+    void Start()
+    {
+        fadeobject.SetActive(false);
     }
 
     private IEnumerator FadeAndLoad()
@@ -23,7 +30,9 @@ public class Changer : MonoBehaviour
 
         yield return new WaitForSeconds(loadingtime);   //대기
 
+        fadeobject.SetActive(false);
         SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Single);  //씬 넘기기
+        
     }
 
     private IEnumerator FadeOut()   //페이드 아웃
@@ -41,6 +50,10 @@ public class Changer : MonoBehaviour
 
         color.a = 1f;
         fadeImage.color = color;
+
+
+        
+    
     }
 }
 

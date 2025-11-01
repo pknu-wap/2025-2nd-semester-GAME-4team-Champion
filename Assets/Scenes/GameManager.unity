@@ -1257,7 +1257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 947f57ec8bee0b643b7c0997570d3a3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  playercombat: {fileID: 0}
+  playerheal: {fileID: 0}
   hpbar:
   - {fileID: 1436095763}
   - {fileID: 140394445}
@@ -1271,6 +1272,9 @@ MonoBehaviour:
   - {fileID: 1791506679}
   maxhp: 100
   currenthp: 100
+  heal: 35
+  healdelay: 0.5
+  healchance: 2
   maxstamina: 100
   currentstamina: 0
   playerstaminaregen: 5
@@ -2404,9 +2408,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d10dbc1e424ef4a42a3d44541b890622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: 
+  sceneToLoad: SampleScene
   loadingtime: 1
-  fadeImage: {fileID: 0}
+  fadeobject: {fileID: 295697510}
+  fadeImage: {fileID: 295697512}
   fadeDuration: 1
 --- !u!4 &1149932393
 Transform:
