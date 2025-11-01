@@ -17,6 +17,8 @@ public class Player_Heal : MonoBehaviour
     [SerializeField] private PlayerCombat combat;
     [SerializeField] private PlayerMoveBehaviour moveRef;
     [SerializeField] private Animator animator;
+    [SerializeField] private GameManager Gm;
+    
 
     // 🔸 Heal 성공 VFX
     [Header("VFX (On Success)")]
@@ -104,8 +106,13 @@ public class Player_Heal : MonoBehaviour
     {
         if (IsHealing) return;
         if (chargesLeft <= 0) return;
+        if (chargesLeft == 1)
+        {
+            Gm.healregen = true;
+        }
 
-        chargesLeft = Mathf.Max(0, chargesLeft - 1);
+        chargesLeft = Mathf.Max(0, chargesLeft - 1); 
+        Gm.leftheal -= 1;
         healCo = StartCoroutine(HealRoutine());
     }
 
@@ -116,6 +123,8 @@ public class Player_Heal : MonoBehaviour
 
         if (refundCharge)
             chargesLeft = Mathf.Min(maxCharges, chargesLeft + 1);
+            Gm.leftheal += 1;
+            Gm.healregen = false;
 
         if (healCo != null) StopCoroutine(healCo);
         healCo = null;

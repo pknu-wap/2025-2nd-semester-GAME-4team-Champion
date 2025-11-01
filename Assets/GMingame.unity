@@ -84330,6 +84330,8 @@ MonoBehaviour:
   currenthp: 100
   regenhp: 0
   healchance: 2
+  leftheal: 2
+  healregen: 0
   maxstamina: 100
   currentstamina: 0
   regentime: 2
@@ -84364,13 +84366,6 @@ MonoBehaviour:
   - {fileID: 28098655}
   - {fileID: 80544380}
   - {fileID: 847557177}
-  enemymaxhp: 100
-  enemycurrenthp: 100
-  enemymaxstamina: 100
-  enemycurrentstamina: 0
-  enemystaminaregen: 2
-  enemyregentime: 2
-  enemylastactiontime: 0
 --- !u!4 &837049921
 Transform:
   m_ObjectHideFlags: 0
@@ -88246,6 +88241,7 @@ MonoBehaviour:
   combat: {fileID: 1215582263}
   moveRef: {fileID: 1215582266}
   animator: {fileID: 1215582270}
+  Gm: {fileID: 837049920}
   healSuccessVFX: {fileID: 8982581208070349644, guid: f9495f7e82f2d8e489effd87ed90f983, type: 3}
   healVfxAttachToPlayer: 1
   healVfxOffset: {x: 0, y: 0}

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,9 +17,12 @@ public class GameManager : MonoBehaviour
     public bool regenhp = false;    //플레이어 자동 체력회복
     private float playerhpregen = 2; 
 
-    private float heal = 35;
+    private float heal = 35;    //플레이어 기합 관련
     private float healdelay = 0.5f;
     public int healchance = 2;
+    public int leftheal = 2;
+    public bool healregen = false;  //기합 회복 여부
+    private Coroutine healregenCoroutine = null;    //기합 회복 중복 방지
 
     public float maxstamina = 100f;  //플레이어 스테미나
     public float currentstamina = 0f;
@@ -38,14 +42,14 @@ public class GameManager : MonoBehaviour
     public Image[] fillimage;   //플레이어 스테미나 *6, 플레이어 체력 * 3
     public Image[] enemyfillimage;   //적 스테미나 *6, 적 체력 * 3
 
-    public float enemymaxhp = 100; //적 체력
-    public float enemycurrenthp = 100;
-    public float enemymaxstamina = 100f; //적 스테미나
-    public float enemycurrentstamina = 0f;
-    public float enemystaminaregen = 2;
+    private float enemymaxhp = 100; //적 체력
+    private float enemycurrenthp = 100;
+    private float enemymaxstamina = 100f; //적 스테미나
+    private float enemycurrentstamina = 0f;
+    private float enemystaminaregen = 2;
 
-    public float enemyregentime = 2f;    // 스테미나 회복 대기 시간
-    public float enemylastactiontime;   //마지막으로 영향을 받은 시간
+    private float enemyregentime = 2f;    // 스테미나 회복 대기 시간
+    private float enemylastactiontime;   //마지막으로 영향을 받은 시간
 
     void Start()
     {
@@ -71,7 +75,7 @@ public class GameManager : MonoBehaviour
 
             resetcurrentstamina();
         }
-        if  (Time.time - lastactiontime >= regentime && regenhp == true && currenthp <= maxhp)
+        if  (Time.time - lastactiontime >= regentime && regenhp == true && currenthp <= maxhp)  //체력 회복
         {
             currenthp += regentime * Time.deltaTime * playerhpregen;
 
@@ -87,6 +91,21 @@ public class GameManager : MonoBehaviour
             }
 
             resetenemystamina();
+        }  
+
+        if (healregen = true && leftheal == 0)
+        {
+            if (healregenCoroutine == null) //코루틴 중복확인 
+                healregenCoroutine = StartCoroutine(Healregendealy());
+        }
+
+        else
+        {
+            if (healregenCoroutine != null)
+            {
+                StopCoroutine(healregenCoroutine);
+                healregenCoroutine = null;
+            }
         }
 
 
@@ -313,12 +332,44 @@ public class GameManager : MonoBehaviour
 
             { "적 기절 성공시 스테미나 회복", () => { gamemanager.playerstaminaregen += 8; } }, */
 
+    private IEnumerator Healregendealy()    //플레이어 기합 회복
+    {
+        float count = 0f;
+        float delay = 10f;
 
-    public void matchHealPlayer()   //Player_Heal 코드와 연결
+        while (count < delay)
+        {
+            if (healregen == false) // healregen 확인
+            {
+                healregenCoroutine = null;
+                yield break;
+            }
+
+            count += Time.deltaTime;
+            yield return null;
+        }
+
+        leftheal += 1;
+        matchHealPlayer();
+        healregenCoroutine = null;
+    }
+
+
+    public void matchHealPlayer()   //gm -> Player_Heal 코드와 연결
     {
         playerheal.healDuration = healdelay;
         playerheal.healAmount = heal;
         playerheal.maxCharges = healchance;
+        playerheal.chargesLeft = leftheal;
+    }
+
+    public void matchHealGM()   //Player_Heal -> gm 코드와 연결
+    {
+        heal = playerheal.healAmount;
+        healchance = playerheal.maxCharges;
+        leftheal = playerheal.chargesLeft;
     }
 
 }
+
+

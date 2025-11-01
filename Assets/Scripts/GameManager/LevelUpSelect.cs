@@ -209,7 +209,7 @@ public class LevelUpSelect : MonoBehaviour
                 titles = new string[] { "스테미나 증가", "스테미나 회복 속도 증가" },
                 effect = () => { gamemanager.StaminaUp(50); }
             },
-            new CombinationEffect   //피의 거짓 회복 시스템
+            new CombinationEffect   //피의 거짓 회복 시스템?
             {
                 titles = new string[] { "기합 회복량 증가", "기합 횟수 증가" },
                 effect = () => { gamemanager.maxhp += 50; gamemanager.currenthp += 50; }
