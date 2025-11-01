@@ -104,6 +104,8 @@ public class PlayerHit : MonoBehaviour
             moveRef?.RemoveMovementLock("HITSTUN", hardFreezePhysics: false);
         }
     }
+    public bool Tutorial_Checker = false;
+    public bool Tutorial_Checker2 = false;
 
     /// <summary>공격에 맞았을 때 들어오는 공통 진입점</summary>
     public void OnHit(float damage, float knockback, Vector2 hitDir, bool parryable,
@@ -131,6 +133,7 @@ public class PlayerHit : MonoBehaviour
             {
                 outcome = DefenseOutcome.Parry;
                 activeParry.OnParrySuccess();
+
             }
         }
 
@@ -158,11 +161,17 @@ public class PlayerHit : MonoBehaviour
             if (attack) attack.ArmCounter(lockDur * 2f);
 
             iFrameEndTime = Time.time + 0.05f;
+            if(Tutorial_Checker)
+            {
+                Tutorial_Checker2 = true;
+            }
             return; // 패링 성공 시 종료(스킬 인터럽트 방송 X)
         }
 
         if (outcome == DefenseOutcome.Block)
         {
+            Tutorial_Checker = true;
+
             float finalDamage = damage * defense.BlockDamageMul;
             float finalKnock = knockback * defense.BlockKnockMul;
 
