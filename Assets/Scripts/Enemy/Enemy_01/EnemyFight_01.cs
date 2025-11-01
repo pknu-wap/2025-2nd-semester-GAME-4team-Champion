@@ -1,4 +1,4 @@
-using UnityEngine;
+    using UnityEngine;
 using System.Collections;
 
 public class EnemyFight_01 : MonoBehaviour
@@ -87,6 +87,7 @@ public class EnemyFight_01 : MonoBehaviour
         }
     }
 
+    // 거리 기반 자동 분기
     public void Melee_Attack_DistanceBased()
     {
         if (_core.IsActing) return;
@@ -107,31 +108,6 @@ public class EnemyFight_01 : MonoBehaviour
         }
     }
 
-    private void ResetAnim()
-    {
-        anim.ResetTrigger("OneReady");
-        anim.ResetTrigger("OneTwoReady");
-        anim.ResetTrigger("RollReady");
-        anim.SetBool("One", false);
-        anim.SetBool("OneOne", false);
-        anim.SetBool("OneTwo", false);
-        anim.SetBool("Roll", false);
-    }
-
-    public void ForceInterruptAttack()
-    {
-        StopAllCoroutines();
-
-        isDashing = false;
-        if (_core != null)
-        {
-            _core.Rb.linearVelocity = Vector2.zero;
-            _core.IsActing = false;
-            _core.StartNoMoveCooldown(0.6f);
-        }
-        ResetAnim();
-    }
-
     public void Melee_Attack()
     {
         if (_core.IsActing) return;
@@ -141,7 +117,7 @@ public class EnemyFight_01 : MonoBehaviour
     public void Melee_Attack(EnemyCore_01.MeleeAttackType type)
     {
         if (_core.IsActing) return;
-        _core.SetPhysicsDuringAttack(true);
+        anim?.SetTrigger("AttackChoice");
 
         switch (type)
         {
@@ -172,14 +148,12 @@ public class EnemyFight_01 : MonoBehaviour
         }
     }
 
-    public bool Tutorial_Checker3;
-
+    // 대쉬 패턴
     private IEnumerator MeleeDash()
     {
         isDashing = true;
-        Tutorial_Checker3 = false;
         _core.Rb.linearVelocity = Vector2.zero;
-        anim.SetTrigger("OneReady");
+        anim?.SetTrigger("OneReady");
 
         if (_curPreWindup > 0f) yield return new WaitForSeconds(_curPreWindup);
 
@@ -220,27 +194,29 @@ public class EnemyFight_01 : MonoBehaviour
         {
             StopInFrontOfPlayer();
         }
+
+        anim?.SetBool("One", true);
         yield return StartCoroutine(DashFinishStrikeSequence());
+
+        anim?.SetBool("One", false);
         isDashing = false;
         _core.IsActing = false;
-        _core.SetPhysicsDuringAttack(false);
-        Tutorial_Checker3 = true;
-        ResetAnim();
     }
 
     private IEnumerator MeleeStrikeNoDash()
     {
         _core.Rb.linearVelocity = Vector2.zero;
-        anim.SetTrigger("OneTwoReady");
+        anim?.SetTrigger("OneTwoReady");
 
         if (_curPreWindup > 0f)
             yield return new WaitForSeconds(_curPreWindup);
 
+        anim?.SetBool("OneTwo", true);
         yield return StartCoroutine(DashFinishStrikeSequence());
 
         _core.IsActing = false;
-        _core.SetPhysicsDuringAttack(false);
-        ResetAnim();
+        yield return new WaitForSeconds(0.7f);
+        anim?.SetBool("OneTwo", false);
     }
 
     private IEnumerator MeleeStrikeRoll()
@@ -268,8 +244,6 @@ public class EnemyFight_01 : MonoBehaviour
 
         _core.IsActing = false;
         anim?.SetBool("Roll", false);
-        _core.SetPhysicsDuringAttack(false);
-        ResetAnim();
     }
 
     public void Range_Attack()
@@ -299,34 +273,20 @@ public class EnemyFight_01 : MonoBehaviour
     {
         if (_core.LastMeleeType == EnemyCore_01.MeleeAttackType.One)
         {
-            yield return new WaitForSeconds(0.1f);
-            anim.SetBool("One", true);
             _core.TriggerMeleeDamage();
-            yield return new WaitForSeconds(0.5f);
-            anim?.SetBool("One", false);
         }
         else if (_core.LastMeleeType == EnemyCore_01.MeleeAttackType.OneOne)
         {
-            yield return new WaitForSeconds(0.1f);
-            anim.SetBool("One", true);
-            anim?.SetBool("OneOne", true);
             _core.TriggerMeleeDamage();
             yield return new WaitForSeconds(0.4f);
             _core.TriggerMeleeDamage();
-            yield return new WaitForSeconds(0.5f);
-            anim?.SetBool("OneOne", false);
-            anim?.SetBool("One", false);
         }
         else if (_core.LastMeleeType == EnemyCore_01.MeleeAttackType.OneTwo)
         {
-            yield return new WaitForSeconds(0.1f);
-            anim?.SetBool("OneTwo", true);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.4f);
             _core.TriggerMeleeDamage();
             yield return new WaitForSeconds(0.4f);
             _core.TriggerMeleeDamage();
-            yield return new WaitForSeconds(0.5f);
-            anim?.SetBool("OneTwo", false);
         }
         else
         {
@@ -336,6 +296,8 @@ public class EnemyFight_01 : MonoBehaviour
 
     private IEnumerator RetreatThenFire()
     {
+        Sprite.color = Color.green;
+
         float t = 0f;
         while (t < RetreatDuration)
         {
@@ -360,6 +322,7 @@ public class EnemyFight_01 : MonoBehaviour
         _core.Rb.linearVelocity = Vector2.zero;
         if (_rangePreWindup > 0f) yield return new WaitForSeconds(_rangePreWindup);
 
+        Sprite.color = Color.blue;
         for (int i = 0; i < _volleyCount; i++)
         {
             FireOneProjectile();
@@ -367,6 +330,7 @@ public class EnemyFight_01 : MonoBehaviour
                 yield return new WaitForSeconds(VolleyInterval);
         }
 
+        Sprite.color = Color.red;
         _core.IsActing = false;
         _core.ForceNextAction();
     }
@@ -421,9 +385,11 @@ public class EnemyFight_01 : MonoBehaviour
 
         Vector3 pos = _core.Rb != null ? (Vector3)_core.Rb.position : transform.position;
 
+        // ① 근접 판단 거리 (기존)
         Gizmos.color = new Color(1f, 0.6f, 0f, 0.35f);
         Gizmos.DrawWireSphere(pos, NoDashCloseRange);
 
+        // ② Dash 멈추는 거리 시각화 (추가)
         Gizmos.color = new Color(0.2f, 0.5f, 1f, 0.5f);
         Gizmos.DrawWireSphere(pos, DashStopDistance);
     }

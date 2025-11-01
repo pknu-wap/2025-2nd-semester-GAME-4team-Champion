@@ -1,187 +1,310 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class BossCore : MonoBehaviour, IParryable, IDamageable
 {
     [Header("Common")]
     [SerializeField] private float AttackCooldown = 2f;
-    public Transform Player;
+    public float SummonTimer = 5f;
+    [SerializeField] private bool Summoned = false;
+    public Slider BossTimerSlider;
+    [SerializeField] public Transform Player;
 
-    [Header("Stats")]
+    [Header("Health / Stamina")]
     public float MaxHp = 100f;
     public float CurrentHp = 100f;
     public float MaxStamina = 100f;
-    public float CurrentStamina = 0f;
+    public float CurrentStamina = 100f;
 
-    [Header("AI Movement")]
+    [Header("General")]
     [SerializeField] public float RecognizedArea = 10f;
     [SerializeField] public float Speed = 3.0f;
     [SerializeField] public float MinChaseDistance = 1.3f;
+
+    [Header("UI & Cinematic")]
+    public Text Timer;
+    public GameObject Hp;
+    public GameObject Stamina;
+    [SerializeField] private GameObject Ui;
+    [SerializeField] private GameObject UiBroke;
+    [SerializeField] private CameraShaking CamShake;
+    [SerializeField] private Animator HandAnim;
+    [SerializeField] private Animator BeltAnim;
+    [SerializeField] private Text TextUi;
+    [SerializeField] private string FullText = "NEW CHALLENGER";
+
+    [Header("Rendering")]
+    [SerializeField] public SpriteRenderer SpriteRenderer;
     [SerializeField] public Collider2D MovementArea;
-    [SerializeField] private float groggyDuration = 3f;
-    private bool _isGroggy = false;
 
     [Header("Runtime")]
-    public float AttackTimer = 0f;
-    private bool _isHit = false;
-    private bool _isDead = false;
-    private float _noMoveRemain = 0f;
-
+    [SerializeField] public float AttackTimer = 0f;
     public Rigidbody2D Rb { get; private set; }
-    private Animator anim;
+    public bool IsActing { get; set; }
+    private Collider2D PlayerCol;
+    private AnimatorUpdateMode BhOldMode, HandOldMode, BeltOldMode;
+    private float BhOldSpeed, HandOldSpeed, BeltOldSpeed;
+    private Coroutine TypingCo;
+
     private BossFight _combat;
+
+    public enum MeleeAttackType { One, OneOne, OneTwo, Roll }
+    public enum RangeAttackType { Short, Mid, Long }
+    public enum AttackSelectMode
+    {
+        Random,
+        Melee_One,
+        Melee_OneOne,
+        Melee_OneTwo,
+        Melee_Roll,
+        Range_Short,
+        Range_Mid,
+        Range_Long
+    }
+
+    [Header("Attack Select (Debug)")]
+    public AttackSelectMode SelectMode = AttackSelectMode.Random;
+    public MeleeAttackType LastMeleeType { get; set; }
 
     [Header("Hit Window")]
     [SerializeField] private float hitActiveDuration = 0.08f;
     private bool _hitWindowOpen = false;
     private bool _hitAppliedThisWindow = false;
-    private bool _currentParryable = true;
+
+    [Header("Parry Settings")]
     public bool AllowParry = true;
+    private bool _currentParryable = true;
 
-    [Header("Game References")]
+    // 🔒 Snap 이후 잠깐 이동 금지(붙음 방지)
+    private float _noMoveRemain = 0f;
+
     [SerializeField] private GameManager _gm;
-    public bool IsDead() => _isDead;
 
-    public enum MeleeAttackType { BossAttack1, BossAttack2, BossAttack3 }
-    public enum RangeAttackType { BossAttack1, BossAttack2, BossAttack3 }
-    public enum AttackSelectMode
-    {
-        Original,
-        Melee_BossAttack1,
-        Melee_BossAttack2,
-        Melee_BossAttack3,
-        Range_BossAttack1,
-        Range_BossAttack2,
-        Range_BossAttack3
-    }
-
-    [Header("Attack Select (Debug)")]
-    public AttackSelectMode SelectMode = AttackSelectMode.Original;
-    public MeleeAttackType LastMeleeType { get; set; }
-    public RangeAttackType LastRangeType { get; set; }
-    public bool IsActing { get; set; }
+    [Header("Parry Counter")]
+    private int hitCount = 0;
 
     private void Awake()
     {
         Rb = GetComponent<Rigidbody2D>();
-        anim = GetComponentInChildren<Animator>();
         _combat = GetComponent<BossFight>();
-        _combat = gameObject.AddComponent<BossFight>();
+        if (_combat == null) _combat = gameObject.AddComponent<BossFight>();
         _combat.BindCore(this);
     }
 
     private void Start()
     {
         AttackTimer = 0f;
+
+        if (CamShake == null)
+        {
+            var mainCam = Camera.main;
+            if (mainCam != null) CamShake = mainCam.GetComponent<CameraShaking>();
+        }
+        if (Player != null) PlayerCol = Player.GetComponent<Collider2D>();
+
+#if UNITY_2022_3_OR_NEWER
+        if (_gm == null) _gm = FindFirstObjectByType<GameManager>();
+#else
+        if (_gm == null) _gm = FindObjectOfType<GameManager>();
+#endif
+
+        if (!Summoned)
+        {
+            Rb.linearVelocity = Vector2.zero;
+            if (SpriteRenderer != null) SpriteRenderer.enabled = false;
+            if (TryGetComponent<Collider2D>(out var selfCol)) selfCol.enabled = false;
+        }
+
+        if (BossTimerSlider != null)
+        {
+            BossTimerSlider.maxValue = Mathf.Max(SummonTimer, 0f);
+            BossTimerSlider.value = SummonTimer;
+        }
+
+        Rb.position = ClampInside(Rb.position);
     }
 
     private void Update()
     {
-        if (_isDead) return;
+        if (Player == null || Rb == null) return;
 
-        if (_noMoveRemain > 0f)
-            _noMoveRemain -= Time.deltaTime;
-
-        if (!_isGroggy && CurrentStamina >= 100f)
-            StartCoroutine(EnterGroggy());
-
-        Rb.position = ClampInside(Rb.position);
-
-        if (!IsActing && !_isHit)
+        if (!Summoned)
         {
-            AttackTimer += Time.deltaTime;
-
-            if (Player != null)
+            if (SummonTimer > 0f)
             {
-                float distanceToPlayer = Vector2.Distance(Rb.position, Player.position);
-                if (distanceToPlayer <= RecognizedArea && AttackTimer >= AttackCooldown)
-                {
-                    AttackWayChoice();
-                    AttackTimer = 0f;
-                }
+                SummonTimer -= Time.deltaTime;
+                if (Timer != null) Timer.text = Mathf.CeilToInt(SummonTimer).ToString();
+                if (BossTimerSlider != null) BossTimerSlider.value = SummonTimer;
             }
+
+            if (SummonTimer <= 0f) ActivateBoss();
+            return;
         }
 
-        if (CurrentHp <= 0)
-            Die();
+        if (_noMoveRemain > 0f) _noMoveRemain -= Time.deltaTime;
+
+        if (!IsActing)
+        {
+            AttackTimer += Time.deltaTime;
+            if (AttackTimer >= AttackCooldown)
+            {
+                AttackWayChoice();
+                AttackTimer = 0f;
+            }
+        }
     }
 
     private void FixedUpdate()
     {
-        if (_isDead) return;
-
-        if (_isGroggy)
+        if (!Summoned)
         {
             Rb.linearVelocity = Vector2.zero;
             return;
         }
 
-        if (_noMoveRemain > 0f || IsAnimationBlocking())
+        if (_noMoveRemain > 0f)
         {
             Rb.linearVelocity = Vector2.zero;
             return;
         }
 
         if (!IsActing)
+        {
             AIMoveMent();
+        }
     }
 
     public void ApplyHit(float damage, float knockback, Vector2 direction, GameObject source)
     {
-        if (_isDead) return;
+        Debug.Log($"[BossCore] ApplyHit called by {source.name}");
 
         CurrentHp -= damage;
-        StartCoroutine(HitStop(0.1f));
 
-        _isHit = true;
-        StartCoroutine(ResetHitFlag(0.3f));
+        hitCount++;
+
+        if (hitCount >= 3 && Random.value <= 0.7f)
+        {
+            Debug.Log("[BossCore] Parry triggered by accumulated hits!");
+            OnParried(source.transform.position);
+            hitCount = 0;
+        }
+
+        if (_combat != null && _combat.isDashing)
+        {
+            _combat.InterruptDash();
+        }
+
+        if (CurrentHp <= 0f)
+        {
+            Debug.Log("[BossCore] Boss defeated!");
+        }
     }
 
-    private IEnumerator HitStop(float duration)
+    private void OnDisable()  => ResumeFromCinematic();
+    private void OnDestroy()  => ResumeFromCinematic();
+
+    public void StartNoMoveCooldown(float seconds)
+    {
+        _noMoveRemain = Mathf.Max(_noMoveRemain, Mathf.Max(0f, seconds));
+    }
+
+    private void ActivateBoss()
     {
         Time.timeScale = 0f;
-        yield return new WaitForSecondsRealtime(duration);
+        Summoned = true;
+
+        if (SpriteRenderer != null) SpriteRenderer.enabled = true;
+        if (TryGetComponent<Collider2D>(out var selfCol)) selfCol.enabled = true;
+
+        Rb.linearVelocity = Vector2.zero;
+
+        if (BossTimerSlider != null) BossTimerSlider.gameObject.SetActive(false);
+        if (Hp != null) Hp.SetActive(true);
+        if (Stamina != null) Stamina.SetActive(true);
+        if (HandAnim != null)
+        {
+            HandOldMode = HandAnim.updateMode;
+            HandOldSpeed = HandAnim.speed;
+            HandAnim.updateMode = AnimatorUpdateMode.UnscaledTime;
+            HandAnim.speed = 1f;
+        }
+        if (BeltAnim != null)
+        {
+            BeltOldMode = BeltAnim.updateMode;
+            BeltOldSpeed = BeltAnim.speed;
+            BeltAnim.updateMode = AnimatorUpdateMode.UnscaledTime;
+            BeltAnim.speed = 1f;
+        }
+
+        StartCoroutine(MoveUi());
+    }
+
+    private IEnumerator MoveUi()
+    {
+        float t = 0f;
+        while (t < 1f) { t += Time.unscaledDeltaTime; yield return null; }
+
+        if (BeltAnim != null) BeltAnim.SetTrigger("BeltStart");
+
+        yield return new WaitForSecondsRealtime(7f);
+
+        yield return new WaitForSecondsRealtime(0.1f);
+
+        if (UiBroke != null) UiBroke.SetActive(true);
+
+        yield return new WaitForSecondsRealtime(2f);
+        if (HandAnim != null) HandAnim.SetTrigger("HandStart");
+        yield return new WaitForSecondsRealtime(4f);
+
+        if (UiBroke != null) UiBroke.SetActive(false);
+
+        yield return new WaitForSecondsRealtime(1f);
+        PlayText(FullText);
+
+        yield return new WaitForSecondsRealtime(1.7f);
+        if (Ui != null) Ui.SetActive(false);
+
+        ResumeFromCinematic();
+    }
+
+    private void ResumeFromCinematic()
+    {
         Time.timeScale = 1f;
+        if (HandAnim != null) { HandAnim.updateMode = HandOldMode; HandAnim.speed = HandOldSpeed; }
+        if (BeltAnim != null) { BeltAnim.updateMode = BeltOldMode; BeltAnim.speed = BeltOldSpeed; }
     }
 
-    private IEnumerator ResetHitFlag(float delay)
+    private void AttackWayChoice()
     {
-        yield return new WaitForSeconds(delay);
-        _isHit = false;
-    }
+        if (_combat == null) return;
 
-    public void SetPhysicsDuringAttack(bool isAttacking)
-    {
-        if (Rb == null) return;
-        Rb.bodyType = isAttacking ? RigidbodyType2D.Kinematic : RigidbodyType2D.Dynamic;
-        Rb.linearVelocity = Vector2.zero;
-    }
-
-    public void OnParried(Vector3 parrySourcePosition)
-    {
-        _combat?.InterruptDash();
-        Rb.linearVelocity = Vector2.zero;
-        StartNoMoveCooldown(0.3f);
-        Vector2 knockbackDir = ((Vector2)transform.position - (Vector2)parrySourcePosition).normalized;
-        Rb.AddForce(knockbackDir * 3f, ForceMode2D.Impulse);
-        IsActing = true;
-        AttackTimer = 0f;
+        switch (SelectMode)
+        {
+            case AttackSelectMode.Random:
+            {
+                int type = Random.Range(0, 2);
+                if (type == 0) _combat.Melee_Attack_DistanceBased();
+                else           _combat.Range_Attack();
+                break;
+            }
+            case AttackSelectMode.Melee_One:    _combat.Melee_Attack(MeleeAttackType.One);     break;
+            case AttackSelectMode.Melee_OneOne: _combat.Melee_Attack(MeleeAttackType.OneOne);  break;
+            case AttackSelectMode.Melee_OneTwo: _combat.Melee_Attack(MeleeAttackType.OneTwo);  break;
+            case AttackSelectMode.Melee_Roll: _combat.Melee_Attack(MeleeAttackType.Roll);  break;
+            case AttackSelectMode.Range_Short:  _combat.Range_Attack(RangeAttackType.Short);   break;
+            case AttackSelectMode.Range_Mid:    _combat.Range_Attack(RangeAttackType.Mid);     break;
+            case AttackSelectMode.Range_Long:   _combat.Range_Attack(RangeAttackType.Long);    break;
+        }
     }
 
     public void TriggerMeleeDamage()
     {
-        if (_hitWindowOpen) return;
         StartCoroutine(DoMeleeDamage());
-    }
-
-    private IEnumerator DoMeleeDamage()
-    {
-        yield return OpenHitWindow();
     }
 
     private IEnumerator OpenHitWindow()
     {
-        if (_hitWindowOpen) yield break;
         _currentParryable = AllowParry;
         _hitAppliedThisWindow = false;
         _hitWindowOpen = true;
@@ -189,9 +312,7 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
         TryApplyHit_OnlyIfInRange();
 
         yield return new WaitForSeconds(hitActiveDuration);
-
         _hitWindowOpen = false;
-        _hitAppliedThisWindow = false;
     }
 
     private void TryApplyHit_OnlyIfInRange()
@@ -202,7 +323,9 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
         float radius = 1.2f;
         LayerMask playerMask = LayerMask.GetMask("Player");
 
-        foreach (var hit in Physics2D.OverlapCircleAll(center, radius, playerMask))
+        Collider2D[] hits = Physics2D.OverlapCircleAll(center, radius, playerMask);
+
+        foreach (var hit in hits)
         {
             var ph = hit.GetComponent<PlayerHit>();
             if (ph != null)
@@ -214,11 +337,87 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
         }
     }
 
-    private bool IsAnimationBlocking()
+    private IEnumerator DoMeleeDamage()
     {
-        if (anim == null) return false;
-        var st = anim.GetCurrentAnimatorStateInfo(0);
-        return st.IsName("SlamReady") || st.IsName("Slam2Ready") || st.IsName("Slam3Ready");
+        if (_gm == null) yield break;
+
+        switch (LastMeleeType)
+        {
+            case MeleeAttackType.One:
+                yield return OpenHitWindow();
+                break;
+
+            case MeleeAttackType.OneOne:
+                yield return OpenHitWindow();
+                yield return new WaitForSeconds(0.1f);
+                yield return OpenHitWindow();
+                break;
+
+            case MeleeAttackType.OneTwo:
+                yield return OpenHitWindow();
+                yield return new WaitForSeconds(0.05f);
+                yield return OpenHitWindow();
+                break;
+
+            case MeleeAttackType.Roll:
+                yield return OpenHitWindow();
+                break;
+        }
+    }
+
+    private void TryApplyHit(Collider2D other)
+    {
+        bool isPlayerHit = (PlayerCol != null) ? (other == PlayerCol) : other.CompareTag("Player");
+        if (!isPlayerHit) return;
+
+        if (!_hitWindowOpen)
+        {
+            TriggerMeleeDamage();
+        }
+
+        if (_hitWindowOpen && !_hitAppliedThisWindow)
+        {
+            var ph = Player != null ? Player.GetComponent<PlayerHit>() : null;
+            if (ph != null)
+            {
+                Vector2 hitDir = (Player.position - transform.position).normalized;
+                ph.OnHit(10f, 6f, hitDir, _currentParryable, gameObject);
+                Debug.Log($"[BossCore] Hit applied -> parryable={_currentParryable}");
+
+                hitCount++;
+
+                if (hitCount >= 3 && Random.value <= 0.6f)
+                {
+                    Debug.Log("[BossCore] Parry triggered automatically after 3 hits.");
+                    OnParried(Player.position);
+                    hitCount = 0;
+                    return;
+                }
+            }
+
+            _hitAppliedThisWindow = true;
+
+            if ((_combat != null && _combat.isDashing) &&
+                (LastMeleeType == MeleeAttackType.One || LastMeleeType == MeleeAttackType.OneOne))
+            {
+                _combat.InterruptDash();
+            }
+        }
+    }
+
+    public void ForceNextAction()
+    {
+        IsActing = false;
+        AttackTimer = AttackCooldown;
+    }
+
+    public Vector2 ClampInside(Vector2 p)
+    {
+        if (MovementArea == null) return p;
+        Vector2 closest = MovementArea.ClosestPoint(p);
+        Vector2 center = (Vector2)MovementArea.bounds.center;
+        Vector2 inward = (center - closest).sqrMagnitude > 1e-8f ? (center - closest).normalized : Vector2.zero;
+        return closest + inward * 0.14f;
     }
 
     public void AIMoveMent()
@@ -235,91 +434,62 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
         }
 
         if (dist <= RecognizedArea)
-            Rb.linearVelocity = toPlayer.normalized * Speed;
-        else
-            Rb.linearVelocity = Vector2.zero;
-    }
-
-    private IEnumerator EnterGroggy()
-    {
-        _isGroggy = true;
-        IsActing = true;
-        Rb.linearVelocity = Vector2.zero;
-        yield return new WaitForSeconds(groggyDuration);
-        ExitGroggy();
-    }
-
-    private void ExitGroggy()
-    {
-        _isGroggy = false;
-        IsActing = false;
-        CurrentStamina = 0f;
-    }
-
-    private void Die()
-    {
-        if (_isDead) return;
-        _isDead = true;
-        IsActing = true;
-        anim.Play("Enemy_02_Die", 0, 0f);
-
-        StartCoroutine(TransitionToDie(0.6f));
-    }
-
-    private IEnumerator TransitionToDie(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
-        Rb.linearVelocity = Vector2.zero;
-        Rb.simulated = false;
-        Destroy(gameObject, 2f);
-    }
-
-    public Vector2 ClampInside(Vector2 p)
-    {
-        if (MovementArea == null)
-            return p;
-        if (MovementArea.OverlapPoint(p))
-            return p;
-
-        Vector2 closest = MovementArea.ClosestPoint(p);
-        Vector2 center = MovementArea.bounds.center;
-        Vector2 inward = (center - closest).sqrMagnitude > 1e-8f ? (center - closest).normalized : Vector2.zero;
-        return closest + inward * 0.1f;
-    }
-
-    public void StartNoMoveCooldown(float seconds)
-    {
-        _noMoveRemain = Mathf.Max(_noMoveRemain, Mathf.Max(0f, seconds));
-    }
-
-    private void AttackWayChoice()
-    {
-        float dist = (Player != null)
-            ? Vector2.Distance(Rb.position, Player.position)
-            : Mathf.Infinity;
-
-        switch (SelectMode)
         {
-            case AttackSelectMode.Original:
-                if (dist < _combat.NoDashCloseRange)
-                {
-                    _combat.Melee_Attack_DistanceBased();
-                }
-                else
-                    _combat.Range_Attack();
-                break;
-            case AttackSelectMode.Melee_BossAttack1: _combat.Melee_Attack(MeleeAttackType.BossAttack1); if (CurrentStamina > 0) CurrentStamina -= 4; break;
-            case AttackSelectMode.Melee_BossAttack2: _combat.Melee_Attack(MeleeAttackType.BossAttack2); if (CurrentStamina > 0) CurrentStamina -= 8; break;
-            case AttackSelectMode.Melee_BossAttack3: _combat.Melee_Attack(MeleeAttackType.BossAttack3); if (CurrentStamina > 0) CurrentStamina -= 10; break;
-            case AttackSelectMode.Range_BossAttack1: _combat.Range_Attack(RangeAttackType.BossAttack1); break;
-            case AttackSelectMode.Range_BossAttack2: _combat.Range_Attack(RangeAttackType.BossAttack2); break;
-            case AttackSelectMode.Range_BossAttack3: _combat.Range_Attack(RangeAttackType.BossAttack3); break;
+            Vector2 dir = toPlayer.sqrMagnitude > 1e-8f ? toPlayer.normalized : Vector2.zero;
+            Rb.linearVelocity = dir * Speed;
+        }
+        else
+        {
+            Rb.linearVelocity = Vector2.zero;
         }
     }
 
-    public void ForceNextAction()
+    public void PlayText(string message)
     {
+        if (TextUi == null) return;
+        if (TypingCo != null) StopCoroutine(TypingCo);
+        TypingCo = StartCoroutine(TypeTextRoutine(message));
+    }
+
+    private IEnumerator TypeTextRoutine(string message)
+    {
+        if (TextUi == null) yield break;
+        TextUi.text = "";
+        int count = 0;
+        foreach (char c in message)
+        {
+            TextUi.text += c;
+            count++;
+            if (CamShake != null && (count % 4 == 0))
+            {
+            }
+            yield return new WaitForSecondsRealtime(0.05f);
+        }
+    }
+
+    public void OnParried(Vector3 parrySourcePosition)
+    {
+        Debug.Log("[BossCore] Parried by player -> stamina +10 then -5 (success only)");
+
+        // 패링 '성공 시에만' 스태미나 처리(+10 후 -5)
+        if (Player != null && Player.TryGetComponent<PlayerCombat>(out var pc))
+        {
+            pc.AddStamina(10f);
+            pc.AddStamina(-5f);
+        }
+
+        // 넉백
+        if (Rb != null)
+        {
+            Vector2 dir = ((Vector2)transform.position - (Vector2)parrySourcePosition).normalized;
+            Rb.AddForce(dir * 2f, ForceMode2D.Impulse);
+        }
+
+        _combat?.InterruptDash();
+
+        StartNoMoveCooldown(0.6f);
+
         IsActing = false;
-        AttackTimer = AttackCooldown;
+        AttackTimer = 0f;
     }
 }
