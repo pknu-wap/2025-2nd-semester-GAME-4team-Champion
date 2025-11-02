@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 942a1aa06a0301a4494d61f57d2b98ef, type: 3}
   m_Name: SpeedPadTile
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 606718979, guid: 0d3b3948076f280458a9b89c64c49a24, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 63072630fc2a22549a94e9c82975b2eb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
