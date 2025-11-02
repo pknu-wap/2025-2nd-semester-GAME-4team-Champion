@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 public class SpeedPadZone : MonoBehaviour
@@ -7,11 +7,12 @@ public class SpeedPadZone : MonoBehaviour
     [SerializeField] private SpeedPadSettings settings;
     [SerializeField] private string playerTag = "Player";
     [SerializeField] private LayerMask triggerMask = ~0;
+    [SerializeField] private bool debugLog = false;
 
     private void Reset()
     {
         var col = GetComponent<Collider2D>();
-        col.isTrigger = true; // ¹İµå½Ã Æ®¸®°Å
+        col.isTrigger = true;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -19,11 +20,16 @@ public class SpeedPadZone : MonoBehaviour
         if (((1 << other.gameObject.layer) & triggerMask) == 0) return;
         if (!string.IsNullOrEmpty(playerTag) && !other.CompareTag(playerTag)) return;
 
-        // ÇÃ·¹ÀÌ¾î ·çÆ®¿¡¼­ ¹Ù·Î È¿°ú ÄÄÆ÷³ÍÆ® È¹µæ
-        var eff = other.transform.root.GetComponent<SpeedPadEffect>();
-        if (!eff) return; // ¹Ì¸® ºÙ¿©µÎ´Â °Ô ÃÖÀû
+        // ğŸ”§ ë£¨íŠ¸ê°€ ì•„ë‹ˆë¼ 'ë¶€ëª¨ ì–´ë””ì— ìˆì–´ë„' ì°¾ë„ë¡ ë³€ê²½
+        var eff = other.GetComponentInParent<SpeedPadEffect>();
+        if (!eff)
+        {
+            if (debugLog) Debug.LogWarning("[SpeedPadZone] í”Œë ˆì´ì–´ ìª½ì— SpeedPadEffectê°€ ì—†ìŠµë‹ˆë‹¤.", this);
+            return;
+        }
 
-        eff.EnterZone(settings);
+        eff.OnEnterPad(settings);
+        if (debugLog) Debug.Log("[SpeedPadZone] Enter â†’ Effect.OnEnterPad í˜¸ì¶œ", this);
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -31,9 +37,10 @@ public class SpeedPadZone : MonoBehaviour
         if (((1 << other.gameObject.layer) & triggerMask) == 0) return;
         if (!string.IsNullOrEmpty(playerTag) && !other.CompareTag(playerTag)) return;
 
-        var eff = other.transform.root.GetComponent<SpeedPadEffect>();
+        var eff = other.GetComponentInParent<SpeedPadEffect>();
         if (!eff) return;
 
-        eff.ExitZone();
+        eff.OnExitPad();
+        if (debugLog) Debug.Log("[SpeedPadZone] Exit â†’ Effect.OnExitPad í˜¸ì¶œ", this);
     }
 }

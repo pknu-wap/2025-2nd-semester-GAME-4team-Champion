@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minScale: 1
   maxScale: 2.5
-  mashStep: 0.15
+  mashStep: 0.3
   mashDecayPerSec: 0.5
-  exitEaseTime: 1
+  exitEaseTime: 3
