@@ -22,6 +22,7 @@ public class RhythmGame : MonoBehaviour
     private bool isGameEnded = false;
     private bool allNotesSpawned = false;
     public GameObject MiniGame;
+    public GameManager GameManager;
 
     void OnEnable()
 {
@@ -41,13 +42,11 @@ public class RhythmGame : MonoBehaviour
 
         foreach (var note in activeNotes)
         {
-            if (note != null)
-                Destroy(note.gameObject);
+            Destroy(note.gameObject);
         }
         activeNotes.Clear();
 
-        if (scoreText != null)
-            scoreText.text = "Score: 0";
+        scoreText.text = "Score: 0";
 
         StopAllCoroutines();
         StartCoroutine(SpawnRoutine());
@@ -76,14 +75,13 @@ public class RhythmGame : MonoBehaviour
 
     private void SpawnNote()
     {
-        int noteType = (lastNoteType == 2 && Random.value <= 0.8f) ? 1 : Random.Range(1, 4);
+        int noteType = (lastNoteType == 2 && Random.value <= 0.8f) ? 1 : (lastNoteType == 3) ? Random.Range(1, 3) : Random.Range(1, 4);
         GameObject prefab = (noteType == 1) ? AttackPrefab : (noteType == 2) ? DefensePrefab : ChargePrefab;
 
         GameObject noteObj = Instantiate(prefab, spawnPoint.position, Quaternion.identity, rhythmParent);
         RhythmNote rhythmNote = noteObj.GetComponent<RhythmNote>();
 
-        if (rhythmNote != null)
-            rhythmNote.Initialize(targetPoint.position, noteSpeed, noteType);
+        rhythmNote.Initialize(targetPoint.position, noteSpeed, noteType);
 
         activeNotes.Add(rhythmNote);
         lastNoteType = noteType;
@@ -184,21 +182,20 @@ public class RhythmGame : MonoBehaviour
         if (isGameEnded) return;
         isGameEnded = true;
 
-        Debug.Log("🎮 리듬게임 종료! 3초 후 이동합니다...");
-
         StartCoroutine(MoveAfterDelay());
     }
 
     private IEnumerator MoveAfterDelay()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
+        yield return StartCoroutine(GameManager.FadeOut(1.5f));
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null && MainPotal != null)
-        {
-            player.transform.position = MainPotal.position;
-        }
-        MiniGame.SetActive(false);
+        player.transform.position = MainPotal.position;
+
         RhythmPotal.EndRhythmMiniGame();
+        yield return new WaitForSeconds(3f);
+        yield return StartCoroutine(GameManager.FadeIn(1.5f));
+        MiniGame.SetActive(false);
     }
 }

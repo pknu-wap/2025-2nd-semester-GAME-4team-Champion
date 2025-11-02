@@ -20,6 +20,8 @@ public class Sandbag : MonoBehaviour
     private Vector2 endPos;
     private Vector2 originalPos;
 
+    public GameManager GameManager;
+
     private float lastClickTime = 0f;
     private bool isReturning = false;
     public GameObject MiniGame;
@@ -87,8 +89,7 @@ public class Sandbag : MonoBehaviour
         isShaking = false;
         isFlying = false;
         hasFinished = true;
-
-        Debug.Log("🎯 샌드백 미니게임 종료! 3초 후 이동합니다...");
+        
         StartCoroutine(MoveAfterDelay());
     }
 
@@ -122,14 +123,15 @@ public class Sandbag : MonoBehaviour
 
     IEnumerator MoveAfterDelay()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
+        yield return StartCoroutine(GameManager.FadeOut(1.5f));
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null && MainPotal != null)
-        {
-            player.transform.position = MainPotal.position;
-        }
-        MiniGame.SetActive(false);
+        player.transform.position = MainPotal.position;
+        
         SandPotal.EndSandbagMiniGame();
+        yield return new WaitForSeconds(3f);
+        yield return StartCoroutine(GameManager.FadeIn(1.5f));
+        MiniGame.SetActive(false);
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Unity.Cinemachine;
 
 public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 {
@@ -33,7 +34,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 
     [Header("Runtime")]
     public float AttackTimer = 0f;
-    private bool _isHit = false;
+    public bool _isHit = false;
     private bool _isDead = false;
     private float _noMoveRemain = 0f;
 
@@ -47,11 +48,13 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     private bool _hitAppliedThisWindow = false;
     private bool _currentParryable = true;
     public bool AllowParry = true;
-
+    private float _knockbackRemain;
     private bool isWeaveAttacking = false;
+    [SerializeField] private CinemachineImpulseSource hitImpulse;
 
     [Header("Game References")]
     [SerializeField] private GameManager _gm;
+    private SpriteRenderer sr;
     public bool IsDead() => _isDead;
 
     public enum MeleeAttackType { One, OneOne, OneTwo, Roll }
@@ -79,6 +82,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     #region Unity Lifecycle
     private void Awake()
     {
+        sr = GetComponent<SpriteRenderer>();
         Rb = GetComponent<Rigidbody2D>();
         _combat = GetComponent<EnemyFight_01>();
         if (_combat == null) _combat = gameObject.AddComponent<EnemyFight_01>();
@@ -113,6 +117,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
                 if (distanceToPlayer <= RecognizedArea && AttackTimer >= AttackCooldown)
                 {
                     AttackWayChoice();
+                    _isHit = true;
                     AttackTimer = 0f;
                 }
             }
@@ -140,6 +145,12 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
             return;
         }
 
+        if (_knockbackRemain > 0f)
+        {
+            _knockbackRemain -= Time.deltaTime;
+            return;
+        }
+
         if (_noMoveRemain > 0f || IsAnimationPlaying())
         {
             Rb.linearVelocity = Vector2.zero;
@@ -161,21 +172,14 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         Vector3 hitSource = source != null ? source.transform.position : transform.position;
         AnimatorStateInfo info = anim != null ? anim.GetCurrentAnimatorStateInfo(0) : default;
 
-        if (info.IsName("Weave") || info.IsName("WeaveAttack"))
-            return;
+        bool isAttacking = IsActing && !_isHit;
 
         if (IsGuarding || info.IsName("Guard"))
         {
             lastGuardTime = Time.time;
             OnGuarded(hitSource);
-            anim.Play("Enemy_01_Guard", 0, 0f);
             guardCount += 1;
             CurrentStamina += 10;
-            if (source != null && guardCount >= 6 && Random.value <= 0.7f)
-            {
-                OnParried(hitSource);
-                guardCount = 0;
-            }
             return;
         }
 
@@ -184,36 +188,60 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         {
             StartGuard(hitSource);
             OnGuarded(hitSource);
-
             return;
-        }
-        else if (recentlyHit)
-        {
-            guardBlockCount++;
-
-            if (guardBlockCount >= 5)
-            {
-                guardBlockCount = 0;
-                StartGuard(hitSource);
-                OnGuarded(hitSource);
-                guardCount++;
-                return;
-            }
         }
 
         CurrentHp -= damage;
+        StartCoroutine(HitFlash());
+        
+        if (!IsActing && !_isGroggy)
+        {
+            _knockbackRemain = Mathf.Max(_knockbackRemain, 0.18f);
+            Rb.linearVelocity = Vector2.zero;
+            Rb.AddForce(direction.normalized * knockback, ForceMode2D.Impulse);
+        }
         StartCoroutine(HitStop(0.1f));
+
+        if (isAttacking)
+        {
+            _combat.ForceInterruptAttack();
+
+            IsActing = true;
+            StartNoMoveCooldown(0.4f);
+            AttackTimer = 0f;
+            StartCoroutine(ResetActionFlagAfterHit(0.4f));
+        }
 
         _isHit = true;
         StartCoroutine(ResetHitFlag(0.3f));
 
-        PlayRandomHit();
+        if (!IsActing)
+            PlayRandomHit();
 
         lastHitTime = Time.time;
     }
 
+    private IEnumerator ResetActionFlagAfterHit(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        IsActing = false;
+    }
+
+    private IEnumerator HitFlash()
+    {
+        Color c = sr.color;
+
+        sr.color = new Color(c.r, c.g, c.b, 0.3f);
+
+        yield return new WaitForSeconds(0.08f);
+
+        sr.color = new Color(c.r, c.g, c.b, 1f);
+    }
+
     private IEnumerator HitStop(float duration)
     {
+        hitImpulse.GenerateImpulse();
+        yield return new WaitForSecondsRealtime(0.1f);
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(duration);
         Time.timeScale = 1f;
@@ -267,6 +295,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         lastGuardTime = Time.time;
 
         if (Rb != null)
+
         {
             Vector2 knockbackDir = ((Vector2)transform.position - (Vector2)Player.position).normalized;
             Rb.AddForce(knockbackDir * 1.5f, ForceMode2D.Impulse);
@@ -441,6 +470,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     private void Die()
     {
         if (_isDead) return;
+        Rb.bodyType = RigidbodyType2D.Dynamic;
         _isDead = true;
         IsActing = true;
 

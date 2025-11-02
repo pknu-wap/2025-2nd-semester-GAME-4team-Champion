@@ -128,6 +128,7 @@ public class BossFight : MonoBehaviour
 
         isDashing = false;
         _core.IsActing = false;
+        _core._isHit = false;
         _core.SetPhysicsDuringAttack(false);
         ResetAnim();
     }
@@ -195,6 +196,7 @@ public class BossFight : MonoBehaviour
 
         isDashing = false;
         _core.IsActing = false;
+        _core._isHit = false;
         _core.SetPhysicsDuringAttack(false);
         ResetAnim();
     }

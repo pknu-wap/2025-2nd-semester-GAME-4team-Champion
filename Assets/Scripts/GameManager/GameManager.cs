@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
     public float regentime = 2f;    // 스테미나 회복 대기 시간
     private float lastactiontime;   //마지막으로 영향을 받은 시간
 
-
     public Slider[] enemyhpbar;   //적 슬라이드바
     public Slider[] enemystaminabar;
     public Image[] fillimage;   //플레이어 스테미나 *6, 플레이어 체력 * 3
@@ -34,6 +33,39 @@ public class GameManager : MonoBehaviour
 
     public float enemyregentime = 2f;    // 스테미나 회복 대기 시간
     public float enemylastactiontime;   //마지막으로 영향을 받은 시간
+    public Image panel;
+
+    public IEnumerator FadeOut(float duration = 2f)
+    {
+        float t = 0f;
+        Color c = panel.color;
+        c.a = 0f;
+        panel.color = c;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            c.a = Mathf.Lerp(0f, 1f, t / duration);
+            panel.color = c;
+            yield return null;
+        }
+    }
+
+    public IEnumerator FadeIn(float duration = 2f)
+    {
+        float t = 0f;
+        Color c = panel.color;
+        c.a = 1f;
+        panel.color = c;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            c.a = Mathf.Lerp(1f, 0f, t / duration);
+            panel.color = c;
+            yield return null;
+        }
+    }
 
     void Start()
     {

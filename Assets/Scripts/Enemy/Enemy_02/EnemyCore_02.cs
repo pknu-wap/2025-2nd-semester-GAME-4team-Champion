@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using Unity.Cinemachine;
 
-public class EnemyCore_02 : MonoBehaviour, IParryable, IDamageable
+public class EnemyCore_02 : MonoBehaviour, IDamageable
 {
     #region Common & References
     [Header("Common")]
@@ -24,7 +25,7 @@ public class EnemyCore_02 : MonoBehaviour, IParryable, IDamageable
 
     [Header("Runtime")]
     public float AttackTimer = 0f;
-    private bool _isHit = false;
+    public bool _isHit = false;
     private bool _isDead = false;
     private float _noMoveRemain = 0f;
 
@@ -38,9 +39,12 @@ public class EnemyCore_02 : MonoBehaviour, IParryable, IDamageable
     private bool _hitAppliedThisWindow = false;
     private bool _currentParryable = true;
     public bool AllowParry = true;
+    private float _knockbackRemain;
+    [SerializeField] private CinemachineImpulseSource hitImpulse;
 
     [Header("Game References")]
     [SerializeField] private GameManager _gm;
+    private SpriteRenderer sr;
     public bool IsDead() => _isDead;
 
     public enum MeleeAttackType { Slam1, Slam2, Slam3, Roll }
@@ -65,6 +69,7 @@ public class EnemyCore_02 : MonoBehaviour, IParryable, IDamageable
 
     private void Awake()
     {
+        sr = GetComponent<SpriteRenderer>();
         Rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
         _combat = GetComponent<EnemyFight_02>();
@@ -99,6 +104,7 @@ public class EnemyCore_02 : MonoBehaviour, IParryable, IDamageable
                 if (distanceToPlayer <= RecognizedArea && AttackTimer >= AttackCooldown)
                 {
                     AttackWayChoice();
+                    _isHit = true;
                     AttackTimer = 0f;
                 }
             }
@@ -111,6 +117,12 @@ public class EnemyCore_02 : MonoBehaviour, IParryable, IDamageable
     private void FixedUpdate()
     {
         if (_isDead) return;
+
+        if (_knockbackRemain > 0f)
+        {
+            _knockbackRemain -= Time.deltaTime;
+            return;
+        }
 
         if (_isGroggy)
         {
@@ -133,23 +145,37 @@ public class EnemyCore_02 : MonoBehaviour, IParryable, IDamageable
         if (_isDead) return;
 
         CurrentHp -= damage;
-        StartCoroutine(HitStop(0.1f));
 
-        _isHit = true;
-        StartCoroutine(ResetHitFlag(0.3f));
+        StartCoroutine(HitFlash());
+
+        if (!IsActing && !_isGroggy)
+        {
+            _knockbackRemain = Mathf.Max(_knockbackRemain, 0.18f);
+            Rb.linearVelocity = Vector2.zero;
+            Rb.AddForce(direction.normalized * knockback, ForceMode2D.Impulse);
+        }
+
+        StartCoroutine(HitStop(0.1f));
+    }
+
+    private IEnumerator HitFlash()
+    {
+        Color c = sr.color;
+
+        sr.color = new Color(c.r, c.g, c.b, 0.3f);
+
+        yield return new WaitForSeconds(0.08f);
+
+        sr.color = new Color(c.r, c.g, c.b, 1f);
     }
 
     private IEnumerator HitStop(float duration)
     {
+        hitImpulse.GenerateImpulse();
+        yield return new WaitForSecondsRealtime(0.1f);
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(duration);
         Time.timeScale = 1f;
-    }
-
-    private IEnumerator ResetHitFlag(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        _isHit = false;
     }
 
     public void SetPhysicsDuringAttack(bool isAttacking)
@@ -157,17 +183,6 @@ public class EnemyCore_02 : MonoBehaviour, IParryable, IDamageable
         if (Rb == null) return;
         Rb.bodyType = isAttacking ? RigidbodyType2D.Kinematic : RigidbodyType2D.Dynamic;
         Rb.linearVelocity = Vector2.zero;
-    }
-
-    public void OnParried(Vector3 parrySourcePosition)
-    {
-        _combat?.InterruptDash();
-        Rb.linearVelocity = Vector2.zero;
-        StartNoMoveCooldown(0.3f);
-        Vector2 knockbackDir = ((Vector2)transform.position - (Vector2)parrySourcePosition).normalized;
-        Rb.AddForce(knockbackDir * 3f, ForceMode2D.Impulse);
-        IsActing = true;
-        AttackTimer = 0f;
     }
 
     public void TriggerMeleeDamage()
@@ -261,6 +276,7 @@ public class EnemyCore_02 : MonoBehaviour, IParryable, IDamageable
     private void Die()
     {
         if (_isDead) return;
+        Rb.bodyType = RigidbodyType2D.Dynamic;
         _isDead = true;
         IsActing = true;
         anim.Play("Enemy_02_Die", 0, 0f);

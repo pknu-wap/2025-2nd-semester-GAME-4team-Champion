@@ -177,6 +177,7 @@ public class EnemyFight_02 : MonoBehaviour
 
         isDashing = false;
         _core.IsActing = false;
+        _core._isHit = false;
         _core.SetPhysicsDuringAttack(false);
         ResetAnim();
     }
@@ -191,6 +192,7 @@ public class EnemyFight_02 : MonoBehaviour
 
         yield return StartCoroutine(DashFinishStrikeSequence());
         _core.IsActing = false;
+        _core._isHit = false;
         _core.SetPhysicsDuringAttack(false);
         ResetAnim();
     }
@@ -218,6 +220,7 @@ public class EnemyFight_02 : MonoBehaviour
 
         _core.IsActing = false;
         anim?.SetBool("Roll", false);
+        _core._isHit = false;
         _core.SetPhysicsDuringAttack(false);
         ResetAnim();
     }

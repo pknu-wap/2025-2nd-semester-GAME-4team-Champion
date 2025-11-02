@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Unity.Cinemachine;
 
 public class BossCore : MonoBehaviour, IParryable, IDamageable
 {
@@ -23,7 +24,7 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
 
     [Header("Runtime")]
     public float AttackTimer = 0f;
-    private bool _isHit = false;
+    public bool _isHit = false;
     private bool _isDead = false;
     private float _noMoveRemain = 0f;
 
@@ -37,9 +38,12 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
     private bool _hitAppliedThisWindow = false;
     private bool _currentParryable = true;
     public bool AllowParry = true;
+    private float _knockbackRemain;
+    [SerializeField] private CinemachineImpulseSource hitImpulse;
 
     [Header("Game References")]
     [SerializeField] private GameManager _gm;
+    private SpriteRenderer sr;
     public bool IsDead() => _isDead;
 
     public enum MeleeAttackType { BossAttack1, BossAttack2, BossAttack3 }
@@ -63,6 +67,7 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
 
     private void Awake()
     {
+        sr = GetComponent<SpriteRenderer>();
         Rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
         _combat = GetComponent<BossFight>();
@@ -97,6 +102,7 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
                 if (distanceToPlayer <= RecognizedArea && AttackTimer >= AttackCooldown)
                 {
                     AttackWayChoice();
+                    _isHit = true;
                     AttackTimer = 0f;
                 }
             }
@@ -109,6 +115,12 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
     private void FixedUpdate()
     {
         if (_isDead) return;
+
+        if (_knockbackRemain > 0f)
+        {
+            _knockbackRemain -= Time.deltaTime;
+            return;
+        }
 
         if (_isGroggy)
         {
@@ -131,23 +143,34 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
         if (_isDead) return;
 
         CurrentHp -= damage;
+        StartCoroutine(HitFlash());
+        if (!IsActing && !_isGroggy)
+        {
+            _knockbackRemain = Mathf.Max(_knockbackRemain, 0.18f);
+            Rb.linearVelocity = Vector2.zero;
+            Rb.AddForce(direction.normalized * knockback, ForceMode2D.Impulse);
+        }
         StartCoroutine(HitStop(0.1f));
+    }
 
-        _isHit = true;
-        StartCoroutine(ResetHitFlag(0.3f));
+    private IEnumerator HitFlash()
+    {
+        Color c = sr.color;
+
+        sr.color = new Color(c.r, c.g, c.b, 0.3f);
+
+        yield return new WaitForSeconds(0.08f);
+
+        sr.color = new Color(c.r, c.g, c.b, 1f);
     }
 
     private IEnumerator HitStop(float duration)
     {
+        hitImpulse.GenerateImpulse();
+        yield return new WaitForSecondsRealtime(0.1f);
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(duration);
         Time.timeScale = 1f;
-    }
-
-    private IEnumerator ResetHitFlag(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        _isHit = false;
     }
 
     public void SetPhysicsDuringAttack(bool isAttacking)
