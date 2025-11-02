@@ -128,7 +128,7 @@ public class PlayerCombat : MonoBehaviour
         //OnHealthChanged?.Invoke(hp, hpMax);
         if (debugLogs) Debug.Log($"[HP] -{amount} => {hp}/{hpMax}");
         Gm.TakePlayerDamage(amount);
-        if (hp <= 0f) OnDeath();
+        //if (hp <= 0f) OnDeath();
     }
 
     public void OnStaminaBreak()
@@ -203,7 +203,7 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    private void OnDeath()
+    public void OnDeath()
     {
         if (isDead) return;                 // 중복 방지
         isDead = true;

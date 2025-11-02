@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
             resetenemystamina();
         }  
 
-        if (healregen = true && leftheal == 0)
+        if (healregen == true && leftheal == 0)
         {
             if (healregenCoroutine == null) //코루틴 중복확인 
                 healregenCoroutine = StartCoroutine(Healregendealy());
@@ -186,6 +186,11 @@ public class GameManager : MonoBehaviour
         if (currenthp < 0) currenthp = 0;
         resetcurrenthp();
         lastactiontime = Time.time;
+
+        if (currenthp <= 0)
+        {
+            playercombat.OnDeath();
+        }
         Debug.Log("Damage ->" + amount);
         // TODO: currenthp <= 0이면 사망 처리(리스폰/게임오버) 원하면 여기에 추가
     }
@@ -207,6 +212,7 @@ public class GameManager : MonoBehaviour
                 c.a = 1000 * (hpbar[i].value - hpbar[i].minValue);
                 fillimage[i+6].color = c;
             }
+            
         }
 
         if (currenthp > maxhp)
@@ -304,7 +310,7 @@ public class GameManager : MonoBehaviour
     public void ManyHealChance(float amount)    //기합 횟수 증가
     {
         healchance += 1;
-        playerheal.chargesLeft += 1;
+        leftheal += 1;
         matchHealPlayer();
     }
 
@@ -339,7 +345,7 @@ public class GameManager : MonoBehaviour
 
         while (count < delay)
         {
-            if (healregen == false) // healregen 확인
+            if (healregen == false || leftheal >= 1) // healregen 확인
             {
                 healregenCoroutine = null;
                 yield break;

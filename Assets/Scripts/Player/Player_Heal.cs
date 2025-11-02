@@ -106,10 +106,7 @@ public class Player_Heal : MonoBehaviour
     {
         if (IsHealing) return;
         if (chargesLeft <= 0) return;
-        if (chargesLeft == 1)
-        {
-            Gm.healregen = true;
-        }
+        
 
         chargesLeft = Mathf.Max(0, chargesLeft - 1); 
         Gm.leftheal -= 1;
@@ -124,7 +121,7 @@ public class Player_Heal : MonoBehaviour
         if (refundCharge)
             chargesLeft = Mathf.Min(maxCharges, chargesLeft + 1);
             Gm.leftheal += 1;
-            Gm.healregen = false;
+            
 
         if (healCo != null) StopCoroutine(healCo);
         healCo = null;

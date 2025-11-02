@@ -212,7 +212,7 @@ public class LevelUpSelect : MonoBehaviour
             new CombinationEffect   //피의 거짓 회복 시스템?
             {
                 titles = new string[] { "기합 회복량 증가", "기합 횟수 증가" },
-                effect = () => { gamemanager.maxhp += 50; gamemanager.currenthp += 50; }
+                effect = () => { gamemanager.healregen = true; }
             },
             /*new CombinationEffect
             {
