@@ -35,7 +35,6 @@ public class BossFight : MonoBehaviour
     public bool isDashing = false;
     public Transform player;
 
-    //───────────────────────────────────────────────────────────────
     void Start()
     {
         Sprite = GetComponent<SpriteRenderer>();
@@ -62,7 +61,6 @@ public class BossFight : MonoBehaviour
         _core.ForceNextAction();
     }
 
-    //───────────────────────────────────────────────────────────────
     #region Melee Attack
     public void Melee_Attack()
     {
@@ -119,7 +117,7 @@ public class BossFight : MonoBehaviour
     {
         isDashing = true;
         _core.Rb.linearVelocity = Vector2.zero;
-        anim.SetTrigger("SlamReady");
+        anim.SetTrigger("AttackReady");
 
         if (_curPreWindup > 0f) yield return new WaitForSeconds(_curPreWindup);
 
@@ -134,7 +132,6 @@ public class BossFight : MonoBehaviour
     }
     #endregion
 
-    //───────────────────────────────────────────────────────────────
     #region Ranged Attack
     public void Range_Attack()
     {
@@ -146,15 +143,22 @@ public class BossFight : MonoBehaviour
     public void Range_Attack(BossCore.RangeAttackType type)
     {
         if (_core == null || _core.IsActing) return;
+        _core.IsActing = true;
+        _core.SetPhysicsDuringAttack(true);
+        _core.LastRangeType = type;
 
         switch (type)
         {
-            case BossCore.RangeAttackType.BossAttack1:
-                _rangePreWindup = RangePreWindupShort;
+            case BossCore.RangeAttackType.BossAttack1: // 평타1 (후속타 2개 1개)
+                _curPreWindup = PreWindupShort;
                 StartCoroutine(RangeBossAttack());
                 break;
-            case BossCore.RangeAttackType.BossAttack2:
-                _rangePreWindup = RangePreWindupMid;
+            case BossCore.RangeAttackType.BossAttack2: // 엇박
+                _curPreWindup = PreWindupMid;
+                StartCoroutine(RangeBossAttack());
+                break;
+            case BossCore.RangeAttackType.BossAttack3: // 연타
+                _curPreWindup = PreWindupLong;
                 StartCoroutine(RangeBossAttack());
                 break;
         }
@@ -166,7 +170,7 @@ public class BossFight : MonoBehaviour
     {
         isDashing = true;
         _core.Rb.linearVelocity = Vector2.zero;
-        anim.SetTrigger("SlamReady");
+        anim.SetTrigger("AttackReady");
 
         Vector2 lockedDir = (_core.Player != null)
             ? ((Vector2)_core.Player.position - _core.Rb.position).normalized
@@ -202,10 +206,12 @@ public class BossFight : MonoBehaviour
     }
     #endregion
 
-    //───────────────────────────────────────────────────────────────
     #region Utility
     private IEnumerator MeleeDashFinishStrikeSequence()
     {
+        yield return new WaitForSeconds(0.5f);
+        anim.SetBool("Attack1", true);
+        _core.TriggerMeleeDamage();
         switch (_core.LastMeleeType)
         {
             case BossCore.MeleeAttackType.BossAttack1: // 평타
@@ -220,17 +226,17 @@ public class BossFight : MonoBehaviour
                     if (MeleeMismatchedChoice == 0) // 3
                     {
                         yield return new WaitForSeconds(0.1f);
-                        anim.SetBool("Slam", true);
+                        anim.SetBool("Attack2", false); //attack9
                         _core.TriggerMeleeDamage();
                         yield return new WaitForSeconds(0.3f);
-                        anim.SetBool("Slam2", true);
+                        anim.SetBool("Attack10", true);
                         _core.TriggerMeleeDamage();
                         yield return new WaitForSeconds(0.5f);
                     }
                     else // 없음
                     {
                         yield return new WaitForSeconds(0.1f);
-                        anim.SetBool("Slam", true);
+                        anim.SetBool("Attack2", false);
                         _core.TriggerMeleeDamage();
                         yield return new WaitForSeconds(0.5f);
                     }
@@ -251,30 +257,30 @@ public class BossFight : MonoBehaviour
         if (MeleeAttackChoice == 0) // 2 3
         {
             yield return new WaitForSeconds(0.1f);
-            anim.SetBool("Slam", true);
+            anim.SetBool("Attack2", true);
             _core.TriggerMeleeDamage();
             yield return new WaitForSeconds(0.4f);
-            anim.SetBool("Slam2", true);
+            anim.SetBool("Attack3", true);
             _core.TriggerMeleeDamage();
-            yield return new WaitForSeconds(1.0f);
-            anim.SetBool("Slam3", true);
+            yield return new WaitForSeconds(0.4f);
+            anim.SetBool("Attack4", true);
             _core.TriggerMeleeDamage();
             yield return new WaitForSeconds(0.5f);
         }
         else if (MeleeAttackChoice == 1) // 3
         {
             yield return new WaitForSeconds(0.1f);
-            anim.SetBool("Slam", true);
+            anim.SetBool("Attack2", true);
             _core.TriggerMeleeDamage();
             yield return new WaitForSeconds(0.1f);
-            anim.SetBool("Slam2", true);
+            anim.SetBool("Attack3", true);
             _core.TriggerMeleeDamage();
             yield return new WaitForSeconds(0.5f);
         }
         else // 없음
         {
             yield return new WaitForSeconds(0.1f);
-            anim.SetBool("Slam", true);
+            anim.SetBool("Attack2", true);
             _core.TriggerMeleeDamage();
             yield return new WaitForSeconds(0.5f);
         }
@@ -297,40 +303,51 @@ public class BossFight : MonoBehaviour
 
     private IEnumerator RangeDashFinishStrikeSequence()
     {
+        yield return new WaitForSeconds(0.5f);
+        anim.SetBool("Dash", true);
+        yield return new WaitForSeconds(0.5f);
+        anim.SetBool("DashAttack", true);
+        _core.TriggerMeleeDamage();
+
         switch (_core.LastRangeType)
         {
             case BossCore.RangeAttackType.BossAttack1: // 1
                 yield return new WaitForSeconds(0.1f);
-                anim.SetBool("Slam", true);
+                anim.SetBool("Attack11", true);
                 _core.TriggerMeleeDamage();
                 yield return new WaitForSeconds(0.5f);
                 break;
             
             case BossCore.RangeAttackType.BossAttack2: // 2
                 yield return new WaitForSeconds(0.1f);
-                anim.SetBool("Slam", true);
+                anim.SetBool("Attack6", true);
                 _core.TriggerMeleeDamage();
                 yield return new WaitForSeconds(0.5f);
-                break;
-            case BossCore.RangeAttackType.BossAttack3: // 없음
                 int AfterAttackChoice = Random.Range(0, 2);
                 if (AfterAttackChoice == 0) // 평타1
                 {
                     BossAttack1Algorigm();
                 }
                 break;
+            case BossCore.RangeAttackType.BossAttack3: // 없음
+                yield return new WaitForSeconds(0.5f);
+                break;
         }
     }
 
     private void ResetAnim()
     {
-        anim.ResetTrigger("SlamReady");
-        anim.ResetTrigger("Slam2Ready");
-        anim.ResetTrigger("Slam3Ready");
-        anim.SetBool("Slam", false);
-        anim.SetBool("Slam2", false);
-        anim.SetBool("Slam3", false);
-        anim.SetBool("Roll", false);
+        anim.ResetTrigger("AttackReady");
+        anim.SetBool("Attack1", false);
+        anim.SetBool("Attack2", false);
+        anim.SetBool("Attack3", false);
+        anim.SetBool("Attack4", false);
+        anim.SetBool("Attack5", false);
+        anim.SetBool("Attack6", false);
+        anim.SetBool("Attack10", false);
+        anim.SetBool("Attack11", false);
+        anim.SetBool("DashAttack", false);
+        anim.SetBool("Dash", false);
     }
     #endregion
 

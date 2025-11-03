@@ -86,7 +86,6 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         sr = GetComponent<SpriteRenderer>();
         Rb = GetComponent<Rigidbody2D>();
         _combat = GetComponent<EnemyFight_01>();
-        if (_combat == null) _combat = gameObject.AddComponent<EnemyFight_01>();
         _combat.BindCore(this);
         anim = GetComponentInChildren<Animator>();
     }

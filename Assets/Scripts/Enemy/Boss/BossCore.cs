@@ -4,25 +4,21 @@ using Unity.Cinemachine;
 
 public class BossCore : MonoBehaviour, IParryable, IDamageable
 {
-    [Header("Common")]
     [SerializeField] private float AttackCooldown = 2f;
     public Transform Player;
 
-    [Header("Stats")]
     public float MaxHp = 100f;
     public float CurrentHp = 100f;
     public float MaxStamina = 100f;
     public float CurrentStamina = 0f;
 
-    [Header("AI Movement")]
-    [SerializeField] public float RecognizedArea = 10f;
-    [SerializeField] public float Speed = 3.0f;
-    [SerializeField] public float MinChaseDistance = 1.3f;
-    [SerializeField] public Collider2D MovementArea;
+    public float RecognizedArea = 10f;
+    public float Speed = 3.0f;
+    public float MinChaseDistance = 1.3f;
+    public Collider2D MovementArea;
     [SerializeField] private float groggyDuration = 3f;
     private bool _isGroggy = false;
 
-    [Header("Runtime")]
     public float AttackTimer = 0f;
     public bool _isHit = false;
     private bool _isDead = false;
@@ -32,7 +28,6 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
     private Animator anim;
     private BossFight _combat;
 
-    [Header("Hit Window")]
     [SerializeField] private float hitActiveDuration = 0.08f;
     private bool _hitWindowOpen = false;
     private bool _hitAppliedThisWindow = false;
@@ -41,10 +36,10 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
     private float _knockbackRemain;
     [SerializeField] private CinemachineImpulseSource hitImpulse;
 
-    [Header("Game References")]
     [SerializeField] private GameManager _gm;
     [SerializeField] private LevelManage _Levelgm;
     private SpriteRenderer sr;
+
     public bool IsDead() => _isDead;
 
     public enum MeleeAttackType { BossAttack1, BossAttack2, BossAttack3 }
@@ -60,7 +55,6 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
         Range_BossAttack3
     }
 
-    [Header("Attack Select (Debug)")]
     public AttackSelectMode SelectMode = AttackSelectMode.Original;
     public MeleeAttackType LastMeleeType { get; set; }
     public RangeAttackType LastRangeType { get; set; }
@@ -72,7 +66,6 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
         Rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
         _combat = GetComponent<BossFight>();
-        _combat = gameObject.AddComponent<BossFight>();
         _combat.BindCore(this);
     }
 
@@ -199,6 +192,18 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
     {
         if (_hitWindowOpen) return;
         StartCoroutine(DoMeleeDamage());
+        StepForward(0.22f);
+    }
+
+    public void StepForward(float distance)
+    {
+        if (Player == null) return;
+
+        Vector2 dir = ((Vector2)Player.position - (Vector2)transform.position).normalized;
+        Vector2 targetPos = (Vector2)transform.position + dir * distance;
+        targetPos = ClampInside(targetPos);
+
+        transform.position = targetPos;
     }
 
     private IEnumerator DoMeleeDamage()
