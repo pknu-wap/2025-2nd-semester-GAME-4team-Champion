@@ -1,0 +1,1254 @@
+fileFormatVersion: 2
+guid: c959e6c0f9cebb842abbabf43aeffa47
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2265991813481120983
+    second: andre_Boss-Sheet_0
+  - first:
+      213: -6273503189078797215
+    second: andre_Boss-Sheet_1
+  - first:
+      213: 3793135857237799676
+    second: andre_Boss-Sheet_2
+  - first:
+      213: -7396275368750054723
+    second: andre_Boss-Sheet_3
+  - first:
+      213: -5026362048314252746
+    second: andre_Boss-Sheet_4
+  - first:
+      213: 1689325262368189222
+    second: andre_Boss-Sheet_5
+  - first:
+      213: 1000318161012819341
+    second: andre_Boss-Sheet_6
+  - first:
+      213: 6799872291997883909
+    second: andre_Boss-Sheet_7
+  - first:
+      213: -6449810287286761507
+    second: andre_Boss-Sheet_8
+  - first:
+      213: -4129260055029204883
+    second: andre_Boss-Sheet_9
+  - first:
+      213: -81378146639446873
+    second: andre_Boss-Sheet_10
+  - first:
+      213: 1222878565424290201
+    second: andre_Boss-Sheet_11
+  - first:
+      213: 793002509347564973
+    second: andre_Boss-Sheet_12
+  - first:
+      213: 3050801667524367295
+    second: andre_Boss-Sheet_13
+  - first:
+      213: 7529906105049397898
+    second: andre_Boss-Sheet_14
+  - first:
+      213: -6910137978554495442
+    second: andre_Boss-Sheet_15
+  - first:
+      213: 7547099012721480842
+    second: andre_Boss-Sheet_16
+  - first:
+      213: 1935961530744230121
+    second: andre_Boss-Sheet_17
+  - first:
+      213: 2435987202049998354
+    second: andre_Boss-Sheet_18
+  - first:
+      213: -5599196374014888147
+    second: andre_Boss-Sheet_19
+  - first:
+      213: 596922950208427940
+    second: andre_Boss-Sheet_20
+  - first:
+      213: -4501981758592810441
+    second: andre_Boss-Sheet_21
+  - first:
+      213: 5686663288997923100
+    second: andre_Boss-Sheet_22
+  - first:
+      213: 705107779659826739
+    second: andre_Boss-Sheet_23
+  - first:
+      213: 5649419387896562303
+    second: andre_Boss-Sheet_24
+  - first:
+      213: 7371004768088707807
+    second: andre_Boss-Sheet_25
+  - first:
+      213: 2687267584601577072
+    second: andre_Boss-Sheet_26
+  - first:
+      213: 3282779280202515585
+    second: andre_Boss-Sheet_27
+  - first:
+      213: 629083165828873138
+    second: andre_Boss-Sheet_28
+  - first:
+      213: -2876573984040584547
+    second: andre_Boss-Sheet_29
+  - first:
+      213: 7156504008676534226
+    second: andre_Boss-Sheet_30
+  - first:
+      213: 3511477229079404091
+    second: andre_Boss-Sheet_31
+  - first:
+      213: -5533486622843405932
+    second: andre_Boss-Sheet_32
+  - first:
+      213: -7961295287958309438
+    second: andre_Boss-Sheet_33
+  - first:
+      213: 7712141625145779786
+    second: andre_Boss-Sheet_34
+  - first:
+      213: -3551428432388464414
+    second: andre_Boss-Sheet_35
+  - first:
+      213: 6678257458104320324
+    second: andre_Boss-Sheet_36
+  - first:
+      213: 1072108275245739289
+    second: andre_Boss-Sheet_37
+  - first:
+      213: 7455127390260998376
+    second: andre_Boss-Sheet_38
+  - first:
+      213: 867455036789486169
+    second: andre_Boss-Sheet_39
+  - first:
+      213: -6121004535308528269
+    second: andre_Boss-Sheet_40
+  - first:
+      213: 7264966531662732699
+    second: andre_Boss-Sheet_41
+  - first:
+      213: 6986253166737880595
+    second: andre_Boss-Sheet_42
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 20
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 220
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d44c727c8b627f10800000000000000
+      internalID: 2265991813481120983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 220
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1649da5861a00f8a0800000000000000
+      internalID: -6273503189078797215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 162
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db28ea04db62b5990800000000000000
+      internalID: -7396275368750054723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 162
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63269bd0956ce3ab0800000000000000
+      internalID: -5026362048314252746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 162
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62bac8d2060b17710800000000000000
+      internalID: 1689325262368189222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 162
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d858a894118d1ed00800000000000000
+      internalID: 1000318161012819341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_7
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 162
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50e1e8282dffd5e50800000000000000
+      internalID: 6799872291997883909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_8
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 162
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd7cc9d57bbad76a0800000000000000
+      internalID: -6449810287286761507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_9
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 162
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6836c29bdbe1b6c0800000000000000
+      internalID: -4129260055029204883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_10
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 162
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ac731db103eedef0800000000000000
+      internalID: -81378146639446873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_11
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 162
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 999dd8f739988f010800000000000000
+      internalID: 1222878565424290201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_12
+      rect:
+        serializedVersion: 2
+        x: 494
+        y: 162
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dada7aba49f410b00800000000000000
+      internalID: 793002509347564973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_13
+      rect:
+        serializedVersion: 2
+        x: 550
+        y: 162
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb395f8e3ff965a20800000000000000
+      internalID: 3050801667524367295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_14
+      rect:
+        serializedVersion: 2
+        x: 609
+        y: 162
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8ab38715b99f7860800000000000000
+      internalID: 7529906105049397898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_17
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 107
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e0d4da41caedda10800000000000000
+      internalID: 1935961530744230121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_18
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 107
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21e769f247d5ec120800000000000000
+      internalID: 2435987202049998354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_19
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 107
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d27ff2b4098ab42b0800000000000000
+      internalID: -5599196374014888147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_20
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 107
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a79375b242b84800800000000000000
+      internalID: 596922950208427940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_21
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 107
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73289cd617fb581c0800000000000000
+      internalID: -4501981758592810441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_22
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 107
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c19c9f1d1261bee40800000000000000
+      internalID: 5686663288997923100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_23
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 107
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3360dfe2acb09c900800000000000000
+      internalID: 705107779659826739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_24
+      rect:
+        serializedVersion: 2
+        x: 389
+        y: 107
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7287ca5005c66e40800000000000000
+      internalID: 5649419387896562303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_25
+      rect:
+        serializedVersion: 2
+        x: 447
+        y: 107
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd253a788c11b4660800000000000000
+      internalID: 7371004768088707807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_26
+      rect:
+        serializedVersion: 2
+        x: 501
+        y: 107
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 076599461a71b4520800000000000000
+      internalID: 2687267584601577072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_27
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 107
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 184cb78cc56ce8d20800000000000000
+      internalID: 3282779280202515585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_28
+      rect:
+        serializedVersion: 2
+        x: 609
+        y: 107
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bb78696ec3fab800800000000000000
+      internalID: 629083165828873138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_29
+      rect:
+        serializedVersion: 2
+        x: 666
+        y: 107
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9a7127c33b5418d0800000000000000
+      internalID: -2876573984040584547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_30
+      rect:
+        serializedVersion: 2
+        x: 721
+        y: 107
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d7e2d6aa72015360800000000000000
+      internalID: 7156504008676534226
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_31
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 107
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3e962c6fe54bb030800000000000000
+      internalID: 3511477229079404091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_32
+      rect:
+        serializedVersion: 2
+        x: 828
+        y: 107
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 499fa04fb3b1533b0800000000000000
+      internalID: -5533486622843405932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_33
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 107
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c5f049cd1cc38190800000000000000
+      internalID: -7961295287958309438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_35
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 51
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e0634238aac6bec0800000000000000
+      internalID: -3551428432388464414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_36
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 51
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44149e476cfedac50800000000000000
+      internalID: 6678257458104320324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_37
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 51
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91d67cacbc4e0ee00800000000000000
+      internalID: 1072108275245739289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_53
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20da9d543fef27a468781730f599a416
+      internalID: 500052584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_54
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 0
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aba8fcd8fbdca8e418e27da7c5cc5a86
+      internalID: -635315436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_55
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 0
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0816b9fb310222749ad89ffe7ddc124e
+      internalID: 638398737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_56
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 0
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 815de4675bf5cba4a95472c529aceaba
+      internalID: 6208389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_57
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 0
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6192024b3cfdcc46a423921a5491d5f
+      internalID: 400690592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_58
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 0
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8fe33fa0b8cf2c409cd2c7cf70ccbe2
+      internalID: 1361859246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_59
+      rect:
+        serializedVersion: 2
+        x: 335
+        y: 0
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9e4e57c69b4c6e46a42fd232c1c8445
+      internalID: -838455805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_60
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 0
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b515d2f9407d6b40b62aac2f6af65e9
+      internalID: -1599306870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: andre_Boss-Sheet_61
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 0
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee83a61c68df08a419792203ced3a039
+      internalID: 870617761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 0da934067588e2b4a9cb74fe3fc7d4cf
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      andre_Boss-Sheet_0: 2265991813481120983
+      andre_Boss-Sheet_1: -6273503189078797215
+      andre_Boss-Sheet_10: -81378146639446873
+      andre_Boss-Sheet_11: 1222878565424290201
+      andre_Boss-Sheet_12: 793002509347564973
+      andre_Boss-Sheet_13: 3050801667524367295
+      andre_Boss-Sheet_14: 7529906105049397898
+      andre_Boss-Sheet_15: -6910137978554495442
+      andre_Boss-Sheet_16: 7547099012721480842
+      andre_Boss-Sheet_17: 1935961530744230121
+      andre_Boss-Sheet_18: 2435987202049998354
+      andre_Boss-Sheet_19: -5599196374014888147
+      andre_Boss-Sheet_2: 3793135857237799676
+      andre_Boss-Sheet_20: 596922950208427940
+      andre_Boss-Sheet_21: -4501981758592810441
+      andre_Boss-Sheet_22: 5686663288997923100
+      andre_Boss-Sheet_23: 705107779659826739
+      andre_Boss-Sheet_24: 5649419387896562303
+      andre_Boss-Sheet_25: 7371004768088707807
+      andre_Boss-Sheet_26: 2687267584601577072
+      andre_Boss-Sheet_27: 3282779280202515585
+      andre_Boss-Sheet_28: 629083165828873138
+      andre_Boss-Sheet_29: -2876573984040584547
+      andre_Boss-Sheet_3: -7396275368750054723
+      andre_Boss-Sheet_30: 7156504008676534226
+      andre_Boss-Sheet_31: 3511477229079404091
+      andre_Boss-Sheet_32: -5533486622843405932
+      andre_Boss-Sheet_33: -7961295287958309438
+      andre_Boss-Sheet_34: 7712141625145779786
+      andre_Boss-Sheet_35: -3551428432388464414
+      andre_Boss-Sheet_36: 6678257458104320324
+      andre_Boss-Sheet_37: 1072108275245739289
+      andre_Boss-Sheet_38: 7455127390260998376
+      andre_Boss-Sheet_39: 867455036789486169
+      andre_Boss-Sheet_4: -5026362048314252746
+      andre_Boss-Sheet_40: -6121004535308528269
+      andre_Boss-Sheet_41: 7264966531662732699
+      andre_Boss-Sheet_42: 6986253166737880595
+      andre_Boss-Sheet_43: 1642870311
+      andre_Boss-Sheet_44: 854523432
+      andre_Boss-Sheet_45: -970138670
+      andre_Boss-Sheet_46: -689901448
+      andre_Boss-Sheet_47: -1532343359
+      andre_Boss-Sheet_48: 901481497
+      andre_Boss-Sheet_49: 18175812
+      andre_Boss-Sheet_5: 1689325262368189222
+      andre_Boss-Sheet_50: -709223174
+      andre_Boss-Sheet_51: -1507634830
+      andre_Boss-Sheet_52: 185400417
+      andre_Boss-Sheet_53: 500052584
+      andre_Boss-Sheet_54: -635315436
+      andre_Boss-Sheet_55: 638398737
+      andre_Boss-Sheet_56: 6208389
+      andre_Boss-Sheet_57: 400690592
+      andre_Boss-Sheet_58: 1361859246
+      andre_Boss-Sheet_59: -838455805
+      andre_Boss-Sheet_6: 1000318161012819341
+      andre_Boss-Sheet_60: -1599306870
+      andre_Boss-Sheet_61: 870617761
+      andre_Boss-Sheet_7: 6799872291997883909
+      andre_Boss-Sheet_8: -6449810287286761507
+      andre_Boss-Sheet_9: -4129260055029204883
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -5,18 +5,20 @@ using UnityEngine.InputSystem;
 public class Player_Heal : MonoBehaviour
 {
     [Header("Config")]
-    [SerializeField] private float healDuration = 0.5f;
-    [SerializeField] private float healAmount = 35f;
+    public float healDuration = 0.5f;
+    public float healAmount = 35f;
 
     [Header("Charges")]
-    [SerializeField] private int maxCharges = 2;
+    public int maxCharges = 2;
     [SerializeField] private bool refillOnEnable = false;
-    private int chargesLeft;
+    public int chargesLeft;
 
     [Header("Refs")]
     [SerializeField] private PlayerCombat combat;
     [SerializeField] private PlayerMoveBehaviour moveRef;
     [SerializeField] private Animator animator;
+    [SerializeField] private GameManager Gm;
+    
 
     // 🔸 Heal 성공 VFX
     [Header("VFX (On Success)")]
@@ -104,8 +106,10 @@ public class Player_Heal : MonoBehaviour
     {
         if (IsHealing) return;
         if (chargesLeft <= 0) return;
+        
 
-        chargesLeft = Mathf.Max(0, chargesLeft - 1);
+        chargesLeft = Mathf.Max(0, chargesLeft - 1); 
+        Gm.leftheal -= 1;
         healCo = StartCoroutine(HealRoutine());
     }
 
@@ -116,6 +120,8 @@ public class Player_Heal : MonoBehaviour
 
         if (refundCharge)
             chargesLeft = Mathf.Min(maxCharges, chargesLeft + 1);
+            Gm.leftheal += 1;
+            
 
         if (healCo != null) StopCoroutine(healCo);
         healCo = null;
@@ -183,4 +189,6 @@ public class Player_Heal : MonoBehaviour
 
         if (healVfxLifetime > 0f) Destroy(go, healVfxLifetime);
     }
+
+
 }

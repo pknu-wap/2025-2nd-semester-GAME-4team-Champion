@@ -10,7 +10,7 @@ public class CameraFXController : MonoBehaviour
     [SerializeField] private CinemachineImpulseSource impulseSource;
 
     [Header("Defaults")]
-    [SerializeField] private float defaultOrthoSize = 5f;
+    [SerializeField] private float defaultOrthoSize = 10f;
     [SerializeField] private bool readDefaultFromVcamOnStart = true;
 
     public float GetCurrentSize() => vcam ? vcam.Lens.OrthographicSize : -1f;
