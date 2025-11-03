@@ -46,6 +46,11 @@ public class LevelUpSelect : MonoBehaviour
         settingRandom();
         RandomSelect();
         InitializeCombinationEffects();
+
+        if (levelmanage.level == 1) //시작시 스킬 선택, 나중에 처음 시작으로 개선필요
+        {
+            gameui[1].SetActive(true);
+        }
     }
 
     // Update is called once per frame
@@ -84,7 +89,7 @@ public class LevelUpSelect : MonoBehaviour
         }
     }
 
-    public void selectrandomvalue(int index)    //선택지 중 하나 선택
+    public void selectrandomvalue(int index)    //선택지 중 하나 선택(패시브)
     {
     
         selectedList.Add(randomTitle[index]);
@@ -117,16 +122,27 @@ public class LevelUpSelect : MonoBehaviour
         CheckCombinationEffects();
     }
 
-    public void showLevelUp()
+    public void skillselect()   //스킬 선택
+    {
+
+    }
+
+    public void showLevelUp()   //패시브 능력치 선택
     {
         //levelupui.SetActive(true);
         gameui[0].SetActive(true);
+    }
+
+    public void showskill()
+    {
+        gameui[1].SetActive(true);
     }
 
     public void exitLevelUp()
     {
         //levelupui.SetActive(false);
         gameui[0].SetActive(false);
+        gameui[1].SetActive(false);
     }
 
     private void InitializeUpgradeActions()
