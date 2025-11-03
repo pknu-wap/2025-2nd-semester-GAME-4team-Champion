@@ -9,7 +9,7 @@ public class LevelUpSelect : MonoBehaviour
     public GameManager gamemanager;
     public LevelManage levelmanage;
     public DayTimer daytimer;
-
+    public PlayerSkills playerskill;
     public TextMeshProUGUI[] selectButtonsText;
     
     public List<string> allselectTitle = new List<string> {"체력 증가","스테미나 증가","가드시 스테미나 증가량 감소", "위빙 성공시 체력 회복", "스테미나 회복 속도 증가", 
@@ -35,7 +35,6 @@ public class LevelUpSelect : MonoBehaviour
     private int skillselectcount = 0;
 
     public TextMeshProUGUI[] skillButtonsText;
-    public GameObject[] gameui;
 
     public GameObject[] gameui; //레벨업 창
 
