@@ -22,7 +22,6 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     private Coroutine guardResetCo;
     public int guardCount = 0;
     private float lastHitTime = -999f;
-    private int guardBlockCount = 0;
 
     [Header("AI Movement")]
     [SerializeField] public float RecognizedArea = 10f;
@@ -50,12 +49,14 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     public bool AllowParry = true;
     private float _knockbackRemain;
     private bool isWeaveAttacking = false;
+    private bool _groggyHitPlayed = false;
     [SerializeField] private CinemachineImpulseSource hitImpulse;
 
     [Header("Game References")]
     [SerializeField] private GameManager _gm;
     [SerializeField] private LevelManage _Levelgm;
     private SpriteRenderer sr;
+
     public bool IsDead() => _isDead;
 
     public enum MeleeAttackType { One, OneOne, OneTwo, Roll }
@@ -77,10 +78,9 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     public MeleeAttackType LastMeleeType { get; set; }
     public bool IsActing { get; set; }
     #endregion
-    // ──────────────────────────────────────────────────────────────
 
+    private bool _parryInvincible = false;
 
-    #region Unity Lifecycle
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -103,9 +103,9 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         if (_noMoveRemain > 0f)
             _noMoveRemain -= Time.deltaTime;
 
-        if (!_isGroggy && CurrentStamina >= 100f)
+        if (CurrentStamina >= 100f)
             StartCoroutine(EnterGroggy());
-        
+
         Rb.position = ClampInside(Rb.position);
 
         if (!IsActing && !_isHit)
@@ -114,8 +114,8 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 
             if (Player != null)
             {
-                float distanceToPlayer = Vector2.Distance(Rb.position, Player.position);
-                if (distanceToPlayer <= RecognizedArea && AttackTimer >= AttackCooldown)
+                float dist = Vector2.Distance(Rb.position, Player.position);
+                if (dist <= RecognizedArea && AttackTimer >= AttackCooldown)
                 {
                     AttackWayChoice();
                     _isHit = true;
@@ -139,10 +139,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
             return;
         }
 
-        if (_isDead)
-        {
-            return;
-        }
+        if (_isDead) return;
 
         if (_knockbackRemain > 0f)
         {
@@ -159,70 +156,67 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         if (!IsActing)
             AIMoveMent();
     }
-    #endregion
-    // ──────────────────────────────────────────────────────────────
-
 
     #region Hit & Guard System
     public void ApplyHit(float damage, float knockback, Vector2 direction, GameObject source)
     {
         if (_isDead) return;
 
+        if (_parryInvincible) return;
+
         Vector3 hitSource = source != null ? source.transform.position : transform.position;
+
         AnimatorStateInfo info = anim != null ? anim.GetCurrentAnimatorStateInfo(0) : default;
-
-        bool isAttacking = IsActing && !_isHit;
-
-        if (guardCount >= 10 && AllowParry)
-        {
-            OnParried(hitSource, true);
-            return;
-        }
 
         if (IsGuarding || info.IsName("Guard"))
         {
             lastGuardTime = Time.time;
             OnGuarded(hitSource);
-            guardCount += 1;
-            CurrentStamina += 10;
+            guardCount++;
+
+            if (guardCount >= 10)
+            {
+                OnParried(hitSource);
+                IsGuarding = false;
+                guardCount = 0;
+            }
             return;
         }
 
-        bool recentlyHit = Time.time - lastHitTime < 1f;
-        if (!IsGuarding && !recentlyHit && Random.value <= 0.3f)
+        if (!IsGuarding)
         {
-            StartGuard(hitSource);
-            OnGuarded(hitSource);
-            return;
+            if (Random.value <= 0.4f)
+            {
+                StartGuard(hitSource);
+                OnGuarded(hitSource);
+                guardCount++;
+                return;
+            }
         }
 
         CurrentHp -= damage;
         StartCoroutine(HitFlash());
-        
+
         if (!IsActing && !_isGroggy)
         {
             _knockbackRemain = Mathf.Max(_knockbackRemain, 0.18f);
             Rb.linearVelocity = Vector2.zero;
             Rb.AddForce(direction.normalized * knockback, ForceMode2D.Impulse);
         }
+
         StartCoroutine(HitStop(0.1f));
 
-        if (isAttacking)
+        if (IsActing && !_isHit)
         {
             _combat.ForceInterruptAttack();
-
             IsActing = true;
             StartNoMoveCooldown(0.4f);
-            AttackTimer = 0f;
             StartCoroutine(ResetActionFlagAfterHit(0.4f));
         }
 
         _isHit = true;
         StartCoroutine(ResetHitFlag(0.3f));
-
-        if (!IsActing)
-            PlayRandomHit();
-
+        PlayRandomHit();
         lastHitTime = Time.time;
     }
 
@@ -235,11 +229,8 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     private IEnumerator HitFlash()
     {
         Color c = sr.color;
-
         sr.color = new Color(c.r, c.g, c.b, 0.3f);
-
         yield return new WaitForSeconds(0.08f);
-
         sr.color = new Color(c.r, c.g, c.b, 1f);
     }
 
@@ -274,10 +265,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
                 StopGuard();
                 yield break;
             }
-
-            if (!IsGuarding)
-                yield break;
-
+            if (!IsGuarding) yield break;
             yield return null;
         }
     }
@@ -300,10 +288,9 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         lastGuardTime = Time.time;
 
         if (Rb != null)
-
         {
-            Vector2 knockbackDir = ((Vector2)transform.position - (Vector2)Player.position).normalized;
-            Rb.AddForce(knockbackDir * 1.5f, ForceMode2D.Impulse);
+            Vector2 knockDir = ((Vector2)transform.position - (Vector2)Player.position).normalized;
+            Rb.AddForce(knockDir * 1.5f, ForceMode2D.Impulse);
         }
 
         _combat?.InterruptDash();
@@ -318,65 +305,39 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         _isHit = false;
     }
 
-    public void SetPhysicsDuringAttack(bool isAttacking)
-    {
-        if (Rb == null) return;
-        Rb.bodyType = isAttacking ? RigidbodyType2D.Kinematic : RigidbodyType2D.Dynamic;
-        Rb.linearVelocity = Vector2.zero;
-    }
-
     private void PlayRandomHit()
     {
         if (anim == null) return;
-        int rand = Random.Range(1, 4);
-        anim.Play($"Enemy_01_Hit0{rand}", 0, 0);
+        int r = Random.Range(1, 4);
+        anim.Play($"Enemy_01_Hit0{r}", 0, 0);
     }
     #endregion
-    // ──────────────────────────────────────────────────────────────
-
 
     #region Parry System
-
     public void OnParried(Vector3 parrySourcePosition)
     {
-        OnParried(parrySourcePosition, false);
-    }
-    public void OnParried(Vector3 parrySourcePosition, bool enemyIsParrying = false)
-    {
-        if (enemyIsParrying)
-        {
-            var ph = Player.GetComponent<PlayerHit>();
-            if (ph != null)
-            {
-                Vector2 dir = (Player.position - transform.position).normalized;
-                ph.OnHit(0f, 5f, dir, false, gameObject);
-            }
-
-            guardCount = 0;
-            StartNoMoveCooldown(0.1f);
-            anim?.SetTrigger("Weave");
-            return;
-        }
-
         if (isWeaveAttacking) return;
 
-        if (_hitWindowOpen)
+        anim?.SetTrigger("Weave");
+
+        if (Player != null && Player.TryGetComponent<PlayerCombat>(out var pc))
         {
-            _hitWindowOpen = false;
-            _hitAppliedThisWindow = false;
+            pc.AddStamina(10f);
+            pc.AddStamina(-5f);
         }
 
         _combat?.InterruptDash();
-        Rb.linearVelocity = Vector2.zero;
+        StartCoroutine(DelayedWeaveAttackTrigger());
 
-        StartNoMoveCooldown(0.3f);
-
-        Vector2 knockbackDir = ((Vector2)transform.position - (Vector2)parrySourcePosition).normalized;
-        Rb.AddForce(knockbackDir * 3f, ForceMode2D.Impulse);
-
-        IsActing = true;
+        StartNoMoveCooldown(0.6f);
+        IsActing = false;
         AttackTimer = 0f;
+
+        _parryInvincible = true;
+        StartCoroutine(EndParryInvincible(0.3f));
+
         guardCount = 0;
+        IsGuarding = false;
     }
 
     private IEnumerator DelayedWeaveAttackTrigger()
@@ -390,15 +351,18 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 
         isWeaveAttacking = false;
     }
-    #endregion
-    // ──────────────────────────────────────────────────────────────
 
+    private IEnumerator EndParryInvincible(float t)
+    {
+        yield return new WaitForSeconds(t);
+        _parryInvincible = false;
+    }
+    #endregion
 
     #region Damage Window
-    private Coroutine damageCoroutine;
     public void TriggerMeleeDamage()
     {
-        if (_hitWindowOpen) return;  
+        if (_hitWindowOpen) return;
         StartCoroutine(DoMeleeDamage());
     }
 
@@ -406,9 +370,11 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     {
         yield return OpenHitWindow();
     }
+
     private IEnumerator OpenHitWindow()
     {
         if (_hitWindowOpen) yield break;
+
         _currentParryable = AllowParry;
         _hitAppliedThisWindow = false;
         _hitWindowOpen = true;
@@ -427,48 +393,47 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 
         Vector2 center = transform.position;
         float radius = 1.2f;
-        LayerMask playerMask = LayerMask.GetMask("Player");
+        LayerMask mask = LayerMask.GetMask("Player");
 
-        foreach (var hit in Physics2D.OverlapCircleAll(center, radius, playerMask))
+        foreach (var hit in Physics2D.OverlapCircleAll(center, radius, mask))
         {
             var ph = hit.GetComponent<PlayerHit>();
             if (ph != null)
             {
-                Vector2 hitDir = (hit.transform.position - transform.position).normalized;
-                ph.OnHit(10f, 6f, hitDir, _currentParryable, gameObject);
+                Vector2 dir = (hit.transform.position - transform.position).normalized;
+                ph.OnHit(10f, 6f, dir, _currentParryable, gameObject);
                 _hitAppliedThisWindow = true;
             }
         }
     }
     #endregion
-    // ──────────────────────────────────────────────────────────────
-
 
     #region Movement & Death
     private bool IsAnimationPlaying()
     {
         if (anim == null) return false;
-        AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);
-        return state.IsName("Attack") || state.IsName("Hit") || state.IsName("Guard") ||
-               state.IsName("Weave") || state.IsName("WeaveAttack") || state.IsName("OneReady")
-               || state.IsName("OneTwoReady") || state.IsName("RollReady");
+        AnimatorStateInfo s = anim.GetCurrentAnimatorStateInfo(0);
+
+        return s.IsName("Attack") || s.IsName("Hit") || s.IsName("Guard") ||
+               s.IsName("Weave") || s.IsName("WeaveAttack") ||
+               s.IsName("OneReady") || s.IsName("OneTwoReady") || s.IsName("RollReady");
     }
 
     public void AIMoveMent()
     {
         if (Player == null) { Rb.linearVelocity = Vector2.zero; return; }
 
-        Vector2 toPlayer = (Vector2)Player.position - Rb.position;
-        float dist = toPlayer.magnitude;
+        Vector2 to = (Vector2)Player.position - Rb.position;
+        float d = to.magnitude;
 
-        if (dist < MinChaseDistance)
+        if (d < MinChaseDistance)
         {
             Rb.linearVelocity = Vector2.zero;
             return;
         }
 
-        if (dist <= RecognizedArea)
-            Rb.linearVelocity = toPlayer.normalized * Speed;
+        if (d <= RecognizedArea)
+            Rb.linearVelocity = to.normalized * Speed;
         else
             Rb.linearVelocity = Vector2.zero;
     }
@@ -477,7 +442,14 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     {
         _isGroggy = true;
         IsActing = true;
+        IsGuarding = false;
         Rb.linearVelocity = Vector2.zero;
+
+        if (!_groggyHitPlayed)
+        {
+            PlayRandomHit();
+            _groggyHitPlayed = true;
+        }
 
         yield return new WaitForSeconds(groggyDuration);
 
@@ -500,8 +472,8 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 
         anim.Play("Enemy_01_Death", 0, 0f);
 
-        Vector2 knockbackDir = ((Vector2)transform.position - (Vector2)Player.position).normalized;
-        Rb.AddForce(knockbackDir * 12f, ForceMode2D.Impulse);
+        Vector2 dir = ((Vector2)transform.position - (Vector2)Player.position).normalized;
+        Rb.AddForce(dir * 12f, ForceMode2D.Impulse);
 
         StartCoroutine(TransitionToDie(0.6f));
     }
@@ -510,35 +482,18 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     {
         yield return new WaitForSeconds(waitTime);
 
-        if (anim != null)
-        {
-            anim.SetTrigger("Die");
-        }
-
+        anim?.SetTrigger("Die");
         Rb.linearVelocity = Vector2.zero;
         Rb.simulated = false;
         Destroy(gameObject, 2f);
     }
-
-    private IEnumerator DeathMotion(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
-        anim?.SetTrigger("Die");
-        Rb.linearVelocity = Vector2.zero;
-        Rb.simulated = false;
-        Destroy(gameObject, 1f);
-    }
     #endregion
-    // ──────────────────────────────────────────────────────────────
-
 
     #region Utility & Attack Selection
     public Vector2 ClampInside(Vector2 p)
     {
-        if (MovementArea == null)
-            return p;
-        if (MovementArea.OverlapPoint(p))
-            return p;
+        if (MovementArea == null) return p;
+        if (MovementArea.OverlapPoint(p)) return p;
 
         Vector2 closest = MovementArea.ClosestPoint(p);
         Vector2 center = MovementArea.bounds.center;
@@ -558,18 +513,17 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         switch (SelectMode)
         {
             case AttackSelectMode.Random:
-                if (Random.Range(0, 2) == 0)
-                    _combat.Melee_Attack_DistanceBased();
-                else
-                    _combat.Range_Attack();
+                if (Random.Range(0, 2) == 0) _combat.Melee_Attack_DistanceBased();
+                else _combat.Range_Attack();
                 break;
-            case AttackSelectMode.Melee_One: _combat.Melee_Attack(MeleeAttackType.One); if(CurrentStamina > 0) CurrentStamina -= 4; break;
-            case AttackSelectMode.Melee_OneOne: _combat.Melee_Attack(MeleeAttackType.OneOne); if(CurrentStamina > 0) CurrentStamina -= 6;break;
-            case AttackSelectMode.Melee_OneTwo: _combat.Melee_Attack(MeleeAttackType.OneTwo); if(CurrentStamina > 0) CurrentStamina -= 8; break;
-            case AttackSelectMode.Melee_Roll: _combat.Melee_Attack(MeleeAttackType.Roll); if(CurrentStamina > 0) CurrentStamina -= 10;break;
-            case AttackSelectMode.Range_Short: _combat.Range_Attack(RangeAttackType.Short); break;
-            case AttackSelectMode.Range_Mid: _combat.Range_Attack(RangeAttackType.Mid); break;
-            case AttackSelectMode.Range_Long: _combat.Range_Attack(RangeAttackType.Long); break;
+
+            case AttackSelectMode.Melee_One:     _combat.Melee_Attack(MeleeAttackType.One);     CurrentStamina -= 4; break;
+            case AttackSelectMode.Melee_OneOne:  _combat.Melee_Attack(MeleeAttackType.OneOne);  CurrentStamina -= 6; break;
+            case AttackSelectMode.Melee_OneTwo:  _combat.Melee_Attack(MeleeAttackType.OneTwo);  CurrentStamina -= 8; break;
+            case AttackSelectMode.Melee_Roll:    _combat.Melee_Attack(MeleeAttackType.Roll);    CurrentStamina -= 10; break;
+            case AttackSelectMode.Range_Short:   _combat.Range_Attack(RangeAttackType.Short);   break;
+            case AttackSelectMode.Range_Mid:     _combat.Range_Attack(RangeAttackType.Mid);     break;
+            case AttackSelectMode.Range_Long:    _combat.Range_Attack(RangeAttackType.Long);    break;
         }
     }
 
@@ -577,6 +531,21 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     {
         IsActing = false;
         AttackTimer = AttackCooldown;
+    }
+
+    public void SetPhysicsDuringAttack(bool isAttacking)
+    {
+        if (Rb == null) return;
+
+        if (isAttacking)
+        {
+            Rb.bodyType = RigidbodyType2D.Kinematic;
+            Rb.linearVelocity = Vector2.zero;
+        }
+        else
+        {
+            Rb.bodyType = RigidbodyType2D.Dynamic;
+        }
     }
     #endregion
 }

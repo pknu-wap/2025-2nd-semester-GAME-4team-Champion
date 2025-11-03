@@ -97519,10 +97519,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5a30206e1334954b9612cf708180610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackCooldown: 1
+  AttackCooldown: 2
   Player: {fileID: 1215582274}
-  MaxHp: 10000
-  CurrentHp: 10000
+  MaxHp: 100
+  CurrentHp: 100
   MaxStamina: 100
   CurrentStamina: 0
   GuardResetDelay: 1
