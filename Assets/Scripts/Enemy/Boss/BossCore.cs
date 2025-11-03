@@ -43,6 +43,7 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
 
     [Header("Game References")]
     [SerializeField] private GameManager _gm;
+    [SerializeField] private LevelManage _Levelgm;
     private SpriteRenderer sr;
     public bool IsDead() => _isDead;
 
@@ -109,7 +110,10 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
         }
 
         if (CurrentHp <= 0)
+        {
+            _Levelgm.GetExp(30);
             Die();
+        }
     }
 
     private void FixedUpdate()

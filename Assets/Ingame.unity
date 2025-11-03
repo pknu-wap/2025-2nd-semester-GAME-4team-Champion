@@ -151,9 +151,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -191,8 +191,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1600, y: 900.28}
+  m_AnchoredPosition: {x: 5.0768, y: -1.2691}
+  m_SizeDelta: {x: 1676.1511, y: 953.5854}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &33113165
 GameObject:
@@ -1222,6 +1222,7 @@ MonoBehaviour:
   MainPotal: {fileID: 1787554858}
   SandPotal: {fileID: 38279067}
   GameManager: {fileID: 7687090573239113998}
+  LevelManage: {fileID: 7687090573239114000}
   MiniGame: {fileID: 1178897443}
   hitImpulse: {fileID: 1215582275}
 --- !u!114 &126901100
@@ -82858,9 +82859,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -83882,7 +83883,7 @@ Transform:
   m_GameObject: {fileID: 1215582254}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.9, y: 1, z: 0}
+  m_LocalPosition: {x: -2.08, y: 0.16, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -86045,8 +86046,9 @@ MonoBehaviour:
   _isHit: 0
   hitActiveDuration: 0.08
   AllowParry: 1
-  hitImpulse: {fileID: 0}
+  hitImpulse: {fileID: 1215582275}
   _gm: {fileID: 7687090573239113998}
+  _Levelgm: {fileID: 7687090573239114000}
   SelectMode: 1
 --- !u!114 &1902309512
 MonoBehaviour:
@@ -86192,6 +86194,7 @@ MonoBehaviour:
   scoreText: {fileID: 1796842835}
   MiniGame: {fileID: 1830511879}
   GameManager: {fileID: 7687090573239113998}
+  LevelManage: {fileID: 7687090573239114000}
 --- !u!212 &1911535768
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -88142,6 +88145,7 @@ MonoBehaviour:
   AllowParry: 1
   hitImpulse: {fileID: 1215582275}
   _gm: {fileID: 7687090573239113998}
+  _Levelgm: {fileID: 7687090573239114000}
   SelectMode: 1
 --- !u!224 &1056585576651028777
 RectTransform:
@@ -97534,6 +97538,7 @@ MonoBehaviour:
   AllowParry: 1
   hitImpulse: {fileID: 1215582275}
   _gm: {fileID: 7687090573239113998}
+  _Levelgm: {fileID: 7687090573239114000}
   SelectMode: 4
 --- !u!1 &8261725298310896512
 GameObject:
@@ -98452,7 +98457,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &9023912416650022997
 MonoBehaviour:
   m_ObjectHideFlags: 0

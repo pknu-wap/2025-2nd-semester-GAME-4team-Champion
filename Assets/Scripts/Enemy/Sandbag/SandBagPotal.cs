@@ -59,7 +59,6 @@ public class SandBagPotal : MonoBehaviour
         camFollow.player = player;
         player.GetComponent<PlayerMoveBehaviour>().enabled = true;
         player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        sandbag.SetActive(false);
         camFollow.followLerp = 12f;
     }
 }

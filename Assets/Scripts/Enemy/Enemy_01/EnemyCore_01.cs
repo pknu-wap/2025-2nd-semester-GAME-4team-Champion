@@ -54,6 +54,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 
     [Header("Game References")]
     [SerializeField] private GameManager _gm;
+    [SerializeField] private LevelManage _Levelgm;
     private SpriteRenderer sr;
     public bool IsDead() => _isDead;
 
@@ -124,10 +125,8 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         }
 
         if (CurrentHp <= 0)
-            Die();
-
-        if (Input.GetKey(KeyCode.Space))
         {
+            _Levelgm.GetExp(30);
             Die();
         }
     }

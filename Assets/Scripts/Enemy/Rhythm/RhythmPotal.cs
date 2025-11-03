@@ -55,7 +55,5 @@ public class RhythmPotal : MonoBehaviour
         camFollow.player = player;
         player.GetComponent<PlayerMoveBehaviour>().enabled = true;
         player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        Rhythm.SetActive(false);
-        StartCoroutine(GameManager.FadeIn(1.5f));
     }
 }

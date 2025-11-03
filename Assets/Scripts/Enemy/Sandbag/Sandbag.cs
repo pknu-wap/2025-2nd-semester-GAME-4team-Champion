@@ -21,6 +21,7 @@ public class Sandbag : MonoBehaviour
     private Vector2 originalPos;
 
     public GameManager GameManager;
+    public LevelManage LevelManage;
 
     private float lastClickTime = 0f;
     private bool isReturning = false;
@@ -100,8 +101,9 @@ public class Sandbag : MonoBehaviour
         float distance = Vector2.Distance(startPos, endPos);
         int score = Mathf.RoundToInt(distance * 10);
 
-        if (scoreText != null)
-            scoreText.text = "Score: " + score + "\nHitCount: " + hitCount;
+        scoreText.text = "Score: " + score + "\nHitCount: " + hitCount;
+
+        LevelManage.GetExp((int)(score * 0.7f));
     }
 
     IEnumerator ReturnToOriginal()
@@ -121,16 +123,16 @@ public class Sandbag : MonoBehaviour
         isReturning = false;
     }
 
-    IEnumerator MoveAfterDelay()
+    private IEnumerator MoveAfterDelay()
     {
-        yield return new WaitForSeconds(1.5f);
         yield return StartCoroutine(GameManager.FadeOut(1.5f));
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         player.transform.position = MainPotal.position;
-        
+
         SandPotal.EndSandbagMiniGame();
-        yield return new WaitForSeconds(3f);
+        
+        yield return new WaitForSeconds(1.5f);
         yield return StartCoroutine(GameManager.FadeIn(1.5f));
         MiniGame.SetActive(false);
     }

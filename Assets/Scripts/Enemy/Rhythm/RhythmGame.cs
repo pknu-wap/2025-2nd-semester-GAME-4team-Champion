@@ -23,6 +23,7 @@ public class RhythmGame : MonoBehaviour
     private bool allNotesSpawned = false;
     public GameObject MiniGame;
     public GameManager GameManager;
+    public LevelManage LevelManage;
 
     void OnEnable()
 {
@@ -173,8 +174,7 @@ public class RhythmGame : MonoBehaviour
 
     private void UpdateScoreText()
     {
-        if (scoreText != null)
-            scoreText.text = $"Score: {score}";
+        scoreText.text = $"Score: {score}";
     }
 
     private void EndGame()
@@ -182,19 +182,21 @@ public class RhythmGame : MonoBehaviour
         if (isGameEnded) return;
         isGameEnded = true;
 
+        LevelManage.GetExp(30);
+
         StartCoroutine(MoveAfterDelay());
     }
 
     private IEnumerator MoveAfterDelay()
     {
-        yield return new WaitForSeconds(1.5f);
         yield return StartCoroutine(GameManager.FadeOut(1.5f));
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         player.transform.position = MainPotal.position;
 
         RhythmPotal.EndRhythmMiniGame();
-        yield return new WaitForSeconds(3f);
+        
+        yield return new WaitForSeconds(1.5f);
         yield return StartCoroutine(GameManager.FadeIn(1.5f));
         MiniGame.SetActive(false);
     }

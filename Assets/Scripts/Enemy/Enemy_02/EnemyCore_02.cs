@@ -44,6 +44,7 @@ public class EnemyCore_02 : MonoBehaviour, IDamageable
 
     [Header("Game References")]
     [SerializeField] private GameManager _gm;
+    [SerializeField] private LevelManage _Levelgm;
     private SpriteRenderer sr;
     public bool IsDead() => _isDead;
 
@@ -111,7 +112,10 @@ public class EnemyCore_02 : MonoBehaviour, IDamageable
         }
 
         if (CurrentHp <= 0)
+        {
+            _Levelgm.GetExp(30);
             Die();
+        }
     }
 
     private void FixedUpdate()
