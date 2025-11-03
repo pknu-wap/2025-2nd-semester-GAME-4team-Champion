@@ -345,8 +345,26 @@ public class EnemyFight_02 : MonoBehaviour
 
     private void FireOneProjectile()
     {
-        if (ProjectilePrefab && FirePoint)
-            Instantiate(ProjectilePrefab, FirePoint.position, Quaternion.identity);
+        if (ProjectilePrefab == null || FirePoint == null) return;
+
+        GameObject proj = Instantiate(ProjectilePrefab, FirePoint.position, Quaternion.identity);
+
+        float life = 1f;
+
+        switch (_core.SelectMode)
+        {
+            case EnemyCore_02.AttackSelectMode.Range_Short:
+                life = 1f;
+                break;
+            case EnemyCore_02.AttackSelectMode.Range_Mid:
+                life = 2f;
+                break;
+            case EnemyCore_02.AttackSelectMode.Range_Long:
+                life = 3f;
+                break;
+        }
+
+        Destroy(proj, life);
     }
 
     private void ResetAnim()

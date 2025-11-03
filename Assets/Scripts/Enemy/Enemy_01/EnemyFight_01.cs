@@ -261,7 +261,7 @@ public class EnemyFight_01 : MonoBehaviour
             if (_core.Player != null)
             {
                 Vector2 dir = ((Vector2)_core.Player.position - _core.Rb.position).normalized;
-                Vector2 nextPos = _core.Rb.position + dir * 0.5f;
+                Vector2 nextPos = _core.Rb.position + dir * 1.5f;
                 _core.Rb.position = _core.ClampInside(nextPos);
             }
 
@@ -371,6 +371,7 @@ public class EnemyFight_01 : MonoBehaviour
         }
 
         _core.IsActing = false;
+        _core._isHit = false;
         _core.ForceNextAction();
     }
 
@@ -412,8 +413,26 @@ public class EnemyFight_01 : MonoBehaviour
 
     private void FireOneProjectile()
     {
-        if (ProjectilePrefab && FirePoint)
-            Object.Instantiate(ProjectilePrefab, FirePoint.position, Quaternion.identity);
+        if (ProjectilePrefab == null || FirePoint == null) return;
+
+        GameObject proj = Instantiate(ProjectilePrefab, FirePoint.position, Quaternion.identity);
+
+        float life = 1f;
+
+        switch (_core.SelectMode)
+        {
+            case EnemyCore_01.AttackSelectMode.Range_Short:
+                life = 1f;
+                break;
+            case EnemyCore_01.AttackSelectMode.Range_Mid:
+                life = 2f;
+                break;
+            case EnemyCore_01.AttackSelectMode.Range_Long:
+                life = 3f;
+                break;
+        }
+
+        Destroy(proj, life);
     }
 
 #if UNITY_EDITOR

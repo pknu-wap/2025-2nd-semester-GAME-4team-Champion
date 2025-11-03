@@ -86977,7 +86977,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &43869805915924011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87530,9 +87530,9 @@ MonoBehaviour:
   PreWindupMid: 3
   PreWindupLong: 0.1
   PreWindupRoll: 1
-  NoDashCloseRange: 2.5
+  NoDashCloseRange: 3
   StopOffset: 1
-  DashStopDistance: 1.15
+  DashStopDistance: 2
   MaxDashTime: 0.45
   LockDashDirection: 0
   RetreatSpeed: 6
@@ -88136,7 +88136,7 @@ MonoBehaviour:
   CurrentStamina: 0
   RecognizedArea: 10
   Speed: 3
-  MinChaseDistance: 1.3
+  MinChaseDistance: 0.8
   MovementArea: {fileID: 480077959}
   groggyDuration: 3
   AttackTimer: 0
@@ -97529,7 +97529,7 @@ MonoBehaviour:
   guardCount: 0
   RecognizedArea: 10
   Speed: 3
-  MinChaseDistance: 1.3
+  MinChaseDistance: 0.8
   MovementArea: {fileID: 480077959}
   groggyDuration: 3
   AttackTimer: 0
@@ -97539,7 +97539,7 @@ MonoBehaviour:
   hitImpulse: {fileID: 1215582275}
   _gm: {fileID: 7687090573239113998}
   _Levelgm: {fileID: 7687090573239114000}
-  SelectMode: 1
+  SelectMode: 0
 --- !u!1 &8261725298310896512
 GameObject:
   m_ObjectHideFlags: 0
@@ -97633,7 +97633,7 @@ MonoBehaviour:
   PreWindupMid: 3
   PreWindupLong: 2
   PreWindupRoll: 1
-  NoDashCloseRange: 5
+  NoDashCloseRange: 3
   StopOffset: 1
   DashStopDistance: 2
   MaxDashTime: 0.6

@@ -547,5 +547,22 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
             Rb.bodyType = RigidbodyType2D.Dynamic;
         }
     }
+
+    #if UNITY_EDITOR // 확인용입니다.
+    private void OnDrawGizmosSelected()
+    {
+        if (Rb == null) Rb = GetComponent<Rigidbody2D>();
+
+        Vector3 pos = Rb != null ? (Vector3)Rb.position : transform.position;
+
+        // 인식 범위 (RecognizedArea)
+        Gizmos.color = new Color(0.2f, 0.8f, 1f, 0.3f);
+        Gizmos.DrawWireSphere(pos, RecognizedArea);
+
+        // 최소 추적 거리 (MinChaseDistance)
+        Gizmos.color = new Color(1f, 0.3f, 0.3f, 0.4f);
+        Gizmos.DrawWireSphere(pos, MinChaseDistance);
+    }
+    #endif
     #endregion
 }
