@@ -124,11 +124,11 @@ public class PlayerCombat : MonoBehaviour
     public void ApplyDamage(float amount)
     {
         if (amount <= 0f) return;
-        //hp = Mathf.Max(0f, hp - amount);
-        //OnHealthChanged?.Invoke(hp, hpMax);
+        hp = Mathf.Max(0f, hp - amount);
+        OnHealthChanged?.Invoke(hp, hpMax);
         if (debugLogs) Debug.Log($"[HP] -{amount} => {hp}/{hpMax}");
         Gm.TakePlayerDamage(amount);
-        //if (hp <= 0f) OnDeath();
+        if (hp <= 0f) OnDeath();
     }
 
     public void OnStaminaBreak()

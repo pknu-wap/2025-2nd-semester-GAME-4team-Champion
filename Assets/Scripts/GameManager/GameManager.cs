@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 using System.Collections;
 
 public class GameManager : MonoBehaviour
@@ -50,6 +49,39 @@ public class GameManager : MonoBehaviour
 
     private float enemyregentime = 2f;    // 스테미나 회복 대기 시간
     private float enemylastactiontime;   //마지막으로 영향을 받은 시간
+    public Image panel;
+
+    public IEnumerator FadeOut(float duration = 2f)
+    {
+        float t = 0f;
+        Color c = panel.color;
+        c.a = 0f;
+        panel.color = c;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            c.a = Mathf.Lerp(0f, 1f, t / duration);
+            panel.color = c;
+            yield return null;
+        }
+    }
+
+    public IEnumerator FadeIn(float duration = 2f)
+    {
+        float t = 0f;
+        Color c = panel.color;
+        c.a = 1f;
+        panel.color = c;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            c.a = Mathf.Lerp(1f, 0f, t / duration);
+            panel.color = c;
+            yield return null;
+        }
+    }
 
     void Start()
     {
@@ -157,7 +189,7 @@ public class GameManager : MonoBehaviour
 
     public void justguard() //위빙(저스트 가드) 성공
     {
-        currentstamina -= 10;
+        currentstamina += 1;
         enemycurrentstamina += (30);
         if (currentstamina > maxstamina)
         {
@@ -168,11 +200,6 @@ public class GameManager : MonoBehaviour
             enemycurrentstamina = enemymaxstamina;
         }
 
-
-        if (currentstamina < 0)
-        {
-            currentstamina = 0;
-        }
         if (currenthp + gainhp < maxhp) //위빙시 체력 회복
         {
             currenthp += gainhp;
