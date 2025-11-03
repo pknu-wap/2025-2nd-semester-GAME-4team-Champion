@@ -19,19 +19,19 @@ public class PlayerSkills : MonoBehaviour
     [SerializeField] private string skill3ActionName = "Skill3";
 
     [Header("Options")]
-    [SerializeField] private bool autoLearnOnStart = false;     // ½ÃÀÛ ½Ã ÃÊ±â ½ºÅ³ ÀÚµ¿ ½Àµæ
+    [SerializeField] private bool autoLearnOnStart = false;     // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½Å³ ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½
     [SerializeField] private bool debugLogs = false;
 
     [Header("Initial Skills (Optional)")]
-    [Tooltip("¾À ¿ÀºêÁ§Æ® ¶Ç´Â ÇÁ¸®ÆÕ(ÇÁ¸®ÆÕÀÌ¸é ·±Å¸ÀÓ¿¡ ÇÃ·¹ÀÌ¾î ÀÚ½ÄÀ¸·Î º¹Á¦µÊ)")]
-    [SerializeField] private MonoBehaviour[] initialSkills; // IPlayerSkill ÄÄÆ÷³ÍÆ®µé
+    [Tooltip("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½Å¸ï¿½Ó¿ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)")]
+    [SerializeField] private MonoBehaviour[] initialSkills; // IPlayerSkill ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½
 
     // ---- Input ----
     private PlayerMove inputWrapper;
     private InputAction[] actions = new InputAction[3];
     private readonly string[] actionNames = new string[3];
 
-    // ---- Slots (°íÁ¤ 3Ä­) ----
+    // ---- Slots (ï¿½ï¿½ï¿½ï¿½ 3Ä­) ----
     private readonly IPlayerSkill[] slots = new IPlayerSkill[3];
 
     // ==== Unity Lifecycle ====
@@ -61,7 +61,7 @@ public class PlayerSkills : MonoBehaviour
     {
         if (!autoLearnOnStart || initialSkills == null) return;
 
-        // ÀÎ½ºÆåÅÍ·Î ³ÖÀº ÃÊ±â ½ºÅ³µé ½Àµæ(ÇÁ¸®ÆÕ/¿ÜºÎ¿©µµ ¾ÈÀü º¹Á¦)
+        // ï¿½Î½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½ÜºÎ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         foreach (var mb in initialSkills)
         {
             if (mb is IPlayerSkill s) AcquireSkill(s);
@@ -72,7 +72,7 @@ public class PlayerSkills : MonoBehaviour
     {
         inputWrapper?.Enable();
 
-        // ¾×¼Ç ¹ÙÀÎµù
+        // ï¿½×¼ï¿½ ï¿½ï¿½ï¿½Îµï¿½
         BindAction(0, OnSkill1Performed, OnSkill1Canceled);
         BindAction(1, OnSkill2Performed, OnSkill2Canceled);
         BindAction(2, OnSkill3Performed, OnSkill3Canceled);
@@ -80,7 +80,7 @@ public class PlayerSkills : MonoBehaviour
 
     private void OnDisable()
     {
-        // ¾×¼Ç ÇØÁ¦
+        // ï¿½×¼ï¿½ ï¿½ï¿½ï¿½ï¿½
         UnbindAction(0, OnSkill1Performed, OnSkill1Canceled);
         UnbindAction(1, OnSkill2Performed, OnSkill2Canceled);
         UnbindAction(2, OnSkill3Performed, OnSkill3Canceled);
@@ -91,14 +91,14 @@ public class PlayerSkills : MonoBehaviour
     // ==== Public API ====
 
     /// <summary>
-    /// ·±Å¸ÀÓ¿¡ ½ºÅ³À» ½Àµæ. ºó ½½·Ô(1¡æ2¡æ3)¿¡ ¼ø¼­´ë·Î ¹èÁ¤ÇÕ´Ï´Ù.
-    /// ¿ÜºÎ/ÇÁ¸®ÆÕÀÌ¾îµµ ÇÃ·¹ÀÌ¾î ÀÚ½ÄÀ¸·Î ¾ÈÀü º¹Á¦µÇ¾î ÂüÁ¶°¡ º¸ÀåµË´Ï´Ù.
+    /// ï¿½ï¿½Å¸ï¿½Ó¿ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(1ï¿½ï¿½2ï¿½ï¿½3)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
+    /// ï¿½Üºï¿½/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¾îµµ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ë´Ï´ï¿½.
     /// </summary>
     public bool AcquireSkill(IPlayerSkill skill)
     {
         if (skill == null) return false;
 
-        // ½ÇÃ¼ ¹× °èÃþ º¸Àå
+        // ï¿½ï¿½Ã¼ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         var mb = skill as MonoBehaviour;
         if (!mb)
         {
@@ -111,7 +111,7 @@ public class PlayerSkills : MonoBehaviour
 
         if (!isInScene || !isUnderPlayer)
         {
-            // ÇÁ¸®ÆÕ/¿ÜºÎ ¿ÀºêÁ§Æ® ¡æ ÇÃ·¹ÀÌ¾î ÀÚ½ÄÀ¸·Î º¹Á¦
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½Üºï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             var clone = Instantiate(mb.gameObject, transform);
             clone.name = mb.gameObject.name;
             var cloned = clone.GetComponent<IPlayerSkill>();
@@ -125,38 +125,38 @@ public class PlayerSkills : MonoBehaviour
             mb = clone.GetComponent<MonoBehaviour>();
         }
 
-        // Áßº¹ ¹æÁö
+        // ï¿½ßºï¿½ ï¿½ï¿½ï¿½ï¿½
         for (int i = 0; i < 3; i++)
             if (ReferenceEquals(slots[i], skill))
                 return false;
 
-        // ºó ½½·Ô Ã£±â
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½
         int slot = FirstEmptySlot();
         if (slot < 0)
         {
-            if (debugLogs) Debug.LogWarning("[PlayerSkills] ½½·Ô °¡µæ Âü(3/3).");
+            if (debugLogs) Debug.LogWarning("[PlayerSkills] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½(3/3).");
             return false;
         }
 
         slots[slot] = skill;
-        if (debugLogs) Debug.Log($"[Skills] Learned {skill.SkillName} ¡æ Slot {slot + 1}");
+        if (debugLogs) Debug.Log($"[Skills] Learned {skill.SkillName} ï¿½ï¿½ Slot {slot + 1}");
 
         return true;
     }
 
-    /// <summary>½½·Ô¿¡ µé¾î°£ ½ºÅ³ ¹ÝÈ¯(¾øÀ¸¸é null)</summary>
+    /// <summary>ï¿½ï¿½ï¿½Ô¿ï¿½ ï¿½ï¿½î°£ ï¿½ï¿½Å³ ï¿½ï¿½È¯(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ null)</summary>
     public IPlayerSkill GetSkillInSlot(int slotIndex)
     {
         return (slotIndex >= 0 && slotIndex < 3) ? slots[slotIndex] : null;
     }
 
-    /// <summary>¸ðµç ½½·Ô ºñ¿ì±â(ÂüÁ¶¸¸ ÇØÁ¦, ¿ÀºêÁ§Æ®´Â À¯Áö)</summary>
+    /// <summary>ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)</summary>
     public void ResetLearned()
     {
         for (int i = 0; i < 3; i++) slots[i] = null;
     }
 
-    // ==== Input ¹ÙÀÎµù À¯Æ¿ ====
+    // ==== Input ï¿½ï¿½ï¿½Îµï¿½ ï¿½ï¿½Æ¿ ====
     private void BindAction(int slotIndex,
         Action<InputAction.CallbackContext> onPerformed,
         Action<InputAction.CallbackContext> onCanceled)
@@ -178,7 +178,7 @@ public class PlayerSkills : MonoBehaviour
         }
         else if (debugLogs)
         {
-            Debug.LogWarning($"[PlayerSkills] Input action '{name}' ¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            Debug.LogWarning($"[PlayerSkills] Input action '{name}' ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
         }
     }
 
@@ -194,7 +194,7 @@ public class PlayerSkills : MonoBehaviour
         actions[slotIndex] = null;
     }
 
-    // ==== ½½·Ô ¶ó¿ìÆÃ ====
+    // ==== ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ====
     private void OnSkill1Performed(InputAction.CallbackContext _) => HandlePress(0);
     private void OnSkill2Performed(InputAction.CallbackContext _) => HandlePress(1);
     private void OnSkill3Performed(InputAction.CallbackContext _) => HandlePress(2);
@@ -208,7 +208,7 @@ public class PlayerSkills : MonoBehaviour
         var skill = GetSkillInSlot(slotIndex);
         if (skill == null || attack == null || combat == null || moveRef == null || animator == null) return;
 
-        // Â÷ÁöÇü ¿ì¼±
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ì¼±
         if (skill is IChargeSkill charge)
         {
             bool ok = charge.TryStartCharge(attack, combat, moveRef, animator);
@@ -216,7 +216,7 @@ public class PlayerSkills : MonoBehaviour
             return;
         }
 
-        // ÀÏ¹ÝÇü
+        // ï¿½Ï¹ï¿½ï¿½ï¿½
         bool castOk = skill.TryCastSkill(attack, combat, moveRef, animator);
         if (castOk)
         {
