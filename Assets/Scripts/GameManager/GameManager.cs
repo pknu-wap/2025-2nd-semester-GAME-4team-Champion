@@ -200,6 +200,11 @@ public class GameManager : MonoBehaviour
             enemycurrentstamina = enemymaxstamina;
         }
 
+
+        if (currentstamina < 0)
+        {
+            currentstamina = 0;
+        }
         if (currenthp + gainhp < maxhp) //위빙시 체력 회복
         {
             currenthp += gainhp;

@@ -9,7 +9,7 @@ public class LevelUpSelect : MonoBehaviour
     public GameManager gamemanager;
     public LevelManage levelmanage;
     public DayTimer daytimer;
-
+    public PlayerSkills playerskill;
     public TextMeshProUGUI[] selectButtonsText;
     
     public List<string> allselectTitle = new List<string> {"체력 증가","스테미나 증가","가드시 스테미나 증가량 감소", "위빙 성공시 체력 회복", "스테미나 회복 속도 증가", 
@@ -24,6 +24,17 @@ public class LevelUpSelect : MonoBehaviour
 
     private Dictionary<string, Action> upgradeActions; 
     public List<int> selectCountList = new List<int>(); //선택 횟수
+
+
+    // 스킬 관련
+    public List<string> skillselections = new List<string> { "Combination", "UpperCut", "Parry", "Power_Strike", "Rapid_Fire" };
+    private List<string> unselectedSkill;
+    public List<string> randomSkill = new List<string> { "Combination", "UpperCut", "Parry" };
+    public MonoBehaviour[] selectedSkillList;
+    public List<int> skillSelectCountList = new List<int>();
+    private int skillselectcount = 0;
+
+    public TextMeshProUGUI[] skillButtonsText;
 
     public GameObject[] gameui; //레벨업 창
 
@@ -46,6 +57,18 @@ public class LevelUpSelect : MonoBehaviour
         settingRandom();
         RandomSelect();
         InitializeCombinationEffects();
+
+        for (int i = 0; i < skillselections.Count; i++)
+        {
+            skillSelectCountList.Add(0);
+        }
+        SettingSkillRandom();
+        RandomSkillSelect();
+
+        if (levelmanage.level == 1) //시작시 스킬 선택, 나중에 처음 시작으로 개선필요
+        {
+            gameui[1].SetActive(true);
+        }
     }
 
     // Update is called once per frame
@@ -84,7 +107,7 @@ public class LevelUpSelect : MonoBehaviour
         }
     }
 
-    public void selectrandomvalue(int index)    //선택지 중 하나 선택
+    public void selectrandomvalue(int index)    //선택지 중 하나 선택(패시브)
     {
     
         selectedList.Add(randomTitle[index]);
@@ -117,16 +140,72 @@ public class LevelUpSelect : MonoBehaviour
         CheckCombinationEffects();
     }
 
-    public void showLevelUp()
+    //스킬
+     public void SettingSkillRandom()
+    {
+        unselectedSkill = new List<string>();
+        for (int i = 0; i < skillselections.Count; i++)
+        {
+            if (skillSelectCountList[i] < 1)
+            {
+                unselectedSkill.Add(skillselections[i]);
+            }
+        }
+    }
+
+    public void RandomSkillSelect()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (unselectedSkill.Count == 0)
+            {
+                randomSkill[i] = "—";
+                continue;
+            }
+
+            int rand = UnityEngine.Random.Range(0, unselectedSkill.Count);
+            randomSkill[i] = unselectedSkill[rand];
+            unselectedSkill.RemoveAt(rand);
+        }
+    }
+
+    public void SelectRandomSkill(int index)
+    {
+        string chosenSkill = randomSkill[index];
+        if (chosenSkill == "—") return;
+
+        int skillIndex = skillselections.IndexOf(chosenSkill);
+        if (skillIndex >= 0)
+        {
+            skillSelectCountList[skillIndex]++;
+            var skillToAdd = selectedSkillList[skillIndex] as IPlayerSkill;
+            if(skillToAdd != null)
+            {
+                playerskill.AcquireSkill(skillToAdd); // 반드시 호출
+            }
+            skillselectcount += 1;
+        }
+
+        Time.timeScale = 1f;
+    }    
+
+    public void showLevelUp()   //패시브 능력치 선택
     {
         //levelupui.SetActive(true);
         gameui[0].SetActive(true);
+    }
+
+    public void showskill()
+    {
+        gameui[1].SetActive(true);
     }
 
     public void exitLevelUp()
     {
         //levelupui.SetActive(false);
         gameui[0].SetActive(false);
+        gameui[1].SetActive(false);
+        Time.timeScale = 1f;
     }
 
     private void InitializeUpgradeActions()
