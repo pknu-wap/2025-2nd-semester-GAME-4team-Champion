@@ -5,7 +5,7 @@ public class ShowDayText : MonoBehaviour
 {
     public TextMeshProUGUI timertext;
     private int min = 30;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
     public void TextAlpha()
     {
         Color c = timertext.color;
