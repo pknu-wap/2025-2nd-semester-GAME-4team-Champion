@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 using System.Collections;
 
 public class GameManager : MonoBehaviour
@@ -83,7 +84,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Start()
+        void Start()
     {
         resetcurrenthp();
         resetcurrentstamina();
@@ -189,7 +190,7 @@ public class GameManager : MonoBehaviour
 
     public void justguard() //위빙(저스트 가드) 성공
     {
-        currentstamina += 1;
+        currentstamina -= 10;
         enemycurrentstamina += (30);
         if (currentstamina > maxstamina)
         {
@@ -200,6 +201,11 @@ public class GameManager : MonoBehaviour
             enemycurrentstamina = enemymaxstamina;
         }
 
+
+        if (currentstamina < 0)
+        {
+            currentstamina = 0;
+        }
         if (currenthp + gainhp < maxhp) //위빙시 체력 회복
         {
             currenthp += gainhp;
@@ -409,5 +415,4 @@ public class GameManager : MonoBehaviour
     }
 
 }
-
 
