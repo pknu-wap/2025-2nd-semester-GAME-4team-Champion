@@ -5,15 +5,11 @@ using System.Collections.Generic;
 
 public class RhythmGame : MonoBehaviour
 {
-    [Header("Prefabs & Spawn")]
     public GameObject AttackPrefab, DefensePrefab, ChargePrefab;
     public Transform spawnPoint, targetPoint, rhythmParent, MainPotal;
     public RhythmPotal RhythmPotal;
     public float noteSpeed = 3f;
-
-    [Header("UI")]
     public Text scoreText;
-
     private int lastNoteType = 0;
     private int score = 0;
     private List<RhythmNote> activeNotes = new List<RhythmNote>();
@@ -26,7 +22,7 @@ public class RhythmGame : MonoBehaviour
     public LevelManage LevelManage;
 
     void OnEnable()
-{
+    {
         if (rhythmParent == null)
         {
             GameObject parentObj = GameObject.Find("MiniGame_Rhythm");
@@ -78,14 +74,22 @@ public class RhythmGame : MonoBehaviour
     {
         int noteType = (lastNoteType == 2 && Random.value <= 0.8f) ? 1 : (lastNoteType == 3) ? Random.Range(1, 3) : Random.Range(1, 4);
         GameObject prefab = (noteType == 1) ? AttackPrefab : (noteType == 2) ? DefensePrefab : ChargePrefab;
-
         GameObject noteObj = Instantiate(prefab, spawnPoint.position, Quaternion.identity, rhythmParent);
         RhythmNote rhythmNote = noteObj.GetComponent<RhythmNote>();
-
         rhythmNote.Initialize(targetPoint.position, noteSpeed, noteType);
-
+        rhythmNote.OnFullChargeEnd = OnTabNoteAutoEnd;
         activeNotes.Add(rhythmNote);
         lastNoteType = noteType;
+    }
+
+    private RhythmNote GetActiveTabNote()
+    {
+        foreach (var note in activeNotes)
+        {
+            if (note != null && note.NoteType == 3 && note.CanBeHit)
+                return note;
+        }
+        return null;
     }
 
     private void HandleInput()
@@ -95,16 +99,14 @@ public class RhythmGame : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) TryHit(1);
         if (Input.GetMouseButtonDown(1)) TryHit(2);
 
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab) && !isCharging)
         {
-            foreach (var note in activeNotes)
+            RhythmNote tabNote = GetActiveTabNote();
+            if (tabNote != null)
             {
-                if (note != null && note.NoteType == 3 && note.CanBeHit)
-                {
-                    isCharging = true;
-                    chargeValue = 0f;
-                    note.StartShrink();
-                }
+                isCharging = true;
+                chargeValue = 0f;
+                tabNote.StartShrink();
             }
         }
 
@@ -118,30 +120,45 @@ public class RhythmGame : MonoBehaviour
         {
             if (isCharging)
             {
-                int gainedScore = Mathf.RoundToInt(chargeValue * 0.2f);
-                score += gainedScore;
+                score += 2;
                 UpdateScoreText();
 
-                for (int i = activeNotes.Count - 1; i >= 0; i--)
-                {
-                    RhythmNote note = activeNotes[i];
-                    if (note == null)
-                    {
-                        activeNotes.RemoveAt(i);
-                        continue;
-                    }
-
-                    if (note.NoteType == 3 && note.IsShrinking && note.CanBeHit)
-                    {
-                        Destroy(note.gameObject);
-                        activeNotes.RemoveAt(i);
-                    }
-                }
-
+                ClearActiveShrinkingTabNotes();
                 chargeValue = 0f;
                 isCharging = false;
             }
         }
+    }
+
+    private void ClearActiveShrinkingTabNotes()
+    {
+        for (int i = activeNotes.Count - 1; i >= 0; i--)
+        {
+            RhythmNote note = activeNotes[i];
+            if (note == null)
+            {
+                activeNotes.RemoveAt(i);
+                continue;
+            }
+
+            if (note.NoteType == 3 && note.IsShrinking)
+            {
+                Destroy(note.gameObject);
+                activeNotes.RemoveAt(i);
+            }
+        }
+    }
+
+    private void OnTabNoteAutoEnd(RhythmNote note)
+    {
+        if (activeNotes.Contains(note))
+            activeNotes.Remove(note);
+
+        score += 4;
+        UpdateScoreText();
+
+        isCharging = false;
+        chargeValue = 0f;
     }
 
     private void TryHit(int type)
@@ -163,12 +180,6 @@ public class RhythmGame : MonoBehaviour
                 activeNotes.RemoveAt(i);
                 break;
             }
-
-            if (note.NoteType == 3 && note.IsShrinking && note.CanBeHit)
-            {
-                Destroy(note.gameObject);
-                activeNotes.RemoveAt(i);
-            }
         }
     }
 
@@ -182,8 +193,7 @@ public class RhythmGame : MonoBehaviour
         if (isGameEnded) return;
         isGameEnded = true;
 
-        LevelManage.GetExp(30);
-
+        LevelManage.GetExp(50);
         StartCoroutine(MoveAfterDelay());
     }
 

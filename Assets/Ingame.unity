@@ -191,8 +191,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5.0768, y: -1.2691}
-  m_SizeDelta: {x: 1676.1511, y: 953.5854}
+  m_AnchoredPosition: {x: 8.2439, y: -1.797}
+  m_SizeDelta: {x: 1669.8171, y: 954.6412}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &33113165
 GameObject:
@@ -83883,7 +83883,7 @@ Transform:
   m_GameObject: {fileID: 1215582254}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.08, y: 0.16, z: 0}
+  m_LocalPosition: {x: -0.14, y: 0.57, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -97018,7 +97018,7 @@ MonoBehaviour:
   enemystaminaregen: 2
   enemyregentime: 2
   enemylastactiontime: 0
-  panel: {fileID: 1197418721}
+  panel: {fileID: 31069756}
 --- !u!114 &7687090573239113999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97521,8 +97521,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttackCooldown: 1
   Player: {fileID: 1215582274}
-  MaxHp: 100
-  CurrentHp: 100
+  MaxHp: 10000
+  CurrentHp: 10000
   MaxStamina: 100
   CurrentStamina: 0
   GuardResetDelay: 1
@@ -97539,7 +97539,7 @@ MonoBehaviour:
   hitImpulse: {fileID: 1215582275}
   _gm: {fileID: 7687090573239113998}
   _Levelgm: {fileID: 7687090573239114000}
-  SelectMode: 4
+  SelectMode: 1
 --- !u!1 &8261725298310896512
 GameObject:
   m_ObjectHideFlags: 0

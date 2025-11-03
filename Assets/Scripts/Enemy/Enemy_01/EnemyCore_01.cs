@@ -173,6 +173,12 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 
         bool isAttacking = IsActing && !_isHit;
 
+        if (guardCount >= 10 && AllowParry)
+        {
+            OnParried(hitSource, true);
+            return;
+        }
+
         if (IsGuarding || info.IsName("Guard"))
         {
             lastGuardTime = Time.time;
@@ -330,8 +336,28 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 
 
     #region Parry System
+
     public void OnParried(Vector3 parrySourcePosition)
     {
+        OnParried(parrySourcePosition, false);
+    }
+    public void OnParried(Vector3 parrySourcePosition, bool enemyIsParrying = false)
+    {
+        if (enemyIsParrying)
+        {
+            var ph = Player.GetComponent<PlayerHit>();
+            if (ph != null)
+            {
+                Vector2 dir = (Player.position - transform.position).normalized;
+                ph.OnHit(0f, 5f, dir, false, gameObject);
+            }
+
+            guardCount = 0;
+            StartNoMoveCooldown(0.1f);
+            anim?.SetTrigger("Weave");
+            return;
+        }
+
         if (isWeaveAttacking) return;
 
         if (_hitWindowOpen)
@@ -352,7 +378,6 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         AttackTimer = 0f;
         guardCount = 0;
     }
-
 
     private IEnumerator DelayedWeaveAttackTrigger()
     {

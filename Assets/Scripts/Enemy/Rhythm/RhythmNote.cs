@@ -11,6 +11,7 @@ public class RhythmNote : MonoBehaviour
     private float speed;
 
     private Transform chargeBar;
+    public System.Action<RhythmNote> OnFullChargeEnd;
 
     public void Initialize(Vector3 target, float moveSpeed, int noteType)
     {
@@ -38,11 +39,17 @@ public class RhythmNote : MonoBehaviour
         if (IsShrinking && NoteType == 3 && chargeBar != null)
         {
             Vector3 scale = chargeBar.localScale;
-            scale.x = Mathf.Lerp(scale.x, 0f, 2.5f * Time.deltaTime);
+            scale.x = Mathf.Lerp(scale.x, 0f, 4.5f * Time.deltaTime);
             chargeBar.localScale = scale;
 
-            if (scale.x < 0.05f)
+            if (scale.x < 0.1f)
+            {
+                CanBeHit = false;
+
+                OnFullChargeEnd?.Invoke(this);
+
                 Destroy(gameObject);
+            }
         }
     }
 
