@@ -81,7 +81,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 5
   m_Sprite: {fileID: -76897966630880008, guid: 7246993fecfd8b24786113cd9715b420, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -153,9 +153,12 @@ MonoBehaviour:
   MovementArea: {fileID: 0}
   groggyDuration: 3
   AttackTimer: 0
+  _isHit: 0
   hitActiveDuration: 0.08
   AllowParry: 1
+  hitImpulse: {fileID: 0}
   _gm: {fileID: 0}
+  _Levelgm: {fileID: 0}
   SelectMode: 1
 --- !u!50 &1863895425354590478
 Rigidbody2D:
