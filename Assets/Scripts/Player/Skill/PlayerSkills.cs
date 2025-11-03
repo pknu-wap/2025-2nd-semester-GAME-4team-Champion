@@ -12,7 +12,6 @@ public class PlayerSkills : MonoBehaviour
     [SerializeField] private PlayerCombat combat;
     [SerializeField] private PlayerMoveBehaviour moveRef;
     [SerializeField] private Animator animator;
-    [SerializeField] private GameManager Gm;
 
     [Header("Input Action Names (1/2/3)")]
     [SerializeField] private string skill1ActionName = "Skill1";
@@ -22,7 +21,6 @@ public class PlayerSkills : MonoBehaviour
     [Header("Options")]
     [SerializeField] private bool autoLearnOnStart = false;     // ���� �� �ʱ� ��ų �ڵ� ����
     [SerializeField] private bool debugLogs = false;
-    [SerializeField] private bool[] onskill = false;
 
     [Header("Initial Skills (Optional)")]
     [Tooltip("�� ������Ʈ �Ǵ� ������(�������̸� ��Ÿ�ӿ� �÷��̾� �ڽ����� ������)")]
