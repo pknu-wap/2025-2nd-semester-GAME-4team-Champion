@@ -80,7 +80,15 @@ public class LevelUpSelect : MonoBehaviour
             if (cnt >= 0)
                 selectButtonsText[i].text = $"{randomTitle[i]} ({selectCountList[cnt]}/2)";
             else
-                selectButtonsText[i].text = $"{randomTitle[i]} (0/2)";        
+                selectButtonsText[i].text = $"{randomTitle[i]} (0/2)";
+        }
+        
+        for (int i = 0; i < 3; i++)
+        {
+            if (i < randomSkill.Count)
+            {
+                skillButtonsText[i].text = $"{randomSkill[i]}";
+            }
         }
     }
 

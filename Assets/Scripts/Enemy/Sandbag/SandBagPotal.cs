@@ -45,10 +45,10 @@ public class SandBagPotal : MonoBehaviour
     public void ClickStartBTN()
     {
         SandBagCanvas.SetActive(false);
-        StartCoroutine(StartRhythmWithFade());
+        StartCoroutine(StartSandBagWithFade());
     }
 
-    private IEnumerator StartRhythmWithFade()
+    private IEnumerator StartSandBagWithFade()
     {
         sandbag.SetActive(true);
         yield return StartCoroutine(GameManager.FadeIn(1.0f));

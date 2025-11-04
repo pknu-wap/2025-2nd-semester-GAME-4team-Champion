@@ -49,7 +49,6 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     public bool AllowParry = true;
     private float _knockbackRemain;
     private bool isWeaveAttacking = false;
-    private bool _groggyHitPlayed = false;
     [SerializeField] private CinemachineImpulseSource hitImpulse;
 
     [Header("Game References")]
@@ -176,7 +175,6 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
             if (guardCount >= 10)
             {
                 OnParried(hitSource);
-                IsGuarding = false;
                 guardCount = 0;
             }
             return;
@@ -306,7 +304,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     private void PlayRandomHit()
     {
         if (anim == null) return;
-        int r = Random.Range(1, 4);
+        int r = Random.Range(1, 3);
         anim.Play($"Enemy_01_Hit0{r}", 0, 0);
     }
     #endregion
@@ -320,8 +318,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 
         if (Player != null && Player.TryGetComponent<PlayerCombat>(out var pc))
         {
-            pc.AddStamina(10f);
-            pc.AddStamina(-5f);
+            pc.AddStamina(5f);
         }
 
         _combat?.InterruptDash();
@@ -442,11 +439,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         IsGuarding = false;
         Rb.linearVelocity = Vector2.zero;
 
-        if (!_groggyHitPlayed)
-        {
-            PlayRandomHit();
-            _groggyHitPlayed = true;
-        }
+        anim.Play($"Enemy_01_Hit03", 0, 0);
 
         yield return new WaitForSeconds(groggyDuration);
 

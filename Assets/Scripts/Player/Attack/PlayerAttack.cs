@@ -28,7 +28,7 @@ public class PlayerAttack : MonoBehaviour
     public class AttackBaseStats
     {
         public float baseDamage = 10f;
-        public float baseKnockback = 6f;
+        public float baseKnockback = 1f;
         public float baseRange = 0.9f;
         public float baseRadius = 0.6f;
     }
