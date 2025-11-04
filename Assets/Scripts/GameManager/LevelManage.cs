@@ -45,7 +45,11 @@ public class LevelManage : MonoBehaviour
                 level += 1;
                 if (level == 5 || level == 10)
                 {
+                    levelupselect.SettingSkillRandom();
+                    levelupselect.RandomSkillSelect();
+                    levelupselect.showskill();
 
+                    Time.timeScale = 0f;
                 }
                 else
                 {   

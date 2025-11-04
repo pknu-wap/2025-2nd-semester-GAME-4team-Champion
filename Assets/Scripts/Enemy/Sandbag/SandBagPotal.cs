@@ -31,6 +31,9 @@ public class SandBagPotal : MonoBehaviour
         player.position = target.position;
         camFollow.player = Sandbag.transform;
 
+        Transform mainPortal = transform.Find("SandBagBackPotal"); 
+        Sandbag.GetComponent<Sandbag>().SetMainPotal(mainPortal);
+
         player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         player.GetComponent<SpriteRenderer>().flipX = false;
 

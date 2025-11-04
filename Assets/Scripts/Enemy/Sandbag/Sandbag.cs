@@ -90,8 +90,12 @@ public class Sandbag : MonoBehaviour
         isShaking = false;
         isFlying = false;
         hasFinished = true;
-        
+
         StartCoroutine(MoveAfterDelay());
+    }
+    public void SetMainPotal(Transform portal)
+    {
+        MainPotal = portal;
     }
 
     IEnumerator TrackDistance()
