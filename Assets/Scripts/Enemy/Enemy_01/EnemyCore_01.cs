@@ -215,7 +215,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 
         _isHit = true;
         StartCoroutine(ResetHitFlag(0.3f));
-        PlayRandomHit();
+        if (!IsActing) PlayRandomHit();
         lastHitTime = Time.time;
     }
 
@@ -295,7 +295,6 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         _combat?.InterruptDash();
         StartNoMoveCooldown(0.4f);
         IsActing = false;
-        AttackTimer = 0f;
     }
 
     private IEnumerator ResetHitFlag(float delay)
@@ -330,7 +329,6 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 
         StartNoMoveCooldown(0.6f);
         IsActing = false;
-        AttackTimer = 0f;
 
         _parryInvincible = true;
         StartCoroutine(EndParryInvincible(0.3f));
@@ -527,8 +525,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     }
 
     public void ForceNextAction()
-    {
-        IsActing = false;
+    {   
         AttackTimer = AttackCooldown;
     }
 

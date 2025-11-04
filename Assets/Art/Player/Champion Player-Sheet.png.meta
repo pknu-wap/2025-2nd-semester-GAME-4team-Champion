@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: eb56d055b9e70e64d8bc3e90dd83b754
+=======
+guid: 22f65377d8aa16a40a4d4e5e7f0309d0
+>>>>>>> Enemy
 TextureImporter:
   internalIDToNameTable:
   - first:

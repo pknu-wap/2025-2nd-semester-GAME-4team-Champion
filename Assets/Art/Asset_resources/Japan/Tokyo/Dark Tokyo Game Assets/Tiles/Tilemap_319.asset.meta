@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 74229da84b1a19b479157c5952e655a0
+=======
+guid: 292a200b71ce9ec4994a238304674eb8
+>>>>>>> Enemy
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 11400000

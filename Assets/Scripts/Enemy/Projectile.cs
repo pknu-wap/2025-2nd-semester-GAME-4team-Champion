@@ -5,8 +5,6 @@ public class Projectile : MonoBehaviour
 {
     public float lifeTime = 3f;
     public float speed = 10f;
-    public float damage = 10f;
-    public float slow = 1f;
 
     private Rigidbody2D rb;
     private SpriteRenderer sr;
@@ -39,13 +37,10 @@ public class Projectile : MonoBehaviour
         col.enabled = false;
         rb.linearVelocity = Vector2.zero;
 
-        PlayerMoveBehaviour move = other.GetComponent<PlayerMoveBehaviour>();
-        if (move.moveSpeed > 1f)
-            move.moveSpeed -= slow;
-
-        yield return new WaitForSeconds(1.5f);
-
-        move.moveSpeed += slow;
+        PlayerMoveBehaviour player = other.GetComponent<PlayerMoveBehaviour>();
+        player.StartCoroutine(player.Slow());
+        
+        yield return null;
         Destroy(gameObject);
     }
 }

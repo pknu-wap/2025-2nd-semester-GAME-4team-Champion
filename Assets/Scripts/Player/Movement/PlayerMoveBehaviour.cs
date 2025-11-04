@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,7 +25,6 @@ public class PlayerMoveBehaviour : MonoBehaviour
     // 이동 잠금 & 가드시 감속
     private RigidbodyConstraints2D constraintsBeforeLock;
     private float guardSpeedScale = 1f;
-    [SerializeField] public Collider2D MovementArea;
 
     // 다중 락 관리(키 기반)
     private readonly HashSet<string> moveLocks = new HashSet<string>();
@@ -49,8 +49,6 @@ public class PlayerMoveBehaviour : MonoBehaviour
 
     private void Update()
     {
-        rb.position = ClampInside(rb.position);
-
         movement = inputWrapper.Movement.Move.ReadValue<Vector2>();
 
         if (!IsMovementLocked && movement.sqrMagnitude > 0.0001f)
@@ -62,19 +60,6 @@ public class PlayerMoveBehaviour : MonoBehaviour
             animator.SetFloat("moveY", movement.y);
             animator.SetBool("isMoving", movement.sqrMagnitude > 0.0001f);
         }
-    }
-
-    public Vector2 ClampInside(Vector2 p)
-    {
-        if (MovementArea == null)
-            return p;
-        if (MovementArea.OverlapPoint(p))
-            return p;
-
-        Vector2 closest = MovementArea.ClosestPoint(p);
-        Vector2 center = MovementArea.bounds.center;
-        Vector2 inward = (center - closest).sqrMagnitude > 1e-8f ? (center - closest).normalized : Vector2.zero;
-        return closest + inward * 0.1f;
     }
 
     private void FixedUpdate()
@@ -157,4 +142,13 @@ public class PlayerMoveBehaviour : MonoBehaviour
         sprite.flipX = left;
         LastFacing = new Vector2(left ? -1f : 1f, 0f);
     }
+
+    public IEnumerator Slow()
+    {
+        if (moveSpeed > 1f) moveSpeed -= 1f;
+
+        yield return new WaitForSeconds(1.5f);
+
+        moveSpeed += 1f;
+}
 }

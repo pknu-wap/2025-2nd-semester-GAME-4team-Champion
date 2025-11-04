@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿using UnityEngine;
+=======
+using UnityEngine;
+>>>>>>> Enemy
 
 /// <summary>
 /// SpeedPad 존에 들어가면 이동 배수(currentScale)를 관리.
