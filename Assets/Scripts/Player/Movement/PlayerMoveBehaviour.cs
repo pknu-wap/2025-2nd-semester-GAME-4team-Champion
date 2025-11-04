@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -141,4 +142,13 @@ public class PlayerMoveBehaviour : MonoBehaviour
         sprite.flipX = left;
         LastFacing = new Vector2(left ? -1f : 1f, 0f);
     }
+
+    public IEnumerator Slow()
+    {
+        if (moveSpeed > 1f) moveSpeed -= 1f;
+
+        yield return new WaitForSeconds(1.5f);
+
+        moveSpeed += 1f;
+}
 }

@@ -11,7 +11,7 @@ public class EnemyFight_01 : MonoBehaviour
     [SerializeField] private float PreWindupRoll = 1f; 
 
     [Header("Melee Logic")]
-    [SerializeField] private float NoDashCloseRange = 2.5f;   
+    [SerializeField] private float ChoiceDash = 2.5f;   
     [SerializeField] private float StopOffset = 1.0f;         
 
     [Header("Melee Stop Settings")]
@@ -95,16 +95,33 @@ public class EnemyFight_01 : MonoBehaviour
             ? Vector2.Distance(_core.Rb.position, (Vector2)_core.Player.position)
             : Mathf.Infinity;
 
-        if (dist > NoDashCloseRange)
+        if (_core.CurrentHp < 30)
         {
-            int pick = Random.Range(0, 2);
-            Melee_Attack(pick == 0 ? EnemyCore_01.MeleeAttackType.One
-                                   : EnemyCore_01.MeleeAttackType.OneOne);
+            if (dist > ChoiceDash)
+            {
+                Melee_Attack(EnemyCore_01.MeleeAttackType.OneOne);
+            }
+            else
+            {
+                int pick = Random.Range(0, 2);
+                Melee_Attack(pick == 0 ? EnemyCore_01.MeleeAttackType.Roll
+                                    : EnemyCore_01.MeleeAttackType.OneTwo);
+            }
         }
         else
         {
-            Melee_Attack(EnemyCore_01.MeleeAttackType.OneTwo);
+            if (dist > ChoiceDash)
+            {
+                int pick = Random.Range(0, 2);
+                Melee_Attack(pick == 0 ? EnemyCore_01.MeleeAttackType.One
+                                    : EnemyCore_01.MeleeAttackType.OneOne);
+            }
+            else
+            {
+                Melee_Attack(EnemyCore_01.MeleeAttackType.OneTwo);
+            }
         }
+            
     }
 
     private void ResetAnim()
@@ -221,9 +238,11 @@ public class EnemyFight_01 : MonoBehaviour
             StopInFrontOfPlayer();
         }
         yield return StartCoroutine(DashFinishStrikeSequence());
+
         isDashing = false;
         _core.IsActing = false;
         _core._isHit = false;
+        _core.AttackTimer = 0f;
         _core.SetPhysicsDuringAttack(false);
         Tutorial_Checker3 = true;
         ResetAnim();
@@ -241,6 +260,7 @@ public class EnemyFight_01 : MonoBehaviour
 
         _core.IsActing = false;
         _core._isHit = false;
+        _core.AttackTimer = 0f;
         _core.SetPhysicsDuringAttack(false);
         ResetAnim();
     }
@@ -258,12 +278,9 @@ public class EnemyFight_01 : MonoBehaviour
         {
             _core.TriggerMeleeDamage();
 
-            if (_core.Player != null)
-            {
-                Vector2 dir = ((Vector2)_core.Player.position - _core.Rb.position).normalized;
-                Vector2 nextPos = _core.Rb.position + dir * 1.5f;
-                _core.Rb.position = _core.ClampInside(nextPos);
-            }
+            Vector2 dir = ((Vector2)_core.Player.position - _core.Rb.position).normalized;
+            Vector2 nextPos = _core.Rb.position + dir * 0.5f;
+            _core.Rb.position = _core.ClampInside(nextPos);
 
             yield return new WaitForSeconds(0.3f);
         }
@@ -271,6 +288,7 @@ public class EnemyFight_01 : MonoBehaviour
         _core.IsActing = false;
         anim?.SetBool("Roll", false);
         _core._isHit = false;
+        _core.AttackTimer = 0f;
         _core.SetPhysicsDuringAttack(false);
         ResetAnim();
     }
@@ -372,6 +390,7 @@ public class EnemyFight_01 : MonoBehaviour
 
         _core.IsActing = false;
         _core._isHit = false;
+        _core.AttackTimer = 0f;
         _core.ForceNextAction();
     }
 
@@ -444,7 +463,7 @@ public class EnemyFight_01 : MonoBehaviour
         Vector3 pos = _core.Rb != null ? (Vector3)_core.Rb.position : transform.position;
 
         Gizmos.color = new Color(1f, 0.6f, 0f, 0.35f);
-        Gizmos.DrawWireSphere(pos, NoDashCloseRange);
+        Gizmos.DrawWireSphere(pos, ChoiceDash);
 
         Gizmos.color = new Color(0.2f, 0.5f, 1f, 0.5f);
         Gizmos.DrawWireSphere(pos, DashStopDistance);
