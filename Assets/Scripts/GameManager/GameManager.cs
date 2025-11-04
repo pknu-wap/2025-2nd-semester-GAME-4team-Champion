@@ -171,7 +171,7 @@ public class GameManager : MonoBehaviour
         resetcurrentstamina();
     }
 
-    public void guard(int down) //가드 성공
+    public void guard(float down) //가드 성공
     {
 
         if (currentstamina + down - reducestamina < maxstamina)

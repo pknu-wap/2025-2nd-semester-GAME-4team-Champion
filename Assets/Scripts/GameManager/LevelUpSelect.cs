@@ -82,6 +82,15 @@ public class LevelUpSelect : MonoBehaviour
             else
                 selectButtonsText[i].text = $"{randomTitle[i]} (0/2)";        
         }
+
+        //스킬
+        for (int i = 0; i < 3; i++)
+        {
+            if (i < randomSkill.Count)
+            {
+                skillButtonsText[i].text = $"{randomSkill[i]}";
+            }
+        }
     }
 
     public void RandomSelect()     //선택지 랜덤
