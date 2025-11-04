@@ -173,7 +173,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void AddStamina(float delta)
     {
-        Gm.guard(delta);
+        Gm.guard(10 + delta);
         float before = stamina;
         //stamina = Mathf.Clamp(stamina + delta, 0f, staminaMax);
         if (!Mathf.Approximately(before, stamina))
