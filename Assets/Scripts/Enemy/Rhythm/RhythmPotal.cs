@@ -7,6 +7,7 @@ public class RhythmPotal : MonoBehaviour
     public Transform target;
     public GameObject Rhythm;
     public GameObject RhythmCanvas;
+    public RhythmGame rhythmGame;
     public CameraLockOn camFollow;
     public Transform player;
     public GameManager GameManager;
@@ -27,6 +28,9 @@ public class RhythmPotal : MonoBehaviour
 
         player.position = target.position;
         camFollow.player = Rhythm.transform;
+
+        Transform mainPortal = transform.Find("RhythmBackPotal"); 
+        rhythmGame.SetMainPotal(mainPortal);
 
         player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         player.GetComponent<SpriteRenderer>().flipX = true;

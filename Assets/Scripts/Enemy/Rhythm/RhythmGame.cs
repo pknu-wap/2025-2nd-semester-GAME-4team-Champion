@@ -59,6 +59,11 @@ public class RhythmGame : MonoBehaviour
         }
     }
 
+    public void SetMainPotal(Transform portal)
+    {
+        MainPotal = portal;
+    }
+
     private IEnumerator SpawnRoutine()
     {
         for (int i = 0; i < 20; i++)
