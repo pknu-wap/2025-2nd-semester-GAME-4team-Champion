@@ -69,6 +69,7 @@ public class LevelUpSelect : MonoBehaviour
         {
             gameui[1].SetActive(true);
         }
+        Time.timeScale = 0f;
     }
 
     // Update is called once per frame
@@ -81,6 +82,14 @@ public class LevelUpSelect : MonoBehaviour
                 selectButtonsText[i].text = $"{randomTitle[i]} ({selectCountList[cnt]}/2)";
             else
                 selectButtonsText[i].text = $"{randomTitle[i]} (0/2)";        
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (i < randomSkill.Count)
+            {
+                skillButtonsText[i].text = $"{randomSkill[i]}";
+            }
         }
     }
 
@@ -177,11 +186,11 @@ public class LevelUpSelect : MonoBehaviour
         int skillIndex = skillselections.IndexOf(chosenSkill);
         if (skillIndex >= 0)
         {
-            skillSelectCountList[skillIndex]++;
+            skillSelectCountList[skillIndex] += 1 ;
             var skillToAdd = selectedSkillList[skillIndex] as IPlayerSkill;
             if(skillToAdd != null)
             {
-                playerskill.AcquireSkill(skillToAdd); // 반드시 호출
+                playerskill.AcquireSkill(skillToAdd); 
             }
             skillselectcount += 1;
         }

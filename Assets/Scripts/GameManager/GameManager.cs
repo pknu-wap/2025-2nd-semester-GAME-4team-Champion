@@ -170,7 +170,7 @@ public class GameManager : MonoBehaviour
         resetcurrentstamina();
     }
 
-    public void guard(int down) //가드 성공
+    public void guard(float down) //가드 성공
     {
 
         if (currentstamina + down - reducestamina < maxstamina)
@@ -182,6 +182,8 @@ public class GameManager : MonoBehaviour
         {
             currentstamina = maxstamina;
         }
+
+    
         resetcurrentstamina();
 
         lastactiontime = Time.time;
@@ -266,6 +268,10 @@ public class GameManager : MonoBehaviour
 
     private void resetcurrentstamina() //스테미나 갱신
     {
+        if (currentstamina < 0)
+        {
+            currentstamina = 0;
+        }
         
         for (int i = 0; i < 6; i++)
         {

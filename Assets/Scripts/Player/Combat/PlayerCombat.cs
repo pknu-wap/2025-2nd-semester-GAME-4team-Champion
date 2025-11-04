@@ -173,11 +173,11 @@ public class PlayerCombat : MonoBehaviour
 
     public void AddStamina(float delta)
     {
-        Gm.guard(10);
+        Gm.guard(delta + 10);
         float before = stamina;
-        stamina = Mathf.Clamp(stamina + delta, 0f, staminaMax);
-        if (!Mathf.Approximately(before, stamina))
-            OnStaminaChanged?.Invoke(stamina, staminaMax);
+        //stamina = Mathf.Clamp(stamina + delta, 0f, staminaMax);
+        //if (!Mathf.Approximately(before, stamina))
+            //OnStaminaChanged?.Invoke(stamina, staminaMax);
     }
 
     /// <summary>행동으로 인해 '못 움직이는 시간 + extra' 만큼 스태미나 재생을 막는다.</summary>

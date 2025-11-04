@@ -169,7 +169,7 @@ public class PlayerDefense : MonoBehaviour
     public void OnWeavingSuccessRegain()
     {
         if (lastGuardStartCost > 0f)
-            combat.AddStamina(lastGuardStartCost * parryRegainPercent);
+            combat.AddStamina((lastGuardStartCost) * parryRegainPercent);
     }
 
     public void RegisterGuardHitStaminaCost(float amount)
@@ -180,8 +180,8 @@ public class PlayerDefense : MonoBehaviour
     public void RegainStaminaOnParry()
     {
         if (combat == null || guardSpentThisSession <= 0f || parryRegainPercent <= 0f) return;
-        float regain = guardSpentThisSession * parryRegainPercent;
-        combat.AddStamina(+regain);
+        float regain = (guardSpentThisSession) * parryRegainPercent;
+        combat.AddStamina(-regain);
         guardSpentThisSession = 0f;
     }
 
