@@ -358,7 +358,8 @@ public class EnemyFight_01 : MonoBehaviour
     private IEnumerator RetreatThenFire()
     {
         float t = 0f;
-        while (t < RetreatDuration)
+        float distance = Vector2.Distance(_core.Rb.position, _core.Player.position);
+        while (t < RetreatDuration && distance < _core.RecognizedArea)
         {
             if (_core.Player == null || _core.Rb == null) break;
 
