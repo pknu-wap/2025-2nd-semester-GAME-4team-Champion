@@ -55,6 +55,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     [Header("Game References")]
     [SerializeField] private GameManager _gm;
     [SerializeField] private LevelManage _Levelgm;
+    [SerializeField] private EnemyUi _eui;
     private SpriteRenderer sr;
 
     public bool IsDead() => _isDead;
@@ -103,7 +104,11 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
             _noMoveRemain -= Time.deltaTime;
 
         if (CurrentStamina >= 100f)
-            StartCoroutine(EnterGroggy());
+            {
+                _eui.ShowMark();
+                StartCoroutine(EnterGroggy());
+            }
+            
 
         Rb.position = ClampInside(Rb.position);
 
@@ -460,6 +465,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         _isGroggy = false;
         IsActing = false;
         CurrentStamina = 0f;
+        _eui.HideMark();
     }
 
     private void Die()
