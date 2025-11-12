@@ -507,10 +507,10 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
                 else _combat.Range_Attack();
                 break;
 
-            case AttackSelectMode.Melee_One:     _combat.Melee_Attack(MeleeAttackType.One);     CurrentStamina -= 4; break;
-            case AttackSelectMode.Melee_OneOne:  _combat.Melee_Attack(MeleeAttackType.OneOne);  CurrentStamina -= 6; break;
-            case AttackSelectMode.Melee_OneTwo:  _combat.Melee_Attack(MeleeAttackType.OneTwo);  CurrentStamina -= 8; break;
-            case AttackSelectMode.Melee_Roll:    _combat.Melee_Attack(MeleeAttackType.Roll);    CurrentStamina -= 10; break;
+            case AttackSelectMode.Melee_One:     _combat.Melee_Attack(MeleeAttackType.One); break;
+            case AttackSelectMode.Melee_OneOne:  _combat.Melee_Attack(MeleeAttackType.OneOne); break;
+            case AttackSelectMode.Melee_OneTwo:  _combat.Melee_Attack(MeleeAttackType.OneTwo); break;
+            case AttackSelectMode.Melee_Roll:    _combat.Melee_Attack(MeleeAttackType.Roll); break;
             case AttackSelectMode.Range_Short:   _combat.Range_Attack(RangeAttackType.Short);   break;
             case AttackSelectMode.Range_Mid:     _combat.Range_Attack(RangeAttackType.Mid);     break;
             case AttackSelectMode.Range_Long:    _combat.Range_Attack(RangeAttackType.Long);    break;
