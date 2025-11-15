@@ -3,9 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags:
-  - Enemy
-  - JudgeLine
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -14,7 +12,7 @@ TagManager:
   - Water
   - UI
   - Enemy
-  - RhythmNote
+  - Occludable
   - 
   - 
   - 
