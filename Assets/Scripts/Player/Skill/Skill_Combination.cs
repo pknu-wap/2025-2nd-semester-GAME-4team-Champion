@@ -13,6 +13,7 @@ public class Skill_Combination : MonoBehaviour, IPlayerSkill
     [Header("Hitbox & Scaling")]
     [SerializeField] private LayerMask enemyMask;
     [SerializeField] private float damageMul = 1.5f;
+    [SerializeField] private float knockMul = 1f;
     [SerializeField] private float rangeMul = 2f;
     [SerializeField] private float radiusMul = 1f;
 
@@ -119,6 +120,7 @@ public class Skill_Combination : MonoBehaviour, IPlayerSkill
     {
         var stats = (attack && attack.baseStats != null) ? attack.baseStats : new PlayerAttack.AttackBaseStats();
         float dmg = stats.baseDamage * damageMul;
+        float knock = stats.baseKnockback * knockMul;
         float range = stats.baseRange * rangeMul;
         float radius = stats.baseRadius * radiusMul;
 
@@ -140,7 +142,7 @@ public class Skill_Combination : MonoBehaviour, IPlayerSkill
             if (dmgTarget != null)
             {
                 Vector2 dir = ((Vector2)h.transform.position - (Vector2)combat.transform.position).normalized;
-                dmgTarget.ApplyHit(dmg, dir, gameObject);
+                dmgTarget.ApplyHit(dmg, knock, dir, gameObject);
             }
         }
 

@@ -358,28 +358,12 @@ public class EnemyFight_01 : MonoBehaviour
     private IEnumerator RetreatThenFire()
     {
         float t = 0f;
-        float distance = Vector2.Distance(_core.Rb.position, _core.Player.position);
-
-        if (distance >= _core.RecognizedArea)
-        {
-            _core.IsActing = false;
-            _core.ForceNextAction();
-            yield break;
-        }
-
-        while (t < RetreatDuration && distance < _core.RecognizedArea)
+        while (t < RetreatDuration)
         {
             if (_core.Player == null || _core.Rb == null) break;
 
             Vector2 toPlayer = (Vector2)_core.Player.position - _core.Rb.position;
-            distance = toPlayer.magnitude;
-
-            if (distance > _core.RecognizedArea)
-            {
-                _core.IsActing = false;
-                _core.ForceNextAction();
-                yield break;
-            }
+            float dist = toPlayer.magnitude;
 
             Vector2 dirAway = (-toPlayer).sqrMagnitude > 1e-8f ? (-toPlayer).normalized : Vector2.zero;
             float step = RetreatSpeed * Time.fixedDeltaTime;
@@ -388,33 +372,18 @@ public class EnemyFight_01 : MonoBehaviour
             nextPos = _core.ClampInside(nextPos);
             _core.Rb.MovePosition(nextPos);
 
-            if (_desiredDistance > 0f && distance >= _desiredDistance) break;
+            if (_desiredDistance > 0f && dist >= _desiredDistance) break;
 
             t += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
 
         _core.Rb.linearVelocity = Vector2.zero;
-
-        distance = Vector2.Distance(_core.Rb.position, _core.Player.position);
-        if (distance > _core.RecognizedArea)
-        {
-            _core.IsActing = false;
-            _core.ForceNextAction();
-            yield break;
-        }
-
-        if (_rangePreWindup > 0f)
-            yield return new WaitForSeconds(_rangePreWindup);
+        if (_rangePreWindup > 0f) yield return new WaitForSeconds(_rangePreWindup);
 
         for (int i = 0; i < _volleyCount; i++)
         {
-            distance = Vector2.Distance(_core.Rb.position, _core.Player.position);
-            if (distance > _core.RecognizedArea)
-                break;
-
             FireOneProjectile();
-
             if (i < _volleyCount - 1 && VolleyInterval > 0f)
                 yield return new WaitForSeconds(VolleyInterval);
         }

@@ -109,10 +109,11 @@ public class Skill_PowerStrike : MonoBehaviour, IPlayerSkill
         
         var stats = (attack != null && attack.baseStats != null) ? attack.baseStats : new PlayerAttack.AttackBaseStats();
         float dmg = stats.baseDamage * damageMul;
+        float knock = stats.baseKnockback * knockMul;
         float range = stats.baseRange * rangeMul;
         float radius = stats.baseRadius * radiusMul;
 
-        DoHitbox(dmg, range, radius);
+        DoHitbox(dmg, knock, range, radius);
         TagBus.Raise("Tag.impact(L)");
         yield return new WaitForSeconds(active + recovery);
         combat.EnterCombat("Skill_PowerStrike");
@@ -160,7 +161,7 @@ public class Skill_PowerStrike : MonoBehaviour, IPlayerSkill
         Destroy(go);
     }
 
-    private void DoHitbox(float dmg, float range, float radius)
+    private void DoHitbox(float dmg, float knock, float range, float radius)
     {
         if (!combat) return;
         Vector2 facing = (moveRef && moveRef.LastFacing.sqrMagnitude > 0f) ? moveRef.LastFacing : Vector2.right;
@@ -179,7 +180,7 @@ public class Skill_PowerStrike : MonoBehaviour, IPlayerSkill
             if (dmgTarget != null)
             {
                 Vector2 dir = ((Vector2)h.transform.position - (Vector2)combat.transform.position).normalized;
-                dmgTarget.ApplyHit(dmg, dir, combat.gameObject);
+                dmgTarget.ApplyHit(dmg, knock, dir, combat.gameObject);
             }
         }
     }

@@ -10,16 +10,17 @@ public class DummyEnemy : MonoBehaviour, IDamageable, IParryable
         rb = GetComponent<Rigidbody2D>();
     }
 
-    public void ApplyHit(float damage, Vector2 hitDirFromPlayer, GameObject attacker)
+    public void ApplyHit(float damage, float knockback, Vector2 hitDirFromPlayer, GameObject attacker)
     {
         hp -= damage;
         Debug.Log($"[DummyEnemy] -{damage} HP={hp}");
+        if (rb) rb.AddForce(hitDirFromPlayer.normalized * knockback, ForceMode2D.Impulse);
         if (hp <= 0f) Destroy(gameObject);
     }
 
     public void OnParried(Vector3 parrySourcePosition)
     {
-        // ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ ï¿½Ð¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½)
+        // ÇÃ·¹ÀÌ¾î¿¡ ÆÐ¸µ ´çÇßÀ» ¶§ ¹ÝÀÀ (¼±ÅÃ)
         if (rb)
         {
             Vector2 dir = ((Vector2)transform.position - (Vector2)parrySourcePosition).normalized;

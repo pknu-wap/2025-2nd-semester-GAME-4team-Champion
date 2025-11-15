@@ -156,7 +156,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     }
 
     #region Hit & Guard System
-    public void ApplyHit(float damage, Vector2 direction, GameObject source)
+    public void ApplyHit(float damage, float knockback, Vector2 direction, GameObject source)
     {
         if (_isDead) return;
 
@@ -198,6 +198,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         {
             _knockbackRemain = Mathf.Max(_knockbackRemain, 0.18f);
             Rb.linearVelocity = Vector2.zero;
+            Rb.AddForce(direction.normalized * knockback, ForceMode2D.Impulse);
         }
 
         StartCoroutine(HitStop(0.1f));
@@ -283,8 +284,11 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     {
         lastGuardTime = Time.time;
 
-        Vector2 knockDir = ((Vector2)transform.position - (Vector2)Player.position).normalized;
-        Rb.AddForce(knockDir, ForceMode2D.Impulse);
+        if (Rb != null)
+        {
+            Vector2 knockDir = ((Vector2)transform.position - (Vector2)Player.position).normalized;
+            Rb.AddForce(knockDir * 1.5f, ForceMode2D.Impulse);
+        }
 
         _combat?.InterruptDash();
         StartNoMoveCooldown(0.4f);
@@ -503,10 +507,10 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
                 else _combat.Range_Attack();
                 break;
 
-            case AttackSelectMode.Melee_One:     _combat.Melee_Attack(MeleeAttackType.One); break;
-            case AttackSelectMode.Melee_OneOne:  _combat.Melee_Attack(MeleeAttackType.OneOne); break;
-            case AttackSelectMode.Melee_OneTwo:  _combat.Melee_Attack(MeleeAttackType.OneTwo); break;
-            case AttackSelectMode.Melee_Roll:    _combat.Melee_Attack(MeleeAttackType.Roll); break;
+            case AttackSelectMode.Melee_One:     _combat.Melee_Attack(MeleeAttackType.One);     CurrentStamina -= 4; break;
+            case AttackSelectMode.Melee_OneOne:  _combat.Melee_Attack(MeleeAttackType.OneOne);  CurrentStamina -= 6; break;
+            case AttackSelectMode.Melee_OneTwo:  _combat.Melee_Attack(MeleeAttackType.OneTwo);  CurrentStamina -= 8; break;
+            case AttackSelectMode.Melee_Roll:    _combat.Melee_Attack(MeleeAttackType.Roll);    CurrentStamina -= 10; break;
             case AttackSelectMode.Range_Short:   _combat.Range_Attack(RangeAttackType.Short);   break;
             case AttackSelectMode.Range_Mid:     _combat.Range_Attack(RangeAttackType.Mid);     break;
             case AttackSelectMode.Range_Long:    _combat.Range_Attack(RangeAttackType.Long);    break;
