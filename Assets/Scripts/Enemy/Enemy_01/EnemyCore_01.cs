@@ -283,11 +283,8 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     {
         lastGuardTime = Time.time;
 
-        if (Rb != null)
-        {
-            Vector2 knockDir = ((Vector2)transform.position - (Vector2)Player.position).normalized;
-            Rb.AddForce(knockDir * 1.5f, ForceMode2D.Impulse);
-        }
+        Vector2 knockDir = ((Vector2)transform.position - (Vector2)Player.position).normalized;
+        Rb.AddForce(knockDir, ForceMode2D.Impulse);
 
         _combat?.InterruptDash();
         StartNoMoveCooldown(0.4f);

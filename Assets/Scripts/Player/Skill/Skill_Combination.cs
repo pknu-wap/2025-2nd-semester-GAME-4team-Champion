@@ -13,7 +13,6 @@ public class Skill_Combination : MonoBehaviour, IPlayerSkill
     [Header("Hitbox & Scaling")]
     [SerializeField] private LayerMask enemyMask;
     [SerializeField] private float damageMul = 1.5f;
-    [SerializeField] private float knockMul = 1f;
     [SerializeField] private float rangeMul = 2f;
     [SerializeField] private float radiusMul = 1f;
 

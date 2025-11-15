@@ -1,4 +1,4 @@
-    using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class EnemyFight_01 : MonoBehaviour
@@ -360,7 +360,7 @@ public class EnemyFight_01 : MonoBehaviour
         float t = 0f;
         float distance = Vector2.Distance(_core.Rb.position, _core.Player.position);
 
-        if (distance > _core.RecognizedArea)
+        if (distance >= _core.RecognizedArea)
         {
             _core.IsActing = false;
             _core.ForceNextAction();
