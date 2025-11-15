@@ -109,7 +109,6 @@ public class N_ATK : MonoBehaviour
 
         // ★ 여기서만 attack.baseStats를 읽어 사용 (런타임 변경 반영)
         DoHitbox(attack.baseStats.baseDamage,
-                 attack.baseStats.baseKnockback,
                  attack.baseStats.baseRange,
                  attack.baseStats.baseRadius);
 
@@ -156,7 +155,7 @@ public class N_ATK : MonoBehaviour
         combat?.BlockStaminaRegenFor(lockTime);
     }
 
-    private void DoHitbox(float dmg, float knock, float range, float radius)
+    private void DoHitbox(float dmg, float range, float radius)
     {
         Vector2 facing = (moveRef && moveRef.LastFacing.sqrMagnitude > 0f)
             ? moveRef.LastFacing : Vector2.right;
@@ -177,7 +176,7 @@ public class N_ATK : MonoBehaviour
             var dmgTarget = h.GetComponentInParent<IDamageable>();
             if (dmgTarget != null)
             {
-                dmgTarget.ApplyHit(dmg, knock, toEnemy, gameObject);
+                dmgTarget.ApplyHit(dmg, toEnemy, gameObject);
                 any = true;
             }
             else { any = true; }

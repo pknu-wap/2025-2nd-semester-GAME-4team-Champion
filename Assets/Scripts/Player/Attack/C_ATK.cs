@@ -84,10 +84,9 @@ public class C_ATK : MonoBehaviour
         yield return new WaitForSeconds(windup);
 
         float dmg = attack ? attack.baseStats.baseDamage * damageMul : 10f * damageMul;
-        float knock = attack ? attack.baseStats.baseKnockback * knockMul : 6f * knockMul;
         float range = attack ? attack.baseStats.baseRange * rangeMul : 0.9f * rangeMul;
         float radius = attack ? attack.baseStats.baseRadius * radiusMul : 0.6f * radiusMul;
-        DoHitbox(dmg, knock, range, radius);
+        DoHitbox(dmg, range, radius);
 
         combat?.EnterCombat("Counter");
 
@@ -103,7 +102,7 @@ public class C_ATK : MonoBehaviour
         attackMoveLockCo = null;
     }
 
-    private void DoHitbox(float dmg, float knock, float range, float radius)
+    private void DoHitbox(float dmg, float range, float radius)
     {
         Vector2 facing = moveRef ? moveRef.LastFacing : Vector2.right;
         Vector2 center = (Vector2)transform.position + facing.normalized * range;
@@ -112,7 +111,7 @@ public class C_ATK : MonoBehaviour
         foreach (var h in hits)
         {
             var target = h.GetComponentInParent<IDamageable>();
-            target?.ApplyHit(dmg, knock, facing, gameObject);
+            target?.ApplyHit(dmg, facing, gameObject);
         }
         combat?.EnterCombat("CounterHit");
     }

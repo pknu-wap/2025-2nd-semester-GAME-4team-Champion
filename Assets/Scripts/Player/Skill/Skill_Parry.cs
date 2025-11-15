@@ -135,20 +135,19 @@ public class Skill_Parry : MonoBehaviour, IPlayerSkill, IParryWindowProvider
     {
         var stats = (attack && attack.baseStats != null) ? attack.baseStats : new PlayerAttack.AttackBaseStats();
         float dmg = stats.baseDamage * damageMulOnParry;
-        float knock = stats.baseKnockback * knockMul;
         float range = stats.baseRange * rangeMul;
         float radius = stats.baseRadius * radiusMul;
 
-        HitOnce(dmg, knock, range, radius);
+        HitOnce(dmg, range, radius);
         TagBus.Raise("Impact(L)");
         yield return new WaitForSeconds(betweenHits);
-        HitOnce(dmg, knock, range, radius);
+        HitOnce(dmg, range, radius);
         TagBus.Raise("Impact(L)");
 
         combat.EnterCombat("Parry_Counter");
     }
 
-    private void HitOnce(float dmg, float knock, float range, float radius)
+    private void HitOnce(float dmg, float range, float radius)
     {
         if (!combat) return;
         Vector2 facing = (moveRef && moveRef.LastFacing.sqrMagnitude > 0f) ? moveRef.LastFacing : Vector2.right;
@@ -165,7 +164,7 @@ public class Skill_Parry : MonoBehaviour, IPlayerSkill, IParryWindowProvider
 
             Vector2 dir = ((Vector2)h.transform.position - (Vector2)combat.transform.position).normalized;
             var dmgTarget = h.GetComponentInParent<IDamageable>();
-            if (dmgTarget != null) dmgTarget.ApplyHit(dmg, knock, dir, combat.gameObject);
+            if (dmgTarget != null) dmgTarget.ApplyHit(dmg, dir, combat.gameObject);
         }
     }
 

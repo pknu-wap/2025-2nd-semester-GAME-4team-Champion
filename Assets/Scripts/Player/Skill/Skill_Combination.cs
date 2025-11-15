@@ -120,7 +120,6 @@ public class Skill_Combination : MonoBehaviour, IPlayerSkill
     {
         var stats = (attack && attack.baseStats != null) ? attack.baseStats : new PlayerAttack.AttackBaseStats();
         float dmg = stats.baseDamage * damageMul;
-        float knock = stats.baseKnockback * knockMul;
         float range = stats.baseRange * rangeMul;
         float radius = stats.baseRadius * radiusMul;
 
@@ -142,7 +141,7 @@ public class Skill_Combination : MonoBehaviour, IPlayerSkill
             if (dmgTarget != null)
             {
                 Vector2 dir = ((Vector2)h.transform.position - (Vector2)combat.transform.position).normalized;
-                dmgTarget.ApplyHit(dmg, knock, dir, gameObject);
+                dmgTarget.ApplyHit(dmg, dir, gameObject);
             }
         }
 

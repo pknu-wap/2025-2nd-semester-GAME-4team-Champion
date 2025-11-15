@@ -162,7 +162,6 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
         var stats = (attack && attack.baseStats != null) ? attack.baseStats : new PlayerAttack.AttackBaseStats();
         float dmgMul = ComputeDamageMul(heldSec);
         float dmg = stats.baseDamage * dmgMul;
-        float knock = stats.baseKnockback * knockMul;
         float range = stats.baseRange * rangeMul;
         float radius = stats.baseRadius * radiusMul;
 
@@ -179,7 +178,7 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
         // Fire VFX (딜레이+페이드)
         StartCoroutine(SpawnFireVFXWithFade());
 
-        DoHitbox(dmg, knock, range, radius);
+        DoHitbox(dmg, range, radius);
         TagBus.Raise("Tag.impact(L)");
         yield return new WaitForSeconds(active + recovery);
         combat.EnterCombat("Skill_EuropeanUppercut");
@@ -195,7 +194,7 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
         return Mathf.Lerp(2f, 5f, t);
     }
 
-    private void DoHitbox(float dmg, float knock, float range, float radius)
+    private void DoHitbox(float dmg, float range, float radius)
     {
         if (!combat) return;
         Vector2 facing = (moveRef && moveRef.LastFacing.sqrMagnitude > 0f) ? moveRef.LastFacing : Vector2.right;
@@ -214,7 +213,7 @@ public class Skill_EuropeanUppercut : MonoBehaviour, IPlayerSkill, IChargeSkill
             if (dmgTarget != null)
             {
                 Vector2 dir = ((Vector2)h.transform.position - (Vector2)combat.transform.position).normalized;
-                dmgTarget.ApplyHit(dmg, knock, dir, combat.gameObject);
+                dmgTarget.ApplyHit(dmg, dir, combat.gameObject);
             }
         }
     }

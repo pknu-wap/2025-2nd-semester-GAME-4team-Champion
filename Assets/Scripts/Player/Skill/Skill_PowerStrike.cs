@@ -109,11 +109,10 @@ public class Skill_PowerStrike : MonoBehaviour, IPlayerSkill
         
         var stats = (attack != null && attack.baseStats != null) ? attack.baseStats : new PlayerAttack.AttackBaseStats();
         float dmg = stats.baseDamage * damageMul;
-        float knock = stats.baseKnockback * knockMul;
         float range = stats.baseRange * rangeMul;
         float radius = stats.baseRadius * radiusMul;
 
-        DoHitbox(dmg, knock, range, radius);
+        DoHitbox(dmg, range, radius);
         TagBus.Raise("Tag.impact(L)");
         yield return new WaitForSeconds(active + recovery);
         combat.EnterCombat("Skill_PowerStrike");

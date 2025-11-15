@@ -25,7 +25,6 @@ public class CG_ATK : MonoBehaviour
     [Header("Hitbox")]
     [SerializeField] private LayerMask enemyMask;
     [SerializeField] private float baseDamage = 10f;
-    [SerializeField] private float baseKnockback = 6f;
     [SerializeField] private float baseRange = 0.9f;
     [SerializeField] private float baseRadius = 0.6f;
     [SerializeField] private float chargeDamageMul = 2.0f;
@@ -130,7 +129,6 @@ public class CG_ATK : MonoBehaviour
         yield return new WaitForSeconds(windup + 0.07f);
 
         DoHitbox(baseDamage * chargeDamageMul,
-                 baseKnockback * chargeKnockMul,
                  baseRange * chargeRangeMul,
                  baseRadius * chargeRadiusMul);
 
@@ -153,7 +151,7 @@ public class CG_ATK : MonoBehaviour
         combat?.BlockStaminaRegenFor(lockTime);
     }
 
-    private void DoHitbox(float dmg, float knock, float range, float radius)
+    private void DoHitbox(float dmg, float range, float radius)
     {
         Vector2 facing = (moveRef && moveRef.LastFacing.sqrMagnitude > 0f)
             ? moveRef.LastFacing : Vector2.right;
@@ -174,7 +172,7 @@ public class CG_ATK : MonoBehaviour
             var dmgTarget = h.GetComponentInParent<IDamageable>();
             if (dmgTarget != null)
             {
-                dmgTarget.ApplyHit(dmg, knock, toEnemy, gameObject);
+                dmgTarget.ApplyHit(dmg, toEnemy, gameObject);
                 any = true;
             }
             else { any = true; }

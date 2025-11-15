@@ -192,11 +192,10 @@ public class Skill_RapidFire : MonoBehaviour, IPlayerSkill
     {
         var stats = (attack && attack.baseStats != null) ? attack.baseStats : new PlayerAttack.AttackBaseStats();
         float dmg = stats.baseDamage * rapidDamageMul;
-        float knock = stats.baseKnockback * knockMul;
         float range = stats.baseRange * rangeMul;
         float radius = stats.baseRadius * radiusMul;
 
-        Hitbox(dmg, knock, range, radius);
+        Hitbox(dmg, range, radius);
         TagBus.Raise("Tag.impact(S)");
         // VFX 0→1→2→3→4 순환
         SpawnVFX_Rapid(rapidVFX, ref rapidVfxIndex, rapidVfxOffset,
@@ -208,11 +207,10 @@ public class Skill_RapidFire : MonoBehaviour, IPlayerSkill
     {
         var stats = (attack && attack.baseStats != null) ? attack.baseStats : new PlayerAttack.AttackBaseStats();
         float dmg = stats.baseDamage * finisherDamageMul;
-        float knock = stats.baseKnockback * knockMul;
         float range = stats.baseRange * rangeMul;
         float radius = stats.baseRadius * radiusMul;
 
-        Hitbox(dmg, knock, range, radius);
+        Hitbox(dmg, range, radius);
 
         OnTag?.Invoke(TAG_RAPID_FINISHER);
         TagBus.Raise("Tag.impact(L)");
@@ -223,7 +221,7 @@ public class Skill_RapidFire : MonoBehaviour, IPlayerSkill
         combat.EnterCombat("RapidFire_Finish");
     }
 
-    private void Hitbox(float dmg, float knock, float range, float radius)
+    private void Hitbox(float dmg, float range, float radius)
     {
         if (!combat) return;
         Vector2 facing = (moveRef && moveRef.LastFacing.sqrMagnitude > 0f) ? moveRef.LastFacing : Vector2.right;
@@ -243,7 +241,7 @@ public class Skill_RapidFire : MonoBehaviour, IPlayerSkill
             if (target != null)
             {
                 Vector2 dir = ((Vector2)h.transform.position - (Vector2)combat.transform.position).normalized;
-                target.ApplyHit(dmg, knock, dir, combat.gameObject);
+                target.ApplyHit(dmg, dir, combat.gameObject);
             }
         }
     }
