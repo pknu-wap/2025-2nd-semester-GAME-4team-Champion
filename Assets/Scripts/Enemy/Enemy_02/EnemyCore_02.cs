@@ -143,7 +143,6 @@ public class EnemyCore_02 : MonoBehaviour, IDamageable
         if (!IsActing)
             AIMoveMent();
     }
-
     public void ApplyHit(float damage, Vector2 direction, GameObject source)
     {
         if (_isDead) return;
@@ -151,6 +150,13 @@ public class EnemyCore_02 : MonoBehaviour, IDamageable
         CurrentHp -= damage;
 
         StartCoroutine(HitFlash());
+
+        if (!IsActing && !_isGroggy)
+        {
+            _knockbackRemain = Mathf.Max(_knockbackRemain, 0.18f);
+            Rb.linearVelocity = Vector2.zero;
+        }
+
         StartCoroutine(HitStop(0.1f));
     }
 

@@ -135,7 +135,7 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
             AIMoveMent();
     }
 
-    public void ApplyHit(float damage, float knockback, Vector2 direction, GameObject source)
+    public void ApplyHit(float damage, Vector2 direction, GameObject source)
     {
         if (_isDead) return;
 
@@ -145,7 +145,6 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
         {
             _knockbackRemain = Mathf.Max(_knockbackRemain, 0.18f);
             Rb.linearVelocity = Vector2.zero;
-            Rb.AddForce(direction.normalized * knockback, ForceMode2D.Impulse);
         }
         StartCoroutine(HitStop(0.1f));
     }

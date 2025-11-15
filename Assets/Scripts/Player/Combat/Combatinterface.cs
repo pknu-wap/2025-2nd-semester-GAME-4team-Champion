@@ -10,5 +10,5 @@ public interface IParryable
 public interface IDamageable
 {
     /// <param name="hitDirFromPlayer">플레이어 → 적 방향(정규화 권장)</param>
-    void ApplyHit(float damage, float knockback, Vector2 hitDirFromPlayer, GameObject attacker);
+    void ApplyHit(float damage, Vector2 hitDirFromPlayer, GameObject attacker);
 }

@@ -160,7 +160,7 @@ public class Skill_PowerStrike : MonoBehaviour, IPlayerSkill
         Destroy(go);
     }
 
-    private void DoHitbox(float dmg, float knock, float range, float radius)
+    private void DoHitbox(float dmg, float range, float radius)
     {
         if (!combat) return;
         Vector2 facing = (moveRef && moveRef.LastFacing.sqrMagnitude > 0f) ? moveRef.LastFacing : Vector2.right;
@@ -179,7 +179,7 @@ public class Skill_PowerStrike : MonoBehaviour, IPlayerSkill
             if (dmgTarget != null)
             {
                 Vector2 dir = ((Vector2)h.transform.position - (Vector2)combat.transform.position).normalized;
-                dmgTarget.ApplyHit(dmg, knock, dir, combat.gameObject);
+                dmgTarget.ApplyHit(dmg, dir, combat.gameObject);
             }
         }
     }

@@ -5,11 +5,11 @@ public class CombatState : MonoBehaviour
 {
     // ---------- References ----------
     [Header("References")]
-    [SerializeField] private PlayerCombat owner;          // ¼ÒÀ¯ÀÚ(È£Ãâ ·¡ÇÎ¿ë)
-    [SerializeField] private PlayerMoveBehaviour moveRef; // ÀÌµ¿/ÇÃ¸³ Á¦¾î
+    [SerializeField] private PlayerCombat owner;          // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(È£ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½)
+    [SerializeField] private PlayerMoveBehaviour moveRef; // ï¿½Ìµï¿½/ï¿½Ã¸ï¿½ ï¿½ï¿½ï¿½ï¿½
     [SerializeField] private Animator animator;           // InCombat bool
-    [SerializeField] private PlayerAttack attack;         // °ø°Ý Áß ÀÚµ¿ ÇÃ¸³ ±ÝÁö ¿É¼Ç¿ë
-    [SerializeField] private CameraLockOn cameraLockOn;   // << ¶ô¿Â ÄÁÆ®·Ñ(¼±ÅÃ)
+    [SerializeField] private PlayerAttack attack;         // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Úµï¿½ ï¿½Ã¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½É¼Ç¿ï¿½
+    [SerializeField] private CameraLockOn cameraLockOn;   // << ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)
 
     // ---------- Config ----------
     [Header("Combat State")]
@@ -39,7 +39,7 @@ public class CombatState : MonoBehaviour
     public LayerMask EnemyMask => enemyMask;
 
     /// <summary>
-    /// ¿ÜºÎ¿¡¼­ ÃÊ±â ¹ÙÀÎµùÇÒ ¶§ »ç¿ë. cameraLockOnÀº ¼±ÅÃ ÀÎÀÚ.
+    /// ï¿½ÜºÎ¿ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½. cameraLockOnï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
     /// </summary>
     public void Bind(PlayerCombat ownerCombat, PlayerMoveBehaviour mv, Animator anim, PlayerAttack atk, CameraLockOn lockOn = null)
     {
@@ -52,7 +52,7 @@ public class CombatState : MonoBehaviour
         if (_overlapBuf == null || _overlapBuf.Length != Mathf.Max(8, overlapBufferSize))
             _overlapBuf = new Collider2D[Mathf.Max(8, overlapBufferSize)];
 
-        // ÀÚµ¿ º¸°­
+        // ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½
         AutoWireIfMissing();
     }
 
@@ -62,7 +62,7 @@ public class CombatState : MonoBehaviour
         if (!moveRef) moveRef = GetComponent<PlayerMoveBehaviour>();
         if (!animator) animator = GetComponent<Animator>();
         if (!attack) attack = GetComponent<PlayerAttack>();
-        // ¿¡µðÅÍ¿¡¼­ ³ÖÁö ¾Ê¾ÒÀ¸¸é ¾À¿¡¼­ ÀÚµ¿ °Ë»ö
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ ï¿½Ë»ï¿½
         if (!cameraLockOn) cameraLockOn = FindFirstObjectByType<CameraLockOn>(FindObjectsInactive.Include);
     }
 
@@ -74,7 +74,7 @@ public class CombatState : MonoBehaviour
 
     private void AutoWireIfMissing()
     {
-        // ·±Å¸ÀÓ¿¡¼­µµ ´©¶ô ½Ã ÇÑ ¹ø ´õ º¸°­
+        // ï¿½ï¿½Å¸ï¿½Ó¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (!cameraLockOn)
             cameraLockOn = FindFirstObjectByType<CameraLockOn>(FindObjectsInactive.Include);
     }
@@ -85,7 +85,7 @@ public class CombatState : MonoBehaviour
         inCombat = true;
 
         animator?.SetBool("InCombat", true);
-        cameraLockOn?.EnterCombat(); // << ³Î ¾ÈÀü
+        cameraLockOn?.EnterCombat(); // << ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         moveRef?.SetFlipFromMovementBlocked(true);
 
         if (autoFaceOnCombatEnter) TryAutoFaceNearestEnemyX();
@@ -102,7 +102,7 @@ public class CombatState : MonoBehaviour
         inCombat = false;
 
         animator?.SetBool("InCombat", false);
-        cameraLockOn?.ExitCombat(); // << ³Î ¾ÈÀü
+        cameraLockOn?.ExitCombat(); // << ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         moveRef?.SetFlipFromMovementBlocked(false);
 
         if (combatMonitorCo != null)
@@ -141,11 +141,11 @@ public class CombatState : MonoBehaviour
     {
         if (!moveRef) return;
 
-        // ÇÃ·¹ÀÌ¾î°¡ ¼öÆò ÀÔ·ÂÀ» Å©°Ô ÁÖ¸é ÀÚµ¿ ÀüÈ¯ º¸·ù
+        // ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½Ö¸ï¿½ ï¿½Úµï¿½ ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ï¿½
         if (Mathf.Abs(moveRef.CurrentInput.x) >= autoFaceInputDeadzoneX)
             return;
 
-        // °ø°Ý Áß¿£ ÀÚµ¿ ÇÃ¸³ ±ÝÁö(¿É¼Ç)
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ß¿ï¿½ ï¿½Úµï¿½ ï¿½Ã¸ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½É¼ï¿½)
         if (!autoFaceEvenWhileAttacking && attack != null && attack.IsAttacking)
             return;
 
