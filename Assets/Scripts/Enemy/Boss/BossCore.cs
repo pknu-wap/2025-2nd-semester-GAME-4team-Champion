@@ -39,6 +39,7 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
     [SerializeField] private GameManager _gm;
     [SerializeField] private LevelManage _Levelgm;
     [SerializeField] private EnemyUi _eui;
+    [SerializeField] private EnemyUiManage _eum;
     private SpriteRenderer sr;
 
     public bool IsDead() => _isDead;
@@ -145,6 +146,7 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
         if (_isDead) return;
 
         CurrentHp -= damage;
+        _eum.LinkHp();
         StartCoroutine(HitFlash());
         if (!IsActing && !_isGroggy)
         {
@@ -169,6 +171,7 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
     private IEnumerator HitStop(float duration)
     {
         CurrentStamina += 20; //임시
+
         hitImpulse.GenerateImpulse();
         yield return new WaitForSecondsRealtime(0.1f);
         Time.timeScale = 0f;
@@ -292,6 +295,7 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
         _isGroggy = false;
         IsActing = false;
         CurrentStamina = 0f;
+        _eum.LinkStamina();
         _eui.HideMark();
     }
 
@@ -347,9 +351,9 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
                 else
                     _combat.Range_Attack();
                 break;
-            case AttackSelectMode.Melee_BossAttack1: _combat.Melee_Attack(MeleeAttackType.BossAttack1); if (CurrentStamina > 0) CurrentStamina -= 4; break;
-            case AttackSelectMode.Melee_BossAttack2: _combat.Melee_Attack(MeleeAttackType.BossAttack2); if (CurrentStamina > 0) CurrentStamina -= 8; break;
-            case AttackSelectMode.Melee_BossAttack3: _combat.Melee_Attack(MeleeAttackType.BossAttack3); if (CurrentStamina > 0) CurrentStamina -= 10; break;
+            case AttackSelectMode.Melee_BossAttack1: _combat.Melee_Attack(MeleeAttackType.BossAttack1); if (CurrentStamina > 0) CurrentStamina -= 4; _eum.LinkStamina(); break;
+            case AttackSelectMode.Melee_BossAttack2: _combat.Melee_Attack(MeleeAttackType.BossAttack2); if (CurrentStamina > 0) CurrentStamina -= 8;_eum.LinkStamina(); break;
+            case AttackSelectMode.Melee_BossAttack3: _combat.Melee_Attack(MeleeAttackType.BossAttack3); if (CurrentStamina > 0) CurrentStamina -= 10; _eum.LinkStamina();break;
             case AttackSelectMode.Range_BossAttack1: _combat.Range_Attack(RangeAttackType.BossAttack1); break;
             case AttackSelectMode.Range_BossAttack2: _combat.Range_Attack(RangeAttackType.BossAttack2); break;
             case AttackSelectMode.Range_BossAttack3: _combat.Range_Attack(RangeAttackType.BossAttack3); break;

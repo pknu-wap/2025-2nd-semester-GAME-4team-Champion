@@ -113,7 +113,7 @@ public class PlayerCombat : MonoBehaviour
         combatState?.Bind(this, moveRef, animator, attack);
     }
 
-    private void OnEnable() => StartCoroutine(VitalsTick());
+    //private void OnEnable() => StartCoroutine(VitalsTick());
     private void OnDisable()
     {
         StopAllCoroutines();
@@ -124,11 +124,11 @@ public class PlayerCombat : MonoBehaviour
     public void ApplyDamage(float amount)
     {
         if (amount <= 0f) return;
-        hp = Mathf.Max(0f, hp - amount);
+        /*hp = Mathf.Max(0f, hp - amount);
         OnHealthChanged?.Invoke(hp, hpMax);
-        if (debugLogs) Debug.Log($"[HP] -{amount} => {hp}/{hpMax}");
+        if (debugLogs) Debug.Log($"[HP] -{amount} => {hp}/{hpMax}");*/
         Gm.TakePlayerDamage(amount);
-        if (hp <= 0f) OnDeath();
+        //if (hp <= 0f) OnDeath();
     }
 
     public void OnStaminaBreak()
@@ -173,7 +173,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void AddStamina(float delta)
     {
-        Gm.guard(delta + 10);
+        Gm.guard(20);
         float before = stamina;
         //stamina = Mathf.Clamp(stamina + delta, 0f, staminaMax);
         //if (!Mathf.Approximately(before, stamina))
@@ -188,7 +188,7 @@ public class PlayerCombat : MonoBehaviour
         //if (target > noRegenUntil) noRegenUntil = target;
     }
 
-    private IEnumerator VitalsTick()
+    /*private IEnumerator VitalsTick()
     {
         var waitEndFrame = new WaitForEndOfFrame();
         while (true)
@@ -201,7 +201,7 @@ public class PlayerCombat : MonoBehaviour
             }
             yield return waitEndFrame;
         }
-    }
+    }*/
 
     public void OnDeath()
     {
@@ -233,6 +233,7 @@ public class PlayerCombat : MonoBehaviour
 
         // 부활 로직은 Dead 켠 뒤에 호출
         revive?.BeginReviveIfAvailable();
+        isDead = false;
         //Gm.reviveplayer();
     }
 

@@ -12,8 +12,8 @@ public class LevelUpSelect : MonoBehaviour
     public PlayerSkills playerskill;
     public TextMeshProUGUI[] selectButtonsText;
     
-    public List<string> allselectTitle = new List<string> {"체력 증가","스테미나 증가","가드시 스테미나 증가량 감소", "위빙 성공시 체력 회복", "스테미나 회복 속도 증가", 
-                                                            "기합 회복량 증가", "기합 횟수 증가", /*"공격시 적 스테미나 충전율 증가", "적 기절 성공시 체력 회복", "적 기절 시간 증가", 
+    public List<string> allselectTitle = new List<string> {"체력 증가","스테미나 증가","가드시 스테미나\n증가량 감소", "위빙 성공시\n체력 회복", "스테미나 회복\n속도 증가", 
+                                                            "기합 회복량\n증가", "기합 횟수\n증가", /*"공격시 적 스테미나 충전율 증가", "적 기절 성공시 체력 회복", "적 기절 시간 증가", 
                                                             "차지 속도 증가", "위빙 성공시 스킬 쿨감", "공격 성공시 스킬 쿨감", "적 기절 성공시 스테미나 회복"*/};
 
     
@@ -27,7 +27,7 @@ public class LevelUpSelect : MonoBehaviour
 
 
     // 스킬 관련
-    public List<string> skillselections = new List<string> { "Combination", "UpperCut", "Parry", "Power_Strike", "Rapid_Fire" };
+    public List<string> skillselections = new List<string> { "Combination", "UpperCut", "Parry", "Power\nStrike", "Rapid\nFire" };
     private List<string> unselectedSkill;
     public List<string> randomSkill = new List<string> { "Combination", "UpperCut", "Parry" };
     public MonoBehaviour[] selectedSkillList;
@@ -78,10 +78,11 @@ public class LevelUpSelect : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             int cnt = allselectTitle.IndexOf(randomTitle[i]);
-            if (cnt >= 0)
+            selectButtonsText[i].text = $"{randomTitle[i]}";
+            /*if (cnt >= 0)
                 selectButtonsText[i].text = $"{randomTitle[i]} ({selectCountList[cnt]}/2)";
             else
-                selectButtonsText[i].text = $"{randomTitle[i]} (0/2)";        
+                selectButtonsText[i].text = $"{randomTitle[i]} (0/2)"; */      
         }
 
         for (int i = 0; i < 3; i++)

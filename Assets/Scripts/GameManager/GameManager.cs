@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public PlayerCombat playercombat;
     public Player_Heal playerheal;
+    
+    public EnemyUiManage EM; 
 
     public Slider[] hpbar;    //플레이어 슬라이드바
     public Slider[] staminabar;
@@ -34,21 +36,10 @@ public class GameManager : MonoBehaviour
 
     public float regentime = 2f;    // 스테미나 회복 대기 시간
     private float lastactiontime;   //마지막으로 영향을 받은 시간
+     public Image[] fillimage;   //플레이어 스테미나 *6, 플레이어 체력 * 3
 
 
-    public Slider[] enemyhpbar;   //적 슬라이드바
-    public Slider[] enemystaminabar;
-    public Image[] fillimage;   //플레이어 스테미나 *6, 플레이어 체력 * 3
-    public Image[] enemyfillimage;   //적 스테미나 *6, 적 체력 * 3
-
-    private float enemymaxhp = 100; //적 체력
-    private float enemycurrenthp = 100;
-    private float enemymaxstamina = 100f; //적 스테미나
-    private float enemycurrentstamina = 0f;
-    private float enemystaminaregen = 2;
-
-    private float enemyregentime = 2f;    // 스테미나 회복 대기 시간
-    private float enemylastactiontime;   //마지막으로 영향을 받은 시간
+    
     public Image panel;
 
     public IEnumerator FadeOut(float duration = 2f)
@@ -88,11 +79,10 @@ public class GameManager : MonoBehaviour
         resetcurrenthp();
         resetcurrentstamina();
 
-        resetenemystamina();
-
         matchHealPlayer();
 
         lastactiontime = Time.time;
+        
     }
 
     void Update()
@@ -114,16 +104,7 @@ public class GameManager : MonoBehaviour
             resetcurrenthp();
         }
 
-        if (Time.time - enemylastactiontime >= enemyregentime && enemycurrentstamina > 0) //적 스테미나 감소
-        {
-            enemycurrentstamina -= enemyregentime * Time.deltaTime * enemystaminaregen;
-            if (enemycurrentstamina < 0)
-            {
-                enemycurrentstamina = 0;
-            }
-
-            resetenemystamina();
-        }  
+        
 
         if (healregen == true && leftheal == 0)
         {
@@ -145,13 +126,6 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             fillimage[i].color = new Color(255 / 255f, (245 - currentstamina) / 255f, 57 / 255f, 1000 * (staminabar[i].value - staminabar[i].minValue));
-            
-            enemyfillimage[i].color = new Color(255 / 255f, (245 - enemycurrentstamina) / 255f, 57 / 255f, 1000 * (enemystaminabar[i].value - enemystaminabar[i].minValue));
-
-            //fillimage[i].color = new Color(217/255f, (207-enemycurrentstamina)/255f, 28/255f, 10*enemycurrentstamina);
-            //fillimage[i+2].color = new Color(105/255f, 107/255f, 30/255f, 10*enemycurrentstamina);
-
-            //fillimage[5].color = new Color(167/255f, 171/255f, 0/255f, 10*currentstamina);
         }
     }
 
@@ -192,15 +166,12 @@ public class GameManager : MonoBehaviour
     public void justguard() //위빙(저스트 가드) 성공
     {
         currentstamina += 1;
-        enemycurrentstamina += (30);
+        
         if (currentstamina > maxstamina)
         {
             currentstamina = maxstamina;
         }
-        if (enemycurrentstamina > enemymaxstamina)
-        {
-            enemycurrentstamina = enemymaxstamina;
-        }
+        
 
 
         if (currentstamina < 0)
@@ -212,8 +183,8 @@ public class GameManager : MonoBehaviour
             currenthp += gainhp;
             resetcurrenthp();
         }
-        resetcurrentstamina();
-        resetenemystamina();
+        EM.pjustguard(30);
+        
 
         lastactiontime = Time.time;
     }
@@ -280,32 +251,7 @@ public class GameManager : MonoBehaviour
         playercombat.matchingGM();
     }
 
-    private void resetenemystamina() //적 스테미나 갱신
-    {
-        for (int i = 0; i < 6; i++)
-        {
-            enemystaminabar[i].value = enemycurrentstamina / enemymaxstamina;
-        }
-    }
-
-    private void resetenemyhp() //적 체력 갱신
-    {
-        float ratio = enemymaxhp > 0f ? enemycurrenthp / enemymaxhp : 0f;
-
-        //적 HP 슬라이더들 값만 갱신
-        if (enemyhpbar != null)
-        {
-            int count = enemyhpbar.Length;
-            for (int i = 0; i < count; i++)
-            {
-                if (enemyhpbar[i] == null) continue;
-                enemyhpbar[i].value = ratio;
-                Color c = enemyfillimage[i+6].color;
-                c.a = 1000 * (hpbar[i].value - enemyhpbar[i].minValue);
-                enemyfillimage[i+6].color = c;
-            }
-        }
-    }
+    
 
     
 
