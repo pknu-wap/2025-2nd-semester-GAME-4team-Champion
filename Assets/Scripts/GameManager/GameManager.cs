@@ -25,10 +25,15 @@ public class GameManager : MonoBehaviour
     public bool healregen = false;  //기합 회복 여부
     private Coroutine healregenCoroutine = null;    //기합 회복 중복 방지
 
+    private int groggyheal = 0; //적 그로기시 힐
+    private float groggystamina = 0;
+
     public float maxstamina = 100f;  //플레이어 스테미나
     public float currentstamina = 0f;
     private float playerstaminaregen = 2;
 
+    public int enemymorestamina = 0;    //적 스테미나 추가 증가
+    public float enemygroggy = 3;
 
     private float reducestamina = 0; //가드시 스테미나 감소량
     private float gainhp= 0; //위빙 성공시 체력 회복
@@ -36,9 +41,9 @@ public class GameManager : MonoBehaviour
 
     public float regentime = 2f;    // 스테미나 회복 대기 시간
     private float lastactiontime;   //마지막으로 영향을 받은 시간
-     public Image[] fillimage;   //플레이어 스테미나 *6, 플레이어 체력 * 3
+    public Image[] fillimage;   //플레이어 스테미나 *6, 플레이어 체력 * 3
 
-
+    public float skilltimedown = 0f;
     
     public Image panel;
 
@@ -137,8 +142,24 @@ public class GameManager : MonoBehaviour
 
     public void reviveplayer(float amount)
     {
-        currenthp += amount;
+        currenthp += amount + 20;
         currentstamina = 0f;
+
+        resetcurrenthp();
+        resetcurrentstamina();
+    }
+
+    public void healplayer()
+    {
+        currenthp += groggyheal;
+
+        resetcurrenthp();
+        resetcurrentstamina();
+    }
+    
+    public void staminaplayer()
+    {
+        currentstamina -= groggystamina;
 
         resetcurrenthp();
         resetcurrentstamina();
@@ -303,13 +324,30 @@ public class GameManager : MonoBehaviour
         matchHealPlayer();
     }
 
-    public void MoreStaminaDamage(float amount) //공격시 적 스테미나 충전율 증가/ 추후에 코드 더보고
+    public void MoreStaminaDamage(int amount) //공격시 적 스테미나 충전율 증가/ 추후에 코드 더보고
     {
-
+        enemymorestamina += amount;
     }
 
-    
+    public void Enemeygroggyheal(int amount)  //적 기절 성공 시 체력회복
+    {
+        groggyheal += amount;
+    }
 
+    public void AddEnemeyGroggy(float amount)   //적 그로기 시간 증가
+    {
+        enemygroggy += amount;
+    }
+
+    public void EnemyGroggyStamina(float amount)    //적 기절 시 스테미나 회복
+    {
+        groggystamina += amount;
+    }
+
+    /*public void DamageSkillTime(float amount)
+    {
+        skilltimedown += 0.2;
+    }*/
 
 
     /*

@@ -13,8 +13,8 @@ public class LevelUpSelect : MonoBehaviour
     public TextMeshProUGUI[] selectButtonsText;
     
     public List<string> allselectTitle = new List<string> {"체력 증가","스테미나 증가","가드시 스테미나\n증가량 감소", "위빙 성공시\n체력 회복", "스테미나 회복\n속도 증가", 
-                                                            "기합 회복량\n증가", "기합 횟수\n증가", /*"공격시 적 스테미나 충전율 증가", "적 기절 성공시 체력 회복", "적 기절 시간 증가", 
-                                                            "차지 속도 증가", "위빙 성공시 스킬 쿨감", "공격 성공시 스킬 쿨감", "적 기절 성공시 스테미나 회복"*/};
+                                                            "기합 회복량\n증가", "기합 횟수\n증가", "공격시 적 스테미나 충전율 증가", "적 기절 성공시 체력 회복", "적 기절 시간 증가", 
+                                                            /*"위빙 성공시 스킬 쿨감", "공격 성공시 스킬 쿨감",*/ "적 기절 성공시 스테미나 회복"};
 
     
 
@@ -230,13 +230,13 @@ public class LevelUpSelect : MonoBehaviour
             { "기합 회복량 증가", () => { gamemanager.MoreHeal(15); } },
             { "기합 횟수 증가", () => { gamemanager.ManyHealChance(2); } },
 
-            /*{ "공격시 적 스테미나 충전율 증가", () => { gamemanager.playerstaminaregen += 8; } },
-            { "적 기절 성공시 체력 회복", () => { gamemanager.playerstaminaregen += 8; } },
-            { "적 기절 시간 증가", () => { gamemanager.playerstaminaregen += 8; } },
-            { "차지 속도 증가", () => { gamemanager.playerstaminaregen += 8; } },   //아직 콤보x
+            { "공격시 적 스테미나 충전율 증가", () => { gamemanager.MoreStaminaDamage(5); } },
+            { "적 기절 성공시 체력 회복", () => { gamemanager.Enemeygroggyheal(5); } },
+            { "적 기절 시간 증가", () => { gamemanager.AddEnemeyGroggy(1); } },
+            /*
             { "공격 성공시 스킬 쿨감", () => { gamemanager.playerstaminaregen += 8; } },
-            { "위빙 성공시 스킬 쿨감", () => { gamemanager.playerstaminaregen += 8; } },
-            { "적 기절 성공시 스테미나 회복", () => { gamemanager.playerstaminaregen += 8; } },*/            
+            { "위빙 성공시 스킬 쿨감", () => { gamemanager.playerstaminaregen += 8; } },*/
+            { "적 기절 성공시 스테미나 회복", () => { gamemanager.EnemyGroggyStamina(5); } },          
         };
     }
 

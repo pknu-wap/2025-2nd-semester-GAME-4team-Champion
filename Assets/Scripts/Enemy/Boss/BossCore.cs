@@ -16,7 +16,7 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
     public float Speed = 3.0f;
     public float MinChaseDistance = 1.3f;
     public Collider2D MovementArea;
-    [SerializeField] private float groggyDuration = 3f;
+    //[SerializeField] private float groggyDuration = 3f;
     private bool _isGroggy = false;
 
     public float AttackTimer = 0f;
@@ -146,6 +146,9 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
         if (_isDead) return;
 
         CurrentHp -= damage;
+
+        CurrentStamina += 10 + _gm.enemymorestamina;
+
         _eum.LinkHp();
         StartCoroutine(HitFlash());
         if (!IsActing && !_isGroggy)
@@ -170,7 +173,7 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
 
     private IEnumerator HitStop(float duration)
     {
-        CurrentStamina += 20; //임시
+        
 
         hitImpulse.GenerateImpulse();
         yield return new WaitForSecondsRealtime(0.1f);
@@ -283,10 +286,13 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
 
     private IEnumerator EnterGroggy()
     {
+        _gm.healplayer();
+        _gm.staminaplayer();
+
         _isGroggy = true;
         IsActing = true;
         Rb.linearVelocity = Vector2.zero;
-        yield return new WaitForSeconds(groggyDuration);
+        yield return new WaitForSeconds(_gm.enemygroggy);
         ExitGroggy();
     }
 
@@ -365,4 +371,6 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
         IsActing = false;
         AttackTimer = AttackCooldown;
     }
+
+    
 }

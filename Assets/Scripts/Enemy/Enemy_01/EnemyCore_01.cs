@@ -29,7 +29,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
     [SerializeField] public float MinChaseDistance = 1.3f;
     [SerializeField] public Collider2D MovementArea;
     private bool _isGroggy = false;
-    [SerializeField] private float groggyDuration = 3f;
+    //[SerializeField] private float groggyDuration = 3f;
 
     [Header("Runtime")]
     public float AttackTimer = 0f;
@@ -199,6 +199,8 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         }
 
         CurrentHp -= damage;
+        CurrentStamina += 10 + _gm.enemymorestamina;
+
         StartCoroutine(HitFlash());
 
         if (!IsActing && !_isGroggy)
@@ -444,6 +446,9 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
 
     private IEnumerator EnterGroggy()
     {
+        _gm.healplayer();
+        _gm.staminaplayer();
+
         _isGroggy = true;
         IsActing = true;
         IsGuarding = false;
@@ -455,7 +460,7 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
             _groggyHitPlayed = true;
         }
 
-        yield return new WaitForSeconds(groggyDuration);
+        yield return new WaitForSeconds(_gm.enemygroggy);
 
         ExitGroggy();
     }
