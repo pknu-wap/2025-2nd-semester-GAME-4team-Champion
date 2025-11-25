@@ -11,6 +11,7 @@ public class LevelUpSelect : MonoBehaviour
     public DayTimer daytimer;
     public PlayerSkills playerskill;
     public TextMeshProUGUI[] selectButtonsText;
+    public TextMeshProUGUI[] selectCountText;
     
     public List<string> allselectTitle = new List<string> {"체력 증가","스테미나 증가","가드시 스테미나\n증가량 감소", "위빙 성공시\n체력 회복", "스테미나 회복\n속도 증가", 
                                                             "기합 회복량\n증가", "기합 횟수\n증가", "공격시 적 스테미나 충전율 증가", "적 기절 성공시 체력 회복", "적 기절 시간 증가", 
@@ -79,6 +80,7 @@ public class LevelUpSelect : MonoBehaviour
         {
             int cnt = allselectTitle.IndexOf(randomTitle[i]);
             selectButtonsText[i].text = $"{randomTitle[i]}";
+            selectCountText[i].text = $"({selectCountList[cnt]}/2)";
             /*if (cnt >= 0)
                 selectButtonsText[i].text = $"{randomTitle[i]} ({selectCountList[cnt]}/2)";
             else
@@ -227,7 +229,7 @@ public class LevelUpSelect : MonoBehaviour
             { "가드시 스테미나 증가량 감소", () => { gamemanager.GuardStamina(2); } },
             { "위빙 성공시 체력 회복", () => { gamemanager.WeavingHeal(10); } },
             { "스테미나 회복 속도 증가", () => { gamemanager.StaminaRegen(8); } },
-            { "기합 회복량 증가", () => { gamemanager.MoreHeal(15); } },
+            { "기합 회복량 증가", () => { gamemanager.MoreHeal(10); } },
             { "기합 횟수 증가", () => { gamemanager.ManyHealChance(2); } },
 
             { "공격시 적 스테미나 충전율 증가", () => { gamemanager.MoreStaminaDamage(5); } },
@@ -283,12 +285,12 @@ public class LevelUpSelect : MonoBehaviour
                 titles = new string[] { "가드시 스테미나 증가량 감소", "위빙 성공시 체력 회복" },
                 effect = () => { gamemanager.GuardStamina(2); }
             },
-            /*new CombinationEffect   //회복량 증가
+            new CombinationEffect   //회복량 증가
             {
                 titles = new string[] { "적 기절 성공시 체력 회복", "적 기절 성공시 스테미나 회복" },
-                effect = () => { gamemanager.maxhp += 50; gamemanager.currenthp += 50; }
+                effect = () => { gamemanager.MoreHeal(10); }
             },
-            new CombinationEffect   //스킬 쿨감
+            /*new CombinationEffect   //스킬 쿨감
             {
                 titles = new string[] { "공격 성공시 스킬 쿨감", "위빙 성공시 스킬 쿨감" },
                 effect = () => { gamemanager.maxhp += 50; gamemanager.currenthp += 50; }
@@ -303,11 +305,11 @@ public class LevelUpSelect : MonoBehaviour
                 titles = new string[] { "기합 회복량 증가", "기합 횟수 증가" },
                 effect = () => { gamemanager.healregen = true; }
             },
-            /*new CombinationEffect
+            new CombinationEffect //적 그로기시 데미지
             {
                 titles = new string[] { "적 기절 시간 증가", "공격시 적 스테미나 충전율 증가" },
-                effect = () => { gamemanager.maxhp += 50; gamemanager.currenthp += 50; }
-            },*/
+                effect = () => { gamemanager.enemymorehit = true; }
+            },
 
         };
     }

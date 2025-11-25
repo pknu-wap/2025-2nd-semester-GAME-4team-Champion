@@ -88,7 +88,7 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
             _eui.ShowMark();
             StartCoroutine(EnterGroggy());
         }
-            
+        _eum.LinkStamina();   
 
         Rb.position = ClampInside(Rb.position);
 
@@ -146,6 +146,10 @@ public class BossCore : MonoBehaviour, IParryable, IDamageable
         if (_isDead) return;
 
         CurrentHp -= damage;
+        if (_isGroggy && _gm.enemymorehit == true)
+        {
+            CurrentHp -= 5;
+        }
 
         CurrentStamina += 10 + _gm.enemymorestamina;
 

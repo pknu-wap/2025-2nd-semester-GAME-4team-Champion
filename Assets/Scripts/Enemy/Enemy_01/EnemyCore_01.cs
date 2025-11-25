@@ -199,6 +199,10 @@ public class EnemyCore_01 : MonoBehaviour, IParryable, IDamageable
         }
 
         CurrentHp -= damage;
+        if (_isGroggy && _gm.enemymorehit == true)
+        {
+            CurrentHp -= 5;
+        }
         CurrentStamina += 10 + _gm.enemymorestamina;
 
         StartCoroutine(HitFlash());

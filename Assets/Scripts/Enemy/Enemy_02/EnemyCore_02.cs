@@ -154,6 +154,10 @@ public class EnemyCore_02 : MonoBehaviour, IDamageable
         if (_isDead) return;
 
         CurrentHp -= damage;
+        if (_isGroggy && _gm.enemymorehit == true)
+        {
+            CurrentHp -= 5;
+        }
 
         CurrentStamina += 10 + _gm.enemymorestamina;
 

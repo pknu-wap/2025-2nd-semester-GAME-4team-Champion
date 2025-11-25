@@ -34,38 +34,40 @@ public class LevelManage : MonoBehaviour
 
     public void GetExp(int addexp)  //경험치 휙득 및 레벨업
     {
-
-        exp += addexp;
-        resetexp();
-        if (exp >= maxexp)
+        if (level < 15)
         {
-            while (exp >= maxexp)
+            exp += addexp;
+            resetexp();
+            if (exp >= maxexp)
             {
-            exp -= maxexp;
-                level += 1;
-                if (level == 5 || level == 10)
+                while (exp >= maxexp)
                 {
-                    levelupselect.SettingSkillRandom();
-                    levelupselect.RandomSkillSelect();
-                    levelupselect.showskill();
+                exp -= maxexp;
+                    level += 1;
+                    if (level == 5 || level == 10)
+                    {
+                        levelupselect.SettingSkillRandom();
+                        levelupselect.RandomSkillSelect();
+                        levelupselect.showskill();
 
-                    Time.timeScale = 0f;
-                }
-                else
-                {   
-                    levelselectcount += 1;
-                }
+                        Time.timeScale = 0f;
+                    }
+                    else
+                    {   
+                        levelselectcount += 1;
+                    }
 
-                if (levelselectcount >= 1)
-                {
-                    levelupselect.settingRandom();
-                    levelupselect.RandomSelect();
-                    levelupselect.showLevelUp();
-                    //daytimer.StopTimer();
+                    if (levelselectcount >= 1)
+                    {
+                        levelupselect.settingRandom();
+                        levelupselect.RandomSelect();
+                        levelupselect.showLevelUp();
+                        //daytimer.StopTimer();
 
-                    Time.timeScale = 0f;    //시간 정지
+                        Time.timeScale = 0f;    //시간 정지
+                    }
+                    
                 }
-                
             }
         }
         resetexp();

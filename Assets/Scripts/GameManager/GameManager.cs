@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
 
     public int enemymorestamina = 0;    //적 스테미나 추가 증가
     public float enemygroggy = 3;
+    public bool enemymorehit = false;    //적 추가데미지
 
     private float reducestamina = 0; //가드시 스테미나 감소량
     private float gainhp= 0; //위빙 성공시 체력 회복
